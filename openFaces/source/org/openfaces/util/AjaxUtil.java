@@ -71,7 +71,7 @@ public class AjaxUtil {
                     } catch (NoSuchMethodException e) {
                         // We will try to search for this method without FacesContext in params
                     } catch (SecurityException e) {
-                        //
+                        // TODO: investigate why swallowing exception
                     }
 
                     if (isAjaxRequestMethod == null) {
@@ -197,8 +197,7 @@ public class AjaxUtil {
 
     public static boolean isRenderingPortletsAjaxResponse(FacesContext context) {
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        boolean result = requestMap.containsKey(KEY_RENDERING_PORTLETS_AJAX_RESPONSE);
-        return result;
+        return requestMap.containsKey(KEY_RENDERING_PORTLETS_AJAX_RESPONSE);
     }
 
 
