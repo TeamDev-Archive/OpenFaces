@@ -12,16 +12,32 @@
 
 package org.openfaces.demo.beans.inputsecret;
 
-import javax.faces.context.FacesContext;
-import java.util.Map;
 
-/**
- * @author Andre Shapovalov
- */
+import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
+
 public class InputSecretBean {
 
-    private String login;
-    private String password;
+    private String login = "";
+    private String password = "";
+    private String result = "";
+
+
+    public void signIn(ActionEvent e) {
+        processResult();
+    }
+
+    public void signIn(AjaxBehaviorEvent e) {
+        processResult();
+    }
+
+    public void processResult() {
+        if (login.trim().isEmpty() || password.trim().isEmpty()) {
+            result = "";
+        } else {
+            result = "Hello, " + login + "!";
+        }
+    }
 
     public String getLogin() {
         return login;
@@ -40,10 +56,11 @@ public class InputSecretBean {
         this.password = password;
     }
 
-    public String signIn() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        Map requestParams = context.getExternalContext().getRequestParameterMap();
-        System.out.println("Login:" + this.getLogin() + "; Password:" + this.getPassword());
-        return "";
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
     }
 }
