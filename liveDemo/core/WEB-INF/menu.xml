@@ -936,5 +936,20 @@
       </demoItem>
     </demos>
   </menuItem>
+  <menuItem>
+    <name>MaskEdit</name>
+    <componentName>MaskEdit</componentName>
+    <url>/maskedit/MaskEdit.jsf</url>
+    <shortPath>/maskedit/</shortPath>
+    <image>maskedit</image>
+    <selectedImage>/images/components/titles/maskedit.png</selectedImage>
+
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/maskedit/MaskEdit.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
 
 </menu>

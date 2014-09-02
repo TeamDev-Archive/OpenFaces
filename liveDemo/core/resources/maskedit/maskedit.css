@@ -1,0 +1,53 @@
+/*
+ * OpenFaces - JSF Component Library 2.0
+ * Copyright (C) 2007-2014, TeamDev Ltd.
+ * licensing@openfaces.org
+ * Unless agreed in writing the contents of this file are subject to
+ * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * Please visit http://openfaces.org/licensing/ for more details.
+ */
+
+/* CSS Document */
+
+.title {
+    font-size: 20px;
+    color: #004275;
+}
+
+.sub-title {
+    font-size: 14px;
+    color: #004275;
+}
+
+.previewPanel p {
+  font-family: "Script MT Bold", Bookman, serif;
+  font-size: 20px
+}
+
+.templateInput {
+  border: 1px #111111 solid;
+  background-color: #F6F7F8;
+}
+
+.focusedTemplateInput {
+  background-color: #add8e6;
+  border: 2px #0093d0 solid;
+}
+
+.rolloverTemplateInput {
+  background-color: #e0ffff;
+  border: 1px #1bb6d3 solid;
+}
+
+#inputDataPanel {
+  float: left;
+  width: 330px;
+}
+
+#preview {
+  margin-left: 350px;
+  display: block;
+}

@@ -158,6 +158,10 @@
     <component-type>org.openfaces.InputTextFilter</component-type>
     <component-class>org.openfaces.component.filter.InputTextFilter</component-class>
   </component>
+  <component>
+    <component-type>org.openfaces.MaskEdit</component-type>
+    <component-class>org.openfaces.component.input.MaskEdit</component-class>
+  </component>
 
   <!-- TIMETABLE-RELATED COMPONENTS -->
   <component>
@@ -1011,6 +1015,11 @@
       <component-family>org.openfaces.InputTextFilter</component-family>
       <renderer-type>org.openfaces.InputTextFilterRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.filter.InputTextFilterRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.MaskEdit</component-family>
+      <renderer-type>org.openfaces.MaskEditRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.input.MaskEditRenderer</renderer-class>
     </renderer>
     <!-- DROPDOWN COMPONENTS DECLARATION -->
     <renderer>
