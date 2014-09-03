@@ -159,6 +159,11 @@
     <component-class>org.openfaces.component.filter.InputTextFilter</component-class>
   </component>
 
+  <component>
+    <component-type>org.openfaces.MaskEdit</component-type>
+    <component-class>org.openfaces.component.input.MaskEdit</component-class>
+  </component>
+
   <!-- TIMETABLE-RELATED COMPONENTS -->
   <component>
     <component-type>org.openfaces.DayTable</component-type>
@@ -779,11 +784,11 @@
     <component-type>org.openfaces.ChartSelection</component-type>
     <component-class>org.openfaces.component.chart.ChartSelection</component-class>
   </component>
-   <component>
+  <component>
     <component-type>org.openfaces.TagCloud</component-type>
     <component-class>org.openfaces.component.tagcloud.TagCloud</component-class>
   </component>
-   <component>
+  <component>
     <component-type>org.openfaces.TagCloudItem</component-type>
     <component-class>org.openfaces.component.tagcloud.TagCloudItem</component-class>
   </component>
@@ -832,17 +837,17 @@
     <component-type>org.openfaces.RowGrouping</component-type>
     <component-class>org.openfaces.component.table.RowGrouping</component-class>
   </component>
-  
+
   <component>
     <component-type>org.openfaces.GroupingBox</component-type>
     <component-class>org.openfaces.component.table.GroupingBox</component-class>
   </component>
-  
+
   <component>
     <component-type>org.openfaces.GroupHeaderRow</component-type>
     <component-class>org.openfaces.component.table.impl.GroupHeaderRow</component-class>
   </component>
-  
+
   <component>
     <component-type>org.openfaces.GroupFooterRow</component-type>
     <component-class>org.openfaces.component.table.impl.GroupFooterRow</component-class>
@@ -931,7 +936,7 @@
     <component-type>org.openfaces.ScrollButton</component-type>
     <component-class>org.openfaces.component.timetable.ScrollButton</component-class>
   </component>
-  
+
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>
@@ -1018,6 +1023,13 @@
       <renderer-type>org.openfaces.InputTextFilterRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.filter.InputTextFilterRenderer</renderer-class>
     </renderer>
+
+    <renderer>
+      <component-family>org.openfaces.MaskEdit</component-family>
+      <renderer-type>org.openfaces.MaskEditRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.input.MaskEditRenderer</renderer-class>
+    </renderer>
+
     <!-- DROPDOWN COMPONENTS DECLARATION -->
     <renderer>
       <component-family>org.openfaces.DropDownField</component-family>
@@ -1226,7 +1238,7 @@
       <renderer-type>org.openfaces.WeekSwitcherRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.timetable.WeekSwitcherRenderer</renderer-class>
     </renderer>
-    
+
     <renderer>
       <component-family>org.openfaces.DaySwitcher</component-family>
       <renderer-type>org.openfaces.DaySwitcherRenderer</renderer-type>
@@ -1446,7 +1458,7 @@
       <renderer-type>org.openfaces.ChartPopupRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.chart.ChartPopupRenderer</renderer-class>
     </renderer>
-     <renderer>
+    <renderer>
       <component-family>org.openfaces.TagCloud</component-family>
       <renderer-type>org.openfaces.TagCloudRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.tagcloud.TagCloudRenderer</renderer-class>

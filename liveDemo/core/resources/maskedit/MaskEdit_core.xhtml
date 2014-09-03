@@ -1,0 +1,96 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+        >
+
+  <div id="Demo">
+
+    <table id="input" width="340px" align="center">
+      <caption class="title">Fill in the following information:</caption>
+      <tr>
+        <td class="sub-title">Credit Card Number:</td>
+        <td class="inputfield_class">
+          <o:maskEdit
+                  rendered="true"
+                  required="true"
+                  id="Date1"
+                  blank="#{MaskEditBean.blank1}"
+                  mask="#{MaskEditBean.mask1}"
+                  value="#{MaskEditBean.value1}"
+                  maskSymbolConstructors="#{MaskEditBean.symbolConstructors}"
+                  blankVisible="true"
+                  styleClass="templateInput"
+                  focusedClass="focusedTemplateInput"
+                  rolloverClass="rolloverTemplateInput"
+                  />
+        </td>
+      </tr>
+      <tr>
+        <td class="sub-title">Phone Number:</td>
+        <td class="inputfield_class">
+          <o:maskEdit
+                  id="Date2"
+                  blank="#{MaskEditBean.blank2}"
+                  mask="#{MaskEditBean.mask2}"
+                  value="#{MaskEditBean.value2}"
+                  maskSymbolConstructors="#{MaskEditBean.symbolConstructors}"
+                  blankVisible="true"
+                  styleClass="templateInput"
+                  focusedClass="focusedTemplateInput"
+                  rolloverClass="rolloverTemplateInput"
+                  />
+        </td>
+      </tr>
+      <tr>
+        <td class="sub-title">Date of Birth:</td>
+        <td class="inputfield_class">
+          <o:maskEdit
+                  id="Date3"
+                  blank="#{MaskEditBean.blank3}"
+                  mask="#{MaskEditBean.mask3}"
+                  value="#{MaskEditBean.value3}"
+                  maskSymbolConstructors="#{MaskEditBean.symbolConstructors}"
+                  blankVisible="true"
+                  styleClass="templateInput"
+                  focusedClass="focusedTemplateInput"
+                  rolloverClass="rolloverTemplateInput"
+                  />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" height="40" style="text-align: left;">
+          <o:commandButton value="Submit Information" execute="Date1 Date2 Date3" render="output"/>
+
+          <div style="margin-top: 5px; margin-bottom: 5px;">
+            <h:outputText id="output" value="#{MaskEditBean.message}" escape="false"/>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+
+  </div>
+
+  <div id="Description">
+    <h4>Demonstrated Features</h4>
+    <ul class="hang">
+      <li>
+        <strong>Customized mask form and separators location</strong> - You can configure the original mask form and
+        the input separators location and note the symbols that you can input in any cases.
+      </li>
+      <!--<li>-->
+      <!--<strong>Customized mask literals</strong> - If it is not enough of Mask literal for some reason, you can always-->
+      <!--create your own mask literal for supplementing the missing features.-->
+      <!--</li>-->
+      <li>
+        <strong>Features of the JSF InputText component</strong> - The maskEdit component supports all of the features
+        of the JSF InputText component standard that banes to input the symbols into the blankText that are allowed in
+        the input mask and has features like rollover and focused styles.
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+
+

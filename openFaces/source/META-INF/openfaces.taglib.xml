@@ -1454,5 +1454,13 @@
       <renderer-type>org.openfaces.InputSecretRenderer</renderer-type>
       <handler-class>org.openfaces.taglib.facelets.input.InputSecretTagHandler</handler-class>
     </component>
-  </tag>  
+  </tag>
+  <tag>
+    <tag-name>maskEdit</tag-name>
+    <component>
+      <component-type>org.openfaces.MaskEdit</component-type>
+      <renderer-type>org.openfaces.MaskEditRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.input.MaskEditTagHandler</handler-class>
+    </component>
+  </tag>
 </facelet-taglib>
