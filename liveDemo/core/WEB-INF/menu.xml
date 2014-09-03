@@ -493,7 +493,7 @@
     <image>InputSecret</image>
     <selectedImage>/images/components/titles/InputSecret.png</selectedImage>
     <keyFeatures>
-      <feature>All features </feature>
+      <feature>All features</feature>
       <feature>feature 1</feature>
     </keyFeatures>
     <demos>
@@ -657,7 +657,7 @@
     <image>SelectOneMenu</image>
     <selectedImage>/images/components/titles/SelectOneMenu.png</selectedImage>
     <keyFeatures>
-      <feature>Support of all standard JSF &lt;h:selectOneMenu&gt; features </feature>
+      <feature>Support of all standard JSF &lt;h:selectOneMenu&gt; features</feature>
       <feature>Embedding JSF components available both for item list and selected value.</feature>
       <feature>Auto-completion</feature>
       <feature>Ajax and client-side suggestion</feature>
@@ -938,6 +938,21 @@
       <demoItem>
         <demoName>General</demoName>
         <demoUrl>/window/Window.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>MaskEdit</name>
+    <componentName>MaskEdit</componentName>
+    <url>/maskedit/MaskEdit.jsf</url>
+    <shortPath>/maskedit/</shortPath>
+    <image>maskedit</image>
+    <selectedImage>/images/components/titles/maskedit.png</selectedImage>
+
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/maskedit/MaskEdit.jsf</demoUrl>
       </demoItem>
     </demos>
   </menuItem>
