@@ -2263,20 +2263,27 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public void export(DataScope scope, TableDataFormatter formatter) {
-        String fileName = getId();
-        if (fileName == null)
-            fileName = "tableData";
-        export(scope, formatter, fileName + "." + formatter.getDefaultFileExtension());
+        String fileName = createFileName(formatter);
+        export(scope, formatter, fileName);
     }
 
-    protected void checkExportSupportedInCurrentState() {
-        // Export is allowed in all states by default. Subclasses can define their own state checks.
-    }
+
 
     public void export(DataScope scope, TableDataFormatter formatter, String fileName) {
         TableDataExtractor extractor = new TableDataExtractor(scope);
         export(scope, extractor, formatter, fileName);
     }
+
+    public void export(DataScope scope, TableDataFormatter formatter, Class... extractionIgnoredClasses) {
+        String fileName = createFileName(formatter);
+        export(scope, formatter, fileName, extractionIgnoredClasses);
+    }
+
+    public void export(DataScope scope, TableDataFormatter formatter, String fileName, Class... extractionIgnoredClasses) {
+        TableDataExtractor extractor = new TableDataExtractor(scope, extractionIgnoredClasses);
+        export(scope, extractor, formatter, fileName);
+    }
+
 
     public void export(DataScope scope, TableDataExtractor extractor, TableDataFormatter formatter, String fileName) {
         checkExportSupportedInCurrentState();
@@ -2285,6 +2292,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         formatter.sendResponse(context, tableData, fileName);
     }
 
+
+    protected void checkExportSupportedInCurrentState() {
+        // Export is allowed in all states by default. Subclasses can define their own state checks.
+    }
 
     /**
      * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
@@ -2327,4 +2338,13 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     public void restoreRowVariables() {
         Components.restoreRequestVariable(getVar());
     }
+
+     private String createFileName(TableDataFormatter formatter){
+         String fileName = getId();
+         if (fileName == null){
+             fileName = "tableData";
+         }
+         return fileName + "." + formatter.getDefaultFileExtension();
+     }
+
 }

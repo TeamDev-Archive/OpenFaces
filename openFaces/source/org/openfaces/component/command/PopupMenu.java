@@ -14,6 +14,7 @@ package org.openfaces.component.command;
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIClientActionHelper;
 import org.openfaces.component.OUIComponentBase;
+import org.openfaces.component.table.export.Unextractable;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.application.ResourceDependencies;
@@ -30,7 +31,7 @@ import java.util.List;
         @ResourceDependency(name = "jsf.js", library = "javax.faces"),
         @ResourceDependency(name = "default.css", library = "openfaces")
 })
-public class PopupMenu extends OUIComponentBase implements OUIClientAction {
+public class PopupMenu extends OUIComponentBase implements OUIClientAction, Unextractable {
     public static final String COMPONENT_TYPE = "org.openfaces.PopupMenu";
     public static final String COMPONENT_FAMILY = "org.openfaces.PopupMenu";
 

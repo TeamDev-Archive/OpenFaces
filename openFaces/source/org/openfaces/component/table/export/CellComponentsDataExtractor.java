@@ -27,9 +27,15 @@ import static org.openfaces.component.table.TableDataExtractor.EXTRACTED_DATA_AT
 public class CellComponentsDataExtractor implements CellDataExtractor {
 
     private List<ComponentDataExtractor> componentExtractors;
+    private ExtractionFilter extractionFilter;
 
     public CellComponentsDataExtractor(List<ComponentDataExtractor> componentExtractors) {
         this.componentExtractors = componentExtractors;
+    }
+
+    public CellComponentsDataExtractor(List<ComponentDataExtractor> componentExtractors, Class... extractionIgnoredClasses) {
+        this(componentExtractors);
+        this.extractionFilter = new ExtractionFilter(extractionIgnoredClasses);
     }
 
     public boolean isApplicableFor(Object rowData, UIColumn column) {
@@ -50,6 +56,9 @@ public class CellComponentsDataExtractor implements CellDataExtractor {
         Object extractedData = component.getAttributes().get(EXTRACTED_DATA_ATTRIBUTE);
         if (extractedData != null) {
             return asList(extractedData);
+        }
+        if (extractionFilter.checkOnUnextractable(component)) {
+            return new LinkedList<Object>();
         }
         for (ComponentDataExtractor componentExtractor : componentExtractors) {
             if (componentExtractor.isApplicableFor(component)) {
