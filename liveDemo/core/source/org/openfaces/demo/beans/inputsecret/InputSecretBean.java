@@ -22,6 +22,8 @@ public class InputSecretBean {
 
     private String login;
     private String password;
+    private String confirmPassword;
+    private String message;
 
     public String getLogin() {
         return login;
@@ -40,10 +42,33 @@ public class InputSecretBean {
         this.password = password;
     }
 
-    public String signIn() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        Map requestParams = context.getExternalContext().getRequestParameterMap();
-        System.out.println("Login:" + this.getLogin() + "; Password:" + this.getPassword());
-        return "";
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+    public String getMessage() {
+        return createMessage();
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    private String createMessage(){
+        if (isDefined(password) && isDefined(confirmPassword) && isDefined(login)){
+            if (password.equals(confirmPassword)){
+                return "Hello, Dear " + login + "!";
+            }
+            return "Password does not match the confirm password.";
+        }
+        return "Please, fill in all fields.";
+    }
+
+    private boolean isDefined(String input){
+        return !(input == null || input.isEmpty());
     }
 }
