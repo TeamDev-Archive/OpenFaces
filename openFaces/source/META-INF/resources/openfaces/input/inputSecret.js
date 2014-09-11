@@ -83,25 +83,31 @@ O$.InputSecret = {
         }
       },
 
-      generatePassword:function (lengthOfSyllable, useNumbers) {
-        lengthOfSyllable = typeof(syllableNum) != 'undefined' ? syllableNum : 3;
-        useNumbers = typeof(useNums) != 'undefined' ? useNums : true;
-
+      generatePassword:function (numberOfSyllable, additionalDataForRandomize) {
+        var defaultRelativeLength = 3;
+        if ((typeof numberOfSyllable != 'number') || (numberOfSyllable < 1) || (numberOfSyllable > 64)) {
+          numberOfSyllable = defaultRelativeLength;
+        }
         var consonantLetters = "bcdfghklmnprstvzjqwx";
         var vowelLetters = "aeiouy";
         var allLetters = consonantLetters + vowelLetters;
+        if ((typeof additionalDataForRandomize === 'undefined') || additionalDataForRandomize.length === 0){
+          additionalDataForRandomize = allLetters;
+        }
 
         var password = "";
         var numberProbability = 0;
         var numberProbabilityStep = 0.25;	// Number probability between syllable
 
-        for (var i = 0; i < lengthOfSyllable; ++i) {
+        for (var i = 0; i < numberOfSyllable; ++i) {
           if (Math.round(Math.random())) {
-            password += getRandomChar(consonantLetters).toUpperCase() + getRandomChar(vowelLetters) + getRandomChar(allLetters);
+            password += getRandomChar(additionalDataForRandomize) + getRandomChar(consonantLetters).toUpperCase()
+                    + getRandomChar(vowelLetters) + getRandomChar(allLetters);
           } else {
-            password += getRandomChar(vowelLetters).toUpperCase() + getRandomChar(consonantLetters);
+            password += getRandomChar(vowelLetters).toUpperCase()
+                    + getRandomChar(consonantLetters) + getRandomChar(additionalDataForRandomize);
           }
-          if (useNumbers && Math.round(Math.random() + numberProbability)) {
+          if (Math.round(Math.random() + numberProbability)) {
             password += getRandomNumber(0, 9);
             numberProbability += numberProbabilityStep;
           }
