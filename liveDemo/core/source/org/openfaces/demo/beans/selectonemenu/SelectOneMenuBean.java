@@ -45,6 +45,15 @@ public class SelectOneMenuBean implements Serializable {
     private List<Tour> tours = new ArrayList<Tour>();
     private Map<TourSearchCriteria, List<Tour>> cachedToursSearchResults = new HashMap<TourSearchCriteria, List<Tour>>();
     private List<Tour> filteredTours = new ArrayList<Tour>();
+    private List<Holiday> holidays = new ArrayList<Holiday>();
+
+    public List<Holiday> getHolidays() {
+        return holidays;
+    }
+
+    public void setHolidays(List<Holiday> holidays) {
+        this.holidays = holidays;
+    }
 
     private static class TourSearchCriteria implements Serializable {
         private String region = "";
@@ -100,6 +109,10 @@ public class SelectOneMenuBean implements Serializable {
         availableHolidays.add("Veterans Day");
         availableHolidays.add("Thanksgiving Day");
         availableHolidays.add("Christmas");
+        holidays.add(new Holiday("../images/selectonemenu/newyear.png","New Year's Day"));
+        holidays.add(new Holiday("../images/selectonemenu/luterday.png","Martin Luther King, Jr."));
+        holidays.add(new Holiday("../images/selectonemenu/inaguration.png","Inauguration Day"));
+
 
         try {
             InputStream resource = Tour.class.getResourceAsStream("Tours.txt");

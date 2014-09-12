@@ -283,9 +283,15 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                 }
             }
         }else{
-            MockItem mockItem = new MockItem();
-            mockItem.setChildren(component.getChildren());
-            items.add(mockItem);
+
+            for (Object collectionItem : itemCollection) {
+                MockItem mockItem = new MockItem();
+                List<UIComponent> childrenComponents = component.getChildren();
+
+                mockItem.setChildren(component.getChildren());
+                items.add(mockItem);
+            }
+
         }
         return items;
     }
