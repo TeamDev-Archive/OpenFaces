@@ -1,0 +1,47 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/">
+
+
+  <div id="Demo">
+
+    <o:weekTable id="weekTable"
+                 events="#{WeekTableBean.events}"
+                 timetableChangeListener="#{WeekTableBean.processTimetableChanges}"
+                 dragAndDropTransitionPeriod="200"
+                 dragAndDropCancelingPeriod="200"
+                 startTime="7:00"
+                 endTime="20:00"
+                 preloadedEvents="none"
+                 locale="ru"
+
+            >
+      <o:timetableEditingOptions overlappedEventsAllowed="true"
+                                 autoSaveChanges="true"
+                                 defaultEventDuration="60"
+                                 eventDurationEditable="true"
+            />
+      <o:timetableEvent backgroundIntensity="0.5"
+                        backgroundTransparency="0.5"
+                        rolloverStyle="border: 1pt solid #17bac7"
+                        nameStyle="font-size: 10pt"
+                        descriptionStyle="font-size: 10pt"
+            />
+      <o:eventPreview showingDelay="1000"/>
+      <o:eventActionBar noteText="Edit"/>
+      <f:facet name="header">
+        <o:weekSwitcher/>
+      </f:facet>
+    </o:weekTable>
+
+
+  </div>
+
+
+  <div id="Description">
+    <h4>Demonstrated Features</h4>
+    <ul>
+      <li>.........</li>
+    </ul>
+  </div>
+</div>

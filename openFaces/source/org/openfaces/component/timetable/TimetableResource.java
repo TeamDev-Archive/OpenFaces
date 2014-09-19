@@ -15,12 +15,13 @@ import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.ConvertibleToJSON;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class TimetableResource implements ConvertibleToJSON, Cloneable {
+public class TimetableResource implements ConvertibleToJSON, Cloneable, Serializable {
     private String id;
     private Object object; // todo: is object property really needed? consider removing, or maybe adding it to TimetableEvent as well
     private String name;
