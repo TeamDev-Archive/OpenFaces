@@ -92,7 +92,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
                     PreRenderComponentEvent.class,
                     column);
         }*/
-        getPublishEventForAllChildren(context, component);
+//        getPublishEventForAllChildren(context, component);
         table.clearRenderedColumnCache();
         TableStructure tableStructure = createTableStructure(table);
         table.getAttributes().put(TableStructure.TABLE_STRUCTURE_ATTR, tableStructure);
