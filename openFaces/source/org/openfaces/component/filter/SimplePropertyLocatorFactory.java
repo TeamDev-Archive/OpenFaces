@@ -16,11 +16,15 @@ import org.openfaces.util.ReflectionUtil;
 
 import java.io.Serializable;
 
+import static java.lang.Character.isUpperCase;
+import static java.lang.Character.toLowerCase;
+
 public class SimplePropertyLocatorFactory implements PropertyLocatorFactory {
 
     public PropertyLocator create(Object expression) {
         return new SimplePropertyLocator(expression);
     }
+
 
     public static class SimplePropertyLocator extends PropertyLocator implements Serializable {
         public SimplePropertyLocator(Object expression) {
@@ -29,11 +33,33 @@ public class SimplePropertyLocatorFactory implements PropertyLocatorFactory {
 
 
         public Object getPropertyValue(Object obj) {
-            return ReflectionUtil.readProperty(obj, (String) expression);
+            return ReflectionUtil.readProperty(obj, convertPropertyNameToValidForm((String) expression));
 
         }
 
+        private String convertPropertyNameToValidForm(String propertyName) {
+            if (propertyName.contains(" ")) {
+                propertyName = propertyName.replaceAll(" ", "");
+            }
+            char firstChar = propertyName.charAt(0);
+            if (isUpperCase(firstChar)) {
+                propertyName = toLowCaseFirstChar(propertyName, firstChar);
+            }
+            return propertyName;
+        }
+
+        private String toLowCaseFirstChar(String propertyName, char firstChar) {
+            String result = "";
+            result += toLowerCase(firstChar);
+            if(propertyName.length() > 1){
+                result += propertyName.substring(1);
+            }
+            return result;
+        }
+
     }
+
+
 
 
 }
