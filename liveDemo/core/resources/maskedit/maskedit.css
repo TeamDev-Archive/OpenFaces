@@ -13,13 +13,14 @@
 /* CSS Document */
 
 .title {
-    font-size: 20px;
-    color: #004275;
+    font-size: 14px;
+    color: #000;
 }
 
 .sub-title {
-    font-size: 14px;
+    font-size: 13px;
     color: #004275;
+    font-weight: bold;
 }
 
 .previewPanel p {
@@ -28,18 +29,18 @@
 }
 
 .templateInput {
-    border: 1px #111111 solid;
-    background-color: #F6F7F8;
+    border: 1px #a0a0a0 solid;
+    background-color: #f8f8f9;
 }
 
 .focusedTemplateInput {
-    background-color: #e0ffee;
-    border: 1px #1bb6e9 solid;
+    background-color: #fefeff;
+    border: 1px #ccc solid;
 }
 
 .rolloverTemplateInput {
-    background-color: #e0ffff;
-    border: 1px #1bb6d3 solid;
+    background-color: #fefeff;
+    border: 1px #ccc solid;
 }
 
 #inputDataPanel {

@@ -27,7 +27,7 @@ public class MaskEditBean {
 
     private String value1;
     private String mask1 = "#### #### #### ####";
-    private String blank1 = "---- ---- ---- ----";
+    private String blank1 = "- - - -   - - - -   - - - -   - - - -";
     private String value2;
     private String mask2 = "+3(###) ### ### ##";
     private String blank2 = "+3(   )           ";

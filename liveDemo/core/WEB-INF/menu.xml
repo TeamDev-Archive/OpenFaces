@@ -358,7 +358,7 @@
     <url>/fileupload/FileUpload.jsf</url>
     <shortPath>/fileupload/</shortPath>
     <image>FileUpload</image>
-    <selectedImage>/images/components/titles/Slider.png</selectedImage>
+    <selectedImage>/images/components/titles/FileUpload.png</selectedImage>
     <keyFeatures>
       <feature>Multiple files upload support</feature>
       <feature>Filtering names of files</feature>
@@ -947,7 +947,7 @@
     <url>/maskedit/MaskEdit.jsf</url>
     <shortPath>/maskedit/</shortPath>
     <image>maskedit</image>
-    <selectedImage>/images/components/titles/maskedit.png</selectedImage>
+    <selectedImage>/images/components/titles/MaskEdit.png</selectedImage>
 
     <demos>
       <demoItem>

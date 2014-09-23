@@ -5,10 +5,14 @@
 
   <div id="Demo">
 
-    <table id="input" width="340px" align="center">
-      <caption class="title">Fill in the following information:</caption>
-      <tr>
-        <td class="sub-title">Credit Card Number:</td>
+      <table id="input" width="309px" align="center" style="border-collapse: collapse;">
+
+      <caption class="title" style="background-color: #f5f5f5; border-top-left-radius: 8px; border-top-right-radius: 8px;">Credit Card Info</caption>
+
+      <tr bgcolor="#f5f5f5">
+        <td class="sub-title">Number</td>
+      </tr>
+      <tr bgcolor="#f5f5f5">
         <td class="inputfield_class">
           <o:maskEdit
                   rendered="true"
@@ -19,30 +23,61 @@
                   value="#{MaskEditBean.value1}"
                   maskSymbolConstructors="#{MaskEditBean.symbolConstructors}"
                   blankVisible="true"
-                  styleClass="templateInput"
+                  styleClass="templateInput longInput"
                   focusedClass="focusedTemplateInput"
                   rolloverClass="rolloverTemplateInput"
                   />
         </td>
       </tr>
-      <tr>
-        <td class="sub-title">Phone Number:</td>
+      <tr bgcolor="#f5f5f5">
+        <td class="note">Enter 16 digits.</td>
+      </tr>
+      <tr bgcolor="#f5f5f5">
+        <td class="sub-title">Valid Trough</td>
+      </tr>
+      <tr bgcolor="#f5f5f5">
         <td class="inputfield_class">
-          <o:maskEdit
+          <!--<o:maskEdit
                   id="Date2"
                   blank="#{MaskEditBean.blank2}"
                   mask="#{MaskEditBean.mask2}"
                   value="#{MaskEditBean.value2}"
                   maskSymbolConstructors="#{MaskEditBean.symbolConstructors}"
                   blankVisible="true"
-                  styleClass="templateInput"
+                  styleClass="templateInput shortInput"
+                  focusedClass="focusedTemplateInput"
+                  rolloverClass="rolloverTemplateInput"
+                  />-->
+
+          <o:maskEdit
+                  id="Date3"
+                  blank="#{MaskEditBean.blank3}"
+                  mask="#{MaskEditBean.mask3}"
+                  value="#{MaskEditBean.value3}"
+                  maskSymbolConstructors="#{MaskEditBean.symbolConstructors}"
+                  blankVisible="true"
+                  styleClass="templateInput shortInput"
                   focusedClass="focusedTemplateInput"
                   rolloverClass="rolloverTemplateInput"
                   />
         </td>
       </tr>
-      <tr>
-        <td class="sub-title">Date of Birth:</td>
+      <tr bgcolor="#f5f5f5" style="color: transparent;">
+        <td  class="shadow-cell">.</td>
+      </tr>
+      <tr bgcolor="#f5f5f5" style="color: transparent;">
+        <td>.</td>
+      </tr>
+      <tr bgcolor="#f5f5f5" style="color: transparent; padding-top: 10px">
+        <td style="border-top-left-radius: 8px; border-top-right-radius: 8px; line-height: 11px;">.</td>
+      </tr>
+      <tr bgcolor="#a8a8a8" style="height: 45px; color: transparent;">
+        <td>.</td>
+      </tr>
+      <tr bgcolor="#f5f5f5">
+        <td class="sub-title" style="padding-top:6px!important;">CVV2/CVC2</td>
+      </tr>
+      <tr bgcolor="#f5f5f5">
         <td class="inputfield_class">
           <o:maskEdit
                   id="Date3"
@@ -51,19 +86,26 @@
                   value="#{MaskEditBean.value3}"
                   maskSymbolConstructors="#{MaskEditBean.symbolConstructors}"
                   blankVisible="true"
-                  styleClass="templateInput"
+                  styleClass="templateInput shortInput"
                   focusedClass="focusedTemplateInput"
                   rolloverClass="rolloverTemplateInput"
                   />
         </td>
       </tr>
+        <tr class="gradient">
+          <td style="color: transparent;">.</td>
+        </tr>
       <tr>
-        <td colspan="2" height="40" style="text-align: left;">
-          <o:commandButton value="Submit Information" execute="Date1 Date2 Date3" render="output"/>
+        <td colspan="2" height="40" style="text-align: center;">
+          <o:commandButton value="Submit information"
+                           execute="Date1 Date2 Date3"
+                           render="output"
+                           styleClass="button"
+                  />
 
-          <div style="margin-top: 5px; margin-bottom: 5px;">
+         <!-- <div style="margin-top: 5px; margin-bottom: 5px;">
             <h:outputText id="output" value="#{MaskEditBean.message}" escape="false"/>
-          </div>
+          </div>-->
         </td>
       </tr>
     </table>

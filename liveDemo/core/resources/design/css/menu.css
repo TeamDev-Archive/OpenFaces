@@ -90,15 +90,17 @@
 #Components ul li a.DayTable em {background-image:url(../../images/components/icons/DayTable.png);}
 #Components ul li a.DropDownField em {background-image:url(../../images/components/icons/DropDownField.png);}
 #Components ul li a.DynamicImage em {background-image:url(../../images/components/icons/DynamicImage.png);}
-#Components ul li a.FileUpload em {background-image:url(../../images/components/icons/FileUpload.png);}
+#Components ul li a.FileUpload em {background:url(../../images/components/icons/components.png) -560px -16px no-repeat;}
 #Components ul li a.FoldingPanel em {background-image:url(../../images/components/icons/FoldingPanel.png);}
 #Components ul li a.ForEach em {background-image:url(../../images/components/icons/ForEach.png);}
 #Components ul li a.GraphicText em {background-image:url(../../images/components/icons/GraphicText.png);}
 #Components ul li a.HintLabel em {background-image:url(../../images/components/icons/HintLabel.png);}
+#Components ul li a.InputSecret em {background:url(../../images/components/icons/components.png) -575px -16px no-repeat;}
 #Components ul li a.InputText em {background-image:url(../../images/components/icons/InputText.png);}
 #Components ul li a.InputTextarea em {background-image:url(../../images/components/icons/InputTextarea.png);}
 #Components ul li a.LayeredPane em {background-image:url(../../images/components/icons/LayeredPane.png);}
 #Components ul li a.LevelIndicator em {background-image:url(../../images/components/icons/LevelIndicator.png);}
+#Components ul li a.maskedit em {background:url(../../images/components/icons/components.png) -594px -16px no-repeat;}
 #Components ul li a.PopupLayer em {background-image:url(../../images/components/icons/PopupLayer.png);}
 #Components ul li a.PopupMenu em {background-image:url(../../images/components/icons/PopupMenu.png);}
 #Components ul li a.Spinner em {background-image:url(../../images/components/icons/Spinner.png);}

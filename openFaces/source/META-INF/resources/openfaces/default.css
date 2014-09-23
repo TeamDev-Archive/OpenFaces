@@ -1320,7 +1320,7 @@
 
 /*FileUpload component*/
 .o_file_upload {
-    width: 470px;
+    width: 100%;
 }
 
 .o_file_upload_popup {
@@ -1337,8 +1337,9 @@
 }
 
 .o_file_upload_btn {
-    margin-left: 291px;
+    float: right;
     margin-top: 2px;
+    margin-right: 15px;
 }
 
 .o_file_upload_btn_footer {
@@ -1383,18 +1384,34 @@
     width: 100%;
 }
 
+#uploadedFilesTable tr td:first-child{
+    width: 50%;
+}
+
+.o_file_upload .o_file_remove_all_btn{
+    margin-left: 620px;
+}
+
+.o_file_upload .o_file_stop_all_btn {
+    margin-left: 642px;
+}
+
 .o_file_upload_info {
     width:100%;
+}
+
+.o_file_upload_info td:first-child{
+    width: 40%;
 }
 
 .o_file_upload_info_title {
     font-size: 10pt;
     padding-top: 5px;
-    padding-left: 10px;
+    padding-left: 15px;
     padding-bottom: 5px;
     overflow: hidden;
     text-overflow: ellipsis;
-    width:145px;
+    width:100%;
 }
 
 .o_file_upload_info_status {
@@ -1423,7 +1440,7 @@
 }
 
 .o_file_clear_btn {
-    margin-right: 25px;
+    margin-right: -15px;
     margin-top: 5px;
     margin-bottom: 5px;
     width:64px;
@@ -2279,4 +2296,10 @@ html>/**/body .o_selectonemenu_field_container_middle {
 }
 .o_folding_panel_caption_togglable_rollover {
     cursor: pointer;
+}
+
+/**Tables**/
+
+table tr td{
+    text-align: left;
 }

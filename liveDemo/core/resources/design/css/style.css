@@ -209,7 +209,7 @@ a img {
 
 #Demo {
   padding: 20px 10px 20px 20px;
-  background: url(../../images/backgrounds/content_demo.png) repeat-x 0 bottom;
+  background-color: #fff;
   width: 720px;
 }
 
@@ -744,3 +744,178 @@ height:auto; font-size:12pt; color:#000; padding: 11px 10px 6px 40px; min-height
 	font-size:14px;
   margin-left:-15px !important;
 }
+
+/**--- Mask Edit ----------------**/
+
+.shadow-cell{
+    z-index: 10000;
+    -webkit-border-bottom-left-radius: 8px;
+    -moz-border-bottom-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    -webkit-border-bottom-right-radius: 8px;
+    -moz-border-bottom-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    -webkit-box-shadow: 0 8px 6px -6px #7a7a7a;
+    -moz-box-shadow: 0 8px 6px -6px #7a7a7a;
+    box-shadow: 0 8px 6px -6px #7a7a7a;
+    position: absolute;
+    width: 267px;
+}
+
+.gradient{
+    background: #f5f5f5; /* Old browsers */
+    background: -moz-linear-gradient(top,  #f5f5f5 0%, #ffffff 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f5f5f5), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #f5f5f5 0%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #f5f5f5 0%,#ffffff 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #f5f5f5 0%,#ffffff 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #f5f5f5 0%,#ffffff 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+
+}
+
+.title {
+    font-size: 16px!important;
+    color: #000!important;
+    font-weight: bold;
+    padding-top: 10px;
+    padding-bottom: 9px;
+}
+
+.button{
+    width: 261px;
+    margin-top: 29px;
+    height: 25px;
+    font-size: 14px;
+}
+
+.sub-title {
+    font-size: 14px!important;
+    color: #004275;
+    font-weight: bold;
+    padding-top: 10px!important;
+}
+
+table#input tr td{
+    padding: 0 21px;
+}
+
+table#input .note{
+    font-size: 10px;
+    color: #9e9e9e;
+    padding-top: 2px;
+}
+
+.templateInput {
+    border: 1px #a0a0a0 solid!important;
+    background-color: #f8f8f9 !important;
+    padding: 0 3%;
+    color: #b2b2b2;
+    height: 28px;
+    line-height: 28px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.focusedTemplateInput {
+    background-color: #fefeff !important;
+    border: 1px #ccc solid !important;
+    outline: none;
+    color: #000;
+}
+
+.rolloverTemplateInput {
+    background-color: #fefeff !important;
+    border: 1px #ccc solid !important;
+}
+
+.longInput{
+    width: 267px;
+}
+
+.shortInput{
+    width: 30%;
+}
+
+/**----- Input Secret --------------**/
+
+.input-secret{
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #fff;
+}
+
+.input-secret #Demo{
+    width: 260px;
+    margin: 0 auto;
+    background-color: transparent;
+    padding-bottom: 25px;
+}
+
+.input-secret .header-holder{
+    margin: -3px 0 -7px;
+}
+
+.input-secret h4{
+    font-size: 19px;
+}
+
+.label{
+    display: block;
+    font-size: 13px;
+    text-align: left;
+    color: #000;
+    margin-top: 14px;
+}
+
+.input-secret .inputWithShadow{
+    width: 100%;
+    margin: 0;
+    border: 1px solid #a0a0a0;
+    background: #fefeff;
+    color: #a6a6a6;
+    font-size: 13px;
+    height: 28px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.input-secret .inputWithShadow:focus{
+    color: #000;
+}
+
+.input-secret input[type="checkbox"]{
+    margin: 8px 4px 0 0;
+    float: left;
+}
+
+.input-secret input[type="checkbox"] ~ label{
+    line-height: 28px;
+}
+
+.input-secret .topMargin{
+    margin-top: 10px;
+}
+
+.input-secret .btn{
+    width: 100%;
+    margin: 18px 0 0 0;
+}
+
+
+.pull-left{
+    display: inline-block;
+    text-align: left;
+    float: left;
+}
+
+.pull-right{
+    display: inline-block;
+    text-align: right;
+    float: right;
+}
+
+
+
+
