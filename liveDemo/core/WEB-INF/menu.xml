@@ -297,9 +297,14 @@
         <demoUrl>/timetable/DayTable_multipleResources.jsf</demoUrl>
       </demoItem>
       <demoItem>
+        <demoName>WeekTable</demoName>
+        <demoUrl>/timetable/WeekTable.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
         <demoName>MonthTable</demoName>
         <demoUrl>/timetable/MonthTable.jsf</demoUrl>
       </demoItem>
+
 
     </demos>
   </menuItem>

@@ -18,12 +18,14 @@ import org.openfaces.renderkit.TableRenderer;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Styles;
 
+import javax.el.ELContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -52,7 +54,8 @@ public class WeekTableRenderer extends TimeScaleTableRenderer {
     }
 
     protected Date getFirstDayForDefaultPeriod(TimeScaleTable timetableView, TimeZone timeZone) {
-        GregorianCalendar c = new GregorianCalendar(timeZone);
+        Locale locale = timetableView.getLocale();
+        GregorianCalendar c = new GregorianCalendar(timeZone, locale);
         Date day = timetableView.getDay();
         c.setTime(day);
         c.set(Calendar.DAY_OF_WEEK, ((WeekTable) timetableView).getFirstDayOfWeek());
@@ -60,7 +63,8 @@ public class WeekTableRenderer extends TimeScaleTableRenderer {
     }
 
     protected Date getLastDayForDefaultPeriod(TimeScaleTable timetableView, TimeZone timeZone) {
-        GregorianCalendar c = new GregorianCalendar(timeZone);
+        Locale locale = timetableView.getLocale();
+        GregorianCalendar c = new GregorianCalendar(timeZone, locale);
         Date day = timetableView.getDay();
         c.setTime(day);
         c.set(Calendar.DAY_OF_WEEK, ((WeekTable) timetableView).getFirstDayOfWeek() + 6);

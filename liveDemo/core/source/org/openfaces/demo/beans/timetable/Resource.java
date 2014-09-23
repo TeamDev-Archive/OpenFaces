@@ -12,10 +12,12 @@
 
 package org.openfaces.demo.beans.timetable;
 
+import java.io.Serializable;
+
 /**
  * @author Alexey Chystoprudov
  */
-public class Resource {
+public class Resource implements Serializable {
     private String id;
     private String name;
     private String color;

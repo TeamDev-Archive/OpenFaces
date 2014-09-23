@@ -25,8 +25,6 @@ import java.util.List;
  */
 public class MonthTableBean  extends TimeTableBean {
 
-    List<AbstractTimetableEvent> events = new ArrayList<AbstractTimetableEvent>();
-
     public MonthTableBean(){
         Color red1 = new Color(220, 0, 0);
         Color red2 = new Color(230, 100, 100);
@@ -35,26 +33,19 @@ public class MonthTableBean  extends TimeTableBean {
         Color orange = new Color(247, 103, 24);
 
 //        today
-        events.add(new TimetableEvent(generateEventId(), thisMonth(2), thisMonth(14), "Vacation",
-                "Instructor: Ivan Doe <br/>Fee: $40", red1));
-   /*     events.add(new TimetableEvent(generateEventId(), thisMonth(14), thisMonth(15), "Ill",
-                "Instructor: Gregory House <br/>Fee: $30", blue));
-        events.add(new TimetableEvent(generateEventId(), thisMonth(17), thisMonth(17), "Day Off",
-                "Instructor: Melany Scott <br/>Fee: $25", red1));
-        events.add(new TimetableEvent(generateEventId(), thisMonth(17), thisMonth(17), "Day Off",
-                "Instructor: Tony Bricks <br/>Fee: Free", orange));
-        events.add(new TimetableEvent(generateEventId(), thisMonth(17), thisMonth(17), "Day Off",
-                "Instructor: Tony Bricks <br/>Fee: Free", blue));
-        events.add(new TimetableEvent(generateEventId(), thisMonth(28), thisMonth(28), "Payday",
-                "Instructor: Alex West <br/>Fee: $30", blue));
-     */
+        addNewEvent(thisMonth(2), thisMonth(14), "Vacation",
+                "Instructor: Ivan Doe <br/>Fee: $40", red1);
+        addNewEvent(thisMonth(14), thisMonth(15), "Ill",
+                "Instructor: Gregory House <br/>Fee: $30", blue);
+        addNewEvent(thisMonth(17), thisMonth(17), "Day Off",
+                "Instructor: Melany Scott <br/>Fee: $25", red1);
+        addNewEvent(thisMonth(17), thisMonth(17), "Day Off",
+                "Instructor: Tony Bricks <br/>Fee: Free", orange);
+        addNewEvent(thisMonth(17), thisMonth(17), "Day Off",
+                "Instructor: Tony Bricks <br/>Fee: Free", blue);
+        addNewEvent(thisMonth(28), thisMonth(28), "Payday",
+                "Instructor: Alex West <br/>Fee: $30", blue);
+
     }
 
-    public List<AbstractTimetableEvent> getEvents() {
-        return events;
-    }
-
-    public void setEvents(List<AbstractTimetableEvent> events) {
-        this.events = events;
-    }
 }

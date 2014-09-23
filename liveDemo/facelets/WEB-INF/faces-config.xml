@@ -65,6 +65,12 @@
   </managed-bean>
 
   <managed-bean>
+    <managed-bean-name>WeekTableBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.timetable.WeekTableBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
     <managed-bean-name>MonthTableBean</managed-bean-name>
     <managed-bean-class>org.openfaces.demo.beans.timetable.MonthTableBean</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>

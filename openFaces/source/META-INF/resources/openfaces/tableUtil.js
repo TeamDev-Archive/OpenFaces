@@ -1597,12 +1597,12 @@ O$.Tables = {
       }
       return this[propertyName];
     };
-    column._headerCellsClass = table._params.columnWidthControlRequired ? newClass("overflow: hidden", false) : defaultSharedColumnStyle;
-    column._bodyCellsClass = table._params.columnWidthControlRequired ? newClass("overflow: hidden", false) : defaultSharedColumnStyle;
+    column._headerCellsClass = table._params.columnWidthControlRequired ? newClass("overflow: hidden", true) : defaultSharedColumnStyle;
+    column._bodyCellsClass = table._params.columnWidthControlRequired ? newClass("overflow: hidden", true) : defaultSharedColumnStyle;
     column._colClass = defaultSharedColumnStyle; //newClass("overflow: hidden"); -- dynamic individual col class doesn't seem to
     // be required, see the commented usage in column.setWidth
     if (column.footer) {
-      column._footerCellsClass = table._params.columnWidthControlRequired ? newClass("overflow: hidden", false) : defaultSharedColumnStyle;
+      column._footerCellsClass = table._params.columnWidthControlRequired ? newClass("overflow: hidden", true) : defaultSharedColumnStyle;
       if (table._params.columnWidthControlRequired) {
         O$.addUnloadHandler(table, function () {
           O$.removeCssRule(column._footerCellsClass.classObj.selectorText, column._footerCellsClass._iePredefClasses);
