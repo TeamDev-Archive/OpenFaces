@@ -21,7 +21,6 @@
                   blank="#{MaskEditBean.blank1}"
                   mask="#{MaskEditBean.mask1}"
                   value="#{MaskEditBean.value1}"
-                  maskSymbolConstructors="#{MaskEditBean.symbolConstructors}"
                   blankVisible="true"
                   styleClass="templateInput longInput"
                   focusedClass="focusedTemplateInput"
@@ -37,24 +36,11 @@
       </tr>
       <tr bgcolor="#f5f5f5">
         <td class="inputfield_class">
-          <!--<o:maskEdit
+          <o:maskEdit
                   id="Date2"
                   blank="#{MaskEditBean.blank2}"
                   mask="#{MaskEditBean.mask2}"
                   value="#{MaskEditBean.value2}"
-                  maskSymbolConstructors="#{MaskEditBean.symbolConstructors}"
-                  blankVisible="true"
-                  styleClass="templateInput shortInput"
-                  focusedClass="focusedTemplateInput"
-                  rolloverClass="rolloverTemplateInput"
-                  />-->
-
-          <o:maskEdit
-                  id="Date3"
-                  blank="#{MaskEditBean.blank3}"
-                  mask="#{MaskEditBean.mask3}"
-                  value="#{MaskEditBean.value3}"
-                  maskSymbolConstructors="#{MaskEditBean.symbolConstructors}"
                   blankVisible="true"
                   styleClass="templateInput shortInput"
                   focusedClass="focusedTemplateInput"
@@ -84,7 +70,6 @@
                   blank="#{MaskEditBean.blank3}"
                   mask="#{MaskEditBean.mask3}"
                   value="#{MaskEditBean.value3}"
-                  maskSymbolConstructors="#{MaskEditBean.symbolConstructors}"
                   blankVisible="true"
                   styleClass="templateInput shortInput"
                   focusedClass="focusedTemplateInput"
@@ -97,15 +82,15 @@
         </tr>
       <tr>
         <td colspan="2" height="40" style="text-align: center;">
-          <o:commandButton value="Submit information"
+          <o:commandButton value="Submit Information"
                            execute="Date1 Date2 Date3"
                            render="output"
                            styleClass="button"
                   />
 
-         <!-- <div style="margin-top: 5px; margin-bottom: 5px;">
-            <h:outputText id="output" value="#{MaskEditBean.message}" escape="false"/>
-          </div>-->
+          <div style="margin-top: 5px; margin-bottom: 5px;">
+            <h:outputText id="output" value="#{MaskEditBean.message}" escape="false" style="text-align: left;"/>
+          </div>
         </td>
       </tr>
     </table>

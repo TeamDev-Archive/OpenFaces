@@ -26,15 +26,15 @@ public class MaskEditBean {
 
 
     private String value1;
-    private String mask1 = "#### #### #### ####";
-    private String blank1 = "- - - -   - - - -   - - - -   - - - -";
+    private String mask1 = "####   ####   ####   ####";
+    private String blank1 = "----   ----   ----   ----";
     private String value2;
-    private String mask2 = "+3(###) ### ### ##";
-    private String blank2 = "+3(   )           ";
+    private String mask2 = "##/##";
+    private String blank2 = "--/--";
     private String value3;
-    private String mask3 = "##/##/##";
-    private String blank3 = "  /  /  ";
-    private String message;
+    private String mask3 = "###";
+    private String blank3 = "---";
+    private String message = "";
 
     public String getValue1() {
         return value1;
@@ -109,7 +109,6 @@ public class MaskEditBean {
     }
 
     public String getMessage() {
-
         return createMessage();
     }
 
@@ -118,86 +117,33 @@ public class MaskEditBean {
     }
 
     public String createMessage() {
-        String startErrorMessage = "<p>PLease enter a valid \"";
-        String endErrorMessage = "\".</p>";
-        String errorMessage = "";
 
-        if (value1 == null || value1.isEmpty() || value1.contains("-")) {
-            errorMessage = startErrorMessage + "Credit Card Number" + endErrorMessage;
+        if (isFieldNotFilled(value1) || isFieldNotFilled(value2) || isFieldNotFilled(value3)) {
+            return "<p>PLease, fill in all fields.";
+        } else if (isInvalidDate(value2)){
+            return "<p>PLease, check \'Valid Through\' field.";
         }
-        if (value2 == null || value2.isEmpty() || countSpaces(value2) != countSpaces(mask2)) {
-            errorMessage += startErrorMessage + "Phone Number" + endErrorMessage;
+        return "<p>Credit Card: "
+                + "</p><p>Credit Card Number: " + "XXXX XXXX XXXX " + value1.substring(value1.length() - 4)
+                + "</p><p>Valid Through: " + value2
+                + "</p><p>CVV2/CVC2: " + value3
+                + "</p>";
+    }
+
+    private boolean isFieldNotFilled(String fieldValue) {
+        return  (fieldValue == null || fieldValue.isEmpty() || fieldValue.contains("-"));
+    }
+
+    private boolean isInvalidDate(String date) {
+        int month = Integer.parseInt(date.substring(0,2));
+        int year = Integer.parseInt(date.substring(3, 5));
+        boolean invalidDate = false;
+        if (month < 1 || month > 12){
+            invalidDate = true;
+        } else if (year < 0 || year >99){
+            invalidDate = true;
         }
-        if (value3 == null || value3.isEmpty() || value3.contains(" ")) {
-            errorMessage += startErrorMessage + "Date of Birth" + endErrorMessage;
-        }
-
-        if (errorMessage.isEmpty()) {
-            return "<p>Client's information: "
-                    + "</p><p>Credit Card Number: " + "XXXX XXXX XXXX " + value1.substring(value1.length() - 4)
-                    + "</p><p>Phone Number: " + value2
-                    + "</p><p>Date of Birth: " + value3
-                    + "</p>";
-        }
-        return errorMessage;
+        return invalidDate;
     }
-
-    private DefaultMasks defaultMasks;
-    private boolean blankVisible;
-    private Collection<MaskDynamicConstructor> dynamicConstructors = new LinkedList<MaskDynamicConstructor>();
-    private Collection<MaskSymbolConstructor> symbolConstructors = new LinkedList<MaskSymbolConstructor>();
-
-    public MaskEditBean() {
-        dynamicConstructors.add(new MaskDynamicConstructor('I', '#', 1, 2, ' '));
-        symbolConstructors.add(new MaskSymbolConstructor('X', "asd123"));
-    }
-
-    public Collection<MaskDynamicConstructor> getDynamicConstructors() {
-        return dynamicConstructors;
-    }
-
-    public void setDynamicConstructors(Collection<MaskDynamicConstructor> dynamicConstructors) {
-        this.dynamicConstructors = dynamicConstructors;
-    }
-
-    public Collection<MaskSymbolConstructor> getSymbolConstructors() {
-        return symbolConstructors;
-    }
-
-    public void setSymbolConstructors(Collection<MaskSymbolConstructor> symbolConstructors) {
-        this.symbolConstructors = symbolConstructors;
-    }
-
-    public boolean isBlankVisible() {
-        return blankVisible;
-    }
-
-    public void setBlankVisible(boolean blankVisible) {
-        this.blankVisible = blankVisible;
-    }
-
-    public DefaultMasks getDefaultMasks() {
-        return defaultMasks;
-    }
-
-    public void setDefaultMasks(DefaultMasks defaultMasks) {
-        this.defaultMasks = defaultMasks;
-    }
-
-    public String getSubmitTest() {
-        return submitTest;
-    }
-
-    public void setSubmitTest(String submitTest) {
-        this.submitTest = submitTest;
-    }
-
-    private String submitTest;
-
-    private int countSpaces(String origin) {
-        String result = origin.replace(" ", "");
-        return origin.length() - result.length();
-    }
-
 
 }
