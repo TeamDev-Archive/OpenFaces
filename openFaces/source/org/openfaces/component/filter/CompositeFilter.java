@@ -163,7 +163,7 @@ public class CompositeFilter extends Filter {
                         if (column instanceof SelectionColumn || column instanceof CheckboxColumn) continue;
                         FilterProperty filterProperty = getColumnFilterProperty(filteredComponent, column);
                         if (filterProperty != null) {
-                            filterProperties.add(new UIFilterProperty(filterProperty));
+                            filterProperties.add(filterProperty);
                         }
                     }
                 }
