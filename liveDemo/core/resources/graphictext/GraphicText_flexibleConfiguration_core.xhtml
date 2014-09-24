@@ -19,8 +19,9 @@
                   <span class="field_title">Text:&#160;</span>
                 </td>
                 <td class="propertyValue">
-                  <h:inputText id="textField" value="#{GraphicTextBean.text}" style="width: 100%;"
+                  <h:inputText id="textField" value="#{GraphicTextBean.text}" style="width: 170px;"
                                onkeypress="O$('form:updateText').run()"
+                               onblur="O$('form:updateText').run()"
                                maxlength="15"/>
                 </td>
               </tr>
@@ -81,7 +82,7 @@
                           standalone="true"
                           render="graphicText"
                           execute="textField directionField fontSizeField colorField"
-                          delay="500"/>
+                          delay="50"/>
 
                 </td>
               </tr>
