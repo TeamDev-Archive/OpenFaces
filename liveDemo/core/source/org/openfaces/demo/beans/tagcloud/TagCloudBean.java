@@ -18,6 +18,7 @@ import org.openfaces.component.tagcloud.TagCloud;
 import org.openfaces.component.tagcloud.TagsOrder;
 import org.openfaces.demo.beans.dropdown.Color;
 import org.openfaces.demo.beans.dropdown.Colors;
+import org.openfaces.event.AjaxActionEvent;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -25,6 +26,7 @@ import javax.faces.convert.Converter;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.FacesEvent;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -315,7 +317,16 @@ public class TagCloudBean implements ActionListener, Serializable {
         this.maxFontSize = maxFontSize;
     }
 
+    @Override
     public void processAction(ActionEvent event) {
+        handle(event);
+    }
+
+    public void processAction(AjaxActionEvent event) {
+        handle(event);
+    }
+
+    public void handle(FacesEvent event) {
         TagCloud cloud = (TagCloud) event.getComponent();
         Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
         var = (Item) requestMap.get(cloud.getVar());
