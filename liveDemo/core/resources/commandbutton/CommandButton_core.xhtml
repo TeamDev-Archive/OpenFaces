@@ -26,62 +26,34 @@
     <span class="codeSnippet">&lt;o:commandButton></span> tag with <span class="codeSnippet">type="button"</span> and
     embedded HTML:<br/>
     <h:panelGrid columns="2" cellspacing="0" cellpadding="0" border="0" style="margin-top: 3px">
-      <o:inputText id="searchField" style="width: 250px; font-size: 18px; height: 24px;" value="OpenFaces Ajax Button"
+      <o:inputText id="searchField" style="width: 250px; font-size: 16px; height: 25px;" value="OpenFaces Ajax Button"
                    onkeypress="if (event.keyCode == 13) {O$('form:searchButton').click(); return false;}"/>
       <o:commandButton id="searchButton" type="button"
                        onclick="var menu = O$('form:searchMenu'); menu.show(); menu.focus(); "
-                       style="width: 130px; padding: 2px; font-size: 16px; color: #30699a">
+                       style="width: 130px; height: 30px; font-size: 16px; color: #30699a">
         <img src="find.png" width="16" height="17"/>&#160;&#160;Search&#160;&#160;<img src="dropArea.gif" width="11"
                                                                                        height="11"/>
       </o:commandButton>
     </h:panelGrid>
     <o:popupMenu id="searchMenu" standalone="true" style="left: 277px; z-index: 1; width: 130px;">
-      <o:menuItem value="Google" onclick="searchGoogle(O$('form:searchField').value);"/>
-      <o:menuItem value="Yahoo" onclick="searchYahoo(O$('form:searchField').value);"/>
-      <o:menuItem value="Wikipedia" onclick="searchWikipedia(O$('form:searchField').value);"/>
+      <o:menuItem value="Google" onclick="window.open(searchGoogle(O$('form:searchField').value));"/>
+      <o:menuItem value="Yahoo" onclick="window.open(searchYahoo(O$('form:searchField').value));"/>
+      <o:menuItem value="Wikipedia" onclick="window.open(searchWikipedia(O$('form:searchField').value));"/>
     </o:popupMenu>
     <br/>
     <br/>
 
     <script>
       function searchGoogle(searchString) {
-        showPage("http://www.google.com/search?q=" + escape(searchString),
-                "Google Search for \"" + searchString + "\"");
+        return 'http://google.com/search?q=' + escape(searchString);
       }
       function searchYahoo(searchString) {
-        showPage("http://search.yahoo.com/search?p=" + escape(searchString),
-                "Yahoo! Search for \"" + searchString + "\"");
+        return "http://search.yahoo.com/search?p=" + escape(searchString);
       }
       function searchWikipedia(searchString) {
-        showPage("http://en.wikipedia.org/wiki/" + escape(searchString),
-                "Wikipedia Search for \"" + searchString + "\"");
-      }
-      function showPage(url, caption) {
-        O$('searchFrame').src = url;
-        O$('form:searchWindowCaption').innerHTML = caption;
-        O$('form:searchWindow').show();
+        return "http://en.wikipedia.org/wiki/" + escape(searchString);
       }
     </script>
-
-    <o:window id="searchWindow"
-              resizable="true"
-              width="900px"
-              height="550px"
-              contentStyle="overflow: hidden;"
-              style="left: -100px; top: 100px;"
-              onhide="O$('searchFrame').src='about:blank';">
-
-      <f:facet name="caption">
-        <h:outputText id="searchWindowCaption" value="Search results"/>
-      </f:facet>
-
-      <iframe id="searchFrame"
-              frameborder="true"
-              width="100%"
-              height="100%" style="border: none">
-
-      </iframe>
-    </o:window>
 
     <br/>
     <br/>
