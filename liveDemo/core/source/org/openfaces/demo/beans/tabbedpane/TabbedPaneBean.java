@@ -21,6 +21,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -134,14 +135,14 @@ public class TabbedPaneBean implements Serializable {
         this.mirrorTabsetVisible = mirrorTabsetVisible;
     }
 
-    public void mirrorTabsetSwitcher(ActionEvent event) {
+    public void mirrorTabsetSwitcher(AjaxBehaviorEvent event) {
         SelectBooleanCheckbox checkbox = (SelectBooleanCheckbox) event.getComponent();
         if (checkbox.isSelected()) {
-            checkbox.setSelected(false);
-            mirrorTabsetVisible = false;
-        } else {
             checkbox.setSelected(true);
             mirrorTabsetVisible = true;
+        } else {
+            checkbox.setSelected(false);
+            mirrorTabsetVisible = false;
         }
     }
 }
