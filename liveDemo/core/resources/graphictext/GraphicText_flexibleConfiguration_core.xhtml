@@ -19,10 +19,14 @@
                   <span class="field_title">Text:&#160;</span>
                 </td>
                 <td class="propertyValue">
-                  <h:inputText id="textField" value="#{GraphicTextBean.text}" style="width: 170px;"
-                               onkeypress="O$('form:updateText').run()"
-                               onblur="O$('form:updateText').run()"
-                               maxlength="15"/>
+                  <o:inputText id="textField" value="#{GraphicTextBean.text}" style="width: 170px;"
+                               maxlength="15">
+                    <o:ajax event="keyup" render="graphicText"
+                            execute="textField directionField fontSizeField colorField"
+                            delay="500"/>
+                    <o:ajax event="change" render="graphicText"
+                            execute="textField directionField fontSizeField colorField"/>
+                  </o:inputText>
                 </td>
               </tr>
               <tr>
