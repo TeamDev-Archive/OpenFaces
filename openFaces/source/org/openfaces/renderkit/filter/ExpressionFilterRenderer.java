@@ -76,6 +76,7 @@ public abstract class ExpressionFilterRenderer extends RendererBase {
         Object argAsObject = null;
         try {
             argAsObject = converter.getAsObject(FacesContext.getCurrentInstance(), filter, searchString);
+            argAsObject = reformatStringArgument(argAsObject, searchString);
         } catch (ConverterException e) {
             FacesMessage facesMessage = e.getFacesMessage();
             FacesContext context = FacesContext.getCurrentInstance();
@@ -159,5 +160,11 @@ public abstract class ExpressionFilterRenderer extends RendererBase {
         return criterion;
     }
 
+    private Object reformatStringArgument(Object argAsObject, String searchString) {
+        if (argAsObject instanceof String) {
+                return searchString.replaceAll("\\s+", " ");
+        }
+        return argAsObject;
+    }
 
 }
