@@ -63,7 +63,7 @@ public class InputSecretBean {
             if (password.equals(confirmPassword)){
                 return "Hello, Dear " + login + "!";
             }
-            return "Password does not match the confirm password.";
+            return "The passwords do not match.";
         }
         return "Please, fill in all fields.";
     }

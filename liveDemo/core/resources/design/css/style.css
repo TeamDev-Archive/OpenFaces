@@ -841,12 +841,11 @@ table#input .note{
 /**----- Input Secret --------------**/
 
 .input-secret{
-    background-color: #f0f0f0;
     border-bottom: 1px solid #fff;
 }
 
 .input-secret #Demo{
-    width: 260px;
+    width: 240px;
     margin: 0 auto;
     background-color: transparent;
     padding-bottom: 25px;
@@ -872,7 +871,6 @@ table#input .note{
     width: 100%;
     margin: 0;
     border: 1px solid #a0a0a0;
-    background: #fefeff;
     color: #a6a6a6;
     font-size: 13px;
     height: 28px;
