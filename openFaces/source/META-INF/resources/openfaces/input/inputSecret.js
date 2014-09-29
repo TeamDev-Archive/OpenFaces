@@ -18,6 +18,7 @@ O$.InputSecret = {
     var checker = new Array();
     var timer = new Array();
     var passwordVisible = false;
+    replacement = decodeURI(replacement);
     var inputSecret = O$.initComponent(inputSecretId, {
       rollover:rolloverClass,
       focused:focusedClass
@@ -36,11 +37,10 @@ O$.InputSecret = {
           value = "";
         }
 
-        substitutionalElement.value = value;
         inputSecret.value = value;
 
         if (!passwordVisible) {
-          runValueConverter(inputSecretId);
+          _hidePasswordValue();
         }
 
         if (substitutionalElement._focused) {
@@ -73,7 +73,7 @@ O$.InputSecret = {
         passwordVisible = false;
 
         if (substitutionalElement.value.length != 0){
-          runValueConverter(inputSecretId);
+          _hidePasswordValue();
         }
 
         if (substitutionalElement.value.length == 0 && promptText ){
@@ -83,29 +83,29 @@ O$.InputSecret = {
         }
       },
 
-      generatePassword:function (numberOfSyllable, additionalDataForRandomize) {
+      generatePassword:function (relativeLength, additionalData) {
         var defaultRelativeLength = 3;
-        if ((typeof numberOfSyllable != 'number') || (numberOfSyllable < 1) || (numberOfSyllable > 64)) {
-          numberOfSyllable = defaultRelativeLength;
+        if ((typeof relativeLength != 'number') || (relativeLength < 1) || (relativeLength > 64)) {
+          relativeLength = defaultRelativeLength;
         }
         var consonantLetters = "bcdfghklmnprstvzjqwx";
         var vowelLetters = "aeiouy";
         var allLetters = consonantLetters + vowelLetters;
-        if ((typeof additionalDataForRandomize === 'undefined') || additionalDataForRandomize.length === 0){
-          additionalDataForRandomize = allLetters;
+        if ((typeof additionalData === 'undefined') || additionalData.length === 0){
+          additionalData = allLetters;
         }
 
         var password = "";
         var numberProbability = 0;
         var numberProbabilityStep = 0.25;	// Number probability between syllable
 
-        for (var i = 0; i < numberOfSyllable; ++i) {
+        for (var i = 0; i < relativeLength; ++i) {
           if (Math.round(Math.random())) {
-            password += getRandomChar(additionalDataForRandomize) + getRandomChar(consonantLetters).toUpperCase()
+            password += getRandomChar(additionalData) + getRandomChar(consonantLetters).toUpperCase()
                     + getRandomChar(vowelLetters) + getRandomChar(allLetters);
           } else {
             password += getRandomChar(vowelLetters).toUpperCase()
-                    + getRandomChar(consonantLetters) + getRandomChar(additionalDataForRandomize);
+                    + getRandomChar(consonantLetters) + getRandomChar(additionalData);
           }
           if (Math.round(Math.random() + numberProbability)) {
             password += getRandomNumber(0, 9);
@@ -148,15 +148,14 @@ O$.InputSecret = {
           inputSecret.setPromptVisible(false);
         }
       }
-
       //check inputSecret value
-      runValueConverter(inputSecretId);
+      convertValueWithInterval(inputSecretId);
     });
 
     O$.addEventHandler(substitutionalElement, "blur", function () {
       //show/hide prompt text
       substitutionalElement._focused = false;
-      if (promptText) {
+      if (promptText && passwordVisible == false) {
         if (substitutionalElement.value.length == 0) {
           substitutionalElement.value = promptText;
           O$.setStyleMappings(substitutionalElement, {prompt:promptTextClass});
@@ -164,9 +163,6 @@ O$.InputSecret = {
         } else
           inputSecret.setPromptVisible(false);
       }
-
-      //stop checking
-      clearTimeout(checker[inputSecretId]);
     });
 
     if (O$.isMozillaFF()) {
@@ -185,7 +181,7 @@ O$.InputSecret = {
     var setPassword = function (id, str) {
       var tmp = "";
       for (var i = 0; i < str.length; i++) {
-        if (str.charAt(i) == unescape(replacement)){
+        if (str.charAt(i) == replacement){
           var currentSymbol = inputSecret.value;
           tmp = tmp + currentSymbol.charAt(i);
         }
@@ -196,10 +192,17 @@ O$.InputSecret = {
       inputSecret.value = tmp;
     }
 
-    var check = function (id, oldValue, initialCall) {
+    var convertValueWithDuration = function (id, oldValue, initialCall) {
       var bullets = substitutionalElement.value;
 
-      if (oldValue != bullets) {
+      if (!substitutionalElement._focused){
+        clearTimeout(checker[id]);
+        if (inputSecret.value == ''){
+          return;
+        }
+      }
+
+      if (oldValue != bullets ) {
         setPassword(id, bullets);
       }
 
@@ -207,7 +210,7 @@ O$.InputSecret = {
         if (bullets.length > 1) {
           var tmp = '';
           for (i = 0; i < bullets.length - 1; i++) {
-            tmp = tmp + unescape(replacement);
+            tmp = tmp + replacement;
           }
           tmp = tmp + bullets.charAt(bullets.length - 1);
 
@@ -220,9 +223,9 @@ O$.InputSecret = {
         }, duration);
       }
 
-      if (!initialCall) {
+      if (!initialCall && substitutionalElement._focused) {
         var substitutionalElementValue = substitutionalElement.value;
-        runValueConverter(id, substitutionalElementValue, false);
+        convertValueWithInterval(id, substitutionalElementValue, false);
       }
     }
 
@@ -230,16 +233,16 @@ O$.InputSecret = {
       if (substitutionalElement.value != "" && ((substitutionalElement.value != promptText) && !promptVisible)) {
         var tmp = "";
         for (var i = 0; i < substitutionalElement.value.length; i++) {
-          tmp = tmp + unescape(replacement);
+          tmp = tmp + replacement;
         }
         substitutionalElement.value = tmp;
       }
     }
 
-    var runValueConverter = function (id, oldValue, initialCall) {
+    var convertValueWithInterval = function (id, oldValue, initialCall) {
       clearTimeout(checker[id]);
       checker[id] = setTimeout(function () {
-        check(id, oldValue, initialCall);
+        convertValueWithDuration(id, oldValue, initialCall);
       }, interval);
     }
 
@@ -257,5 +260,14 @@ O$.InputSecret = {
       to = typeof(to) != 'undefined' ? to : from + 1;
       return Math.round(from + Math.random() * (to - from));
     };
+
+    var _hidePasswordValue = function(){
+      var passwordLength = inputSecret.value.length;
+      var hidedPassword = '';
+      for (var i = 0; i < passwordLength; i++){
+        hidedPassword += replacement;
+      }
+      substitutionalElement.value = hidedPassword;
+    }
   }
 };
