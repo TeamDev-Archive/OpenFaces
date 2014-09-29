@@ -36,20 +36,20 @@ public class ImageList implements Serializable {
 
     public ImageList() {
         authorStyles.add(new SelectorStyle(STYLE_CUSTOM,
-                "background-color: #fbfaf1; font-family: 'Times New Roman', Times, serif; font-size: 14px; color: #5f4414; white-space: nowrap; height: 25px; text-align: center; vertical-align: middle;",
+                "background-color: #fbfaf1; font-family: 'Times New Roman', Times, serif; font-size: 14px; color: #5f4414; white-space: nowrap; height: 25px; vertical-align: middle;",
                 "background-color: #f3f1e6;",
-                "color: #ffffff; font-weight: bold; background-color: #715a2e;",
+                "color: #ffffff; background-color: #715a2e;",
                 "background-color: #715a2e;",
                 "1px solid #5f4414", "1px solid #5f4414"));
-        authorStyles.add(new SelectorStyle(STYLE_DEFAULT, "padding: 2px 4px 2px 4px;", null, null, null, null, null));
+        authorStyles.add(new SelectorStyle(STYLE_DEFAULT, "font-family: 'Times New Roman', Times, serif; font-size: 14px;", null, null, null, null, null));
 
         imageStyles.add(new SelectorStyle(STYLE_CUSTOM,
-                "background-color: #fbfaf1; font-family: 'Times New Roman', Times, serif; font-size: 14px; color: #5f4414; white-space: nowrap; height: 25px; padding-left: 7px;",
+                "background-color: #fbfaf1; font-family: 'Times New Roman', Times, serif; font-size: 14px; color: #5f4414; white-space: nowrap; height: 25px;",
                 "background-color: #f3f1e6;",
                 "border-right: 3px solid #5f4414; font-weight: bold;",
                 "",
                 "1px solid #5f4414", "1px solid #5f4414"));
-        imageStyles.add(new SelectorStyle(STYLE_DEFAULT, "padding: 2px 4px 2px 4px;", null, null, null, null, null));
+        imageStyles.add(new SelectorStyle(STYLE_DEFAULT, "font-family: 'Times New Roman', Times, serif; font-size: 14px;", null, null, null, null, null));
 
         populateImageList();
     }
