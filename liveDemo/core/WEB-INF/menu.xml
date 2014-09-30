@@ -498,8 +498,13 @@
     <image>InputSecret</image>
     <selectedImage>/images/components/titles/InputSecret.png</selectedImage>
     <keyFeatures>
-      <feature>All features</feature>
-      <feature>feature 1</feature>
+      <feature>All features of the standard InputSecret component</feature>
+      <feature>Changing password field chars</feature>
+      <feature>Typing password like in Android and iOS</feature>
+      <feature>Showing and hiding entered password</feature>
+      <feature>Prompt text display</feature>
+      <feature>Extended styling</feature>
+      <feature>Password generation</feature>
     </keyFeatures>
     <demos>
       <demoItem>
@@ -563,6 +568,26 @@
       <demoItem>
         <demoName>General</demoName>
         <demoUrl>/levelindicator/LevelIndicator.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>MaskEdit</name>
+    <componentName>MaskEdit</componentName>
+    <url>/maskedit/MaskEdit.jsf</url>
+    <shortPath>/maskedit/</shortPath>
+    <image>maskedit</image>
+    <selectedImage>/images/components/titles/MaskEdit.png</selectedImage>
+    <keyFeatures>
+      <feature>Enter data in a certain format</feature>
+      <feature>Creating the own mask literals</feature>
+      <feature>Displaying blank</feature>
+      <feature>Extended styling</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/maskedit/MaskEdit.jsf</demoUrl>
       </demoItem>
     </demos>
   </menuItem>
@@ -946,20 +971,4 @@
       </demoItem>
     </demos>
   </menuItem>
-  <menuItem>
-    <name>MaskEdit</name>
-    <componentName>MaskEdit</componentName>
-    <url>/maskedit/MaskEdit.jsf</url>
-    <shortPath>/maskedit/</shortPath>
-    <image>maskedit</image>
-    <selectedImage>/images/components/titles/MaskEdit.png</selectedImage>
-
-    <demos>
-      <demoItem>
-        <demoName>General</demoName>
-        <demoUrl>/maskedit/MaskEdit.jsf</demoUrl>
-      </demoItem>
-    </demos>
-  </menuItem>
-
 </menu>
