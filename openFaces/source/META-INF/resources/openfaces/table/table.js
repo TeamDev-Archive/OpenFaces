@@ -343,7 +343,7 @@ O$.Table = {
         if (!rowIndexes)
           rowIndexes = [];
 
-        var bodyRows = table.__getRowCount();
+        var bodyRows = this.body._getRows();
         for (var i = 0, count = rowIndexes.length; i < count; i++) {
           var rowIndex = rowIndexes[i];
           if (rowIndex < 0 || rowIndex >= bodyRows.length)
@@ -461,7 +461,7 @@ O$.Table = {
         if (!cellIds)
           cellIds = [];
 
-        var bodyRows = table.__getRowCount();
+        var bodyRows = this.body._getRows();
         for (var i = 0, count = cellIds.length; i < count; i++) {
           var cellId = cellIds[i];
           if ((cellId[0] != -1) && (cellId[0] < 0 || cellId[0] >= bodyRows.length))
