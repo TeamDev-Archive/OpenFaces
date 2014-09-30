@@ -27,12 +27,15 @@ public class OUICommandRenderer extends RendererBase {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Rendering.decodeBehaviors(context, component);
-        OUICommand command = (OUICommand) component;
+       /* OUICommand command = (OUICommand) component;*/
         Map<String, String> requestParameters = context.getExternalContext().getRequestParameterMap();
-        String key = command.getActionTriggerParam();
+        String key = getActionRequestKey(context, component);
         if (requestParameters.containsKey(key)) {
             component.queueEvent(new ActionEvent(component));
         }
+    }
+    protected String getActionRequestKey(FacesContext context, UIComponent component) {
+        return component.getClientId(context);
     }
 
 }

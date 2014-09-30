@@ -3971,6 +3971,8 @@ O$.Table = {
     };
     table._innerDropTargetsByColumnId = function (columnId, dropHandler) {
       var dropTargets = [];
+      //TODO: [s.kurilin] we shouldn't use this counter
+      var counter = 0;
       table._columns.forEach(function (targetColumn) {
         var headerCell = targetColumn.header ? targetColumn.header._cell : null;
         var targetCell = headerCell;

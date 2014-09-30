@@ -303,6 +303,9 @@ window.OpenFaces.Ajax = {
     }
 
     var source = args._source;
+    if (!source && args._sourceId) {
+      source = document.getElementById(args._sourceId);
+    }
     var evt = args._event;
     var params = {};
     var render = render.join(" ");
@@ -349,10 +352,10 @@ window.OpenFaces.Ajax = {
       if (!params) params = {};
       params[O$.ACTION_LISTENER] = args.listener;
     }
-    params[O$.ACTION_COMPONENT] = source && typeof source != "string" ? source.id : source;
-    if (args.actionTriggerParam) {
+    if (args.actionComponent) {
       if (!params) params = {};
-      params[args.actionTriggerParam] = args.actionTriggerParam;
+      params[O$.ACTION_COMPONENT] = args.actionComponent;
+//      params[args.actionComponent] = args.actionComponent;  //todo: partial OFCS-93 fix
     }
     if (args.executeRenderedComponents != null) {
       if (!params) params = {};

@@ -53,7 +53,7 @@ public abstract class OUICommandTag extends AbstractComponentTag {
         setIntProperty(component, "delay");
     }
 
-    protected ActionListener createUnifiedActionListener(FacesContext context) {
+/*    protected ActionListener createUnifiedActionListener(FacesContext context) {
         String propertyValue = getPropertyValue("actionListener");
         if (propertyValue != null) {
             return new UnifiedActionListener(getExpressionCreator(), context, propertyValue);
@@ -66,5 +66,5 @@ public abstract class OUICommandTag extends AbstractComponentTag {
         ActionListener actionListener = createUnifiedActionListener(context);
         if (actionListener != null)
             component.addActionListener(actionListener);
-    }
+    }*/
 }

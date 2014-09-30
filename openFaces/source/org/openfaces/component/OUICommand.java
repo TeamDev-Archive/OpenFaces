@@ -372,8 +372,10 @@ public abstract class OUICommand extends UICommand implements OUIComponent, Clie
             }
         }
     }
+/*
     public String getActionTriggerParam() {
         return getClientId(getFacesContext());
     }
+*/
 
 }

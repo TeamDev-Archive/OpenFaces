@@ -55,7 +55,7 @@ public class CommandLinkRenderer extends OUICommandRenderer {
         Rendering.writeStyleAndClassAttributes(writer, link);
 
         boolean ajaxJsRequired = writeEventsWithAjaxSupport(context, writer, link,
-                ((OUICommand)component).getActionTriggerParam());
+                getActionRequestKey(context, component));
         if (ajaxJsRequired)
             link.getAttributes().put("_ajaxRequired", Boolean.TRUE);
 
@@ -95,5 +95,8 @@ public class CommandLinkRenderer extends OUICommandRenderer {
         Resources.renderJSLinkIfNeeded(context, Resources.utilJsURL(context));
         if (link.getAttributes().remove("_ajaxRequired") != null)
             AjaxUtil.renderJSLinks(context);
+    }
+    protected String getActionRequestKey(FacesContext context, UIComponent component) {
+        return component.getClientId(context) + "::clicked";
     }
 }
