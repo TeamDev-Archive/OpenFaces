@@ -199,10 +199,10 @@ if (!window.O$) {
         var x2 = O$.minDefined(this.getMaxX(), rect.getMaxX());
         var y1 = O$.maxDefined(this.getMinY(), rect.getMinY());
         var y2 = O$.minDefined(this.getMaxY(), rect.getMaxY());
-        if (x2 < x1)
+        if ((x2 < x1) || (y2 < y1)){
           x2 = x1;
-        if (y2 < y1)
           y2 = y1;
+        }
 
         this.x = x1;
         this.y = y1;
@@ -4247,6 +4247,9 @@ if (!window.O$) {
       if (overflowY != "visible") {
         top = O$.maxDefined(top, containerRect.getMinY());
         bottom = O$.minDefined(bottom, containerRect.getMaxY());
+      }
+      if (containerRect){
+        break;
       }
       element = container;
     }

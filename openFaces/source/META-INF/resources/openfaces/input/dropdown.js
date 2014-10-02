@@ -215,8 +215,7 @@ O$.DropDown = {
                   readOnly,
                   promptText,
                   promptTextClass,
-                  pullPopupFromContainer,
-                  parentId) {
+                  pullPopupFromContainer) {
 
     O$.DropDown._initInput(dropDownId,
             initialText,
