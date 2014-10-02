@@ -12,7 +12,7 @@
 
 //--------------------  public functions  ----------------------
 
-O$.resizeSidePanel = function(sidePanelId, newSize) {
+O$.resizeSidePanel = function (sidePanelId, newSize) {
   var sidePanel = O$(sidePanelId);
   if (!(sidePanel && sidePanel._alignment)) return;
   var previousSidePanelOverflow = sidePanel.style.overflow;
@@ -80,17 +80,7 @@ O$.refreshSidePanel = function (sidePanelId) {
 
 //------------------  SidePanel init method  -------------------
 
-O$._initSidePanel = function(sidePanelId,
-                             alignment,
-                             size,
-                             minSize,
-                             maxSize,
-                             collapsible,
-                             resizable,
-                             collapsed,
-                             rolloverClass,
-                             splitterRolloverClass,
-                             events) {
+O$._initSidePanel = function (sidePanelId, alignment, size, minSize, maxSize, collapsible, resizable, collapsed, rolloverClass, splitterRolloverClass, events, isRecalculatingSplitterInBorder) {
   var sidePanel = O$.initComponent(sidePanelId, null, {
     _splitter:O$(sidePanelId + "::splitter"),
     _panel:O$(sidePanelId + "::panel"),
@@ -108,6 +98,7 @@ O$._initSidePanel = function(sidePanelId,
     _size:size,
     _minSize:minSize,
     _maxSize:maxSize,
+    _isRecalculatingSplitterInBorder:isRecalculatingSplitterInBorder
   });
   sidePanel._panel._isCoupled = true;
 
@@ -539,11 +530,20 @@ O$._cacheSidePanelSizeVariables = function (sidePanel) {
     splitter._widthDiff = splitter._storedSizeProperties.marginsWidth;
     if (sidePanel._alignment == "left" || sidePanel._alignment == "right") {
       panel._heightDiff = panel._storedSizeProperties.marginsHeight;
+      if (sidePanel._isRecalculatingSplitterInBorder) {
+        panel._widthDiff = panel._storedSizeProperties.marginsWidth + O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
+      } else {
         //TODO: 0 * - this is temporary solution to make tests with pagination
         panel._widthDiff = panel._storedSizeProperties.marginsWidth + 0 * O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
-    } else {
+      }
+    }
+    else {
+      if (sidePanel._isRecalculatingSplitterInBorder) {
+        panel._heightDiff = panel._storedSizeProperties.marginsHeight + O$._calculateOffsetHeight(splitter, false) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsHeight;
+      } else {
         panel._heightDiff = panel._storedSizeProperties.marginsHeight + 0 * O$._calculateOffsetHeight(splitter, false) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsHeight;
-      panel._widthDiff = panel._storedSizeProperties.marginsWidth;
+        panel._widthDiff = panel._storedSizeProperties.marginsWidth;
+      }
     }
     if (caption) {
       caption._heightDiff = panel._storedSizeProperties.paddingsAndBordersHeight + caption._storedSizeProperties.marginsHeight;
@@ -551,14 +551,23 @@ O$._cacheSidePanelSizeVariables = function (sidePanel) {
     }
     content._heightDiff = panel._storedSizeProperties.paddingsAndBordersHeight + content._storedSizeProperties.marginsHeight;
     content._widthDiff = panel._storedSizeProperties.paddingsAndBordersWidth + content._storedSizeProperties.marginsWidth;
-  } else {
+  }
+  else {
     splitter._heightDiff = splitter._storedSizeProperties.paddingsAndBordersAndMarginsHeight;
     splitter._widthDiff = splitter._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
     if (sidePanel._alignment == "left" || sidePanel._alignment == "right") {
       panel._heightDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsHeight;
-      panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth + 0 * O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.marginsWidth;
+      if (sidePanel._isRecalculatingSplitterInBorder) {
+        panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth + O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.marginsWidth;
+      } else {
+        panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth + 0 * O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.marginsWidth;
+      }
     } else {
-      panel._heightDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsHeight + 0 * O$._calculateOffsetHeight(splitter, false) + splitter._storedSizeProperties.marginsHeight;
+      if (sidePanel._isRecalculatingSplitterInBorder) {
+        panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth + O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.marginsWidth;
+      } else {
+        panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth + 0 * O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.marginsWidth;
+      }
       panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
     }
     if (caption) {
@@ -572,7 +581,8 @@ O$._cacheSidePanelSizeVariables = function (sidePanel) {
   if (caption) {
     caption._fullHeight = O$._calculateOffsetHeight(caption, false) + caption._storedSizeProperties.marginsHeight;
   }
-};
+}
+;
 
 //--------------------  splitter tools  ------------------------
 

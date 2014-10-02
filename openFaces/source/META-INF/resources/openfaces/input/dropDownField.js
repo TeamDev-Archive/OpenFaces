@@ -495,7 +495,7 @@ O$.DropDownField = {
           if (dropDown._itemPresentationColumn < newItemPresentationContentNode.childNodes.length)
             itemPresentation.appendChild(newItemPresentationContentNode.childNodes[dropDown._itemPresentationColumn]);
         }
-        O$.setElementSize(dropDown._itemPresentationContainer, {height:dropDown.offsetHeight - 2});
+    /*    O$.setElementSize(dropDown._itemPresentationContainer, {height:dropDown.offsetHeight - 2});*/
         dropDown._copyClassesToItemPresentation();
       },
 
