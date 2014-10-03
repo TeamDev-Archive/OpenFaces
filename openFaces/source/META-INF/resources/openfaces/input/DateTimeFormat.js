@@ -33,6 +33,9 @@ O$.extend(O$.DateTimeFormat.prototype, {
     var year;
     var yearComplete = false;
     var sDate = val;
+    var _isADigit = function(aChar){
+      return aChar && aChar >= "0" && aChar <= "9";
+    }
 
     var oldDate = new Date();
     if (currentValue && currentValue != "") {
@@ -102,7 +105,9 @@ O$.extend(O$.DateTimeFormat.prototype, {
           yearComplete = true;
         } else if (pat.charAt(0) == 'M') {
           if (pat.length < 3) {
-            month = sDate.substring(0, 2);
+            var secondChar = sDate.charAt(1);
+            var dateCharCount = _isADigit(secondChar) ? 2 : 1;
+            month = sDate.substring(0, dateCharCount);
             sDate = sDate.substring(month.length);
             month = month - 1;
             monthComplete = true;
@@ -134,9 +139,8 @@ O$.extend(O$.DateTimeFormat.prototype, {
             }
           }
         } else if (pat.charAt(0) == "d") {
-          var secondChar = sDate.length >= 2 ? sDate.substring(1, 2) : null;
-          var secondCharIsADigit = secondChar && secondChar >= "0" && secondChar <= "9";
-          var dateCharCount = secondCharIsADigit ? 2 : 1;
+          var secondChar = sDate.charAt(1);
+          var dateCharCount = _isADigit(secondChar) ? 2 : 1;
           date = sDate.substring(0, dateCharCount);
           sDate = sDate.substring(dateCharCount);
           dateComplete = true;
