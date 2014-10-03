@@ -120,14 +120,14 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
         );
         writer.writeAttribute("class", contentDefaultClass, null);
         Styles.renderStyleClasses(context, component);
-        encodeInitScript(context, component);
+
     }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered()) return;
         ResponseWriter writer = context.getResponseWriter();
-
+        encodeInitScript(context, component);
 
         writer.endElement("div");
         writer.endElement("div");
@@ -162,6 +162,18 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
             initScript.append("O$('").append(clientId).append("').style.visibility = 'hidden';\n");
             initScript.append("O$.addLoadEvent( function() {\n");
         }
+        ExternalContext externalContext = context.getExternalContext();
+        boolean isRecalculatingSplitterInBorder = true;
+        try{
+            String paramValue = externalContext.getInitParameter(DISABLED_BORDER_LAYOUT_PANEL_CALCULATING_PARAM);
+            if  (paramValue != null){
+                isRecalculatingSplitterInBorder = Boolean.valueOf(paramValue);
+            }else{
+                isRecalculatingSplitterInBorder =Boolean.TRUE;
+            }
+        }  catch (Exception e){
+            e.printStackTrace();
+        }
 
         initScript.initScript(context, sidePanel, "O$._initSidePanel",
                 sidePanel.getAlignment(),
@@ -173,7 +185,8 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
                 sidePanel.getCollapsed(),
                 getRolloverClass(context, sidePanel),
                 getSplitterRolloverClass(context, sidePanel),
-                new RawScript(events.toString()));
+                new RawScript(events.toString()),
+                isRecalculatingSplitterInBorder);
 
         if (Environment.isMozillaFF2(context)) { //fix bug with FF2 and Facelets 1.2 context  //todo add isFacelets() filter
             initScript.append("O$('").append(clientId).append("').style.visibility = 'visible';\n");

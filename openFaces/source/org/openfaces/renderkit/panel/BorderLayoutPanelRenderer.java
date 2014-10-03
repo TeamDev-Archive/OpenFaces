@@ -22,6 +22,7 @@ import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
@@ -33,6 +34,7 @@ import java.util.List;
  */
 public class BorderLayoutPanelRenderer extends RendererBase {
     public static final String CONTENT_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "content";
+    private static final String DISABLED_BORDER_LAYOUT_PANEL_CALCULATING_PARAM = "org.openfaces.disabledBorderLayoutPanelCalculating";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -103,10 +105,22 @@ public class BorderLayoutPanelRenderer extends RendererBase {
         if (Environment.isMozillaFF2(context)) { // fix bug with FF2 + Facelets + JSF 1.2 context  // todo add isFacelets() filter
             initScript.append("O$.addLoadEvent( function() {\n");
         }
-
+        ExternalContext externalContext = context.getExternalContext();
+               boolean isRecalculatingSplitterInBorder = true;
+        try{
+                String paramValue = externalContext.getInitParameter(DISABLED_BORDER_LAYOUT_PANEL_CALCULATING_PARAM);
+                if  (paramValue != null){
+                      isRecalculatingSplitterInBorder = Boolean.valueOf(paramValue);
+                  }else{
+                      isRecalculatingSplitterInBorder =Boolean.TRUE;
+                  }
+            }  catch (Exception e){
+                e.printStackTrace();
+            }
         initScript.initScript(context, borderLayoutPanel, "O$._initBorderLayoutPanel_content",
                 Rendering.getRolloverClass(context, borderLayoutPanel),
-                new RawScript(JSEventsObject.JSEventObject("oncontentresize", borderLayoutPanel.getOncontentresize()))
+                new RawScript(JSEventsObject.JSEventObject("oncontentresize", borderLayoutPanel.getOncontentresize())),
+              isRecalculatingSplitterInBorder
         );
 
         if (Environment.isMozillaFF2(context)) { // fix bug with FF2 + Facelets + JSF 1.2 context  // todo add isFacelets() filter
