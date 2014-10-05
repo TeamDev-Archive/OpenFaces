@@ -72,9 +72,9 @@ O$.SpinMask = {
               str = this.value + mask.format.charAt(pos - 1) + ch;
             }
             this.value = str;
+            var cursorPosition = start + ch.length;
+            this.setSelectionRange(cursorPosition, cursorPosition);
           }
-          var cursorPosition = start + ch.length;
-          this.setSelectionRange(cursorPosition, cursorPosition);
           return false;
         }
       }
