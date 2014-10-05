@@ -62,7 +62,10 @@ O$.SpinMask = {
 
         }else if (this.isCharacterKey(key)) {
           var ch = String.fromCharCode( e.charCode);
-          var str = this.value + ch;
+          var str = this.value;
+          var start = this.selectionStart;
+          var end = this.selectionEnd;
+          str = str.substring(0, start) + ch + str.substring(end);
           var pos = str.length;
           if ( mask.regex.test(str+"0") && (pos <= mask.format.length || mask.format.length == 0) ) {
             if ( mask.emptySymbols.indexOf(mask.format.charAt(pos - 1)) == -1 ) {
@@ -70,6 +73,8 @@ O$.SpinMask = {
             }
             this.value = str;
           }
+          var cursorPosition = start + ch.length;
+          this.setSelectionRange(cursorPosition, cursorPosition);
           return false;
         }
       }
