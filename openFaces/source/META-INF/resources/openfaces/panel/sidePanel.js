@@ -533,17 +533,16 @@ O$._cacheSidePanelSizeVariables = function (sidePanel) {
       if (sidePanel._isRecalculatingSplitterInBorder) {
         panel._widthDiff = panel._storedSizeProperties.marginsWidth + O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
       } else {
-        //TODO: 0 * - this is temporary solution to make tests with pagination
-        panel._widthDiff = panel._storedSizeProperties.marginsWidth + 0 * O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
+        panel._widthDiff = panel._storedSizeProperties.marginsWidth + splitter._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
       }
     }
     else {
       if (sidePanel._isRecalculatingSplitterInBorder) {
         panel._heightDiff = panel._storedSizeProperties.marginsHeight + O$._calculateOffsetHeight(splitter, false) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsHeight;
       } else {
-        panel._heightDiff = panel._storedSizeProperties.marginsHeight + 0 * O$._calculateOffsetHeight(splitter, false) + splitter._storedSizeProperties.paddingsAndBordersAndMarginsHeight;
-        panel._widthDiff = panel._storedSizeProperties.marginsWidth;
+        panel._heightDiff = panel._storedSizeProperties.marginsHeight + splitter._storedSizeProperties.paddingsAndBordersAndMarginsHeight;
       }
+      panel._widthDiff = panel._storedSizeProperties.marginsWidth;
     }
     if (caption) {
       caption._heightDiff = panel._storedSizeProperties.paddingsAndBordersHeight + caption._storedSizeProperties.marginsHeight;
@@ -560,13 +559,13 @@ O$._cacheSidePanelSizeVariables = function (sidePanel) {
       if (sidePanel._isRecalculatingSplitterInBorder) {
         panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth + O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.marginsWidth;
       } else {
-        panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth + 0 * O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.marginsWidth;
+        panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth + splitter._storedSizeProperties.marginsWidth;
       }
     } else {
       if (sidePanel._isRecalculatingSplitterInBorder) {
-        panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth + O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.marginsWidth;
+        panel._heightDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsHeight + O$._calculateOffsetHeight(splitter, false) + splitter._storedSizeProperties.marginsHeight;
       } else {
-        panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth + 0 * O$._calculateOffsetWidth(splitter, false) + splitter._storedSizeProperties.marginsWidth;
+        panel._heightDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsHeight + splitter._storedSizeProperties.marginsHeight;
       }
       panel._widthDiff = panel._storedSizeProperties.paddingsAndBordersAndMarginsWidth;
     }
