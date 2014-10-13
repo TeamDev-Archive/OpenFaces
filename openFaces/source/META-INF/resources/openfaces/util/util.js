@@ -4005,6 +4005,12 @@ if (!window.O$) {
   };
 
   // ----------------- ABSOLUTE POSITIONING / METRICS UTILITIES ---------------------------------------------------
+  O$.getXElementPosInAnotherComponent = function(element1,element2){
+     return O$.getElementPos(element1).x -O$.getElementPos(element2).x
+  };
+  O$.getYElementPosInAnotherComponent = function(element1,element2){
+    return O$.getElementPos(element1).y -O$.getElementPos(element2).y
+  };
 
   O$.getDefaultAbsolutePositionParent = function () {
     var prnt = document.forms[0];

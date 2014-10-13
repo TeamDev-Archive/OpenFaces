@@ -11729,6 +11729,15 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el only -->
     </attribute>
     <attribute>
+      <name>parentId</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default document.body -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>Applicable only to the "custom" suggestion mode. Specifies the number of items that will be loaded
         along with each additional portion when scrolling through the suggestion list. See the preloadedItemCount
         attribute. The valid values are -1, or any positive number. The value of -1 means that all remaining items
@@ -14204,17 +14213,6 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A parent component ID
-      </description>
-      <name>parentId</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default document.body -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -38932,7 +38930,15 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-
+    <attribute>
+      <name>parentId</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default document.body -->
+      <!-- @el true -->
+    </attribute>
     <attribute>
       <description>A style for an odd list item, if different from listItemStyle.</description>
       <name>oddListItemStyle</name>

@@ -517,7 +517,7 @@ O$.DropDown = {
           function adjustHeight() {
             var contentHeight;
             if (container || container.tagName.toLowerCase() === "table") {
-              var dropDownOffset = (dropDown.offsetTop + dropDown.offsetHeight) + dropDown.clientHeight;
+              var dropDownOffset = (O$.getYElementPosInAnotherComponent(dropDown,container)+ dropDown.offsetHeight);
               contentHeight = container.clientHeight - dropDownOffset - 8;
               contentHeight = contentHeight < 21 ? 20 : contentHeight;
             } else {
