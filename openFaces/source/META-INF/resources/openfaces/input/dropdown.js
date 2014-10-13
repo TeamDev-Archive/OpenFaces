@@ -164,10 +164,10 @@ O$.DropDown = {
     }
 
     setTimeout(function() {
-      if (initialText.length > 0) {
-        dropDown._initValue(initialText);
-      } else if (initialText.length == 0 && dropDown._promptText) {
-        dropDown._initValue(initialText);
+      if (dropDown._initialText.length > 0) {
+        dropDown._initValue(dropDown._initialText);
+      } else if (dropDown._initialText.length == 0 && dropDown._promptText) {
+        dropDown._initValue(dropDown._initialText);
 
         setTimeout(function() {
           if (dropDown._itemPresentation){
@@ -182,7 +182,7 @@ O$.DropDown = {
         }
         dropDown._promptVisible.value = true;
       } else {
-        dropDown._initValue(initialText);
+        dropDown._initValue(dropDown._initialText);
       }
 
       dropDown._skipValidation = false;

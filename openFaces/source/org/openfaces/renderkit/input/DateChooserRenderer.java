@@ -225,11 +225,14 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
             formatDate = dateFormat.format(date);
         }
 
+        String formatName = dc.getDateFormat();
+
         ScriptBuilder sb = new ScriptBuilder().initScript(context, dc, "O$.DateChooser._init",
                 pattern,
                 formatDate,
                 dc.getLocale(),
-                Rendering.getChangeHandlerScript(dc));
+                Rendering.getChangeHandlerScript(dc),
+                formatName);
 
         return new InitScript(sb, new String[]{
                 Resources.utilJsURL(context),
