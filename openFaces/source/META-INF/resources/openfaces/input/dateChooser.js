@@ -14,7 +14,8 @@ O$.DateChooser = {
                   dateFormat,
                   calendarDate,
                   localeStr,
-                  valueChangeHandler) {
+                  valueChangeHandler,
+                  formatName) {
     var dc = O$.initComponent(dateChooserId, null, {
       _isDateChooser: true,
       _calendar: O$(dateChooserId + "--popup--calendar"),
@@ -22,8 +23,117 @@ O$.DateChooser = {
       _dateFormat: dateFormat,
       _localeStr: localeStr,
 
-      _valueChangeHandler: valueChangeHandler
+      _valueChangeHandler: valueChangeHandler,
+
+      _delimiter: null,
+
+      _onremove: function(e){
+        if (formatName != 'short') {
+          return true;
+        }
+
+        var str = dc._field.value;
+        var start = dc._field.selectionStart;
+        var end = dc._field.selectionEnd;
+        var focusPosition = start;
+
+        if (start == end){
+          switch (e.keyCode){
+            case 8: //backspace
+              str = str.substring(0, start - 1) + str.substring(end);
+              focusPosition--;
+              break;
+            case 46: //delete
+              str = str.substring(0, start) + str.substring(end + 1);
+              break;
+          }
+        } else {
+          str = str.substring(0, start) + str.substring(end);
+        }
+
+        if (!O$.DateChooser._isValidShortDate(str, dc._delimiter)){
+          return false;
+        }
+
+        dc._field.value = str;
+        dc._field.setSelectionRange(focusPosition, focusPosition);
+
+        return false;
+      },
+
+      //todo: This is temporary decision. Rewrite next logic with a help of MaskEdit for all formats.
+      onkeypress: function(e){
+        if (formatName != 'short') {
+          return true;
+        }
+
+        var ch = String.fromCharCode(e.charCode);
+
+        if ((ch < "0" || ch > "9") && (ch != dc._delimiter)){
+          return false;
+        }
+
+        var str = dc._field.value;
+        var start = dc._field.selectionStart;
+        var end = dc._field.selectionEnd;
+
+        str = str.substring(0, start) + ch + str.substring(end);
+
+        if (!O$.DateChooser._isValidShortDate(str, dc._delimiter)){
+          return false;
+        }
+
+        var focusPosition = start + ch.length;
+        var allDelimiters = new RegExp("\\" + dc._delimiter, "g");
+        if ((!str.match(allDelimiters) || (str.match(allDelimiters).length < 2))
+            && (str.substring(str.length - 2).match(/\d/g) && str.substring(str.length - 2).match(/\d/g).length == 2)){
+          str += dc._delimiter;
+          focusPosition += dc._delimiter.length;
+        }
+
+        dc._field.value = str;
+        dc._field.setSelectionRange(focusPosition, focusPosition);
+
+        return false;
+      }
+
     });
+
+
+
+    //Initialization for short date format.
+    if (formatName === 'short'){
+      var monthDayNumber = 1; //The value of monthDayNumber must be from 1 to 9 for correct calculation of day format.
+      var monthNumber = 2; //The value of monthNumber must be from 0 to 8 for correct calculation of day format.
+      var yearNumber = 14; //Values of monthDayNumber, (monthNumber + 1), yearNumber must be different.
+      var dateForFormatting = new Date(yearNumber, monthNumber, monthDayNumber);
+
+      //todo: What about browser compatibility?
+      var browserLocale = navigator.language;
+      var shortFormat = "2-digit";
+      var shortDateFormat = {day: shortFormat, month: shortFormat, year: shortFormat};
+
+      var dateInCurrentLocale = dateForFormatting.toLocaleDateString(browserLocale, shortDateFormat);
+
+      dc._delimiter = O$.DateChooser._findDelimiter(dateInCurrentLocale);
+
+      var localFormat = O$.DateChooser._evaluateDateFormat(dateForFormatting, dateInCurrentLocale, dc._delimiter);
+
+      dc._dateFormat = localFormat;
+      dc._localeStr = browserLocale;
+
+      dc._initialText = dateInCurrentLocale;
+      dc._field.value = dateInCurrentLocale;
+
+      var errorMessage = 'Entered date is in the wrong format.';
+      O$.addValidatorsById(dateChooserId, [new O$._DateTimeConverterValidator(errorMessage, errorMessage,
+                                                                              dc._dateFormat, browserLocale)]);
+      //As this initialization is actual only for short date format, DateTimeFormat can be initialized with mock data for months and weekdays.
+      var dtf = O$.getDateTimeFormatObject(localeStr);
+      O$.initDateTimeFormatObject(dtf.getMonths(), dtf.getShortMonths(),
+                                  dtf.getWeekdays(), dtf.getShortWeekdays(),
+                                  browserLocale);
+    };
 
     dc._field._oldValueHolder = dc._initialText;
     dc._field.onchange = function(e) {
@@ -101,9 +211,14 @@ O$.DateChooser = {
             dc._showHidePopup();
             O$.cancelEvent(e);
           }
+          break;
+        case 8: //backspace
+          return dc._onremove(e);
+        case 46: //delete
+          return dc._onremove(e);
       }
       if (dc._prevKeyHandler_DC)
-        dc._prevKeyHandler_DC(evt);
+        return dc._prevKeyHandler_DC(evt);
     };
 
     var cal = dc._calendar;
@@ -328,6 +443,57 @@ O$.DateChooser = {
         O$.DateChooser._checkCalendarWidth(dc);
       }, 100);
     }
+  },
+
+  _findDelimiter: function (dateInCurrentLocale){
+    var possibleDelimiters = ['/', '-', '.', ',', ' '];
+    for (var i = 0; i < dateInCurrentLocale.length; i++){
+      for (var delimiterIndex = 0; delimiterIndex < possibleDelimiters.length; delimiterIndex++){
+        if (dateInCurrentLocale.charAt(i) === possibleDelimiters[delimiterIndex]){
+          return possibleDelimiters[delimiterIndex];
+        }
+      }
+    }
+  },
+
+  _evaluateDateFormat: function(dateForFormatting, dateInCurrentLocale, delimiter){
+    var day = dateForFormatting.getDate();
+    var month = dateForFormatting.getMonth() + 1;
+    var year = dateForFormatting.getYear();
+    var dateInParts = dateInCurrentLocale.split(delimiter);
+    var dateFormatBlank = [];
+    for (var index = 0; index < dateInParts.length; index++){
+      switch (parseInt(dateInParts[index], 10)){
+        case day:
+          dateFormatBlank[index] = dateInParts[index].length == 1 ? "d" : "dd";
+          break;
+        case month:
+          dateFormatBlank[index] = dateInParts[index].length == 1 ? "M" : "MM";
+          break;
+        case year:
+          dateFormatBlank[index] = "yy";
+          break;
+      }
+    }
+
+    var localFormat = dateFormatBlank[0];
+    for(var index = 1; index < dateFormatBlank.length; index++){
+      localFormat += delimiter + dateFormatBlank[index];
+    }
+
+    return localFormat;
+  },
+
+  _isValidShortDate: function(date, delimiter){
+    var maxLengthOfDigitsSequence = 3; //excluding
+    var digitsRestriction = new RegExp("(\\d{" + maxLengthOfDigitsSequence + ",})");
+    var allDelimiters = new RegExp("\\" + delimiter, "g");
+
+    if (digitsRestriction.test(date) || (date.match(allDelimiters) && (date.match(allDelimiters).length > 2))){
+      return false;
+    }
+
+    return true;
   }
 
 };
