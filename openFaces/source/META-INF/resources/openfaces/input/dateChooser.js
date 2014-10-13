@@ -61,7 +61,7 @@ O$.DateChooser = {
         return false;
       },
 
-      //todo: This is temporary decision. Rewrite next logic with a help of MaskEdit for all formats.
+      //todo: This is temporary decision. Rewrite logic for the short format using MaskEdit for all formats.
       onkeypress: function(e){
         if (formatName != 'short') {
           return true;
@@ -85,8 +85,10 @@ O$.DateChooser = {
 
         var focusPosition = start + ch.length;
         var allDelimiters = new RegExp("\\" + dc._delimiter, "g");
+        var digit = new RegExp("\\d", "g");
+
         if ((!str.match(allDelimiters) || (str.match(allDelimiters).length < 2))
-            && (str.substring(str.length - 2).match(/\d/g) && str.substring(str.length - 2).match(/\d/g).length == 2)){
+            && (str.substring(str.length - 2).match(digit) && str.substring(str.length - 2).match(digit).length == 2)){
           str += dc._delimiter;
           focusPosition += dc._delimiter.length;
         }
@@ -99,8 +101,6 @@ O$.DateChooser = {
 
     });
 
-
-
     //Initialization for short date format.
     if (formatName === 'short'){
       var monthDayNumber = 1; //The value of monthDayNumber must be from 1 to 9 for correct calculation of day format.
@@ -108,7 +108,6 @@ O$.DateChooser = {
       var yearNumber = 14; //Values of monthDayNumber, (monthNumber + 1), yearNumber must be different.
       var dateForFormatting = new Date(yearNumber, monthNumber, monthDayNumber);
 
-      //todo: What about browser compatibility?
       var browserLocale = navigator.language;
       var shortFormat = "2-digit";
       var shortDateFormat = {day: shortFormat, month: shortFormat, year: shortFormat};
@@ -122,9 +121,6 @@ O$.DateChooser = {
       dc._dateFormat = localFormat;
       dc._localeStr = browserLocale;
 
-      dc._initialText = dateInCurrentLocale;
-      dc._field.value = dateInCurrentLocale;
-
       var errorMessage = 'Entered date is in the wrong format.';
       O$.addValidatorsById(dateChooserId, [new O$._DateTimeConverterValidator(errorMessage, errorMessage,
                                                                               dc._dateFormat, browserLocale)]);
@@ -133,6 +129,12 @@ O$.DateChooser = {
       O$.initDateTimeFormatObject(dtf.getMonths(), dtf.getShortMonths(),
                                   dtf.getWeekdays(), dtf.getShortWeekdays(),
                                   browserLocale);
+      if (dtf && calendarDate){
+        var sDate = dtf.parse(calendarDate, "dd/MM/yyyy");
+        dc._initialText = sDate.toLocaleDateString(browserLocale, shortDateFormat);
+        dc._field.value = sDate.toLocaleDateString(browserLocale, shortDateFormat);
+      }
+
     };
 
     dc._field._oldValueHolder = dc._initialText;
@@ -462,8 +464,10 @@ O$.DateChooser = {
     var year = dateForFormatting.getYear();
     var dateInParts = dateInCurrentLocale.split(delimiter);
     var dateFormatBlank = [];
+    var datePart;
     for (var index = 0; index < dateInParts.length; index++){
-      switch (parseInt(dateInParts[index], 10)){
+      datePart = O$.DateChooser._pullDigits(dateInParts[index]);
+      switch (datePart){
         case day:
           dateFormatBlank[index] = dateInParts[index].length == 1 ? "d" : "dd";
           break;
@@ -494,6 +498,16 @@ O$.DateChooser = {
     }
 
     return true;
+  },
+
+  _pullDigits: function(str){
+    var result = '';
+    for (var i = 0; i < str.length; i++){
+      if (str.charAt(i) >= '0' && str.charAt(i) <= '9'){
+        result += str.charAt(i);
+      }
+    }
+    return parseInt(result, 10);
   }
 
 };
