@@ -238,6 +238,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
                 Resources.utilJsURL(context),
                 Resources.jsonJsURL(context),
                 getDropdownJsURL(context),
+                Resources.internalURL(context, "validation/dateTimeConverterValidator.js"),
                 Resources.internalURL(context, "validation/requestHelper.js"),
                 Resources.internalURL(context, "input/dateChooser.js"),
                 ValidatorUtil.getValidatorUtilJsUrl(context)
