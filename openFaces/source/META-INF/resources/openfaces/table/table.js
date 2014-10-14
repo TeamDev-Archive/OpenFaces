@@ -3497,9 +3497,19 @@ O$.Table = {
                   }).length > 0;
         };
         var dropTargets = null;
-
+        if (typeof(O$.Table.recentlyUpdated) == "undefined"){
+          O$.Table.recentlyUpdated = false;
+        }
         function allDropTargets() {
-          if (dropTargets) return dropTargets;
+          if (!(table._params.scrolling && table._params.scrolling.horizontal)){
+            if (dropTargets) return dropTargets;
+          } else {
+            if (O$.Table.recentlyUpdated) return dropTargets;
+            O$.Table.recentlyUpdated = true;
+            setTimeout(function(){
+              O$.Table.recentlyUpdated = false;
+            },50);
+          }
           dropTargets = [];
           var column = headerCell._column;
           if (table._rowGroupingBox && column._groupable) {
