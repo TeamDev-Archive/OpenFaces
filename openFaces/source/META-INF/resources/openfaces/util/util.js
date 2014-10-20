@@ -3601,6 +3601,10 @@ if (!window.O$) {
       newClassName = newClassName ? oldClassName + " " + newClassName : oldClassName;
     if (newClassName != oldClassName)
       element.className = newClassName;
+      if (element.className.indexOf("o_hiddenFocusChromeSafari") > -1){
+        element.style.width = "3px";
+        element.style.height = "3px";
+      }
     return oldClassName;
   };
 
