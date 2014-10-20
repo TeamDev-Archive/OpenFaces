@@ -3052,7 +3052,7 @@ if (!window.O$) {
     component._focusControl = focusControl;
 
     component._focusable = true;
-    component.focus = function () {
+    component.focus = function (evt) {
       if (O$.getElementStyle(component, "position") == "absolute" || this._preventPageScrolling) {
         var container = O$.getContainingBlock(this._focusControl, true);
 
@@ -3066,8 +3066,8 @@ if (!window.O$) {
 
         if (!pageScrollRect.intersects(containerRect)) {
           // if rectangle not intersect - we put focus to the mid of container
-          this._focusControl.style.top = (containerRect.getMaxY() - containerRect.getMinY()) / 2 + "px";
-          this._focusControl.style.left = (containerRect.getMaxX() - containerRect.getMinX()) / 2 + "px";
+          this._focusControl.style.top =  evt.screenY+"px";
+          this._focusControl.style.left = evt.screenX +"px";
         } else {
           // if rectangles intersects - we put focus to the mid of intersection
           pageScrollRect.intersectWith(containerRect);
@@ -3109,7 +3109,7 @@ if (!window.O$) {
       if (O$.isControlFocusable(target, component))
         return;
       component._preventPageScrolling = true;
-      component.focus();
+      component.focus(e);
       component._preventPageScrolling = false;
     });
 
