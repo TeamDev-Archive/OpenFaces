@@ -288,10 +288,6 @@ O$.PopupMenu = {
       }
     }
 
-    setTimeout(function() {
-      // deferring full initialization to avoid extra delays in page loading, or Ajax reloads including the PopupMenu
-      O$.addLoadEvent(finishInitialization);
-    }, 100);
   },
 
   setMenuItemEnabled: function(menuItemId, enabled, selectDisabledItems) {
