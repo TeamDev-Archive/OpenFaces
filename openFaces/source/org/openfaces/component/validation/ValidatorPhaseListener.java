@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -19,6 +19,7 @@ import org.openfaces.validator.AjaxSupportedConverter;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIInput;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.event.PhaseEvent;
@@ -53,9 +54,9 @@ public class ValidatorPhaseListener extends PhaseListenerBase {
 
         Object requestObj = context.getExternalContext().getRequest();
         RequestFacade request = RequestFacade.getInstance(requestObj);
-        checkOurPhaseListenerInvokedOnce(phaseEvent);
+        checkEnvironment(phaseEvent);
 
-        if (isAjaxValidatorRequest(request)) {
+        if (isAjaxValidatorRequest(context)) {
             try {
                 ResponseFacade response = ResponseFacade.getInstance(context.getExternalContext().getResponse());
                 processValidation(context, request, response);
@@ -66,9 +67,9 @@ public class ValidatorPhaseListener extends PhaseListenerBase {
 
     }
 
-    private boolean isAjaxValidatorRequest(RequestFacade request) {
-        // for portlets: String browser = request.getProperty(...);
-        return request.getHeader(AJAX_VALIDATOR_REQUEST_HEADER) != null; // todo: getHeader can't be used on portlets - doesn't work in Liferay
+    private boolean isAjaxValidatorRequest(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
+        return externalContext.getRequestHeaderMap().get(AJAX_VALIDATOR_REQUEST_HEADER) != null;
     }
 
     private void processValidation(FacesContext context, RequestFacade request, ResponseFacade response) throws IOException {

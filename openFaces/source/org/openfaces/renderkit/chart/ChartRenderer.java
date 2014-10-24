@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -38,6 +38,7 @@ import org.openfaces.util.ScriptBuilder;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
+import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -101,14 +102,20 @@ public class ChartRenderer extends RendererBase {
         chart.setImageBytes(imageAsByteArray);
         final Integer oldEntityIndex = chart.getEntityIndex();
         chart.setEntityIndex(-1);
-        DynamicImage dynamicImage = new DynamicImage();
+        String imageCreatedKey = "_dynamicImageCreated";
+        if (!chart.getAttributes().containsKey(imageCreatedKey)) {
+            chart.getAttributes().put(imageCreatedKey, true);
+            Application application = FacesContext.getCurrentInstance().getApplication();
+            DynamicImage dynamicImage = (DynamicImage) application.createComponent(DynamicImage.COMPONENT_TYPE);
+            dynamicImage.setId("img");
+            dynamicImage.getAttributes().put(DynamicImageRenderer.DEFAULT_STYLE_ATTR, "o_chart");
+            Components.addChild(chart, dynamicImage);
+        }
+        DynamicImage dynamicImage = Components.findChildWithClass(chart, DynamicImage.class);
         ValueExpression ve = new ByteArrayValueExpression(imageAsByteArray);
         dynamicImage.setValueExpression("data", ve);
-        dynamicImage.setId("img");
-        dynamicImage.setParent(chart);
         dynamicImage.setMapId(mapId);
         dynamicImage.setMap(map);
-        dynamicImage.getAttributes().put(DynamicImageRenderer.DEFAULT_STYLE_ATTR, "o_chart");
         dynamicImage.setWidth(chart.getWidth());
         dynamicImage.setHeight(chart.getHeight());
         copyAttributes(dynamicImage, chart, "onclick", "ondblclick", "onmousedown", "onmouseup",

@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -13,7 +13,7 @@ package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
 import com.thoughtworks.selenium.SeleniumException;
-import org.junit.*;
+import org.junit.AfterClass;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.internal.WrapsDriver;
 import org.seleniuminspector.ElementInspector;
@@ -41,7 +41,6 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
 
     protected static final String TEST_APP_URL_PREFIX = getSystemProperty("test.app.context.path", IS_FACELETS ? "/TestAppFacelets" : "/TestAppJsp");
     protected static final String LIVE_DEMO_URL_PREFIX = getSystemProperty("demo.context.path", IS_FACELETS ? "/LiveDemoFacelets" : "/LiveDemoJsp");
-//    protected static final String LIVE_DEMO_URL_PREFIX = "";
 
     static {
         Properties properties = new Properties();
@@ -179,7 +178,7 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
     }
 
     private String getUtilJsUrlSubstring() {
-        return "META-INF/resources/openfaces/util/util-"; // OpenFaces 2.x resource sub-string for util.js
+        return "javax.faces.resource/util/util.js.jsf?ln=openfaces"; // OpenFaces 3.x resource sub-string for util.js
     }
 
     protected void testAppFunctionalPage(String testAppPageUrl, String htmlSubstringOfAValidPage) {
@@ -276,7 +275,7 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
     }
 
     protected void assertPageContainsErrorIcon(boolean shouldContainIcon) {
-        boolean iconExists = getSelenium().isElementPresent("//img[contains(@src,'openFacesResources/META-INF/resources/openfaces/validation/error_icon')]");
+        boolean iconExists = getSelenium().isElementPresent("//img[contains(@src,'javax.faces.resource/validation/error_icon')]");
         assertEquals(shouldContainIcon, iconExists);
     }
 
@@ -289,4 +288,5 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
         ((WrapsDriver) getSelenium()).getWrappedDriver().quit();
         SeleniumHolder.getInstance().resetSelenium();
     }
+
 }

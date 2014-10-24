@@ -1,4 +1,4 @@
-<div xmlns:h="http://java.sun.com/jsf/html"
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
      xmlns:a4j="http://richfaces.org/a4j"
@@ -9,14 +9,14 @@
   <h:outputText id="counter" value="This value is updated on Ajax request: #{A4jSupportBean.counter}"
                 style="font-size:16px;"/>
 
-  <h3>a4j:support tag with Calendar's onchange event</h3>
+  <h3>a4j:ajax tag with Calendar's onchange event</h3>
   <o:calendar id="onchangeCalendar" value="#{A4jSupportBean.onchangeValue}">
-    <a4j:support event="onchange" action="#{A4jSupportBean.increase}" reRender="counter"/>
+    <a4j:ajax event="change" action="#{A4jSupportBean.increase}" render="counter"/>
   </o:calendar>
 
   <h3>a4j:support tag with Calendar's onperiodchange event</h3>
   <o:calendar id="oncperiodhangeCalendar" value="#{A4jSupportBean.onperiodchangeValue}">
-    <a4j:support event="onperiodchange" action="#{A4jSupportBean.increase}" reRender="counter"/>
+    <a4j:ajax event="periodchange" action="#{A4jSupportBean.increase}" render="counter"/>
   </o:calendar>
 
 </div>

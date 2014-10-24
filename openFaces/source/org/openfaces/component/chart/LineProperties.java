@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -127,6 +127,7 @@ public class LineProperties extends UIOutput implements StyledComponent, Seriali
 
     @Override
     public Object saveState(FacesContext context) {
+        setValueExpression("condition", getValueExpression("condition"));
         Object superState = super.saveState(context);
         return new Object[]{superState,
                 style,

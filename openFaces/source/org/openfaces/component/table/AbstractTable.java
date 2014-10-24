@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.table;
 
+import org.openfaces.component.ComponentWithExternalParts;
 import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.OUIData;
 import org.openfaces.component.TableStyles;
@@ -22,27 +23,44 @@ import org.openfaces.component.table.impl.TableDataModel;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.TableStructure;
 import org.openfaces.renderkit.table.TreeTableRenderer;
-import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.Environment;
+import org.openfaces.util.Log;
 import org.openfaces.util.ReflectionUtil;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.ActionSource;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIViewRoot;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ListenerFor;
+import javax.faces.event.PhaseId;
+import javax.faces.event.PostRestoreStateEvent;
+import javax.faces.model.DataModel;
 import javax.faces.render.Renderer;
 import java.util.*;
 
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class AbstractTable extends OUIData implements TableStyles, FilterableComponent {
+@ListenerFor(systemEventClass = PostRestoreStateEvent.class)
+@ResourceDependencies({
+        @ResourceDependency(name = "default.css", library = "openfaces"),
+        @ResourceDependency(name = "jsf.js", library = "javax.faces")
+})
+public abstract class AbstractTable extends OUIData implements TableStyles, FilterableComponent, ComponentWithExternalParts {
+    private static final String KEY_SORTING_TOGGLED = AbstractTable.class + ".processModelUpdates().sortingToggled";
     /*
    Implementation notes:
    - the full life-cycle for the selection child is intentionally ensured. Although implementation of
@@ -183,6 +201,15 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     @Override
     public Object saveState(FacesContext context) {
+        remindStateSavingOfTableData();
+        // It's possible that row index is not reset when performing partial Ajax request in
+        // PartialViewContext.prepareAjaxPortions method: it specifies rowIndex to to a value other than -1 when
+        // invoking UtilPhaseListener.findComponentById method.
+        // The following two lines make sure row index is reset to -1 for getClientId() to return component's "native"
+        // client id without row index, which is required for proper StateManagementStrategyImpl.saveComponentState
+        // (see line 366 as of Mojarra 2.0.3).
+        if (getRowIndex() != -1) setRowIndex(-1);
+
         Object superState = super.saveState(context);
         return new Object[]{superState, saveAttachedState(context, sortingRules),
                 align, bgcolor, dir, rules, width, tabindex, border, cellspacing, cellpadding,
@@ -304,6 +331,14 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         incomingSortingRules = null;
     }
 
+    @Override
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        super.processEvent(event);
+        if (event instanceof PostRestoreStateEvent) {
+            afterRestoreState(getFacesContext());
+        }
+    }
+
     protected void afterRestoreState(FacesContext context) {
         TableDataModel model = (TableDataModel) getUiDataValue();
         model.setTable(this);
@@ -325,15 +360,22 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         cachedRenderedColumns = null;
     }
 
-    public void invokeBeforeProcessDecodes(FacesContext context) {
-        beforeProcessDecodes(context);
+    @Override
+    public boolean visitTree(VisitContext context, VisitCallback callback) {
+        if (context.getFacesContext().getCurrentPhaseId() != PhaseId.RESTORE_VIEW && context.getFacesContext().getCurrentPhaseId() != PhaseId.RENDER_RESPONSE
+                && getRowIndex() == -1 /* beforeProcessDecodes is not expected to be invoked in the midst of iteration over its rows */)
+            invokeBeforeProcessDecodes(context.getFacesContext());
+        return super.visitTree(context, callback);
     }
 
-    @Override
-    public void processRestoreState(FacesContext context, Object state) {
-        Object ajaxState = AjaxUtil.retrieveAjaxStateObject(context, this);
-        super.processRestoreState(context, ajaxState != null ? ajaxState : state);
-        afterRestoreState(context);
+    public void invokeBeforeProcessDecodes(FacesContext context) {
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        String key = AbstractTable.class.getName() + ".beforeProcessDecodesInvoked_" + getStandardClientId(context);
+        if (requestMap.containsKey(key)) return;
+        requestMap.put(key, true);
+        if (getRowIndex() != -1)
+            throw new IllegalArgumentException("beforeProcessDecodes is not expected to be invoked in the midst of iteration over its rows");
+        beforeProcessDecodes(context);
     }
 
     protected TableDataModel getModel() {
@@ -357,6 +399,9 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     @Override
     public void setRowIndex(int rowIndex) {
+        int prevRowIndex = getRowIndex();
+        if (prevRowIndex == rowIndex)
+            return;
         // it is important implicit column facets, such as the ones implicitly created for the summary calculation
         // feature, to be created before the first setRowIndex call because changing the set of facets afterwards
         // might break its state saving mechanism
@@ -407,6 +452,14 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return additionalComponentsRequiringClientIdReset;
     }
 
+    public boolean isRowAvailable() {
+        DataModel dataModel = getDataModel();
+        if (dataModel != getModel())
+            throw new IllegalStateException("table.getDataModel() != table.getModel(). It's possible that " +
+                    "getDataModel() during state restoring before table's StateHelper has been restored. table id = " + getId());
+        return dataModel.isRowAvailable();
+    }
+
     public UIComponent getHeader() {
         return Components.getFacet(this, FACET_HEADER);
     }
@@ -426,7 +479,9 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public UIComponent getAbove() {
-        return Components.getFacet(this, FACET_ABOVE);
+        UIComponent component = Components.getFacet(this, FACET_ABOVE);
+        ensureFacetHasOwnId(component, FACET_ABOVE);
+        return component;
     }
 
     public void setAbove(UIComponent component) {
@@ -434,13 +489,14 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public UIComponent getBelow() {
-        return Components.getFacet(this, FACET_BELOW);
+        UIComponent component = Components.getFacet(this, FACET_BELOW);
+        ensureFacetHasOwnId(component, FACET_BELOW);
+        return component;
     }
 
     public void setBelow(UIComponent component) {
         getFacets().put(FACET_BELOW, component);
     }
-
 
     @Override
     public Object getValue() { // needed for UISeamCommandBase to work with DataTable/TreeTable correctly (JSFC-2585)
@@ -990,6 +1046,21 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         this.sortableHeaderRolloverClass = sortableHeaderRolloverClass;
     }
 
+    @Override
+    protected List<UIComponent> getExtensionComponents() {
+
+        ArrayList<UIComponent> components = new ArrayList<UIComponent>(Arrays.asList(
+                getSelection(),
+                getColumnReordering(),
+                getColumnResizing(),
+                getScrolling(),
+                getAbove(),
+                getBelow()));
+        List<Columns> columnsComponents = Components.findChildrenWithClass(this, Columns.class);
+        components.addAll(columnsComponents);
+        return components;
+    }
+
     public AbstractTableSelection getSelection() {
         return findSelectionChild();
     }
@@ -1169,7 +1240,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     @Override
     public void processDecodes(FacesContext context) {
-        beforeProcessDecodes(context);
+        invokeBeforeProcessDecodes(context);
         super.processDecodes(context);
         if (!isRendered())
             return;
@@ -1268,6 +1339,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     protected void beforeRenderResponse(FacesContext context) {
+        Components.fixImplicitPanelIdsForMojarra_2_0_3(this, true);
+
         cachedAllColumns = null;
         cachedColumnsByIds = null;
         cachedRenderedColumns = null;
@@ -1301,6 +1374,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         setUnavailableRowIndexes(null);
 
         validateSortingGroupingColumns();
+        // ensure facets has own ids in calls to these methods
+        getAbove();
+        getBelow();
+
 
         updateModel();
         totalRowCount = getModel().getTotalRowCount();
@@ -1315,6 +1392,13 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     protected void updateModel() {
 
+    }
+
+    private void remindStateSavingOfTableData() {
+        // modify uiDataValue property to move it to the delta map in StateHolder and clear "initial state" flag, which
+        // turns on state saving for TableDataModel
+        getStateHelper().put(PropertyKeys.uiDataValue, getUiDataValue());
+        clearInitialState();
     }
 
     protected void validateSortingGroupingColumns() {
@@ -2021,7 +2105,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         if (suffix == null)
             return clientId;
         else
-            return clientId + NamingContainer.SEPARATOR_CHAR + suffix;
+            return clientId + UINamingContainer.getSeparatorChar(context) + suffix;
     }
 
     protected String getRowClientSuffixByIndex(int index) {
@@ -2053,7 +2137,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         if (namingContainer != null) {
             String containerClientId = namingContainer.getContainerClientId(context);
             if (containerClientId != null)
-                parentId = containerClientId + NamingContainer.SEPARATOR_CHAR;
+                parentId = containerClientId + UINamingContainer.getSeparatorChar(context);
         }
         String clientId = parentId + id;
 
@@ -2118,6 +2202,51 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             model.setRowIndex(savedRowIndex);
         }
         return allRows;
+    }
+
+    public Collection<String> getExternalPartIds() {
+        FacesContext context = getFacesContext();
+        List<String> result = new ArrayList<String>();
+        addExternalPartIdFromComponent(context, result, getAbove());
+        addExternalPartIdFromComponent(context, result, getBelow());
+        return result;
+    }
+
+    private void addExternalPartIdFromComponent(FacesContext context, List<String> ids, UIComponent component) {
+        if (component == null) return;
+
+        if (componentIdSpecified(component)) {
+            ids.add(component.getClientId(context));
+            return;
+        }
+        for (UIComponent child : component.getChildren()) {
+            addExternalPartIdFromComponent(context, ids, child);
+        }
+    }
+
+    private boolean componentIdSpecified(UIComponent component) {
+        String id = component.getId();
+        return id != null && !id.startsWith(UIViewRoot.UNIQUE_ID_PREFIX);
+    }
+
+    private void ensureFacetHasOwnId(UIComponent facet, String facetName) {
+        if (facet == null) return;
+        String id = facet.getId();
+        if (id == null || id.startsWith(UIViewRoot.UNIQUE_ID_PREFIX)) {
+            Log.log("OpenFaces warning: component " + facet.getClass().getName() + " in \"" + facetName + "\" facet " +
+                    "of component with id \"" + getClientId(getFacesContext()) + "\" doesn't have its id attribute specified. " +
+                    "You might need to specify id for a component inside of this facet if it isn't updated properly " +
+                    "during Ajax actions such as pagination or others. See the \"Specifying the content of the above and below facets\" " +
+                    "documentation section for details: http://openfaces.org/documentation/developersGuide/datatable.html" +
+                    "#DataTable-Specifyingthecontentofthe%22above%22and%22below%22facets");
+//            String facetAutoIdCounterKey = "facetAutoIdCounter";
+//            Integer counter = (Integer) getStateHelper().get(facetAutoIdCounterKey);
+//            if (counter == null)
+//                counter = 0;
+//            counter++;
+//            getStateHelper().put(facetAutoIdCounterKey, counter);
+//            facet.setId(getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "facetAutoId_" + counter);
+        }
     }
 
     /**

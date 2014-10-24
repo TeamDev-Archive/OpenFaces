@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * @author Dmitry Pikhulya
  */
-public class CaptionButtonRenderer extends RendererBase {
+public class CaptionButtonRenderer extends OUICommandRenderer {
     public static final String ATTR_DEFAULT_STYLE_CLASS = "_defaultStyleClass";
 
     @Override
@@ -160,12 +160,4 @@ public class CaptionButtonRenderer extends RendererBase {
         return "o_captionButton_pressed";
     }
 
-    @Override
-    public void decode(FacesContext context, UIComponent component) {
-        Map<String, String> requestParameters = context.getExternalContext().getRequestParameterMap();
-        String key = component.getClientId(context) + "::clicked";
-        if (requestParameters.containsKey(key)) {
-            component.queueEvent(new ActionEvent(component));
-        }
-    }
 }

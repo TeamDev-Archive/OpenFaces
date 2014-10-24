@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -12,6 +12,7 @@
 package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
+import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -22,13 +23,14 @@ import org.seleniuminspector.openfaces.DropDownFieldInspector;
 import org.seleniuminspector.openfaces.InputTextInspector;
 
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 /**
  * @author Tatyana Matveyeva
  */
 public class ValidationTest extends OpenFacesTestCase {
 
-     @Test
+    @Test
     public void testServerDefaultPresentation() {
         closeBrowser();
         testAppFunctionalPage("/components/validation/serverDefaultPresentation.jsf");
@@ -37,14 +39,30 @@ public class ValidationTest extends OpenFacesTestCase {
         ElementInspector submit = element("testForm:fmSubmit");
         submit.click();
         waitForPageToLoad();
-        isDefaultPresentation();
+        int firstIconIndex = getFirstIconIndex();
+        isDefaultPresentation(firstIconIndex);
         fillValidDataForClientSideAPI();
         submit.click();
         waitForPageToLoad();
         isNotDefaultPresentation();
     }
 
-     @Test
+    private int getFirstIconIndex() {
+        Integer firstIconIndex = null;
+        List<ElementInspector> images = window().document().getElementsByTagName("img");
+        for (ElementInspector image : images) {
+            String imageId = image.id();
+            if (imageId == null || !imageId.startsWith("dfm"))
+                continue;
+            int idx = Integer.parseInt(imageId.substring("dfm".length()));
+            if (firstIconIndex == null || idx < firstIconIndex)
+                firstIconIndex = idx;
+        }
+        Assert.assertNotNull("No error message icons were found", firstIconIndex);
+        return firstIconIndex;
+    }
+
+    @Test
     public void testClientDefaultPresentation() {
         closeBrowser();
         testAppFunctionalPage("/components/validation/clientDefaultPresentation.jsf");
@@ -61,7 +79,7 @@ public class ValidationTest extends OpenFacesTestCase {
         isNotDefaultPresentation();
     }
 
-     @Test
+    @Test
     public void testOFInputComponents() {
         testAppFunctionalPage("/components/validation/openFacesInputComponents.jsf");
         String formName;
@@ -88,7 +106,7 @@ public class ValidationTest extends OpenFacesTestCase {
         isValidationPassed(formName);
     }
 
-     @Test
+    @Test
     public void testClientSideAPI() {
         testAppFunctionalPage("/components/validation/clientSideAPI.jsf");
         String formName;
@@ -145,7 +163,7 @@ public class ValidationTest extends OpenFacesTestCase {
         isPassedClientSideAPI();
     }
 
-     @Test
+    @Test
     public void testComponentWideValidation() throws InterruptedException {
         closeBrowser();
         testAppFunctionalPage("/components/validation/componentWideValidation.jsf");
@@ -262,7 +280,7 @@ public class ValidationTest extends OpenFacesTestCase {
         assertTrue(fullUpperCase.contains(subUpperCase));
     }
 
-     @Test
+    @Test
     public void testOpenFacesValidators() {
         testAppFunctionalPage("/components/validation/openFacesValidators.jsf");
         //server-side
@@ -290,7 +308,7 @@ public class ValidationTest extends OpenFacesTestCase {
         isPassedOFValidators(clientValidationFormName);
     }
 
-     @Test
+    @Test
     public void testStandardValidators() {
         testAppFunctionalPage("/components/validation/standardValidators.jsf");
         //server-side
@@ -317,7 +335,7 @@ public class ValidationTest extends OpenFacesTestCase {
         isPassedStandardValidators(clientValidationFormName);
     }
 
-     @Test
+    @Test
     public void testWithStandardInputs() {
         testAppFunctionalPage("/components/validation/validationWithStandardInputs.jsf");
         //server-side failed
@@ -547,28 +565,34 @@ public class ValidationTest extends OpenFacesTestCase {
     }
 
     private void isDefaultPresentation() {
-        element("dfm0").assertVisible(true);
-        element("testForm:required").assertStyle("background-color: #F8D3D4");
-        element("dfm1").assertVisible(true);
-        element("testForm:c").assertStyle("background-color: #F8D3D4");
-        element("dfm2").assertVisible(true);
-        element("testForm:dch").assertStyle("background-color: #F8D3D4");
-        element("dfm3").assertVisible(true);
-        element("testForm:tls").assertStyle("background-color: #F8D3D4");
-        element("dfm4").assertVisible(true);
-        element("testForm:ddf").assertStyle("background-color: #F8D3D4");
-        element("dfm5").assertVisible(true);
-        element("testForm:validDR").assertStyle("background-color: #F8D3D4");
-        element("dfm6").assertVisible(true);
-        element("testForm:equal2").assertStyle("background-color: #F8D3D4");
-        element("dfm7").assertVisible(true);
-        element("testForm:url").assertStyle("background-color: #F8D3D4");
-        element("dfm8").assertVisible(true);
-        element("testForm:email").assertStyle("background-color: #F8D3D4");
-        element("dfm9").assertVisible(true);
-        element("testForm:regExp").assertStyle("background-color: #F8D3D4");
-        element("dfm10").assertVisible(true);
-        element("testForm:custom").assertStyle("background-color: #F8D3D4");
+        isDefaultPresentation(0);
+    }
+
+    private void isDefaultPresentation(int startIdx) {
+        String failedBackground = "background-color: #F8D3D4";
+        int i = startIdx;
+        element("dfm" + i++).assertVisible(true);
+        element("testForm:required").assertStyle(failedBackground);
+        element("dfm" + i++).assertVisible(true);
+        element("testForm:c").assertStyle(failedBackground);
+        element("dfm" + i++).assertVisible(true);
+        element("testForm:dch").assertStyle(failedBackground);
+        element("dfm" + i++).assertVisible(true);
+        element("testForm:tls").assertStyle(failedBackground);
+        element("dfm" + i++).assertVisible(true);
+        element("testForm:ddf").assertStyle(failedBackground);
+        element("dfm" + i++).assertVisible(true);
+        element("testForm:validDR").assertStyle(failedBackground);
+        element("dfm" + i++).assertVisible(true);
+        element("testForm:equal2").assertStyle(failedBackground);
+        element("dfm" + i++).assertVisible(true);
+        element("testForm:url").assertStyle(failedBackground);
+        element("dfm" + i++).assertVisible(true);
+        element("testForm:email").assertStyle(failedBackground);
+        element("dfm" + i++).assertVisible(true);
+        element("testForm:regExp").assertStyle(failedBackground);
+        element("dfm" + i++).assertVisible(true);
+        element("testForm:custom").assertStyle(failedBackground);
     }
 
     private void isNotDefaultPresentation() {

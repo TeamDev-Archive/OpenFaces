@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -104,7 +104,7 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
             writeAttribute(writer, "checked", "checked");
         }
 
-        writeAttribute(writer, "onchange", checkbox.getOnchange());
+        writeAttribute(writer, "onchange", Rendering.getChangeHandlerScript(checkbox));
 
         writer.endElement(INPUT_TAG_NAME);
 
@@ -211,7 +211,7 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
         }
 
         AnonymousFunction onchangeFunction = null;
-        String onchange = checkbox.getOnchange();
+        String onchange = Rendering.getChangeHandlerScript(checkbox);
 
         if (onchange != null) {
             onchangeFunction = new AnonymousFunction(onchange, "event");
@@ -222,6 +222,8 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        Rendering.decodeBehaviors(context, component);
+        
         SelectBooleanCheckbox checkbox = (SelectBooleanCheckbox) component;
         if (checkbox.isDisabled())
             return;
@@ -301,7 +303,7 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
         writeAttribute(writer, "accesskey", checkbox.getAccesskey());
         writeAttribute(writer, "dir", checkbox.getDir());
         writeAttribute(writer, "lang", checkbox.getLang());
-        writeAttribute(writer, "onselect", checkbox.getOnselect());
+        writeAttribute(writer, "onselect", Rendering.getEventHandlerScript(checkbox, "select"));
         writeAttribute(writer, "tabindex", checkbox.getTabindex());
         Rendering.writeStandardEvents(writer, checkbox);
     }

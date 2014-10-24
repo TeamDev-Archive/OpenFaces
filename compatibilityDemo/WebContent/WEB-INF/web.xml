@@ -24,10 +24,10 @@
         <param-value>DEFAULT</param-value>
     </context-param>
 
-    <filter>
-        <filter-name>ResourceFilter</filter-name>
-        <filter-class>org.openfaces.util.ResourceFilter</filter-class>
-    </filter>
+    <!--<filter>-->
+        <!--<filter-name>ResourceFilter</filter-name>-->
+        <!--<filter-class>org.openfaces.util.ResourceFilter</filter-class>-->
+    <!--</filter>-->
 
     <filter>
         <display-name>RichFaces Filter</display-name>

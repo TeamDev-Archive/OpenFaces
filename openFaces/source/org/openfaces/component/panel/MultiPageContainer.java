@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -16,12 +16,14 @@ import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIPanel;
 import org.openfaces.event.SelectionChangeEvent;
 import org.openfaces.event.SelectionChangeListener;
-import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
@@ -33,8 +35,11 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
+@ResourceDependencies({
+        @ResourceDependency(name = "jsf.js", library = "javax.faces"),
+        @ResourceDependency(name = "default.css", library = "openfaces")
+})
 public abstract class MultiPageContainer extends OUIPanel {
-
     private Integer selectedIndex;
     private LoadingMode loadingMode;
     private MethodExpression selectionChangeListener;
@@ -118,8 +123,10 @@ public abstract class MultiPageContainer extends OUIPanel {
                 Collection<SubPanel> items = (Collection<SubPanel>) value;
                 itemsList.addAll(items);
                 List<UIComponent> subPanelsChildren = subPanels.getChildren();
+                Runnable restoreIterators = Components.resetParentIterators(subPanels);
                 subPanelsChildren.clear();
                 subPanelsChildren.addAll(items);
+                if (restoreIterators != null) restoreIterators.run();
             }
         }
 
@@ -209,12 +216,6 @@ public abstract class MultiPageContainer extends OUIPanel {
 
         if (selectedIndex != null && ValueBindings.set(this, "selectedIndex", selectedIndex))
             selectedIndex = null;
-    }
-
-    @Override
-    public void processRestoreState(FacesContext context, Object state) {
-        Object ajaxState = AjaxUtil.retrieveAjaxStateObject(context, this);
-        super.processRestoreState(context, ajaxState != null ? ajaxState : state);
     }
 
     @Override

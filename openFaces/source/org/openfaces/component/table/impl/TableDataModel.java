@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -23,13 +23,13 @@ import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.DataModelEvent;
 import javax.faces.model.DataModelListener;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
@@ -51,7 +51,8 @@ import java.util.Set;
  *
  * @author Dmitry Pikhulya
  */
-public class TableDataModel extends DataModel implements DataModelListener, Externalizable {
+
+public class TableDataModel extends DataModel implements DataModelListener, StateHolder {
     private static final String VAR_FILTER_CRITERIA = "filterCriteria";
     private static final String VAR_PAGE_START = "pageStart";
     private static final String VAR_PAGE_SIZE = "pageSize";
@@ -113,6 +114,42 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
 
     public void setRowDataByKeyExpression(ValueExpression rowDataByKeyBinding) {
         rowDataByKeyExpression = rowDataByKeyBinding;
+    }
+
+    public Object saveState(FacesContext context) {
+        return new Object[]{
+                groupingRules,
+                sortingRules,
+                rowKeyExpression,
+                rowDataByKeyExpression,
+                pageSize,
+                pageIndex,
+                extractedRowKeys
+        };
+    }
+
+    public void restoreState(FacesContext context, Object stateObj) {
+        Object[] state = (Object[]) stateObj;
+        int i = 0;
+        groupingRules = (List<GroupingRule>) state[i++];
+        sortingRules = (List<SortingRule>) state[i++];
+        rowKeyExpression = (ValueExpression) state[i++];
+        rowDataByKeyExpression = (ValueExpression) state[i++];
+        pageSize = (Integer) state[i++];
+        pageIndex = (Integer) state[i++];
+        setWrappedData(null);
+
+        // restoring old extracted row keys is needed for correct restoreRows/restoreRowIndexes functionality, which
+        // in turn is required for correct data submission in case of concurrent data modifications
+        extractedRowKeys = (List) state[i++];
+    }
+
+    public boolean isTransient() {
+        return false;
+    }
+
+    public void setTransient(boolean newTransientValue) {
+        throw new UnsupportedOperationException();
     }
 
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {

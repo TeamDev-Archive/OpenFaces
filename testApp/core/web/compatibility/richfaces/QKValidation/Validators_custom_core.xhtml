@@ -1,4 +1,4 @@
-<div xmlns:h="http://java.sun.com/jsf/html"
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
      xmlns:a4j="http://richfaces.org/a4j"
@@ -39,9 +39,9 @@
     <h:message for="customValidatorField" style="color: #ff7f7f;"/>
   </h:panelGroup>
 </a4j:outputPanel>
-<h:outputText id="refresher_customValidator" value="Refresh" style="font-weight: bold; text-decoration:underline;">
-  <a4j:support event="onclick" reRender="customValidatorPanel"/>
-</h:outputText>
+<o:commandButton type="button" id="refresher_customValidator" value="Refresh" style="font-weight: bold; text-decoration:underline;">
+  <a4j:ajax event="click" render="customValidatorPanel"/>
+</o:commandButton>
 
 <a4j:outputPanel id="RegExpValidatorPanel">
   <h:panelGroup style="margin-top:20px;; border: 1px solid black;">
@@ -57,9 +57,9 @@
     <h:message for="regExpValidatorField" style="color: #ff7f7f;"/>
   </h:panelGroup>
 </a4j:outputPanel>
-<h:outputText id="refresher_RegexValidator" value="Refresh" style="font-weight: bold; text-decoration:underline;">
-  <a4j:support event="onclick" reRender="RegExpValidatorPanel"/>
-</h:outputText>
+<o:commandButton type="button" id="refresher_RegexValidator" value="Refresh" style="font-weight: bold; text-decoration:underline;">
+  <a4j:ajax event="click" render="RegExpValidatorPanel"/>
+</o:commandButton>
 
 
 <a4j:outputPanel id="EMailValidatorPanel">
@@ -74,9 +74,9 @@
     <h:message for="emailValidatorField" style="color: #ff7f7f;"/>
   </h:panelGroup>
 </a4j:outputPanel>
-<h:outputText id="refresher_EMailValidator" value="Refresh" style="font-weight: bold; text-decoration:underline;">
-  <a4j:support event="onclick" reRender="EMailValidatorPanel"/>
-</h:outputText>
+<o:commandButton type="button" id="refresher_EMailValidator" value="Refresh" style="font-weight: bold; text-decoration:underline;">
+  <a4j:ajax event="click" render="EMailValidatorPanel"/>
+</o:commandButton>
 
 <a4j:outputPanel id="URLValidatorPanel">
   <h:panelGroup style="margin-top:20px;; border: 1px solid black;">
@@ -90,9 +90,9 @@
     <h:message for="urlValidatorField" style="color: #ff7f7f;"/>
   </h:panelGroup>
 </a4j:outputPanel>
-<h:outputText id="refresher_URLValidator" value="Refresh" style="font-weight: bold; text-decoration:underline;">
-  <a4j:support event="onclick" reRender="URLValidatorPanel"/>
-</h:outputText>
+<o:commandButton type="button" id="refresher_URLValidator" value="Refresh" style="font-weight: bold; text-decoration:underline;">
+  <a4j:ajax event="click" render="URLValidatorPanel"/>
+</o:commandButton>
 
 <a4j:outputPanel id="equalValidatorPanel">
   <h:panelGroup style="margin-top:20px;; border: 1px solid black;">
@@ -109,9 +109,9 @@
     <h:message for="equalValidatorField2" style="color: #ff7f7f;"/>
   </h:panelGroup>
 </a4j:outputPanel>
-<h:outputText id="refresher_equalValidator" value="Refresh" style="font-weight: bold; text-decoration:underline;">
-  <a4j:support event="onclick" reRender="equalValidatorPanel"/>
-</h:outputText>
+<o:commandButton type="button" id="refresher_equalValidator" value="Refresh" style="font-weight: bold; text-decoration:underline;">
+  <a4j:ajax event="click" render="equalValidatorPanel"/>
+</o:commandButton>
 
 </div>
 

@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -20,15 +20,43 @@ import org.openfaces.util.ScriptBuilder;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorContext;
+import javax.faces.component.behavior.ClientBehaviorHint;
 import javax.faces.context.FacesContext;
+import javax.faces.event.BehaviorEvent;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class ActionHelper extends OUIClientActionHelper {
+public class ActionHelper extends OUIClientActionHelper implements ClientBehavior {
     private static final String EXPRESSION_PREFIX = "#{";
     private static final String EXPRESSION_SUFFIX = "}";
+
+    private Action action;
+
+    public ActionHelper(Action action) {
+        this.action = action;
+    }
+
+    public String getScript(ClientBehaviorContext behaviorContext) {
+        return getClientActionScript(behaviorContext.getFacesContext(), action);
+    }
+
+    public void decode(FacesContext context, UIComponent component) {
+    }
+
+    public Set<ClientBehaviorHint> getHints() {
+        return Collections.singleton(ClientBehaviorHint.SUBMITTING);
+    }
+
+    public void broadcast(BehaviorEvent event) {
+    }
+
 
     protected String getClientActionScript(FacesContext context, OUIClientAction ouiClientAction) {
         Action action = (Action) ouiClientAction;
@@ -80,4 +108,6 @@ public class ActionHelper extends OUIClientActionHelper {
             throw new RuntimeException(e);
         }
     }
+
+
 }

@@ -1,0 +1,50 @@
+/*
+ * OpenFaces - JSF Component Library 3.0
+ * Copyright (C) 2007-2014, TeamDev Ltd.
+ * licensing@openfaces.org
+ * Unless agreed in writing the contents of this file are subject to
+ * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * Please visit http://openfaces.org/licensing/ for more details.
+ */
+
+@charset "utf-8";
+/* CSS Document */
+
+#PageBackground div span{
+	display:block;
+	width:347px;
+	height:244px;
+	background:url(/resources/images/intro/logo_bg.png) no-repeat 0 0;
+	position:absolute;
+	z-index:1;
+	top:0;
+	left:50%;
+	margin-left:-550px;
+}
+
+#Logo{filter:alpha(opacity=40);opacity:.40; background:none;}
+#Components{margin-top:325px;}
+#Content{
+	background:transparent;
+	border:none;
+	color:white;
+}
+
+#Content h2{position:absolute; top:20px; left:-231px; font-size:5em;}
+#Content .h2{position:absolute; top:140px; left:-137px; font-size:2.5em; color:#dbe5ed;}
+#Content .h3{position:absolute; top:200px; left:357px; font-size:1.5em; color:#b6cdda;}
+#Content .h4{position:absolute; top:230px; left:-100px; font-size:2.5em; }
+#Content .h5{position:absolute; top:270px; right:31px; font-size:3.5em; }
+#Content .h6{position:absolute; top:360px; left:90px; font-size:1.75em; }
+#Content .h7{position:absolute; top:410px; left:220px; font-size:1.5em; color:#cfdae0;}
+
+#Thumbs{position:absolute; top:480px; margin:0; padding:0; list-style:none;}
+#Thumbs li{float:left; width:250px; text-align:center;}
+#Thumbs li a{position:relative; display:block; width: 220px; height:220px; overflow:hidden;}
+#Thumbs li a:hover img,
+#Thumbs li a:active img{margin-top:-220px;}
+
+#Floor{background:none;}

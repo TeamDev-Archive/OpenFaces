@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -18,7 +18,6 @@ import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.CheckboxColumn;
 import org.openfaces.component.table.SelectionColumn;
 import org.openfaces.renderkit.filter.FilterRow;
-import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
@@ -95,12 +94,6 @@ public class CompositeFilter extends Filter {
         conditionConverter = (Converter) state[i++];
     }
 
-    @Override
-    public void processRestoreState(FacesContext context, Object state) {
-        Object ajaxState = AjaxUtil.retrieveAjaxStateObject(context, this);
-        super.processRestoreState(context, ajaxState != null ? ajaxState : state);
-    }
-
     public Object getValue() {
         if (value != null) return value;
         ValueExpression ve = getValueExpression("value");
@@ -158,7 +151,8 @@ public class CompositeFilter extends Filter {
     }
 
     private List<FilterProperty> getFilterProperties() {
-        if (filterProperties == null) {
+        List<FilterProperty> filterProperties = FilterPropertyContextHolder.getProperties();
+        if (filterProperties == null || filterProperties.size() == 0) {
             if (getFor() != null && getAutoDetect()) {
                 FilterableComponent filteredComponent = getFilteredComponent();
                 if (filteredComponent instanceof AbstractTable) {
@@ -169,18 +163,18 @@ public class CompositeFilter extends Filter {
                         if (column instanceof SelectionColumn || column instanceof CheckboxColumn) continue;
                         FilterProperty filterProperty = getColumnFilterProperty(filteredComponent, column);
                         if (filterProperty != null) {
-                            filterProperties.add(filterProperty);
+                            filterProperties.add(new UIFilterProperty(filterProperty));
                         }
                     }
                 }
             }
-            if (filterProperties == null) {
+            if (filterProperties == null || filterProperties.size() == 0) {
                 filterProperties = new ArrayList<FilterProperty>();
                 List<UIComponent> children = getChildren();
                 for (UIComponent child : children) {
                     if (child.isRendered()) {
                         if (child instanceof UIFilterProperty) {
-                            filterProperties.add((UIFilterProperty) child);
+                            filterProperties.add(new UIFilterProperty((FilterProperty) child));
                             continue;
                         }
                         if (child instanceof UIFilterProperties) {
@@ -189,7 +183,7 @@ public class CompositeFilter extends Filter {
                     }
                 }
             }
-
+            FilterPropertyContextHolder.setProperties(filterProperties);
         }
         return filterProperties;
     }
@@ -198,6 +192,7 @@ public class CompositeFilter extends Filter {
         if (filterPropertyNamesMap == null) {
             Collection<UIComponent> children = getChildren();
             filterPropertyNamesMap = new LinkedHashMap<String, FilterProperty>(children.size());
+
             for (FilterProperty filterProperty : getFilterProperties()) {
                 filterPropertyNamesMap.put(filterProperty.getName(), filterProperty);
             }
@@ -211,7 +206,6 @@ public class CompositeFilter extends Filter {
             filterPropertiesMap = new LinkedHashMap<String, FilterProperty>(children.size());
             for (FilterProperty filterProperty : getFilterProperties()) {
                 filterPropertiesMap.put(filterProperty.getTitle(), filterProperty);
-
             }
         }
         return filterPropertiesMap;
@@ -238,8 +232,15 @@ public class CompositeFilter extends Filter {
     }
 
     public FilterProperty getFilterPropertyByTitle(String title) {
-        if (title == null) return null;
-        return getFilterPropertiesMap().get(title);
+        if (title != null) {
+            for (FilterProperty filterProperty : getFilterProperties()) {
+                if (filterProperty.getTitle() != null &&
+                        filterProperty.getTitle().equals(title)) {
+                    return filterProperty;
+                }
+            }
+        }
+        return null;
     }
 
     public FilterProperty getFilterPropertyByPropertyLocator(PropertyLocator propertyLocator) {

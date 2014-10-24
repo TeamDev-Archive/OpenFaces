@@ -1,4 +1,4 @@
-<div xmlns:h="http://java.sun.com/jsf/html"
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
      xmlns:a4j="http://richfaces.org/a4j"
@@ -7,9 +7,9 @@
   <a href="../../../main.jsf">Back to the main page</a>
   <br/>
   
-        <h:outputText id="refresher_a4j" value="Refresh" style="font-weight: bold; text-decoration:underline;">
-          <a4j:support event="onclick" reRender="validationForm"/>
-        </h:outputText>
+        <o:commandButton type="button" id="refresher_a4j" value="Refresh" style="font-weight: bold; text-decoration:underline;">
+          <a4j:ajax event="click" render="validationForm"/>
+        </o:commandButton>
 
         <o:clientValidationSupport clientValidation="onDemand"/>
         <h:inputHidden id="firstLoadHelper" value="#{ValidatiorBean.firstLoad}"/>

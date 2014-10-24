@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -12,16 +12,15 @@
 package org.openfaces.component.panel;
 
 import org.openfaces.component.CaptionArea;
-import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.EditableStateHolder;
-import org.openfaces.component.ExpansionToggleButton;
 import org.openfaces.component.LoadingMode;
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.event.StateChangeListener;
-import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -37,7 +36,11 @@ import javax.faces.validator.Validator;
  *
  * @author Kharchenko
  */
-public class FoldingPanel extends AbstractPanelWithCaption implements CompoundComponent, EditableStateHolder {
+@ResourceDependencies({
+        @ResourceDependency(name = "jsf.js", library = "javax.faces"),
+        @ResourceDependency(name = "default.css", library = "openfaces")
+})
+public class FoldingPanel extends AbstractPanelWithCaption implements EditableStateHolder {
     public static final String COMPONENT_TYPE = "org.openfaces.FoldingPanel";
     public static final String COMPONENT_FAMILY = "org.openfaces.FoldingPanel";
 
@@ -195,12 +198,6 @@ public class FoldingPanel extends AbstractPanelWithCaption implements CompoundCo
     }
 
     @Override
-    public void processRestoreState(FacesContext context, Object state) {
-        Object ajaxState = AjaxUtil.retrieveAjaxStateObject(context, this);
-        super.processRestoreState(context, ajaxState != null ? ajaxState : state);
-    }
-
-    @Override
     public void processDecodes(FacesContext context) {
         if (!isRendered()) return;
         for (UIComponent facet : getFacets().values()) {
@@ -269,12 +266,6 @@ public class FoldingPanel extends AbstractPanelWithCaption implements CompoundCo
 
     private boolean isContentPreloaded() {
         return Boolean.TRUE.equals(getAttributes().get("_contentPreloaded_"));
-    }
-
-    public void createSubComponents(FacesContext context) {
-        CaptionArea captionArea = Components.getOrCreateFacet(
-                context, this, CaptionArea.COMPONENT_TYPE, "_defaultButtonsArea", CaptionArea.class);
-        Components.createChildComponent(context, captionArea, ExpansionToggleButton.COMPONENT_TYPE, "toggle");
     }
 
     public Object getSubmittedValue() {
@@ -363,6 +354,13 @@ public class FoldingPanel extends AbstractPanelWithCaption implements CompoundCo
     }
 
     public void setConverter(Converter converter) {
+    }
+
+    public void resetValue() {
+        this.setValue(null);
+        this.setSubmittedValue(null);
+        this.setLocalValueSet(false);
+        this.setValid(true);
     }
 
     public boolean getToggleOnCaptionClick() {

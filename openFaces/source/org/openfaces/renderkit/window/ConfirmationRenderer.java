@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -157,7 +157,7 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
                 iconFacet.encodeAll(FacesContext.getCurrentInstance());
             } else {
                 String iconPath = confirmation.getMessageIconUrl();
-                String iconUrl = Resources.getURL(context, iconPath, null, "window/warnIcon.gif");
+                String iconUrl = Resources.getURL(context, iconPath, "window/warnIcon.gif");
 
                 writer.writeAttribute("width", "1%", null);
                 writer.writeAttribute("id", clientId + ICON_AREA_SUFFIX, null);

@@ -1,4 +1,4 @@
-<div xmlns:h="http://java.sun.com/jsf/html"
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
      xmlns:a4j="http://richfaces.org/a4j"
@@ -16,9 +16,9 @@
 
   <h3>The onshow, onhide and onclick events</h3>
   <o:popupLayer id="popupLayer1" draggable="true" style="padding:2px; background-color:#fafdff">
-    <a4j:support event="onshow" reRender="counter" action="#{A4jSupportBean.increase}"/>
-    <a4j:support event="onhide" reRender="counter" action="#{A4jSupportBean.increase}"/>
-    <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    <a4j:ajax event="show" render="counter" action="#{A4jSupportBean.increase}"/>
+    <a4j:ajax event="hide" render="counter" action="#{A4jSupportBean.increase}"/>
+    <a4j:ajax event="click" render="counter" action="#{A4jSupportBean.increase}"/>
     <h:outputText value="Click here to hide this PopupLayer"/>
     <h:commandButton value="Hide" onclick="O$('form1:popupLayer1').hide(); return false;"/>
   </o:popupLayer>

@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -12,6 +12,9 @@
 
 package org.openfaces.renderkit;
 
+import org.openfaces.component.OUICommand;
+import org.openfaces.util.Rendering;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -23,14 +26,13 @@ import java.util.Map;
 public class OUICommandRenderer extends RendererBase {
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        Rendering.decodeBehaviors(context, component);
+        OUICommand command = (OUICommand) component;
         Map<String, String> requestParameters = context.getExternalContext().getRequestParameterMap();
-        String key = getActionRequestKey(context, component);
+        String key = command.getActionTriggerParam();
         if (requestParameters.containsKey(key)) {
             component.queueEvent(new ActionEvent(component));
         }
     }
 
-    protected String getActionRequestKey(FacesContext context, UIComponent component) {
-        return component.getClientId(context);
-    }
 }

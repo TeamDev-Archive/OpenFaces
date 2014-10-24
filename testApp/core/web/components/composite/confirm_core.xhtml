@@ -1,0 +1,34 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+     xmlns:comp="http://java.sun.com/jsf/composite/components">
+  <br/>
+
+  <a href="../../testPageIndex.jsf">Return to main testing page</a><br/><br/>
+
+  <br/>
+
+  <h:form id="StudyEvents">
+    <h:dataTable id="ScheduledEventsTable" value="${TestEventsBean.tableTestCollection}" var="e"
+                 style="width: 90%; border: none; text-align:center;" cellspacing="0" styleClass="LastColumnAlignMiddle"
+                 columnClasses="desktopTableColumnL,desktopTableColumnM,desktopTableColumnM,desktopTableColumnR">
+      <h:column>
+        <h:commandLink styleClass="VisitButtons" value="${e}" id="addNewButton"
+                       action="add_new"                                              >
+        </h:commandLink>
+        <strong>Click</strong> the&#160;<h:outputLink
+              id="linkInvoker"
+              onclick="O$('confirmationForm:linkPopup').showCentered();return false;">
+        <h:outputText value="Remove"/>
+      </h:outputLink> link to perform an action with confirmation.
+        <comp:conf target_id="form1:StudyEvents:ScheduledEventsTable:0:addNewButton" id="scheduled_confirm" event="click"
+                   details="Are you sure you want to create a new ${e}? This operation can't be undone."/>
+      </h:column>
+    </h:dataTable>
+  </h:form>
+
+
+</div>

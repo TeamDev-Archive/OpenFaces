@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -232,12 +232,12 @@ class HeaderCell extends TableElement {
 
     public static String getSortedAscendingImageUrl(FacesContext facesContext, AbstractTable table) {
         String imageUrl = table.getSortedAscendingImageUrl();
-        return Resources.getURL(facesContext, imageUrl, null, "table/ascending.gif");
+        return Resources.getURL(facesContext, imageUrl, "table/ascending.gif");
     }
 
     public static String getSortedDescendingImageUrl(FacesContext facesContext, AbstractTable table) {
         String imageUrl = table.getSortedDescendingImageUrl();
-        return Resources.getURL(facesContext, imageUrl, null, "table/descending.gif");
+        return Resources.getURL(facesContext, imageUrl, "table/descending.gif");
     }
 
 }

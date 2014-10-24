@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -12,7 +12,10 @@
 package org.openfaces.testapp.datatable;
 
 import org.openfaces.component.input.DropDownItem;
+import org.openfaces.component.table.CSVTableDataFormatter;
+import org.openfaces.component.table.DataScope;
 import org.openfaces.component.table.DataTable;
+import org.openfaces.util.Faces;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -32,7 +35,6 @@ public class TestEventsBean { // todo: this backing bean is used in many non eve
     private List checkedList = new ArrayList();
 
     private TestTableItem selectedItem;
-    private DataTable testTable = new DataTable();
     private List calendarSelectionList = new ArrayList();
     private List dropDownSelectionList = new ArrayList();
 
@@ -137,16 +139,8 @@ public class TestEventsBean { // todo: this backing bean is used in many non eve
     public void setDropDownList(List dropDownList) {
     }
 
-    public DataTable getTestTable() {
-        return testTable;
-    }
-
-    public void setTestTable(DataTable testTable) {
-        this.testTable = testTable;
-    }
-
     public int getCurrentRowIndex() {
-        return getTestTable().getRowIndex();
+        return Faces.var("rowIndex", Integer.class) % 3;
     }
 
     public List getCalendarSelectionList() {
@@ -215,5 +209,10 @@ public class TestEventsBean { // todo: this backing bean is used in many non eve
 
     public void setSelectedDropDownValue(TestTableItem selectedDropDownValue) {
         this.selectedDropDownValue = selectedDropDownValue;
+    }
+    
+    public void export() {
+        Faces.component("formID:sortableDataTable", DataTable.class).
+                export(DataScope.DISPLAYED_ROWS, new CSVTableDataFormatter());
     }
 }

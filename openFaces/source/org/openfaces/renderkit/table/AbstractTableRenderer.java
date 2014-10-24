@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -25,6 +25,7 @@ import org.openfaces.renderkit.CaptionButtonRenderer;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.Environment;
 import org.openfaces.util.Log;
 import org.openfaces.util.Rendering;
@@ -233,14 +234,14 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     }
 
     private void encodeColumnMenuSupport(FacesContext context, AbstractTable table, ScriptBuilder buf) throws IOException {
-        UIComponent component = table.getFacet(FACET_COLUMN_MENU);
+        UIComponent component = Components.getFacet(table, FACET_COLUMN_MENU);
         if (component == null) return;
         if (!(component instanceof PopupMenu))
             throw new FacesException(
                     "The component inside of \"" + FACET_COLUMN_MENU + "\" facet must be a PopupMenu or descendant component, " +
                             "though the following component was found: " + component.getClass().getName() +
                             ". table id: \"" + table.getClientId(context) + "\"");
-        UIComponent buttonComponent = table.getFacet(FACET_COLUMN_MENU_BUTTON);
+        UIComponent buttonComponent = Components.getFacet(table, FACET_COLUMN_MENU_BUTTON);
         if (buttonComponent != null && !(buttonComponent instanceof CaptionButton))
             throw new FacesException(
                     "The component inside of \"" + FACET_COLUMN_MENU_BUTTON + "\" facet must be a CaptionButton or descendant component, " +
@@ -315,7 +316,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     }
 
     private String getDefaultColumnMenuBtnImage(FacesContext context) {
-        return Resources.internalURL(context, null, "table/columnMenuDrop.gif", false);
+        return Resources.internalURL(context, "table/columnMenuDrop.gif");
     }
 
     private void preregisterNoFilterDataRowStyleForOpera(FacesContext context, AbstractTable table) {
@@ -784,7 +785,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         if (!ajaxRequestInProgress)
             return false;
 
-        List<String> portions = AjaxUtil.getRequestedAjaxPortionNames(context);
+        List<String> portions = AjaxUtil.getAjaxPortionNames(context);
         if (portions == null)
             return false;
 

@@ -32,7 +32,8 @@
     &#160;&#160;&#160;
 
     <o:commandLink value="Ajax Submit" actionListener="#{CommandLinkBean.composeFullName}"
-                   execute="input" render="output"
+                   onclick="O$.ajax.request(this, null, {render: 'output', execute: 'input', immediate: false})"
+
                    styleClass="largeFont commandLink"/>
 
     <div style="margin-top: 12px; margin-bottom: 15px;" class="largeFont">

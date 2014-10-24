@@ -14,8 +14,7 @@
               selectedTabClass="tabButton_active"
               frontBorderStyle="0px"
               backBorderStyle="0px">
-      <o:ajax event="change" render="player"
-              execute="viewSelector"/>
+      <o:ajax render="player"/>
       <o:tabSetItem>
         <h:outputText value="Original View"/>
       </o:tabSetItem>
@@ -55,7 +54,7 @@
                           selectedItemStyle="font-weight: bold;"
                 >
           <f:selectItems value="#{TrackList.trackListItems}"/>
-          <o:ajax render="header" event="change"/>
+          <o:ajax render="header"/>
         </o:selectOneRadio>
       </div>
       <div class="demoPlayerEqualizer">

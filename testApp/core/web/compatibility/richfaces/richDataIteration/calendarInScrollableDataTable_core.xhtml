@@ -1,4 +1,4 @@
-<div xmlns:h="http://java.sun.com/jsf/html"
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
      xmlns:a4j="http://richfaces.org/a4j"
@@ -8,7 +8,7 @@
 
   <h3>Calendar in the scrollableDataTable</h3>
 
-  <div style="float:left; width:370px;"><rich:scrollableDataTable value="#{RichTestBean.tableValue}"
+  <div style="float:left; width:370px;"><rich:extendedDataTable value="#{RichTestBean.tableValue}"
                                                                   var="item"
                                                                   width="350px"
                                                                   height="200px"
@@ -32,9 +32,9 @@
       <rich:calendar showApplyButton="true" cellWidth="24px" cellHeight="22px" style="width:200px"/>
     </rich:column>
     <f:facet name="footer">
-      <rich:datascroller/>
+      <rich:dataScroller/>
     </f:facet>
-  </rich:scrollableDataTable></div>
+  </rich:extendedDataTable></div>
 
   <div style="float:right;"><o:dataTable id="datatable"
                                          value="#{RichTestBean.tableValue}"

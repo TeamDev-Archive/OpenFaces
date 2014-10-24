@@ -9,8 +9,6 @@
 <html>
 <head>
   <title>DateChooser Inside DataTable</title>
-  <script src="../funcTestsUtil.js" type="text/javascript"></script>
-
   <style type="text/css">
     .container {
       vertical-align: top;
@@ -23,7 +21,7 @@
     }
   </style>
 </head>
-
+<script src="../funcTestsUtil.js" type="text/javascript"></script>
 <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 <body>
 <f:view>

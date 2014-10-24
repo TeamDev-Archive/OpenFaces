@@ -10,7 +10,7 @@
 <head>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
   <title>File Attachments Test Page</title>
-
+  <script src="../funcTestsUtil.js" type="text/javascript"></script>
 </head>
 
 <body>

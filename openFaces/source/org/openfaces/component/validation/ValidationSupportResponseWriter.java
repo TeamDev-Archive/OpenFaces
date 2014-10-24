@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -27,6 +27,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.context.PartialViewContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
 import java.io.IOException;
@@ -70,7 +71,7 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
     }
 
     @Override
-    protected ResponseWriter getWrapped() {
+    public ResponseWriter getWrapped() {
         return wrapped;
     }
 
@@ -120,6 +121,11 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
                         validationScriptWriter = new StringWriter();
 
                     ResponseWriter responseWriter = context.getResponseWriter();
+                    if (responseWriter == null) {
+                        PartialViewContext partialViewContext = context.getPartialViewContext();
+                        if (partialViewContext.isPartialRequest())
+                            responseWriter = partialViewContext.getPartialResponseWriter();
+                    }
                     ResponseWriter clonedResponseWriter = cloneWithWriter(validationScriptWriter);
                     context.setResponseWriter(clonedResponseWriter);
                     List<String> prevRenderedJsLinks = substituteRenderedJsLinks(context);
@@ -291,7 +297,7 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
         UIForm parentForm = vc.getParentForm();
         if (vp.isUseDefaultClientValidationPresentationForForm(parentForm) || vp.isUseDefaultServerValidationPresentationForForm(parentForm)) {
             int bubbleIndex = nextBubbleIndex(context);
-            addPresentationComponent(vc.getComponent(), vc.getParentForm(), bubbleIndex, vp);
+            renderPresentationComponent(vc.getComponent(), vc.getParentForm(), bubbleIndex, vp);
         }
         if (!vp.getClientValidationRuleForComponent(vc).equals(ClientValidationMode.OFF)) {
             List<String> javascriptLibraries = vc.getJavascriptLibrariesUrls();
@@ -319,7 +325,7 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
         sessionMap.remove(getBubbleIndexKey());
     }
 
-    private static int nextBubbleIndex(FacesContext context) {
+    public static int nextBubbleIndex(FacesContext context) {
         Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
         String key = getBubbleIndexKey();
         Integer bubbleIndex = (Integer) sessionMap.get(key);
@@ -332,23 +338,18 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
         return ValidationSupportResponseWriter.class.getName() + ".bubbleIndex";
     }
 
-    private static void addPresentationComponent(UIComponent component, UIForm parentForm, int idx, ValidationProcessor vp) throws IOException {
+    private static void renderPresentationComponent(UIComponent component, UIForm parentForm, int idx, ValidationProcessor vp) throws IOException {
         ClientValidationSupport clientValidationSupport = vp.getClientValidationSupport(parentForm);
-        createPresentationComponent("dfm" + idx, component, clientValidationSupport, vp);
-    }
-
-    private static void createPresentationComponent(String id, UIComponent component, ClientValidationSupport support, ValidationProcessor vp) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
-        UIMessage defaultMessage = vp.getDefaultPresentationInstance(context, support);
+        UIMessage defaultMessage = vp.getDefaultPresentationInstance(context, clientValidationSupport);
 
-        if (defaultMessage instanceof FloatingIconMessage) {
-            createFloatingIconMessage(context, id, component, (FloatingIconMessage) defaultMessage);
-        } else {
+        if (!(defaultMessage instanceof FloatingIconMessage))
             throw new IllegalStateException("Illegal default presentation component type. Expected FloatingIconMessage, actual " + defaultMessage.getClass());
-        }
+
+        renderFloatingIconMessage(context, "dfm" + idx, component, (FloatingIconMessage) defaultMessage);
     }
 
-    private static FloatingIconMessage createFloatingIconMessage(FacesContext context,
+    private static FloatingIconMessage renderFloatingIconMessage(FacesContext context,
                                                           String id,
                                                           UIComponent component,
                                                           FloatingIconMessage template) throws IOException {
@@ -388,23 +389,23 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
         if (validationScripts == null) {
             validationScripts = new ArrayList<String>();
         }
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        List<String> renderedJsLinks = (List<String>) requestMap.get(Resources.RENDERED_JS_LINKS);
+        Map<Object, Object> contextAttributes = context.getAttributes();
+        List<String> renderedJsLinks = (List<String>) contextAttributes.get(Resources.renderedJsLinksKey(context));
         if (renderedJsLinks != null) {
             for (String js : renderedJsLinks) {
                 if (!validationScripts.contains(js))
                     validationScripts.add(js);
             }
         }
-        requestMap.put(Resources.RENDERED_JS_LINKS, validationScripts);
-        requestMap.put(Resources.POSTPONE_JS_LINK_RENDERING, Boolean.TRUE);
+        contextAttributes.put(Resources.renderedJsLinksKey(context), validationScripts);
+        contextAttributes.put(Resources.POSTPONE_JS_LINK_RENDERING, Boolean.TRUE);
         return renderedJsLinks;
     }
 
     private void restoreRenderedJsLinks(FacesContext context, List<String> prevRenderedJsLinks) {
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        requestMap.put(Resources.RENDERED_JS_LINKS, prevRenderedJsLinks);
-        requestMap.put(Resources.POSTPONE_JS_LINK_RENDERING, Boolean.FALSE);
+        Map<Object, Object> contextAttributes = context.getAttributes();
+        contextAttributes.put(Resources.renderedJsLinksKey(context), prevRenderedJsLinks);
+        contextAttributes.put(Resources.POSTPONE_JS_LINK_RENDERING, Boolean.FALSE);
     }
 
     private void putNewJSLinksInRenderedJsLinks() throws IOException {

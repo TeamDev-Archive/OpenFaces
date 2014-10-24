@@ -10,8 +10,6 @@
 <head>
   <title>ForEach test page</title>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
-  <script src="../funcTestsUtil.js" type="text/javascript"></script>
-
 </head>
 <body>
 <f:view>

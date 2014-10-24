@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,8 +11,10 @@
  */
 package org.openfaces.renderkit.ajax;
 
+import org.openfaces.application.ViewExpiredExceptionHandler;
 import org.openfaces.component.ajax.DefaultSessionExpiration;
 import org.openfaces.component.window.Confirmation;
+import org.openfaces.util.Components;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -33,7 +35,7 @@ public class DefaultSessionExpirationRenderer extends AbstractSettingsRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        if (isAjaxSessionExpirationProcessing(context)) {
+        if (ViewExpiredExceptionHandler.isExpiredView(context)) {
             DefaultSessionExpiration defaultSessionExpiration = (DefaultSessionExpiration) component;
 
             Confirmation confirmation = defaultSessionExpiration.getConfirmation();
@@ -60,9 +62,9 @@ public class DefaultSessionExpirationRenderer extends AbstractSettingsRenderer {
                     : confirmation.getId();
 
             String location = getRedirectLocationOnSessionExpired(context);
-            String onExpiredEventFunction = "O$._pageReloadConfirmation('" + confirmationId + "', '" + location + "');" +
+            String onExpiredEventFunction = "O$.Ajax._pageReloadConfirmation('" + confirmationId + "', '" + location + "');" +
                     "O$._fireSessionExpiredEvent();";
-            processEvent(context, component.getParent(), "onsessionexpired", onExpiredEventFunction);
+            processEvent(context, Components.getFacetOwner(component), "onsessionexpired", onExpiredEventFunction);
         }
     }
 

@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -30,7 +30,6 @@ public class VersionStringTest extends ComponentTestCase {
      * This test may need to be corrected if another version naming scheme is to be chosen.
      */
     public void testOFVersionString() {
-
         String versionString = Resources.getVersionString();
         assertNotNull("OpenFaces version string shouldn't be null", versionString);
         assertTrue("OpenFaces version string shouldn't be empty", versionString.trim().length() > 0);

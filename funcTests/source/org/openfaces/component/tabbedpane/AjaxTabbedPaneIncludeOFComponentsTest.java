@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -15,6 +15,7 @@ import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
+import org.openqa.selenium.By;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.*;
 
@@ -131,7 +132,7 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
 
         element("fn:secondTabID").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         secondDropDown.assertElementExists();
-        secondDropDown.button().click();
+        firstDropDown.button().click();
         secondDropDown.popup().items().get(1).click();
         firstDropDown.field().assertValue("Yellow");
     }
@@ -262,16 +263,24 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         testAppFunctionalPage("/components/tabbedpane/treeTableIn.jsf");
         element("fn:firstHeader").assertText("First tab");
         for (int i = 0; i < 3; i++) {
-            window().document().getElementsByTagName("img").get(i).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
+            getDriver().findElements(By.tagName("img")).get(i).click();
+            sleep(1000);
         }
 
         TreeTableInspector treeTable = treeTable("fn:firstTreeTable");
         treeTable.column(0).makeSorting();
         treeTable.column(0).filter(InputTextFilterInspector.class, "fn:firstTreeTable:filter1").makeFiltering("color");
-        int imagesOnFirstPage = window().document().getElementsByTagName("img").size();
+        int imagesOnFirstPage = getDriver().findElements(By.tagName("img")).size() - 1;
+//        imagesOnFirstPage = imagesOnFirstPage == 4 ? 3 : imagesOnFirstPage;
         element("fn:secondHeader").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
-        for (int i = 0; i < 3; i++) {
-            window().document().getElementsByTagName("img").get((imagesOnFirstPage + i)).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
+        int afterClick = getDriver().findElements(By.tagName("img")).size();
+        for (int i = 1; i < 4; i++) {
+            try {
+                getDriver().findElements(By.className("o_treetable_expansionToggle")).get((i)).click();
+            } catch (IndexOutOfBoundsException e) {
+                throw new AssertionError("i: " + i + ", imagesOnFirstPage: "+ imagesOnFirstPage + "; afterClick:" + afterClick);
+            }
+            sleep(1000);
         }
         TreeTableInspector secondTreeTable = treeTable("fn:secondTreeTable");
         secondTreeTable.column(0).makeSorting();

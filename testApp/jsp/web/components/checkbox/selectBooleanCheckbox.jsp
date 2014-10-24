@@ -8,7 +8,7 @@
 
 <html>
 <head><title>SelectBooleanCheckbox</title></head>
-
+<script src="../funcTestsUtil.js" type="text/javascript"></script>
 <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 <body>
 <f:view>

@@ -7,9 +7,8 @@
       xmlns:rich="http://richfaces.org/rich"
       xmlns:t="http://myfaces.apache.org/tomahawk"
         >
-<head>
+<h:head>
   <title>Testing stardard validators and converters on client side</title>
-  <script type="text/javascript" src="../funcTestsUtil.js"></script>
   <script type="text/javascript">
   function fillInvalidData(formName) {
     var field = O$(formName + "required");
@@ -67,9 +66,9 @@
   }
 
 </script>
-</head>
+</h:head>
 
-<body onload="fillInvalidData('serverValidation:'); fillInvalidData('clientValidation:')">
+<h:body onload="fillInvalidData('serverValidation:'); fillInvalidData('clientValidation:')">
 <f:view>
   <a href="../../main.jsf" style="float: right;">Return to main page</a>
   <br/>
@@ -90,5 +89,5 @@
   </table>
 </f:view>
 
-</body>
+</h:body>
 </html>

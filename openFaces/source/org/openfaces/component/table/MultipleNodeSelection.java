@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -215,19 +215,19 @@ public class MultipleNodeSelection extends TreeTableSelection {
             }
             return result;
         }
-        return Collections.emptyList();
+        return new ArrayList<TreePath>();
     }
 
     public Object saveState(FacesContext context) {
         rememberByKeys();
         Object superState = super.saveState(context);
-        return new Object[]{superState, UIComponentBase.saveAttachedState(context, nodeKeyPaths)};
+        return new Object[]{superState, nodeKeyPaths};
     }
 
     public void restoreState(FacesContext context, Object state) {
         Object[] stateArray = (Object[]) state;
         super.restoreState(context, stateArray[0]);
-        setNodeKeyPaths((List<TreePath>) UIComponentBase.restoreAttachedState(context, stateArray[1]));
+        setNodeKeyPaths((List<TreePath>) stateArray[1]);
     }
 
 

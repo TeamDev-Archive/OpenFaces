@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,28 +11,36 @@
  */
 package org.openfaces.util;
 
-import org.openfaces.ajax.AjaxViewHandler;
-import org.openfaces.ajax.ViewHandlerWrapper;
-
-import javax.faces.application.Application;
+import javax.faces.FactoryFinder;
 import javax.faces.application.StateManager;
-import javax.faces.application.ViewHandler;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewDeclarationLanguage;
+import javax.faces.view.ViewDeclarationLanguageFactory;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 import javax.portlet.ActionRequest;
 import javax.portlet.PortalContext;
 import javax.portlet.RenderRequest;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Eugene Goncharov
  */
 public class Environment {
-    public static final String PARAM_ENVIRONMENT_TRINIDAD_SUPPORT = "org.openfaces.environment.trinidadSupport";
-
     private static final String KEY_UNDEFINED_BROWSER = "undefined_browser";
     private static final String KEY_EXPLORER_BROWSER = "explorer_browser";
     private static final String KEY_EXPLORER6_BROWSER = "explorer6_browser";
@@ -78,7 +86,7 @@ public class Environment {
 
     public static boolean isFacelets(FacesContext context) {
         Map<String, Object> applicationMap = context.getExternalContext().getApplicationMap();
-        String isFaceletsKey = AjaxViewHandler.class.getName() + ".isFacelets";
+        String isFaceletsKey = Environment.class.getName() + ".isFacelets";
         Boolean faceletsFlag = (Boolean) applicationMap.get(isFaceletsKey);
         if (faceletsFlag == null) {
             boolean facelets = isFacelets_internal(context);
@@ -89,121 +97,17 @@ public class Environment {
     }
 
     private static boolean isFacelets_internal(FacesContext context) {
-        Class faceletsViewHandlerClass;
-        try {
-            faceletsViewHandlerClass = Class.forName("com.sun.facelets.FaceletViewHandler");
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
-
         String faceletsParameter = context.getExternalContext().getInitParameter(PARAM_FACELETS);
         if (faceletsParameter != null && faceletsParameter.equalsIgnoreCase("true")) {
             return true;
         }
 
-        // the presence of the facelets.ui.Repeat class doesn't yet mean that this application really uses facelets
-        // e.g. JBoss Portal has facelets in classpath, which makes it possible to create the facelets repeat component
-        Application application = context.getApplication();
-        ViewHandler handler = application.getViewHandler();
-        while (true) {
-            if (handler instanceof ViewHandlerWrapper) {
-                handler = ((ViewHandlerWrapper) handler).getWrapped();
-                continue;
-            }
-            break;
-        }
-        Class handlerClass = handler.getClass();
-        String actualViewHandlerClassName = handlerClass.getName();
-        boolean faceletsViewHandler =
-                actualViewHandlerClassName.equals("com.sun.facelets.FaceletViewHandler") ||
-                        actualViewHandlerClassName.equals("org.jboss.seam.ui.facelet.SeamFaceletViewHandler");
-
-        if (!faceletsViewHandler) {
-            faceletsViewHandler = isFaceletsViewHandlerInUse(handler, faceletsViewHandlerClass);
-        }
-
-        return faceletsViewHandler;
-    }
-
-    private static boolean isFaceletsViewHandlerInUse(Object handler, Class faceletsViewHandlerClass) {
-        boolean faceletsViewHandler = isFaceletsViewHandler(handler, faceletsViewHandlerClass);
-        // If actual handler is not a Facelets view handler than we should try to check can we access it's delegates 
-        if (!faceletsViewHandler) {
-            Object resultHandler = getWrappedHandler(handler);
-
-            if (resultHandler != null) {
-                faceletsViewHandler = isFaceletsViewHandler(resultHandler, faceletsViewHandlerClass);
-                Class<?> richFacesViewHandlerWrapper = null;
-                try {
-                    richFacesViewHandlerWrapper = Class.forName("org.ajax4jsf.application.ViewHandlerWrapper");
-                } catch (ClassNotFoundException e) {
-                    // Empty catch block
-                }
-
-                if (!faceletsViewHandler && (resultHandler instanceof ViewHandlerWrapper ||
-                        (richFacesViewHandlerWrapper != null && richFacesViewHandlerWrapper.isAssignableFrom(resultHandler.getClass())))) {
-                    if (resultHandler instanceof ViewHandlerWrapper) {
-                        resultHandler = ((ViewHandlerWrapper) resultHandler).getWrapped();
-                    } else {
-                        resultHandler = getWrappedHandler(resultHandler);
-                    }
-
-                    faceletsViewHandler = isFaceletsViewHandler(resultHandler, faceletsViewHandlerClass);
-                    if (!faceletsViewHandler) {
-                        faceletsViewHandler = isFaceletsViewHandlerInUse(resultHandler, faceletsViewHandlerClass);
-                    }
-                }
-            }
-        }
-        return faceletsViewHandler;
-    }
-
-    private static boolean isFaceletsViewHandler(Object resultHandler, Class faceletsViewHandlerClass) {
-        return faceletsViewHandlerClass.isAssignableFrom(resultHandler.getClass());
-    }
-
-    private static Object getWrappedHandler(Object handler) {
-        if (handler instanceof ViewHandlerWrapper) {
-            handler = ((ViewHandlerWrapper) handler).getWrapped();
-        }
-
-        if (handler.getClass().getName().equalsIgnoreCase("org.apache.portals.bridges.jsf.PortletViewHandlerImpl")) {
-            try {
-                Class portletHandlerClass = handler.getClass();
-                Field handlerField = portletHandlerClass.getDeclaredField("handler");
-                handlerField.setAccessible(true);
-                return handlerField.get(handler);
-
-            } catch (IllegalAccessException e) {
-                return null;
-            } catch (NoSuchFieldException e) {
-                return null;
-            }
-        } else if (handler.getClass().getName().equalsIgnoreCase("org.ajax4jsf.application.AjaxViewHandler")) {
-            try {
-                Class handlerWrapperClass = handler.getClass().getSuperclass();
-                Field handlerField = handlerWrapperClass.getDeclaredField("_handler");
-                handlerField.setAccessible(true);
-                return handlerField.get(handler);
-
-            } catch (IllegalAccessException e) {
-                return null;
-            } catch (NoSuchFieldException e) {
-                return null;
-            }
-        } else if (handler.getClass().getName().equalsIgnoreCase("org.springframework.faces.webflow.FlowViewHandler")) {
-            try {
-                Class handlerWrapperClass = handler.getClass();
-                Field handlerField = handlerWrapperClass.getDeclaredField("delegate");
-                handlerField.setAccessible(true);
-                return handlerField.get(handler);
-            } catch (IllegalAccessException e) {
-                return null;
-            } catch (NoSuchFieldException e) {
-                return null;
-            }
-        }
-        return null;
+        ViewDeclarationLanguageFactory factory = (ViewDeclarationLanguageFactory) FactoryFinder.getFactory(
+                FactoryFinder.VIEW_DECLARATION_LANGUAGE_FACTORY);
+        UIViewRoot viewRoot = context.getViewRoot();
+        String viewId = viewRoot.getViewId();
+        ViewDeclarationLanguage viewDeclarationLanguage = factory.getViewDeclarationLanguage(viewId);
+        return viewDeclarationLanguage.getClass().getName().toLowerCase().startsWith("facelet");
     }
 
     public static boolean isMyFaces() {
@@ -278,12 +182,6 @@ public class Environment {
             exoPortal = false;
         }
         return exoPortal;
-    }
-
-    public static boolean isTrinidad() {
-        Map applicationMap = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap();
-        Boolean trinidadSupport = (Boolean) applicationMap.get(PARAM_ENVIRONMENT_TRINIDAD_SUPPORT);
-        return trinidadSupport != null && trinidadSupport.equals(Boolean.TRUE);
     }
 
     public static boolean isExplorer() {
@@ -396,11 +294,117 @@ public class Environment {
     }
 
     private static String getUserAgent(FacesContext context) {
-        RequestFacade request = RequestFacade.getInstance(context.getExternalContext().getRequest());
-        String userAgent = request.getHeader("user-agent");
+        Map<String, String> requestHeaderMap = context.getExternalContext().getRequestHeaderMap();
+        String userAgent = requestHeaderMap.get("user-agent");
         return userAgent;
     }
 
+    /**
+     * Returns Mojarra version as can be found in the appropriate manifest.mf file, or an empty string if no
+     * Mojarra manifest files were found
+     */
+    public static String getMojarraVersion(FacesContext context) {
+        Map<String, Object> applicationMap = context.getExternalContext().getApplicationMap();
+        String key = Environment.class.getName() + ".MOJARRA_VERSION";
+        String version = (String) applicationMap.get(key);
+        if (version == null) {
+            List<Map<String, String>> manifestAttributes = Environment.findManifestFiles("Mojarra");
+            List<String> versionStringsFound = new ArrayList<String>();
+            for (Map<String, String> thisFileAttributes : manifestAttributes) {
+                String v = thisFileAttributes.get("Implementation-Version");
+                versionStringsFound.add(v);
+            }
+            // It seems there are cases when several implementations might be found in the same class-path, where one
+            // version overrides the other. It doesn't seem to be possible to detect that actual precedence order, so
+            // we just take the highest version assuming that application is set up properly in this case.
+            Collections.sort(versionStringsFound);
+            int versionCount = versionStringsFound.size();
+            version = versionCount > 0 ? versionStringsFound.get(versionCount - 1) : "";
+            applicationMap.put(key, version);
+        }
+        return version;
+    }
+
+    private static List<Map<String, String>> findManifestFiles(String bundleNameSubstring) {
+        List<Map<String, String>> result = new ArrayList<Map<String, String>>();
+        Set<ClassLoader> classLoaders = new HashSet<ClassLoader>();
+        classLoaders.add(Environment.class.getClassLoader());
+
+        for (ClassLoader classLoader : classLoaders) {
+            List<Map<String, String>> manifestFiles = findManifestFiles(classLoader, bundleNameSubstring);
+            result.addAll(manifestFiles);
+        }
+        return result;
+    }
+
+    private static List<Map<String, String>> findManifestFiles(ClassLoader classLoader, String bundleNameSubstring) {
+        List<Map<String, String>> result = new ArrayList<Map<String, String>>();
+        Enumeration<URL> resources;
+        try {
+            resources = classLoader.getResources("META-INF/MANIFEST.MF");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        while (resources.hasMoreElements()) {
+            URL url = resources.nextElement();
+            Map<String, String> thisFileAttributes = null;
+            try {
+                thisFileAttributes = readManifestAttributes(url);
+            } catch (IOException e) {
+                continue;
+            }
+            String bundleName = thisFileAttributes.get("Bundle-Name");
+            if (bundleName == null || !bundleName.contains(bundleNameSubstring)) continue;
+
+            result.add(thisFileAttributes);
+        }
+        return result;
+    }
+
+    static Map<String, String> readManifestAttributes(URL url) throws IOException {
+        Map<String, String> attributes = new HashMap<String, String>();
+
+        InputStream inputStream = url.openStream();
+        InputStreamReader isr = new InputStreamReader(inputStream);
+        LineNumberReader reader = new LineNumberReader(isr);
+        try {
+            List<String> lines = new ArrayList<String>();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                lines.add(line);
+            }
+            while (lines.size() > 0) {
+                String[] attribute = readManifestAttribute(lines);
+                if (attribute != null)
+                    attributes.put(attribute[0], attribute[1]);
+            }
+        } finally {
+            reader.close();
+        }
+
+        return attributes;
+    }
+
+    static String[] readManifestAttribute(List<String> lines) {
+        while (lines.size() > 0) {
+            String line = lines.remove(0);
+            int separatorIndex = line.indexOf(":");
+            if (separatorIndex == -1) continue;
+            String name = line.substring(0, separatorIndex);
+            String value = line.substring(separatorIndex + 1);
+            if (value.startsWith(" ")) value = value.substring(1);
+            while (lines.size() > 0) {
+                line = lines.remove(0);
+                if (!line.startsWith(" ")) {
+                    lines.add(0, line);
+                    break;
+                }
+                value += line.substring(1);
+            }
+            return new String[] {name, value};
+        }
+        return null;
+    }
     public static boolean isGateInPortal(FacesContext context) {
         ExternalContext externalContext = context.getExternalContext();
         Map<String, Object> applicationMap = externalContext.getApplicationMap();

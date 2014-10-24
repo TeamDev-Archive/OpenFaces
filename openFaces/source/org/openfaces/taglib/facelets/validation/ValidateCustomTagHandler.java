@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,16 +11,6 @@
  */
 package org.openfaces.taglib.facelets.validation;
 
-import com.sun.facelets.FaceletContext;
-import com.sun.facelets.FaceletHandler;
-import com.sun.facelets.tag.CompositeFaceletHandler;
-import com.sun.facelets.tag.MetaRuleset;
-import com.sun.facelets.tag.MetaTagHandler;
-import com.sun.facelets.tag.TagAttribute;
-import com.sun.facelets.tag.TagConfig;
-import com.sun.facelets.tag.TagException;
-import com.sun.facelets.tag.jsf.ConverterConfig;
-import com.sun.facelets.tag.jsf.ValidatorConfig;
 import org.openfaces.taglib.facelets.FaceletsExpressionCreator;
 import org.openfaces.taglib.facelets.PropertyHandlerMetaRule;
 import org.openfaces.taglib.internal.validation.AbstractCustomValidatorTag;
@@ -37,7 +27,10 @@ import javax.faces.component.UIInput;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
+import javax.faces.view.facelets.*;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,9 +77,40 @@ public class ValidateCustomTagHandler extends MetaTagHandler {
     }
 
     protected MetaRuleset createMetaRuleset(Class type) {
-        MetaRuleset metaRuleset = super.createMetaRuleset(type);
+        if (type == null)
+            throw new IllegalArgumentException("type cannot be null");
+        Class<MetaRuleset> cls = findClass(
+                "com.sun.faces.facelets.tag.MetaRulesetImpl",
+                "org.apache.myfaces.view.facelets.tag.MetaRulesetImpl");
+        Constructor<MetaRuleset> constructor;
+        try {
+            constructor = cls.getConstructor(Tag.class, Class.class);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+        MetaRuleset metaRuleset;
+        try {
+            metaRuleset = constructor.newInstance(this.tag, type);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
         metaRuleset.addRule(metaRule);
         return metaRuleset;
+    }
+
+    private Class findClass(String... classNames) {
+        for (String className : classNames) {
+            try {
+                return Class.forName(className);
+            } catch (ClassNotFoundException e) {
+                // look for the next class in parameter list
+            }
+        }
+        throw new IllegalArgumentException("Couldn't find neither of the specified classes");
     }
 
     protected void setAttributes(FaceletContext faceletContext, Object object) {
@@ -155,5 +179,7 @@ public class ValidateCustomTagHandler extends MetaTagHandler {
         }
 
     }
+
+
 
 }

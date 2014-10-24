@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -14,8 +14,9 @@ package org.openfaces.demo.beans.selectmanycheckbox;
 
 import org.openfaces.demo.beans.util.FacesUtils;
 
-import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,7 +27,7 @@ import java.util.TreeSet;
 /**
  * @author Natalia Zolochevska
  */
-public class BookCatalog {
+public class BookCatalog implements Serializable {
 
     private List<Book> books;
     private Book selectedBook;
@@ -87,7 +88,7 @@ public class BookCatalog {
             Set<String> labels = new TreeSet<String>();
             for (Book book : getBooks()) {
                 Collection<String> bookLabels = book.getLabels();
-                if (bookLabels != null){
+                if (bookLabels != null) {
                     labels.addAll(bookLabels);
                 }
             }
@@ -109,13 +110,13 @@ public class BookCatalog {
         return null;
     }
 
-    public void selectBook(ActionEvent event) {
+    public void selectBook(AjaxBehaviorEvent event) {
         String isbn = FacesUtils.getEventParameter(event, "isbn");
         selectedBook = findBookByIsbn(isbn);
         Collection<String> bookLabels = selectedBook.getLabels();
-        if (bookLabels!=null){
+        if (bookLabels != null) {
             selectedBookLabels = new ArrayList<String>(bookLabels);
-        }else{
+        } else {
             selectedBookLabels = null;
         }
     }
@@ -132,8 +133,8 @@ public class BookCatalog {
         this.selectedBookLabels = selectedBookLabels;
     }
 
-    public void saveBookLabels(ActionEvent event) {
-        if (selectedBook != null){
+    public void saveBookLabels(AjaxBehaviorEvent event) {
+        if (selectedBook != null) {
             selectedBook.setLabels(selectedBookLabels);
             selectedBook = null;
             selectedBookLabels = null;

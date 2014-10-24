@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,7 +11,6 @@
  */
 package org.openfaces.renderkit.ajax;
 
-import org.openfaces.ajax.AjaxViewHandler;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.RawScript;
@@ -23,7 +22,6 @@ import javax.faces.component.UIForm;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * @author Eugene Goncharov
@@ -33,7 +31,7 @@ public abstract class AbstractSettingsRenderer extends RendererBase {
     protected void processEvent(FacesContext context, UIComponent component, String eventName, String eventHandlerJavascript) throws IOException {
         String eventFunction = getEventFunction(eventHandlerJavascript);
 
-        String eventHandlingJavascript = getEventScript(eventName, eventFunction, component);
+        String eventHandlingJavascript = getEventScript(eventName, eventFunction);
         renderInitScript(context, eventHandlingJavascript);
     }
 
@@ -42,15 +40,8 @@ public abstract class AbstractSettingsRenderer extends RendererBase {
         Rendering.renderInitScript(context, new ScriptBuilder().onLoadScript(new RawScript(javaScript)));
     }
 
-    protected String getEventScript(String eventName, String eventFunction, UIComponent component) {
-        String javaScript;
-
-        UIComponent parentComponent = component.getParent();
-
-        boolean isEventForComponent = isParentComponentValid(parentComponent) && (getComponentId(parentComponent) != null);
-        javaScript = (isEventForComponent)
-                ? "O$.setComponentAjaxEventHandler('" + eventName + "'," + eventFunction + ",'" + getComponentId(parentComponent) + "');"
-                : "O$.setCommonAjaxEventHandler('" + eventName + "'," + eventFunction + ");";
+    protected String getEventScript(String eventName, String eventFunction) {
+        String javaScript = "O$.Ajax.setCommonAjaxEventHandler('" + eventName + "'," + eventFunction + ");";
         return javaScript;
     }
 
@@ -87,19 +78,10 @@ public abstract class AbstractSettingsRenderer extends RendererBase {
         return !(parentComponent instanceof UIViewRoot) && !(parentComponent instanceof UIForm);
     }
 
-    protected boolean isAjaxSessionExpirationProcessing(FacesContext context) {
-        Map requestMap = context.getExternalContext().getRequestMap();
-        return (AjaxUtil.isAjaxRequest(context) &&
-                requestMap.containsKey(AjaxViewHandler.SESSION_EXPIRATION_PROCESSING));
-    }
-
-    protected boolean isAjaxErrorProcessing(FacesContext context) {
-        Map requestMap = context.getExternalContext().getRequestMap();
-        return AjaxUtil.isAjaxRequest(context) &&
-                requestMap.containsKey(AjaxViewHandler.AJAX_ERROR_PROCESSING);
-    }
-
     protected String getRedirectLocationOnSessionExpired(FacesContext context) {
-        return (String) context.getExternalContext().getRequestMap().get(AjaxViewHandler.LOCATION_HEADER);
+        UIViewRoot viewRoot = context.getViewRoot();
+        String actionURL = context.getApplication().getViewHandler().getActionURL(context, viewRoot.getViewId());
+        actionURL = context.getExternalContext().encodeActionURL(actionURL);
+        return actionURL;
     }
 }

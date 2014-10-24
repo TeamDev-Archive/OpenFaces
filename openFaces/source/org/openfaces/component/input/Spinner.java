@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -13,8 +13,8 @@
 package org.openfaces.component.input;
 
 import org.openfaces.component.Side;
-import org.openfaces.util.ValueBindings;
 import org.openfaces.util.NullTypeELResolver;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
 import java.math.BigDecimal;
@@ -292,7 +292,7 @@ public class Spinner extends DropDownComponent {
         return super.getDisabledButtonStyle();
     }
 
-     @Override
+    @Override
     public void updateModel(FacesContext context) {
         boolean intercept = isLocalValueSet() && getLocalValue() == null && !NullTypeELResolver.isActive();
 

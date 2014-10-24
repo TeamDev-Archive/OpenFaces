@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -52,16 +52,17 @@ if (!window.O$) {
   };
 
   O$.extend(O$, {
-    DEBUG: true,
+    DEBUG:true,
 
-    ACTION_LISTENER: "_of_actionListener",
-    ACTION: "_of_action",
-    ACTION_COMPONENT: "_of_actionComponent",
-    IMMEDIATE: "_of_immediate"
+    ACTION_LISTENER:"_of_actionListener",
+    ACTION:"_of_action",
+    ACTION_COMPONENT:"_of_actionComponent",
+    IMMEDIATE:"_of_immediate"
   });
 
 
   O$.initComponent = function (clientId, styles, properties, events) {
+    O$._checkDefaultCssPresence();
     var component = O$(clientId);
     if (!component)
       throw "O$.initComponent: couldn't find component by id: " + clientId;
@@ -69,15 +70,15 @@ if (!window.O$) {
     if (styles) {
       if (styles.rollover)
         O$.setupHoverStateFunction(component, function (mouseInside) {
-          O$.setStyleMappings(component, {_rolloverStyle: mouseInside ? styles.rollover : null});
+          O$.setStyleMappings(component, {_rolloverStyle:mouseInside ? styles.rollover : null});
         });
       if (styles.focused)
         O$.setupFocusedStateFunction(component, function (focused) {
-          O$.setStyleMappings(component, {_focusedStyle: focused ? styles.focused : null});
+          O$.setStyleMappings(component, {_focusedStyle:focused ? styles.focused : null});
         });
       if (styles.pressed)
         O$.setupMousePressedStateFunction(component, function (pressed) {
-          O$.setStyleMappings(component, {_pressedStyle: pressed ? styles.pressed : null});
+          O$.setStyleMappings(component, {_pressedStyle:pressed ? styles.pressed : null});
         });
     }
     if (properties) {
@@ -115,30 +116,30 @@ if (!window.O$) {
   };
 
   O$.extend(O$, { /* Rectangle class */
-    Rectangle: O$.createClass(null, {
-      constructor: function (x, y, width, height) {
+    Rectangle:O$.createClass(null, {
+      constructor:function (x, y, width, height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
       },
-      clone: function () {
+      clone:function () {
         return new O$.Rectangle(this.x, this.y, this.width, this.height);
       },
-      getMinX: function () {
+      getMinX:function () {
         return this.x;
       },
-      getMinY: function () {
+      getMinY:function () {
         return this.y;
       },
-      getMaxX: function () {
+      getMaxX:function () {
         return this.x + this.width;
       },
-      getMaxY: function () {
+      getMaxY:function () {
         return this.y + this.height;
       },
 
-      addRectangle: function (rect) {
+      addRectangle:function (rect) {
         O$.assert(rect, "rect parameter should be passed");
         var x1 = this.getMinX();
         if (rect.getMinX() < x1)
@@ -158,7 +159,7 @@ if (!window.O$) {
         this.height = y2 - y1;
       },
 
-      intersectWith: function (rect) {
+      intersectWith:function (rect) {
         O$.assert(rect, "rect parameter should be passed");
 
         var x1 = O$.maxDefined(this.getMinX(), rect.getMinX());
@@ -177,7 +178,7 @@ if (!window.O$) {
         this.height = y1 !== undefined && y2 !== undefined ? y2 - y1 : undefined;
       },
 
-      intersects: function (rect) {
+      intersects:function (rect) {
         var x1 = this.getMinX();
         var x2 = this.getMaxX();
         var rectX1 = rect.getMinX();
@@ -190,7 +191,7 @@ if (!window.O$) {
         return (rectX2 > x1 && rectY2 > y1 && rectX1 < x2 && rectY1 < y2);
       },
 
-      containsRectangle: function (rect) {
+      containsRectangle:function (rect) {
         var x1 = this.getMinX();
         var x2 = this.getMaxX();
         var rectX1 = rect.getMinX();
@@ -203,7 +204,7 @@ if (!window.O$) {
         return (x1 <= rectX1 && x2 >= rectX2 && y1 <= rectY1 && y2 >= rectY2);
       },
 
-      containsPoint: function (x, y) {
+      containsPoint:function (x, y) {
         return x >= this.getMinX() && x <= this.getMaxX() &&
                 y >= this.getMinY() && y <= this.getMaxY();
       }
@@ -212,11 +213,11 @@ if (!window.O$) {
 
   /* GraphicLine class -- displays a horizontal or vertical line on the specified element. */
   O$.GraphicLine = O$.createClass({
-    ALIGN_BY_TOP_OR_LEFT: "alignByTopOrLeft",
-    ALIGN_BY_CENTER: "alignByCenter",
-    ALIGN_BY_BOTTOM_OR_RIGHT: "alignByBottomOrRight"
+    ALIGN_BY_TOP_OR_LEFT:"alignByTopOrLeft",
+    ALIGN_BY_CENTER:"alignByCenter",
+    ALIGN_BY_BOTTOM_OR_RIGHT:"alignByBottomOrRight"
   }, {
-    constructor: function (lineStyle, alignment, x1, y1, x2, y2) {
+    constructor:function (lineStyle, alignment, x1, y1, x2, y2) {
       this._element = document.createElement("div");
       this._element.style.visibility = "hidden";
       this._element.style.position = "absolute";
@@ -232,7 +233,7 @@ if (!window.O$) {
       this.setAlignment(alignment, false);
     },
 
-    setLine: function (x1, y1, x2, y2, dontUpdateNow) {
+    setLine:function (x1, y1, x2, y2, dontUpdateNow) {
       this.x1 = x1;
       this.y1 = y1;
       this.x2 = x2;
@@ -244,19 +245,19 @@ if (!window.O$) {
         this.updatePresentation();
     },
 
-    setLineStyle: function (lineStyle, dontUpdateNow) {
+    setLineStyle:function (lineStyle, dontUpdateNow) {
       this.lineStyle = lineStyle;
       if (!dontUpdateNow)
         this.updatePresentation();
     },
 
-    setAlignment: function (alignment, dontUpdateNow) {
+    setAlignment:function (alignment, dontUpdateNow) {
       this.alignment = alignment;
       if (!dontUpdateNow)
         this.updatePresentation();
     },
 
-    updatePresentation: function () {
+    updatePresentation:function () {
       if (this.x1 === undefined || this.y1 === undefined || this.x2 === undefined || this.y2 === undefined) {
         this._element.style.visibility = "hidden";
         return;
@@ -287,7 +288,7 @@ if (!window.O$) {
                       : new O$.Rectangle(this.x1 + alignmentCorrection, this.y1, width, this.y2 - this.y1));
     },
 
-    show: function (parentElement) {
+    show:function (parentElement) {
       if (!parentElement)
         parentElement = O$.getDefaultAbsolutePositionParent();
       this._element.style.visibility = "visible";
@@ -297,11 +298,11 @@ if (!window.O$) {
       this.updatePresentation();
     },
 
-    hide: function () {
+    hide:function () {
       this._element.style.visibility = "hidden";
     },
 
-    remove: function () {
+    remove:function () {
       this._element.parentNode.remove(this._element);
     }
   });
@@ -310,11 +311,11 @@ if (!window.O$) {
   O$.GraphicRectangle = O$.createClass({
     /* the following constants deptermine the way that outline line is aligned with respect to the rectangle's edge
      * (this is especially important for thick lines) */
-    ALIGN_INSIDE: "alignInside", // the entire outline line is aligned to be inside of the rectangle
-    ALIGN_CENTER_LINE: "alignCenterLine", // center of the outline line is aligned with the rectangle edge
-    ALIGN_OUTSIDE: "alignOutside" // the entire contents of outline line is aligned to be outside of the rectangle
+    ALIGN_INSIDE:"alignInside", // the entire outline line is aligned to be inside of the rectangle
+    ALIGN_CENTER_LINE:"alignCenterLine", // center of the outline line is aligned with the rectangle edge
+    ALIGN_OUTSIDE:"alignOutside" // the entire contents of outline line is aligned to be outside of the rectangle
   }, {
-    constructor: function (lineStyle, lineAlignment, rectangle) {
+    constructor:function (lineStyle, lineAlignment, rectangle) {
       this._leftLine = new O$.GraphicLine();
       this._rightLine = new O$.GraphicLine();
       this._topLine = new O$.GraphicLine();
@@ -327,13 +328,13 @@ if (!window.O$) {
       this.setLineAlignment(lineAlignment, false);
     },
 
-    setRectangle: function (rectangle, dontUpdateNow) {
+    setRectangle:function (rectangle, dontUpdateNow) {
       this.rectangle = rectangle;
       if (!dontUpdateNow)
         this._updateRect();
     },
 
-    setLineStyle: function (lineStyle, dontUpdateNow) {
+    setLineStyle:function (lineStyle, dontUpdateNow) {
       this.lineStyle = lineStyle;
       this._leftLine.setLineStyle(lineStyle, dontUpdateNow);
       this._rightLine.setLineStyle(lineStyle, dontUpdateNow);
@@ -343,7 +344,7 @@ if (!window.O$) {
         this._updateRect();
     },
 
-    setLineAlignment: function (lineAlignment, dontUpdateNow) {
+    setLineAlignment:function (lineAlignment, dontUpdateNow) {
       var topAndLeftLinesAlignment =
               lineAlignment == O$.GraphicRectangle.ALIGN_INSIDE ? O$.GraphicLine.ALIGN_BY_TOP_OR_LEFT :
                       lineAlignment == O$.GraphicRectangle.ALIGN_OUTSIDE ? O$.GraphicLine.ALIGN_BY_BOTTOM_OR_RIGHT :
@@ -360,7 +361,7 @@ if (!window.O$) {
         this._updateRect();
     },
 
-    _updateRect: function () {
+    _updateRect:function () {
       var rect = this.rectangle;
       if (!rect)
         return;
@@ -384,21 +385,21 @@ if (!window.O$) {
       this._bottomLine.setLine(x1 - cornerSpacing, y2, x2 + cornerSpacing, y2);
     },
 
-    show: function (parentElement) {
+    show:function (parentElement) {
       this._leftLine.show(parentElement);
       this._rightLine.show(parentElement);
       this._topLine.show(parentElement);
       this._bottomLine.show(parentElement);
     },
 
-    hide: function () {
+    hide:function () {
       this._leftLine.hide();
       this._rightLine.hide();
       this._topLine.hide();
       this._bottomLine.hide();
     },
 
-    remove: function () {
+    remove:function () {
       this._leftLine.remove();
       this._rightLine.remove();
       this._topLine.remove();
@@ -423,7 +424,10 @@ if (!window.O$) {
   O$.assert = function (value, message) {
     if (value !== null && value !== undefined && value !== false)
       return;
-    throw message;
+    if (!message)
+      throw "assert failed with out message";
+    else
+      throw message;
   };
 
   O$.assertEquals = function (expectedValue, actualValue, message) {
@@ -488,13 +492,13 @@ if (!window.O$) {
     this._timeAccumulators = [];
 
     this.logTimeStamp = function (name) {
-      this._timeStamps.push({time: new Date(), name: name});
+      this._timeStamps.push({time:new Date(), name:name});
     };
 
     this.startMeasuring = function (name) {
       var timeAccumulator = this._timeAccumulators[name];
       if (timeAccumulator == null) {
-        timeAccumulator = {name: name, secondsElapsed: 0.0, lastPeriodStartDate: null};
+        timeAccumulator = {name:name, secondsElapsed:0.0, lastPeriodStartDate:null};
         this._timeAccumulators[name] = timeAccumulator;
         this._timeAccumulators.push(timeAccumulator);
       }
@@ -694,23 +698,6 @@ if (!window.O$) {
     }
     return val;
   };
-  O$.decodeHTML = function (val) {
-    return val.replace(/&apos;/g, "'")
-            .replace(/&quot;/g, '"')
-            .replace(/&gt;/g, '>')
-            .replace(/&lt;/g, '<')
-            .replace(/&#xA;/g, ' ')
-            .replace(/&amp;/g, '&');
-  };
-
-  O$.encodeHTML = function (val) {
-    return val.replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&apos;');
-  };
-
 
   if (!Array.prototype.indexOf) {
     Array.prototype.indexOf = function (elt /*, from*/) {
@@ -740,7 +727,8 @@ if (!window.O$) {
 
       var thisp = arguments[1];
       for (var i = 0; i < len; i++) {
-        if (i in this && !fun.call(thisp, this[i], i, this))
+        if (i in this &&
+                !fun.call(thisp, this[i], i, this))
           return false;
       }
 
@@ -942,7 +930,9 @@ if (!window.O$) {
 
   O$.isMozillaFF = function () {
     if (O$._mozilla == undefined)
-      O$._mozilla = O$.userAgentContains("mozilla") && !O$.userAgentContains("msie") && !O$.userAgentContains("safari");
+      O$._mozilla = O$.userAgentContains("mozilla") &&
+              !O$.userAgentContains("msie") &&
+              !O$.userAgentContains("safari");
     return O$._mozilla;
   };
 
@@ -985,9 +975,31 @@ if (!window.O$) {
   };
 
   O$.isExplorer9 = function () {
-    if (O$._explorer9 == undefined)
+    if (O$._explorer9 == undefined) {
       O$._explorer9 = O$.isExplorer() && O$.userAgentContains("MSIE 9");
+    }
     return O$._explorer9;
+  };
+
+  O$.isExplorer10 = function () {
+    if (O$._explorer10 == undefined) {
+      O$._explorer10 = O$.isExplorer() && O$.userAgentContains("MSIE 10");
+    }
+    return O$._explorer10;
+  };
+
+  O$.isExplorer10AndOlder = function(){
+    if(!O$._explorer10AndOlder){
+      O$._explorer10AndOlder = O$.isExplorer10() || O$.isExplorer9() || O$.isExplorer8AndOlder();
+    }
+    return O$._explorer10AndOlder;
+  };
+
+  O$.isExplorer11 = function(){
+    if (!O$._explorer11){
+      O$._explorer11 = !!navigator.userAgent.match(/Trident.*rv[ :]*11\./);
+    }
+    return O$._explorer11;
   };
 
   O$.isOpera9AndLate = function () {
@@ -1487,7 +1499,7 @@ if (!window.O$) {
       elt._attachedEvents = [];
 
     var eventToAttach = {
-      functionScript: evtScript
+      functionScript:evtScript
     };
 
     if (elt.addEventListener) {
@@ -1502,8 +1514,8 @@ if (!window.O$) {
 
   O$.removeEventHandler = function (elt, evtName, evtScript, useCapture) {
     var eventToDetach = {
-      eventName: "",
-      functionScript: evtScript
+      eventName:"",
+      functionScript:evtScript
     };
 
     if (elt.addEventListener) {
@@ -1725,7 +1737,7 @@ if (!window.O$) {
   O$.getEventPoint = function (e, forElement) {
     var evt = O$.getEvent(e);
     var pageScrollPos = O$.getPageScrollPos();
-    var pos = {x: evt.clientX + pageScrollPos.x, y: evt.clientY + pageScrollPos.y};
+    var pos = {x:evt.clientX + pageScrollPos.x, y:evt.clientY + pageScrollPos.y};
 
     var container = forElement ? O$.getContainingBlock(forElement, true) : null;
     if (container) {
@@ -1838,7 +1850,7 @@ if (!window.O$) {
   };
 
 
-  O$.createHiddenFocusElement = function (tabIndex, componentId) {
+  O$.createHiddenFocusElement = function (componentId, tabIndex) {
     var focusElementId = componentId + ":::focus";
     var focusElement = O$(focusElementId);
     if (!focusElement) {
@@ -1865,7 +1877,9 @@ if (!window.O$) {
   };
 
   O$.initDefaultScrollPosition = function (trackerFieldId, scrollPos) {
-    O$.setHiddenField(null, trackerFieldId, scrollPos);
+    O$.addLoadEvent(function () {
+      O$.setHiddenField(null, trackerFieldId, scrollPos);
+    });
     O$.initScrollPosition_(trackerFieldId, true, 1, null);
   };
 
@@ -1887,8 +1901,8 @@ if (!window.O$) {
 
     var targetComponent = (scrollableComponent) ? scrollableComponent : window;
 
-    targetComponent._of_scrollPosTrackingParams = {fieldId: scrollPosFieldId, autoSave: autoSaveScrollPos,
-      priority: priority, scrollableId: scrollableComponentId};
+    targetComponent._of_scrollPosTrackingParams = {fieldId:scrollPosFieldId, autoSave:autoSaveScrollPos,
+      priority:priority, scrollableId:scrollableComponentId};
 
     O$.addLoadEvent(function () {
       if (!targetComponent._of_scrollPosTrackingParams)
@@ -1990,7 +2004,13 @@ if (!window.O$) {
   };
 
   O$.initDefaultFocus = function (trackerFieldId, focusedComponentId) {
-    O$.setHiddenField(null, trackerFieldId, focusedComponentId);
+    O$.addLoadEvent(function () {
+      try {
+        O$.setHiddenField(null, trackerFieldId, focusedComponentId);
+      } catch (e) {
+        // absence of a form on one page in case of application-wide focus tracking configuration is not critical
+      }
+    });
     O$.initFocus_(trackerFieldId, true, 1);
   };
 
@@ -2053,13 +2073,10 @@ if (!window.O$) {
     O$.addLoadEvent(setupFocus);
     O$.addLoadEvent(function () {
       if (O$.Ajax) {
-        var prevAjaxEnd = O$.Ajax.onajaxend;
-        O$.Ajax.onajaxend = function (e) {
-          if (prevAjaxEnd)
-            prevAjaxEnd.call(this, e);
+        OpenFaces.Ajax.setCommonAjaxEventHandler("onajaxend", function (e) {
           O$._autoSavingFocusInitialized = false;
           setTimeout(setupFocus, 1);
-        };
+        });
       }
     });
   };
@@ -2304,14 +2321,14 @@ if (!window.O$) {
 
   O$.setupHoverAndPressStateFunction = function (element, fn) {
     var state = {
-      mouseInside: false,
-      pressed: false,
-      reset: function () {
+      mouseInside:false,
+      pressed:false,
+      reset:function () {
         this.mouseInside = false;
         this.pressed = false;
         this._update();
       },
-      _update: function () {
+      _update:function () {
         fn(this.mouseInside, this.pressed);
       }
     };
@@ -2333,9 +2350,9 @@ if (!window.O$) {
     if (!element._hoverListeners) {
       element._hoverListeners = [];
       element._of_hoverState = {
-        forceHover: null,
-        mouseInside: false,
-        hoverValue: false
+        forceHover:null,
+        mouseInside:false,
+        hoverValue:false
       };
 
       element._updateHover = function () {
@@ -2838,12 +2855,12 @@ if (!window.O$) {
     var prevOnblurHandler = component.onblur;
 
     O$.extend(component, {
-      _focused: false,
-      _updateOutline: function () {
+      _focused:false,
+      _updateOutline:function () {
         if (this._outlineUpdateBlocked)
           return;
         O$.setStyleMappings(this, {
-          focused: this._focused ? focusedClassName : null
+          focused:this._focused ? focusedClassName : null
         });
 
         if (this._focused)
@@ -2851,7 +2868,7 @@ if (!window.O$) {
         else
           O$.hideFocusOutline(this);
       },
-      _doUnblockOutlineUpdate: function () {
+      _doUnblockOutlineUpdate:function () {
         this._outlineUpdateBlocked = false;
         if (this._focusedBeforeBlocking != null && this._focusedBeforeBlocking != this._focused) {
           this._focusedBeforeBlocking = null;
@@ -2865,7 +2882,7 @@ if (!window.O$) {
         }
         this._updateOutline();
       },
-      onfocus: function (evt) {
+      onfocus:function (evt) {
         if (this._submitting)
           return;
         this._focused = true;
@@ -2874,7 +2891,7 @@ if (!window.O$) {
 
         component._updateOutline();
       },
-      onblur: function (evt) {
+      onblur:function (evt) {
         if (this._submitting)
           return;
         this._focused = false;
@@ -2891,7 +2908,7 @@ if (!window.O$) {
 
     });
 
-    var focusControl = O$.createHiddenFocusElement(tabIndex, component.id);
+    var focusControl = O$.createHiddenFocusElement(component.id, tabIndex);
 
     function fireEvent(object, eventName, param) {
       var handler = object[eventName];
@@ -3022,10 +3039,11 @@ if (!window.O$) {
     component.onComponentUnload = function () {
       if (oldUnloadHandler)
         oldUnloadHandler();
+      else
+        O$.unloadAllHandlersAndEvents(component);
+
       if (component._focusOutline)
         component._focusOutline.remove();
-
-      O$.unloadAllHandlersAndEvents(component);
     };
   };
 
@@ -3081,27 +3099,26 @@ if (!window.O$) {
     return document._of_localStyleSheet;
   };
 
-  // TODO: in IE for high loaded pages we get limit for rules inside one style sheet, in this case we are starting to cr8 additional sheets
-  O$.addAdditionalStyleSheet = function () {
+  O$.addAdditionalStyleSheet = function() {
     document._of_localAdditionalStyleSheetsCount = document._of_localAdditionalStyleSheetsCount ? document._of_localAdditionalStyleSheetsCount + 1 : 1;
     document._of_localAdditionalStyleSheets = [];
 
     if (document.createStyleSheet) {
-      document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount - 1] = document.createStyleSheet();
+      document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount-1] = document.createStyleSheet();
     } else {
       var styleElement = document.createElement("style");
       var headTags = document.getElementsByTagName("head");
       var styleParent = headTags.length > 0 ? headTags[0] : document.getElementsByTagName("body")[0];
       styleParent.appendChild(styleElement);
       if (styleElement.styleSheet)
-        document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount - 1] = styleElement.styleSheet;
+        document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount-1] = styleElement.styleSheet;
       else
-        document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount - 1] = styleElement.sheet;
+        document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount-1] =  styleElement.sheet;
     }
-    return document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount - 1];
+    return document._of_localAdditionalStyleSheets[document._of_localAdditionalStyleSheetsCount-1];
   }
 
-  O$.replaceGlobalStyleSheet = function (newStyleSheet) {
+  O$.replaceGlobalStyleSheet = function(newStyleSheet){
     var currentStyleSheet = O$.getLocalStyleSheet();
 
   }
@@ -3162,7 +3179,10 @@ if (!window.O$) {
           }
         }
       } else { // all others
-        styleSheet.insertRule(strRule, styleSheet.rules.length);
+        if (styleSheet.rules)
+          styleSheet.insertRule(strRule, styleSheet.rules.length);
+        else
+          styleSheet.insertRule(strRule, styleSheet.cssRules.length);
       }
       return styleSheet;
     } catch (e) {
@@ -3175,6 +3195,7 @@ if (!window.O$) {
     }
 
   };
+
 
   O$._removeUnusedCssRules = function () {
     var styleSheet = O$.getLocalStyleSheet();
@@ -3210,56 +3231,35 @@ if (!window.O$) {
         }
       }
       packedRulesList.push({
-        selector: resultSelector,
-        declaration: resultDeclaration.cssText
+        selector:resultSelector,
+        declaration:resultDeclaration.cssText
       })
 
     }
 
-
-    var resultStyleSheet = O$.getLocalStyleSheet();
-    rules = resultStyleSheet.cssRules ? resultStyleSheet.cssRules : resultStyleSheet.rules;
-    while (rules.length > 0) {
-      rules = resultStyleSheet.cssRules ? resultStyleSheet.cssRules : resultStyleSheet.rules;
-      resultStyleSheet.removeRule(rules.length - 1);
-    }
-
-    for (var i = 0; i < packedRulesList.length; i++) {
-      if (resultStyleSheet.addRule) { //IE
-        resultStyleSheet.addRule(packedRulesList[i].selector, packedRulesList[i].declaration, i);
-      } else { // all others
-        var cssText = packedRulesList[i].selector + " " + packedRulesList[i].declaration;
-        rules = resultStyleSheet.cssRules ? resultStyleSheet.cssRules : resultStyleSheet.rules;
-        resultStyleSheet.insertRule(cssText, rules.length);
-      }
-    }
-
-    return resultStyleSheet;
   }
 
-  O$.getCssSelectorFromString = function (cssRuleString) {
+  O$.getCssSelectorFromString = function (cssRuleString){
     var idx1 = cssRuleString.indexOf("{");
     return cssRuleString.substring(0, idx1);
   }
 
-  O$.getCssDeclarationFromString = function (cssRuleString) {
+  O$.getCssDeclarationFromString = function (cssRuleString){
     var idx1 = cssRuleString.indexOf("{");
     var idx2 = cssRuleString.indexOf("}");
     O$.assert(idx1 != -1 && idx2 != -1 && idx2 > idx1, "O$.addCssRule: Couldn't parse CSS rule \"{...}\"  boundaries: " + cssRuleString);
     return cssRuleString.substring(idx1 + 1, idx2);
   }
 
-  O$.compareCssDeclarationString = function (declaration1, declaration2) {
+  O$.compareCssDeclarationString = function (declaration1, declaration2){
     if (declaration1)
-      declaration1 = declaration1.replace(/ /g, "s");
+      declaration1 = declaration1.replace(/ /g,"s");
     if (declaration2)
-      declaration2 = declaration2.replace(/ /g, "s");
+      declaration2 = declaration2.replace(/ /g,"s");
     return O$.stringsEqualIgnoreCase(declaration1, declaration2);
   }
 
-
   O$.removeCssRule = function (nameOfCssClass, _iePredefClasses) {
-
     if (_iePredefClasses) {
       _iePredefClasses._obtained--;
       return;
@@ -3281,7 +3281,7 @@ if (!window.O$) {
           }
         }
       } else { // all others
-        var rules = styleSheet.rules;
+        var rules = styleSheet.cssRules;
         for (var i = 0; i < rules.length; i++) {
           if (rules[i].selectorText == nameOfCssClass) {
             var ruleBySelector = O$._cssRulesBySelectors ? O$._cssRulesBySelectors[nameOfCssClass] : null;
@@ -3335,6 +3335,17 @@ if (!window.O$) {
       document._cachedDynamicCssRules[declaration] = className;
     }
     return className;
+  };
+
+  O$.findStyleSheet = function (hrefFragment) {
+    var styleSheets = document.styleSheets;
+    if (!styleSheets)
+      return undefined;
+    for (var sheetIndex = 0; sheetIndex < styleSheets.length; sheetIndex++) {
+      if (styleSheets[sheetIndex].href && styleSheets[sheetIndex].href.indexOf(hrefFragment) != -1)
+        return styleSheets[sheetIndex];
+    }
+    return null;
   };
 
   O$.findCssRule = function (selector) {
@@ -3418,7 +3429,11 @@ if (!window.O$) {
     var propertyImportantFlags = [];
     for (i = 0, count = cssRules.length; i < count; i++) {
       var cssRule = cssRules[i];
-      var ruleStyle = cssRule.style;
+      try {
+        var ruleStyle = cssRule.style;
+      } catch (e) {
+        return {};
+      }
       for (var propertyIndex = 0; propertyIndex < propertyCount; propertyIndex++) {
         var propertyName = propertyNames[propertyIndex];
         var capitalizedPropertyName = O$._capitalizeCssPropertyName(propertyName);
@@ -3440,6 +3455,7 @@ if (!window.O$) {
         }
       }
     }
+
 
     return propertyValues;
   };
@@ -3532,7 +3548,7 @@ if (!window.O$) {
 
   O$.setStyleMappings = function (element, styleMappings) {
     if (!element._styleMappings)
-      element._styleMappings = {__initialStyle: element.className};
+      element._styleMappings = {__initialStyle:element.className};
     var elementStyleMappings = element._styleMappings;
     var styleName, styleValue;
     for (styleName in styleMappings) {
@@ -3961,7 +3977,7 @@ if (!window.O$) {
     marginRight = Math.max(marginRight, O$.calculateNumericCSSValue(element.style.marginRight));
     marginTop = Math.max(marginTop, O$.calculateNumericCSSValue(element.style.marginTop));
     marginBottom = Math.max(marginBottom, O$.calculateNumericCSSValue(element.style.marginBottom));
-    return {marginLeft: marginLeft, marginRight: marginRight, marginTop: marginTop, marginBottom: marginBottom};
+    return {marginLeft:marginLeft, marginRight:marginRight, marginTop:marginTop, marginBottom:marginBottom};
   };
 
   /*
@@ -4014,13 +4030,13 @@ if (!window.O$) {
           }
         }
       }
-      return {x: left, y: top};
+      return {x:left, y:top};
     }
 
     if (relativeToContainingBlock && relativeToContainingBlock !== true) {
       var pos = O$.getElementPos(element);
       var containerPos = O$.getElementPos(relativeToContainingBlock.offsetParent);
-      return {x: pos.x - containerPos.x, y: pos.y - containerPos.y};
+      return {x:pos.x - containerPos.x, y:pos.y - containerPos.y};
     }
 
     left = top = 0;
@@ -4116,7 +4132,7 @@ if (!window.O$) {
 
       element = offsetParent;
     }
-    return {x: left, y: top};
+    return {x:left, y:top};
   };
 
   O$.getCuttingContainingRectangle = function (element, cachedDataContainer) {
@@ -4214,7 +4230,7 @@ if (!window.O$) {
       width -= margins.marginLeft + margins.marginRight;
       height -= margins.marginTop + margins.marginBottom;
     }
-    return {width: width, height: height};
+    return {width:width, height:height};
   };
 
   //Added this methods according to slow calculating of offsetWidth and Height under IE 8
@@ -4347,8 +4363,8 @@ if (!window.O$) {
    See also: O$.getElementBorderRectangle, O$.getElementPos, O$.setElementPos.
    */
   O$.setElementBorderRectangle = function (element, rect) {
-    O$.setElementSize(element, {width: rect.width, height: rect.height});
-    O$.setElementPos(element, {x: rect.x, y: rect.y});
+    O$.setElementSize(element, {width:rect.width, height:rect.height});
+    O$.setElementPos(element, {x:rect.x, y:rect.y});
   };
 
   /**
@@ -4392,7 +4408,7 @@ if (!window.O$) {
       width = document.body.clientWidth;
       height = document.body.clientHeight;
     }
-    return {width: width, height: height};
+    return {width:width, height:height};
   };
 
   O$.getDocumentSize = function () {
@@ -4407,7 +4423,7 @@ if (!window.O$) {
             document.body.offsetHeight, document.documentElement.offsetHeight
     );
 
-    return {width: width, height: height};
+    return {width:width, height:height};
   };
 
 
@@ -4534,7 +4550,7 @@ if (!window.O$) {
       x = scrollableComponent.scrollLeft;
     }
 
-    return {x: x, y: y};
+    return {x:x, y:y};
   };
 
   O$.getPageScrollPos = function () {
@@ -4550,7 +4566,7 @@ if (!window.O$) {
       y = document.documentElement.scrollTop;
       x = document.documentElement.scrollLeft;
     }
-    return {x: x, y: y};
+    return {x:x, y:y};
   };
 
   O$.setPageScrollPos = function (scrollPos) {
@@ -4559,7 +4575,9 @@ if (!window.O$) {
 
   O$.isCursorOverElement = function (event, element) {
     var evt = O$.getEvent(event);
-    if (!element || !O$.isElementPresentInDocument(element) || !O$.isVisibleRecursive(element))
+    if (!element ||
+            !O$.isElementPresentInDocument(element) ||
+            !O$.isVisibleRecursive(element))
       return false;
     var rect = O$.getElementBorderRectangle(element);
     var cursorPos = O$.getEventPoint(evt);
@@ -4798,7 +4816,7 @@ if (!window.O$) {
       popup.setLeft(x);
       popup.setTop(y);
     } else {
-      O$.setElementPos(popup, {x: x, y: y});
+      O$.setElementPos(popup, {x:x, y:y});
     }
     if (repositioningAttempt)
       return true;
@@ -4941,6 +4959,7 @@ if (!window.O$) {
     // todo: check floatingIconMessage behavior in different browsers before reusing this function for O$.isInvisible implementation
   };
 
+
   O$.isInvisible = function (element) {
     if (!element.style) {
       return false;
@@ -4959,6 +4978,17 @@ if (!window.O$) {
     return O$.isVisibleRecursive(parentNode);
   };
 
+  O$.isVisibleParentRecursive = function (element) {
+    if (!O$.isVisible(element))
+      return element;
+
+    var parentNode = element.parentNode;
+    if (!parentNode || parentNode == document)
+      return null;
+
+    return O$.isVisibleParentRecursive(parentNode);
+  };
+
 
   // ----------------- EFFECTS ---------------------------------------------------
 
@@ -4974,8 +5004,8 @@ if (!window.O$) {
     // handle points
     if (typeof value1 === "object" && value1 != null && value1.x !== undefined && value1.width === undefined)
       return {
-        x: O$.getInterpolatedValue(value1.x, value2.x, value2Proportion),
-        y: O$.getInterpolatedValue(value1.y, value2.y, value2Proportion)};
+        x:O$.getInterpolatedValue(value1.x, value2.x, value2Proportion),
+        y:O$.getInterpolatedValue(value1.y, value2.y, value2Proportion)};
 
     // handle rectangles
     if (typeof value1 === "object" && value1 != null && value1.width !== undefined)
@@ -5043,13 +5073,13 @@ if (!window.O$) {
     var startTime = new Date().getTime();
     var endTime = startTime + transitionPeriod;
     var transition = {
-      active: true,
-      propertyValues: {},
-      completionProportion: 0,
-      getValueForCompletionProportion: function (propertyName, proportion) {
+      active:true,
+      propertyValues:{},
+      completionProportion:0,
+      getValueForCompletionProportion:function (propertyName, proportion) {
         return O$.getInterpolatedValue(initialValues[propertyName], newValues[propertyName], proportion);
       },
-      update: function (forceProportion) {
+      update:function (forceProportion) {
         var time = new Date().getTime();
         var timeElapsed = time - startTime;
         this.completionProportion = forceProportion === undefined ? timeElapsed / (endTime - startTime) : forceProportion;
@@ -5072,7 +5102,7 @@ if (!window.O$) {
         if (this.onupdate)
           this.onupdate();
       },
-      stop: function (forceCompletionProportion) {
+      stop:function (forceCompletionProportion) {
         if (!this.active)
           return;
         this.active = false;
@@ -5087,7 +5117,7 @@ if (!window.O$) {
         if (this.onstop)
           this.onstop();
       },
-      intervalId: setInterval(function () {
+      intervalId:setInterval(function () {
         transition.update();
         if (transition.completionProportion == 1) {
           transition.stop();
@@ -5119,8 +5149,8 @@ if (!window.O$) {
     if (!interval)
       interval = 200;
     var fixture = {
-      values: {},
-      update: function () {
+      values:{},
+      update:function () {
         var elements = element instanceof Array ? element : [element];
         if (
                 !elements.every(function (el) {
@@ -5148,11 +5178,11 @@ if (!window.O$) {
           }
         }
       },
-      intervalId: setInterval(function () {
+      intervalId:setInterval(function () {
         fixture.update();
       }, interval),
 
-      release: function () {
+      release:function () {
         clearInterval(this.intervalId);
       }
     };
@@ -5170,8 +5200,8 @@ if (!window.O$) {
     if (!(notifiers instanceof Array))
       notifiers = [notifiers];
     var listener = {
-      values: {},
-      update: function () {
+      values:{},
+      update:function () {
         if (!O$.isElementPresentInDocument(element)) {
           this.release();
           return;
@@ -5190,7 +5220,7 @@ if (!window.O$) {
           listenerFunction.apply(null, currentValues);
       },
 
-      release: function () {
+      release:function () {
         notifiers.forEach(function (n) {
           n.release();
         });
@@ -5209,7 +5239,7 @@ if (!window.O$) {
   };
 
   O$.EventListener = O$.createClass(null, {
-    constructor: function (element, eventName, listener) {
+    constructor:function (element, eventName, listener) {
       this._element = element;
       this._eventName = eventName;
       this._listeners = [];
@@ -5220,29 +5250,29 @@ if (!window.O$) {
         eventListener._dispatchNotifications(evt);
       });
     },
-    _dispatchNotifications: function (evt) {
+    _dispatchNotifications:function (evt) {
       var eventListener = this;
       this._listeners.forEach(function (listener) {
         listener(evt, eventListener);
       });
     },
-    addListener: function (listener) {
+    addListener:function (listener) {
       this.removeListener(listener);
       this._listeners.push(listener);
     },
-    removeListener: function (listener) {
+    removeListener:function (listener) {
       var idx = this._listeners.indexOf(listener);
       if (idx == -1) return;
       this._listeners = this._listeners.slice(idx, 1);
     },
-    release: function () {
+    release:function () {
       O$.removeEventHandler(this._element, this._eventName, this.handlerOfEvent);
     }
 
   });
 
   O$.Timer = O$.createClass(null, {
-    constructor: function (period, listener) {
+    constructor:function (period, listener) {
       if (!period || period < 0)
         throw "O$.Timer constructor: period parameter must be specified with a positive value: " + period;
       this._period = period;
@@ -5250,16 +5280,16 @@ if (!window.O$) {
       this._listeners = [];
       if (listener) addListener(listener);
     },
-    addListener: function (listener) {
+    addListener:function (listener) {
       this.removeListener(listener);
       this._listeners.push(listener);
     },
-    removeListener: function (listener) {
+    removeListener:function (listener) {
       var idx = this._listeners.indexOf(listener);
       if (idx == -1) return;
       this._listeners = this._listeners.slice(idx, 1);
     },
-    start: function () {
+    start:function () {
       if (this._intervalId) return;
       var timer = this;
       this._intervalId = setInterval(function () {
@@ -5268,27 +5298,45 @@ if (!window.O$) {
         });
       }, timer._period);
     },
-    stop: function () {
+    stop:function () {
       if (!this._intervalId) return;
       clearInterval(this._intervalId);
       this._intervalId = null;
     },
-    isActive: function () {
+    isActive:function () {
       return !!this._intervalId;
     },
-    setActive: function (active) {
+    setActive:function (active) {
       if (active == this.isActive()) return;
       if (active)
         this.start();
       else
         this.stop();
     },
-    release: function () {
+    release:function () {
       this.stop();
     }
   });
 
   // ----------------- COMPONENT UTILS -------------------------------------------
+
+  O$._checkDefaultCssPresence = function (attempt) {
+    if (O$._defaultCssPresenceChecked) return;
+    O$.addLoadEvent(function () {
+      var defaultCssStyleSheet = O$.findStyleSheet("default.css");
+      if (!defaultCssStyleSheet && (!attempt || attempt < 5)) {
+        setTimeout(function () {
+          if (!attempt) attempt = 0;
+          O$._checkDefaultCssPresence(attempt + 1);
+        }, 200);
+        return;
+      }
+
+      O$._defaultCssPresenceChecked = true;
+      if (!defaultCssStyleSheet)
+        O$.logError("OpenFaces default.css file is not loaded. Did you use <head> tag instead of <h:head> tag?");
+    });
+  };
 
   /**
    * Fixes the Prototype 1.6.0.2 conflict with the JSON2 library.
@@ -5301,15 +5349,45 @@ if (!window.O$) {
     delete Number.prototype.toJSON;
   };
 
+  /**
+   * Fixes the wrong position(priority) of default.css after updating mojara version to 2.0.5 or above.
+   * http://requests.openfaces.org/browse/OF-163
+   */
+  O$._lowerPriorityOfDefaultCss = function () {
+    var styleSheets = document.styleSheets;
+    if (!styleSheets)
+      return;
+    var firstCss = styleSheets[0];
+    var defaultCss = O$.findStyleSheet("default.css");
+    if (!defaultCss)
+      return;
+    if (document.createStyleSheet) {
+      document.createStyleSheet(defaultCss.href, 0);
+      domElements = document.getElementsByTagName("link");
+      for (var elementIndex = 0; elementIndex < domElements.length; elementIndex++) {
+        if (domElements[elementIndex].href.indexOf("default.css") > 0) {
+          firstDefaultCSSLink = domElements[elementIndex];
+          break;
+        }
+      }
+      firstDefaultCSSLink.onreadystatechange = function () {
+        if (this.readyState == "complete" || this.readyState == "loaded") {
+          defaultCss.cssText = "";
+        }
+      }
+    } else {
+      firstCss.ownerNode.parentNode.insertBefore(defaultCss.ownerNode, firstCss.ownerNode);
+    }
+  };
+
   O$.cleanUpPrototypeJsonIncompatibility();
 
   O$.addLoadEvent(function () {
-    if (!O$.findCssRule(".o_default_css_marker"))
-      O$.logError("default.css file is not loaded. The usual reason is application misconfiguration. See OpenFaces Installation and Configuration guide (resource filter configuration, etc).");
+    O$._loaded = true;
+    O$._lowerPriorityOfDefaultCss();
     // we're repeating the O$.cleanUpPrototypeJsonIncompatibility(); call on load event to account for prototype.js
     // which might be included after util.js
     O$.cleanUpPrototypeJsonIncompatibility();
-    O$._loaded = true;
   });
 
   O$._submitComponentWithField = function (componentId, focusedField, additionalParams, execute) {
@@ -5349,9 +5427,9 @@ if (!window.O$) {
     if (component._compoundSubmission) throw "O$._startCompoundSubmission has already been called for " +
             "this component (id = " + component.id + ")";
     component._compoundSubmission = {
-      completionCallbacks: [],
-      additionalParams: [],
-      execute: []
+      completionCallbacks:[],
+      additionalParams:[],
+      execute:[]
     };
   };
 
@@ -5415,10 +5493,10 @@ if (!window.O$) {
         }
       O$.submitEnclosingForm(component);
     } else {
-      O$._ajaxReload([component.id], {
-        onajaxend: completionCallback,
-        additionalParams: additionalParams,
-        execute: execute});
+      O$.Ajax._reload([component.id], {
+        onajaxend:completionCallback,
+        params:additionalParams,
+        execute:execute});
     }
   };
 
@@ -5560,19 +5638,19 @@ if (!window.O$) {
   }
 
   O$.Link = {
-    _init: function (id, disabled, disabledStyle) {
+    _init:function (id, disabled, disabledStyle) {
       var link = O$.initComponent(id, null, {
-        _disabled: false,
+        _disabled:false,
 
-        getDisabled: function () {
+        getDisabled:function () {
           return this._disabled;
         },
 
-        setDisabled: function (disabled) {
+        setDisabled:function (disabled) {
           O$.setHiddenField(this, id + "::disabled", disabled);
           if (this._disabled == disabled) return;
           this._disabled = disabled;
-          O$.setStyleMappings(this, {"disabled": this._disabled ? disabledStyle : ""});
+          O$.setStyleMappings(this, {"disabled":this._disabled ? disabledStyle : ""});
           events.forEach(function (eventName) {
             link[eventName] = disabled ? null : originalEventHandlers[eventName];
           });
@@ -5596,6 +5674,18 @@ if (!window.O$) {
         link.setDisabled(disabled)
       });
 
+    }
+  };
+
+  O$.isComponentInDOM = function (component) {
+    var parent = component.parentNode;
+    while (parent != document && parent != null) {
+      parent = parent.parentNode;
+    }
+    if (parent == document) {
+      return true;
+    } else {
+      return false;
     }
   };
 

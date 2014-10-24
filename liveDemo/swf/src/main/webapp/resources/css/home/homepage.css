@@ -1,0 +1,35 @@
+/*
+ * OpenFaces - JSF Component Library 3.0
+ * Copyright (C) 2007-2014, TeamDev Ltd.
+ * licensing@openfaces.org
+ * Unless agreed in writing the contents of this file are subject to
+ * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * Please visit http://openfaces.org/licensing/ for more details.
+ */
+
+
+/*
+ * OpenFaces - JSF Component Library 3.0
+ * Copyright (C) 2007-2013, TeamDev Ltd.
+ * licensing@openfaces.org
+ * Unless agreed in writing the contents of this file are subject to
+ * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * Please visit http://openfaces.org/licensing/ for more details.
+ */
+
+.titleLogo { padding-top: 73px;}
+
+.featureList{font-size:125%; padding-left: 123px; margin-bottom: 5em;}
+.featureList ul.hang li {background:transparent url(/resources/images/icons/bullet_dash.png) no-repeat scroll left 2px;}
+
+.linksPanel{width: 650px; margin-left: 40px; margin-top: 2em;}
+
+.imagelink {border: 1px solid #f14405;}
+
+.menuHomepage{margin-top:210px !important;}

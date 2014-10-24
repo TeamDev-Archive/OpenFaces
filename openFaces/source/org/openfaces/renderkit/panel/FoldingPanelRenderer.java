@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -36,6 +36,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Kharchenko
@@ -222,9 +223,20 @@ public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implement
 
     @Override
     protected CaptionArea getDefaultButtonsArea(ComponentWithCaption component) {
+        FoldingPanel foldingPanel = (FoldingPanel) component;
+        Map<String,Object> attributes = foldingPanel.getAttributes();
+        String createdKey = "_defaultButtonsAreaCreated";
+        if (!attributes.containsKey(createdKey)) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            CaptionArea captionArea = Components.getOrCreateFacet(
+                    context, foldingPanel, CaptionArea.COMPONENT_TYPE, "_defaultButtonsArea", CaptionArea.class);
+            Components.createChildComponent(context, captionArea, ExpansionToggleButton.COMPONENT_TYPE, "toggle");
+            attributes.put(createdKey, true);
+        }
+
         CaptionArea area = super.getDefaultButtonsArea(component);
 
-        FoldingPanel foldingPanel = (FoldingPanel) component;
+
         FoldingDirection foldingDirection = foldingPanel.getFoldingDirection();
         boolean horizontalFoldingDirection =
                 FoldingDirection.LEFT.equals(foldingDirection) || FoldingDirection.RIGHT.equals(foldingDirection);

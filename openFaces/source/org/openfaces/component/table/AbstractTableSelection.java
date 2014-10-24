@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -259,7 +259,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
         Rendering.renderHiddenField(writer, getSelectionFieldName(context, table), null);
         Rendering.renderHiddenField(writer, getClearSelectionFieldName(context, table), null);
 
-        String onchange = getOnchange();
+        String onchange = Rendering.getEventHandlerScript(this, table, "change", "action");
         Script automaticChangeHandler = null;
         Iterable<String> render = getRender();
         Iterable<String> execute = getExecute();
@@ -269,7 +269,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
                 throw new FacesException("'execute' attribute can't be specified without the 'render' attribute. Component id: " + getId());
 
             AjaxInitializer initializer = new AjaxInitializer();
-            automaticChangeHandler = new ScriptBuilder().functionCall("O$._ajaxReload",
+            automaticChangeHandler = new ScriptBuilder().functionCall("O$.Ajax._reload",
                     initializer.getRenderArray(context, this, render),
                     initializer.getAjaxParams(context, this)).semicolon().append("return false;");
             ajaxJsRequired = true;
@@ -355,6 +355,9 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
 
     public void decode(FacesContext context) {
         super.decode(context);
+
+        Rendering.decodeBehaviors(context, this);
+
         AbstractTable table = getTable();
         if (!isEnabled())
             return;

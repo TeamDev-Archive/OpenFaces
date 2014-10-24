@@ -21,7 +21,7 @@
                 <td class="propertyValue">
                   <h:inputText id="textField" value="#{GraphicTextBean.text}" style="width: 100%;"
                                onkeypress="O$('form:updateText').run()"
-                          maxlength="15"/>
+                               maxlength="15"/>
                 </td>
               </tr>
               <tr>
@@ -78,10 +78,10 @@
                     </o:column>
                   </o:dropDownField>
                   <o:ajax id="updateText"
-                                      standalone="true"
-                                      render="graphicText"
-                                      execute="textField directionField fontSizeField colorField"
-                                      delay="500"/>
+                          standalone="true"
+                          render="graphicText"
+                          execute="textField directionField fontSizeField colorField"
+                          delay="500"/>
 
                 </td>
               </tr>
@@ -92,9 +92,9 @@
     </table>
     <div style="text-align:center;margin-top:30px;">
       <o:graphicText id="graphicText"
-                         value="#{GraphicTextBean.text}"
-                         direction="#{GraphicTextBean.direction}"
-                         textStyle="#{GraphicTextBean.style}"/>
+                     value="#{GraphicTextBean.text}"
+                     direction="#{GraphicTextBean.direction}"
+                     textStyle="#{GraphicTextBean.style}"/>
     </div>
 
   </div>

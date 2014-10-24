@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,15 +11,19 @@
  */
 package org.openfaces.component.input;
 
-import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.Side;
-import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 
-public abstract class DropDownFieldBase extends DropDownComponent implements CompoundComponent {
+@ResourceDependencies({
+        @ResourceDependency(name = "jsf.js", library = "javax.faces"),
+        @ResourceDependency(name = "default.css", library = "openfaces")
+})
+public abstract class DropDownFieldBase extends DropDownComponent {
     private Boolean autoComplete;
     private Side listAlignment;
     private Boolean customValueAllowed;
@@ -62,7 +66,7 @@ public abstract class DropDownFieldBase extends DropDownComponent implements Com
     @Override
     public void setId(String id) {
         super.setId(id);
-        DropDownPopup popup = getPopup();
+        DropDownPopup popup = getPopup(false);
         if (popup != null) {
             popup.setId(popup.getId());
         }
@@ -407,21 +411,17 @@ public abstract class DropDownFieldBase extends DropDownComponent implements Com
         size = (Integer) values[i++];
     }
 
-    @Override
-    public void processRestoreState(FacesContext context, Object state) {
-        Object ajaxState = AjaxUtil.retrieveAjaxStateObject(context, this);
-        super.processRestoreState(context, ajaxState != null ? ajaxState : state);
-    }
-
-    public void createSubComponents(FacesContext context) {
-        Components.getOrCreateFacet(context, this, DropDownPopup.COMPONENT_TYPE, "popup", DropDownPopup.class);
+    public DropDownPopup getPopup() {
+        return getPopup(true);
     }
 
     /**
      * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
      * by any application code.
      */
-    public DropDownPopup getPopup() {
+    public DropDownPopup getPopup(boolean create) {
+        if (create)
+            Components.getOrCreateFacet(getFacesContext(), this, DropDownPopup.COMPONENT_TYPE, "popup", DropDownPopup.class);
         return (DropDownPopup) getFacet("popup");
     }
 

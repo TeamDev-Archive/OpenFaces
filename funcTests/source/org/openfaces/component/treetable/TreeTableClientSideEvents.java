@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -185,9 +185,8 @@ public class TreeTableClientSideEvents extends OpenFacesTestCase {
     public void testTreeTableColumnBodyEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/treetable/treeColumn_body.jsf");
-        System.out.println();
 
-        ElementInspector bodyOutput = element("fn:treeTable:3:body");      //:0: ?
+        ElementInspector bodyOutput = element("fn:treeTable:3:body");
         //onclick
         bodyOutput.click();
         assertTrue(selenium.isTextPresent("bodyOnclick works"));

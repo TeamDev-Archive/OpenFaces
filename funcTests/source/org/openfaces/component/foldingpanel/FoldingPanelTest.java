@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.foldingpanel;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
@@ -22,7 +23,9 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
  * @author Darya Shumilina
  */
 public class FoldingPanelTest extends OpenFacesTestCase {
-     @Test
+    @Test
+    @Ignore
+    // revive this test when RichFaces 4 is fully functional
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/foldingpanel/foldingPanel_a4j.jsf");
         ElementInspector foldingPanelToggle = foldingPanel("formID:foldingPanelID").toggle();
@@ -43,7 +46,7 @@ public class FoldingPanelTest extends OpenFacesTestCase {
         assertFalse(newContentValue.equals(oldContentValue));
     }
 
-     @Test
+    @Test
     public void testWithA4JControlsInside() {
         testAppFunctionalPage("/components/foldingpanel/foldingPanel_a4j.jsf");
         foldingPanel("formID:foldingPanel_a4j_ID").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
@@ -65,13 +68,13 @@ public class FoldingPanelTest extends OpenFacesTestCase {
         assertFalse(newContentValue.equals(oldContentValue));
     }
 
-     @Test
+    @Test
     public void testDefaultView() {
         testAppFunctionalPage("/components/foldingpanel/foldingPanel_defaultView.jsf");
         assertAppearanceNotChanged("FoldingPanelDefaultView");
     }
 
-     @Test
+    @Test
     public void testDifferentLoadingModes() {
         testAppFunctionalPage("/components/foldingpanel/foldingPanelDifferentLoadingModes.jsf");
 
@@ -138,7 +141,7 @@ public class FoldingPanelTest extends OpenFacesTestCase {
         ajaxText.assertVisible(true);
     }
 
-     @Test
+    @Test
     public void testStyles() {
         testAppFunctionalPage("/components/foldingpanel/foldingPanelStyles.jsf");
 

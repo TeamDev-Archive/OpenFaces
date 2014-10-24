@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -26,7 +26,7 @@ public class LongRangeClientValidator extends AbstractClientValidator {
     private LongRangeValidator longRangeValidator;
 
     public LongRangeClientValidator() {
-        addJavascriptLibrary(new ValidationJavascriptLibrary("longRangeValidator.js", null));
+        addJavascriptLibrary(new ValidationJavascriptLibrary("longRangeValidator.js"));
     }
 
     public void setLongRangeValidator(LongRangeValidator longRangeValidator) {

@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -21,7 +21,7 @@ public class AnonymousFunction extends Script {
     public AnonymousFunction(Script bodyScript, String... paramNames) {
         this(bodyScript.toString(), paramNames);
     }
-    
+
     public AnonymousFunction(String bodyScript, String... paramNames) {
         this.paramNames = paramNames;
         this.bodyScript = bodyScript;

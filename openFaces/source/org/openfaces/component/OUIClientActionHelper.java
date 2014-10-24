@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -14,7 +14,6 @@ package org.openfaces.component;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.Rendering;
-import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlCommandButton;
@@ -94,7 +93,6 @@ public abstract class OUIClientActionHelper {
 
     protected void renderResources(FacesContext context) {
         AjaxUtil.renderJSLinks(context);
-        Styles.requestDefaultCss(context);
     }
 
     protected abstract String getClientActionScript(FacesContext context, OUIClientAction action);

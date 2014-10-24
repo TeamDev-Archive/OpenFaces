@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -13,6 +13,7 @@
 package org.openfaces.component.foreach;
 
 import com.thoughtworks.selenium.Selenium;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openqa.selenium.By;
@@ -27,7 +28,7 @@ import org.seleniuminspector.openfaces.SuggestionFieldInspector;
  */
 public class ForEachTest extends OpenFacesTestCase {
 
-     @Test
+    @Test
     public void testForEachWithoutItems() {
         testAppFunctionalPage("/components/foreach/forEach.jsf");
 
@@ -62,7 +63,7 @@ public class ForEachTest extends OpenFacesTestCase {
         }
     }
 
-     @Test
+    @Test
     public void testNestedForEach() {
         testAppFunctionalPage("/components/foreach/forEach.jsf");
         //for 1 to 10 step 1
@@ -77,7 +78,7 @@ public class ForEachTest extends OpenFacesTestCase {
         }
     }
 
-     @Test
+    @Test
     public void testEmptySet() {
         testAppFunctionalPage("/components/foreach/forEach.jsf");
         ForEachInspector forEach = forEach("formID:fe6");
@@ -88,7 +89,7 @@ public class ForEachTest extends OpenFacesTestCase {
         forEach.item(0, "fp1").assertElementExists(false);
     }
 
-     @Test
+    @Test
     public void testList() {
         closeBrowser();
         testAppFunctionalPage("/components/foreach/forEach.jsf");
@@ -126,7 +127,7 @@ public class ForEachTest extends OpenFacesTestCase {
         inputElement.assertElementExists(false);
     }
 
-     @Test
+    @Test
     public void testScalarData() {
         testAppFunctionalPage("/components/foreach/forEach.jsf");
 
@@ -147,12 +148,12 @@ public class ForEachTest extends OpenFacesTestCase {
         inputElement.assertElementExists(false);
     }
 
-     @Test
+    @Test
     public void testDecode() {
         closeBrowser();
         testAppFunctionalPage("/components/foreach/forEach.jsf");
         getDriver().findElement(By.id("formID")).submit();
-//        waitForPageToLoad();
+        waitForPageToLoad();
 
         ForEachInspector forEach = forEach("formID:fe7");
 
@@ -187,7 +188,7 @@ public class ForEachTest extends OpenFacesTestCase {
         inputElement.assertElementExists(false);
     }
 
-     @Test
+    @Test
     public void testUpdateModelValuesPhase() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/foreach/forEach.jsf");
@@ -225,7 +226,8 @@ public class ForEachTest extends OpenFacesTestCase {
         value2.assertValue("item D");
     }
 
-     @Test
+    @Ignore
+    @Test
     public void testEvents() {
         closeBrowser();
         testAppFunctionalPage("/components/foreach/forEach.jsf");
@@ -276,7 +278,7 @@ public class ForEachTest extends OpenFacesTestCase {
         value2.assertElementExists(false);
     }
 
-     @Test
+    @Test
     public void testConversion() {
         testAppFunctionalPage("/components/foreach/forEach.jsf");
 
@@ -304,7 +306,7 @@ public class ForEachTest extends OpenFacesTestCase {
         message3.assertVisible(false);
     }
 
-     @Test
+    @Test
     public void testValidation() {
         testAppFunctionalPage("/components/foreach/forEach.jsf");
 
@@ -332,7 +334,8 @@ public class ForEachTest extends OpenFacesTestCase {
         message3.assertVisible(false);
     }
 
-     @Test
+    @Ignore
+    @Test
     public void testAjax() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/foreach/forEach.jsf");
@@ -404,7 +407,7 @@ public class ForEachTest extends OpenFacesTestCase {
         dropDownItem2.assertElementExists(false);
     }
 
-     @Test
+    @Test
     public void testWrapperTag() {
         testAppFunctionalPage("/components/foreach/forEach.jsf");
         ElementInspector wrapper_blank = element("formID:fe11");

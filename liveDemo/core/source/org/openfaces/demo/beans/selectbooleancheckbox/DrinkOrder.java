@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -15,6 +15,7 @@ package org.openfaces.demo.beans.selectbooleancheckbox;
 import org.openfaces.demo.beans.util.FacesUtils;
 
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +49,7 @@ public class DrinkOrder {
         return ordered;
     }
 
-    public void orderDrink(ActionEvent actionEvent) {
+    public void orderDrink(AjaxBehaviorEvent actionEvent) {
         Object drinkReceiptParameter = FacesUtils.getEventParameter(actionEvent, "drinkReceipt");
         Drink.DrinkReceipt drinkReceipt = Drink.DrinkReceipt.valueOf(String.valueOf(drinkReceiptParameter));
         if (drinks.get(drinkReceipt) == null) {
@@ -85,7 +86,7 @@ public class DrinkOrder {
         };
     }
 
-    public void orderIngredient(ActionEvent actionEvent) {
+    public void orderIngredient(AjaxBehaviorEvent actionEvent) {
         Object drinkReceiptParameter = FacesUtils.getEventParameter(actionEvent, "drinkReceipt");
         Drink.DrinkReceipt drinkReceipt = Drink.DrinkReceipt.valueOf(String.valueOf(drinkReceiptParameter));
         Object ingredientParameter = FacesUtils.getEventParameter(actionEvent, "ingredient");
@@ -96,7 +97,7 @@ public class DrinkOrder {
         }
     }
 
-    public void orderGroup(ActionEvent actionEvent) {
+    public void orderGroup(AjaxBehaviorEvent actionEvent) {
           Object drinkReceiptParameter = FacesUtils.getEventParameter(actionEvent, "drinkReceipt");
         Drink.DrinkReceipt drinkReceipt = Drink.DrinkReceipt.valueOf(String.valueOf(drinkReceiptParameter));
         Object ingredientGroupParameter = FacesUtils.getEventParameter(actionEvent, "ingredientGroup");

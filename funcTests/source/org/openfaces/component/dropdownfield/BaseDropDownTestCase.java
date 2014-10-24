@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -15,7 +15,6 @@ import com.thoughtworks.selenium.Selenium;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.html.InputInspector;
@@ -398,7 +397,7 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         asTagOutput.assertText("true");
     }
 
-    protected void checkNoCachingHighlight(String pageUrl){
+    protected void checkNoCachingHighlight(String pageUrl) {
         testAppFunctionalPage(pageUrl);
         DropDownFieldInspector dropdown = dropDownField("formID:plantsNoCaching");
         dropdown.field().keyDown(KeyEvent.VK_DOWN);
@@ -409,7 +408,7 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         dropdown.popup().items().get(1).assertStyle("background-color: black;");
     }
 
-    protected void checkAfterRenderHighlight(String pageUrl){
+    protected void checkAfterRenderHighlight(String pageUrl) {
         testAppFunctionalPage(pageUrl);
         DropDownFieldInspector dropdown = dropDownField("formID:plantsAfterRender");
         dropdown.field().keyDown(KeyEvent.VK_DOWN);
@@ -422,7 +421,7 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         dropdown.popup().items().get(1).assertStyle("background-color: black;");
     }
 
-    protected void checkNoCashingAutoComplete(String pageUrl){
+    protected void checkNoCashingAutoComplete(String pageUrl) {
         testAppFunctionalPage(pageUrl);
         DropDownFieldInspector dropdown = dropDownField("formID:plantsNoCaching");
         WebElement field_ = getDriver().findElement(By.xpath(dropdown.field().getXPath()));
@@ -433,7 +432,7 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         element("formID:selectedRangeSize").assertText("5");
     }
 
-    protected void checkNoFieldCleanOnCustomInput(String pageUrl){
+    protected void checkNoFieldCleanOnCustomInput(String pageUrl) {
         testAppFunctionalPage(pageUrl);
         DropDownFieldInspector dropdown = dropDownField("formID:plantsCustomValue");
         WebElement field = getDriver().findElement(By.xpath(dropdown.field().getXPath()));

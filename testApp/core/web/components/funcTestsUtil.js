@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -9,14 +9,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-
-//DateChooser suffixes:
-var buttonSuffix = '::button';
-var todaySuffix = '--popup--calendar::today';
-var noneSuffix = '--popup--calendar::none';
-var calendarBodySuffix = '--popup--calendar::body';
-var monthSuffix = "--popup--calendar--month";
-var yearSuffix = "--popup--calendar--year";
+buttonSuffix = '::button';
+todaySuffix = '--popup--calendar::today';
+noneSuffix = '--popup--calendar::none';
+calendarBodySuffix = '--popup--calendar::body';
+monthSuffix = "--popup--calendar--month";
+yearSuffix = "--popup--calendar--year";
 
 function singleSelectionChanged(dataTableID, divID) { // todo: reimplement this with TableInspector instead of client-side script
   var elDataTable = document.getElementById(dataTableID);
@@ -106,12 +104,10 @@ function addListItemInnerHTML(el, text, add) {
 function getControl(id) { // todo: replace usages with O$ and remove this function
   return document.getElementById(id);
 }
-
 function determineDateRange(calendarId, selectedClassName, divToPrint) {
   var calendar = getControl(calendarId + '::body');
   var calendarRows = calendar.childNodes;
   var dates = "";
-
   // loop starts with 1 because zero row is day names
   for (var i = 1; i < calendarRows.length; i++) {
     var row = calendarRows[i];
@@ -125,7 +121,6 @@ function determineDateRange(calendarId, selectedClassName, divToPrint) {
   }
   printInfo(dates, divToPrint, true);
 }
-
 /*to use this function define in DateChooser following: selectedDayStyle="color: red; background: yellow;"*/
 function printDateChooserSelectedDate(dateChooserID, outputDiv) {
   var mousedownEvt = O$.createEvent('mousedown');
@@ -133,7 +128,6 @@ function printDateChooserSelectedDate(dateChooserID, outputDiv) {
   var dateChooser = getControl(dateChooserID + calendarBodySuffix);
   var weeks = dateChooser.childNodes;
   var date = 'null';
-
   for (var i = 1; i < weeks.length; i++) {
     var days = weeks[i].childNodes;
     for (var j = 0; j < days.length; j++) {
@@ -167,5 +161,12 @@ function printFirstDayOfWeek(elementId, outputDiv, isDateChooser) {
     calendarId = elementId + "::body";
   }
   printInfo(getControl(calendarId).childNodes[0].childNodes[0].textContent, outputDiv, false);
+}
+seleniumLoaderFlag = document.createElement("div");
+seleniumLoaderFlag.innerHTML = "Selenium script is loaded";
+seleniumLoaderFlag.style.display = "none";
+seleniumLoaderFlag.id = "seleniumLoaderFlag";
 
+window.onload = function () {
+  document.body.insertBefore(seleniumLoaderFlag, document.body.childNodes[0]);
 }

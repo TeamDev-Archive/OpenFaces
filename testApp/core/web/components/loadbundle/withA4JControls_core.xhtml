@@ -1,4 +1,4 @@
-<div xmlns:h="http://java.sun.com/jsf/html"
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
      xmlns:a4j="http://richfaces.org/a4j"
@@ -11,7 +11,7 @@
             tabStyle="padding:5px;"
             selectedIndex="#{TabSetLocaleChangerBean.selectedLocaleIndex}">
     <o:tabSetItems value="#{TabSetLocaleChangerBean.locales}"/>
-    <a4j:support event="onchange" reRender="containerID"/>
+    <a4j:ajax event="change" render="containerID"/>
   </o:tabSet>
 
   <br/><br/>

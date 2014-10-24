@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -56,7 +56,6 @@ public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         assertTrue(window().document().isAlertPresent());
         assertEquals("done", window().document().getAlert());
         getDriver().switchTo().alert().accept();
-
         confirmation1.assertVisible(false);
 
         element("fn:secondTabID").click();
@@ -132,12 +131,14 @@ public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         DropDownFieldInspector secondDropDown = dropDownField("fn:secondDropDown");
         secondDropDown.assertElementExists();
         secondDropDown.assertVisible(false);
+
         firstDropDown.button().click();
         firstDropDown.popup().items().get(1).click();
         firstDropDown.field().assertValue("Yellow");
 
         element("fn:secondTabID").click();
         secondDropDown.assertElementExists();
+
         secondDropDown.button().click();
         secondDropDown.popup().items().get(1).click();
         secondDropDown.field().assertValue("Yellow");

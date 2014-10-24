@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,13 +11,18 @@
  */
 package org.openfaces.util;
 
-import org.openfaces.component.CompoundComponent;
+import org.openfaces.ajax.PartialViewContext;
+import org.openfaces.component.OUIObjectIterator;
 
 import javax.faces.FacesException;
 import javax.faces.application.Application;
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
 import javax.faces.component.UIForm;
+import javax.faces.component.UIPanel;
 import javax.faces.component.UIViewRoot;
+import javax.faces.component.UniqueIdVendor;
 import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.ExternalContext;
@@ -97,9 +102,49 @@ public class Components {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-        parent.getChildren().add(component);
+        addChild(parent, component);
 
         return component;
+    }
+
+    /**
+     * This method is required to overcome the Mojarra 2.1.9+ state saving problem, where an attempt to add child
+     * component for a component that is rendered inside of an iterator component (UIData and others, which change
+     * clientIds of their children during iteration), causes an exception
+     * javax.faces.FacesException: Cannot add the same component twice: form:dataTable:0:dateChooser--popup
+     *    at com.sun.faces.context.StateContext$AddRemoveListener.handleAddRemoveWithAutoPrune(StateContext.java:476)
+     *    at com.sun.faces.context.StateContext$AddRemoveListener.handleAdd(StateContext.java:422)
+     *    ...
+     *
+     *  Resetting the iterator position to the "initial" one for a moment of adding child component fixes the problem
+     *  (Mojarra seems to save component's state under wrong client-ids if iteration index is in component's clientId).
+     *
+     *  This workaround should be in place until this bug is fixed in Mojarra
+     *  (and older versions don't have to be supported).
+     */
+    public static Runnable resetParentIterators(UIComponent component) {
+        if (!ApplicationParams.getIterationIndexWorkaround()) return null;
+
+        final UIData uiData = getParentWithClass(component, UIData.class);
+        final int rowIndex = uiData != null ? uiData.getRowIndex() : -1;
+        if (rowIndex != -1)
+            uiData.setRowIndex(-1);
+
+        final OUIObjectIterator ouiObjectIterator = getParentWithClass(component, OUIObjectIterator.class);
+        final String objectId = ouiObjectIterator != null ? ouiObjectIterator.getObjectId() : null;
+        if (objectId != null)
+            ouiObjectIterator.setObjectId(null);
+
+        return (rowIndex == -1 && objectId == null)
+                ? null
+                : new Runnable() {
+            public void run() {
+                if (objectId != null)
+                    ouiObjectIterator.setObjectId(objectId);
+                if (rowIndex != -1)
+                    uiData.setRowIndex(rowIndex);
+            }
+        };
     }
 
     public static <T extends UIComponent> T findChildWithClass(UIComponent parent, Class<T> childClass) {
@@ -201,8 +246,20 @@ public class Components {
             FacesContext context, UIComponent parent, String componentType, String idSuffix) {
         String childId = generateIdWithSuffix(parent, idSuffix);
         UIComponent component = createComponent(context, componentType, childId);
-        parent.getChildren().add(component);
+        addChild(parent, component);
         return component;
+    }
+
+    public static void addChild(UIComponent parent, UIComponent child) {
+        Runnable restoreIterators = resetParentIterators(parent);
+        parent.getChildren().add(child);
+        if (restoreIterators != null) restoreIterators.run();
+    }
+
+    public static void removeChild(UIComponent parent, UIComponent child) {
+        Runnable restoreIterators = resetParentIterators(parent);
+        parent.getChildren().remove(child);
+        if (restoreIterators != null) restoreIterators.run();
     }
 
     /**
@@ -219,7 +276,9 @@ public class Components {
             FacesContext context, UIComponent parent, String componentType, String idSuffix, int i) {
         String childId = generateIdWithSuffix(parent, idSuffix);
         UIComponent component = createComponent(context, componentType, childId);
+        Runnable restoreIterators = resetParentIterators(parent);
         parent.getChildren().add(i, component);
+        if (restoreIterators != null) restoreIterators.run();
         return component;
     }
 
@@ -253,8 +312,6 @@ public class Components {
                     "Expected: " + componentClass.getName() +
                     "; actual: " + actualClass.getName());
         component.setId(id);
-        if (component instanceof CompoundComponent)
-            ((CompoundComponent) component).createSubComponents(context);
         return (C) component;
     }
 
@@ -382,7 +439,7 @@ public class Components {
         List<SelfScheduledAction> postponedActions = (List) requestMap.get(POSTPONED_ACTIONS_ATTR);
         if (postponedActions == null)
             return;
-        for (Iterator<SelfScheduledAction> actionIterator = postponedActions.iterator(); actionIterator.hasNext();) {
+        for (Iterator<SelfScheduledAction> actionIterator = postponedActions.iterator(); actionIterator.hasNext(); ) {
             SelfScheduledAction action = actionIterator.next();
             if (action.executeIfReady())
                 actionIterator.remove();
@@ -427,7 +484,35 @@ public class Components {
         }
 
         component = createComponent(context, componentType, id);
+        List<Object> originalParentObjectIds = new ArrayList<Object>();
+        for (UIComponent p = parent; p != null; p = p.getParent()) {
+            // Reset rowIndex/objectId for all parent iterator components for proper functionality fo state saving
+            // mechanism, which listens for component insertions and saves new components by their ids
+            // (com.sun.faces.context.SateContext.AddRemoveListener.handleAddEvent which constructs a list of
+            // "dynamicAdds" at least in Mojarra 2.0.3)
+            // ...and it's important to save component ids without any suffixes that might have place if parent iterator
+            // components are in the middle of iteration currently.
+            if (p instanceof UIData) {
+                UIData uiData = (UIData) p;
+                originalParentObjectIds.add(uiData.getRowIndex());
+                uiData.setRowIndex(-1);
+            } else if (p instanceof OUIObjectIterator) {
+                OUIObjectIterator objectIterator = (OUIObjectIterator) p;
+                originalParentObjectIds.add(objectIterator.getObjectId());
+                objectIterator.setObjectId(null);
+            }
+        }
         parent.getFacets().put(facetName, component);
+        for (UIComponent p = parent; p != null; p = p.getParent()) {
+            // restore the original iterator positions
+            if (p instanceof UIData) {
+                UIData uiData = (UIData) p;
+                uiData.setRowIndex((Integer) originalParentObjectIds.remove(0));
+            } else if (p instanceof OUIObjectIterator) {
+                OUIObjectIterator objectIterator = (OUIObjectIterator) p;
+                objectIterator.setObjectId((String) originalParentObjectIds.remove(0));
+            }
+        }
         return (C) component;
     }
 
@@ -452,21 +537,82 @@ public class Components {
         return component;
     }
 
-    public static UIComponent getFacet(UIComponent component, String facetName) {
-        // this method is changed in the 3.x branch to address Mojarra 2.0.3 issue, and is included in the main
-        // branch here just in order to make its usage uniform across both versions
-        return component.getFacet(facetName);
-    }
-
     /**
      * Searches the component's parent chain until it finds the nearest parent with this class. Super classes and
      * interfaces are also supported by this method.
      */
-    public static <C extends UIComponent> C getParentWithClass(UIComponent component, Class<C> parentClass) {
+    public static <C> C getParentWithClass(UIComponent component, Class<C> parentClass) {
         for (UIComponent parent = component.getParent(); parent != null; parent = parent.getParent())
             if (parentClass.isAssignableFrom(parent.getClass()))
                 return (C) parent;
         return null;
+    }
+
+    public static UIComponent getFacet(UIComponent component, String facetName) {
+        UIComponent facet = component.getFacet(facetName);
+        if (facet == null) return null;
+        if (isImplicitPanel(facet)) {
+            // deal with an implicit panel creation made by RI
+            facet = facet.getChildren().get(0);
+        }
+        return facet;
+    }
+
+    /**
+     * @param component
+     */
+    public static void fixImplicitPanelIdsForMojarra_2_0_3(UIComponent component, boolean fixDeeply) {
+        UniqueIdVendor uniqueIdVendor = null;
+        for (UIComponent c = component; c != null; c = c.getParent()) {
+            if (c instanceof NamingContainer && c instanceof UniqueIdVendor) {
+                uniqueIdVendor = (UniqueIdVendor) c;
+                break;
+            }
+        }
+        if (uniqueIdVendor == null) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            uniqueIdVendor = context.getViewRoot();
+        }
+        fixImplicitPanelIdsForMojarra_2_0_3(component, uniqueIdVendor, fixDeeply);
+    }
+
+    private static void fixImplicitPanelIdsForMojarra_2_0_3(UIComponent component, UniqueIdVendor uniqueIdVendor, boolean fixDeeply) {
+        Map<String, UIComponent> facets = component.getFacets();
+        Collection<UIComponent> facetComponents = facets.values();
+        for (UIComponent facetComponent : facetComponents) {
+            if (isImplicitPanel(facetComponent) && !isComponentIdSpecified(facetComponent)) {
+                FacesContext context = FacesContext.getCurrentInstance();
+                facetComponent.setId("_of_fix_implicitPanel_" + uniqueIdVendor.createUniqueId(context, null));
+            }
+            if (fixDeeply && !(facetComponent instanceof NamingContainer))
+                fixImplicitPanelIdsForMojarra_2_0_3(facetComponent, uniqueIdVendor, true);
+        }
+
+        if (fixDeeply) {
+            List<UIComponent> children = component.getChildren();
+            for (UIComponent child : children) {
+                if (!(child instanceof NamingContainer))
+                    fixImplicitPanelIdsForMojarra_2_0_3(child, uniqueIdVendor, true);
+            }
+        }
+    }
+
+    /**
+     * This method addresses the Mojarra 2.0.3 issue (already fixed in 2.1.3) where a component placed into a facet
+     * was implicitly wrapped into an intermediate UIPanel component, which was registered as an immediate facet
+     * content instead of the component placed into the facet via xhtml, so component.getParent() didn't return the
+     * facet owner component, and returned UIPanel instead.
+     * @param facet a facet content component
+     * @return true if it is an excessive implicitly added UIPanel, which should be ignored
+     */
+    public static boolean isImplicitPanel(UIComponent facet) {
+        return facet instanceof UIPanel && facet.getAttributes().containsKey("com.sun.faces.facelets.IMPLICIT_PANEL");
+    }
+
+    public static UIComponent getFacetOwner(UIComponent facetComponent) {
+        UIComponent parent = facetComponent.getParent();
+        if (isImplicitPanel(parent)) parent = parent.getParent();
+        return parent;
     }
 
     public static String tagNameByClass(Class<? extends UIComponent> componentClass) {
@@ -529,9 +675,16 @@ public class Components {
         requestMap.put(varName, oldValue);
     }
 
+    /**
+     * @deprecated this method family uses a practice of having to have a knowledge about the specific iterator
+     * components and the way that their custom client id generation logic works. This should be reimplemented to usa a
+     * generic mechanism (see the to-do below) <br/>
+     * //todo: Try to rework with viewRoot.invokeOnComponent (and/or viewRoot.visitTree if required)
+     */
     public static UIComponent findComponent(UIComponent baseComponent, String idPath) {
-        return UtilPhaseListener.findComponentById(baseComponent, idPath, false, false, false);
+        return PartialViewContext.findComponentById(baseComponent, idPath, false, false, false);
     }
+
 
     public static List<UIComponent> getFacets(UIComponent component, String... facetNames) {
         List<UIComponent> facets = new ArrayList<UIComponent>();

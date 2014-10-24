@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -17,6 +17,8 @@ import org.openfaces.util.Components;
 import org.openfaces.util.SelfScheduledAction;
 
 import javax.faces.FacesException;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.util.List;
@@ -24,6 +26,10 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
+@ResourceDependencies({
+        @ResourceDependency(name = "jsf.js", library = "javax.faces"),
+        @ResourceDependency(name = "default.css", library = "openfaces")
+})
 public abstract class Filter extends OUIComponentBase {
     private String _for;
     private FilterableComponent filteredComponent;

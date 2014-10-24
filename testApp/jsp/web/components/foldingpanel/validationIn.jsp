@@ -8,8 +8,8 @@
 
 <html>
 <head>
-  <script src="../funcTestsUtil.js" type="text/javascript"></script>
   <title>Validation in FoldingPanel</title>
+  <script src="../funcTestsUtil.js" type="text/javascript"></script>
 </head>
 
 <body>

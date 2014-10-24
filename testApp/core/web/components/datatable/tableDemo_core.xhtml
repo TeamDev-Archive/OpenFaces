@@ -1,4 +1,4 @@
-<div xmlns:h="http://java.sun.com/jsf/html"
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
      xmlns:a4j="http://richfaces.org/a4j"
@@ -64,11 +64,11 @@
                   columnsOrder="#{EmailTableDemoBean.columnsOrder}">
       <o:row condition="#{!msg.read}" style="font-weight: bold" onclick="alert('Bold row clicked: #{msg.subject}');"/>
       <!--<o:row>-->
-        <!--<a4j:support event="ondblclick" reRender="detailPanel" />-->
+        <!--<a4j:ajax event="ondblclick" render="detailPanel" />-->
       <!--</o:row>-->
 
       <o:singleRowSelection rowData="#{EmailTableDemoBean.selectedMessage}" render="detailPanel">
-        <!--<a4j:support event="onchange" reRender="detailPanel" />-->
+        <!--<a4j:ajax event="change" render="detailPanel" />-->
         <!--<o:ajax event="change" render="detailPanel"/>-->
       </o:singleRowSelection>
 

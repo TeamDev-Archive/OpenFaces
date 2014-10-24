@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -14,6 +14,7 @@ package org.openfaces.testapp.foreach;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.FacesEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -100,7 +101,7 @@ public class ForEachBean {
         return scalarData;
     }
 
-    public static Object getEventParameter(ActionEvent event, String paramName) {
+    public static Object getEventParameter(FacesEvent event, String paramName) {
 
         Iterator<UIComponent> iterator = event.getComponent().getFacetsAndChildren();
 

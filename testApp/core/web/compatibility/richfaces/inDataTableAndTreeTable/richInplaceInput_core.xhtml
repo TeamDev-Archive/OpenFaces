@@ -1,4 +1,4 @@
-<div xmlns:h="http://java.sun.com/jsf/html"
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
      xmlns:a4j="http://richfaces.org/a4j"
@@ -75,7 +75,7 @@
                          id="inplace21"
                          selectOnEdit="true"
                          editEvent="onclick">
-        <a4j:support event="onviewactivated" reRender="datatable"/>
+        <a4j:ajax event="viewactivated" render="datatable"/>
       </rich:inplaceInput>
 
     </o:treeColumn>
@@ -93,7 +93,7 @@
                          id="inplace22"
                          selectOnEdit="true"
                          editEvent="onclick">
-        <a4j:support event="onviewactivated" reRender="datatable"/>
+        <a4j:ajax event="viewactivated" render="datatable"/>
       </rich:inplaceInput>
 
     </o:column>

@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -12,15 +12,10 @@
 package org.seleniuminspector.openfaces;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.WrapsDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.seleniuminspector.LoadingMode;
-
-import java.util.List;
 
 /**
  * @author Andrii Gorbatov
@@ -32,7 +27,6 @@ public class ComboBoxFilterInspector extends AbstractFilterInspector {
     }
 
     public void makeFiltering(String filterValue) {
-//        selectByLabel(filterValue);
         WebDriver driver = ((WrapsDriver) getSelenium()).getWrappedDriver();
         Select select = new Select(driver.findElement(By.xpath(getXPath())));
         select.selectByVisibleText(filterValue);

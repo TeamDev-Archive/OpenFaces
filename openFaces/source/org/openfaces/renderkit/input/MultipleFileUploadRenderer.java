@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -138,14 +138,14 @@ public final class MultipleFileUploadRenderer extends AbstractFileUploadRenderer
                 multipleFileUpload.getStoppingStatusText(),
                 multipleFileUpload.isMultiple(),
                 uniqueId,
-                Utilities.getFunctionOfEvent(multipleFileUpload.getOnchange()),
-                Utilities.getFunctionOfEvent(multipleFileUpload.getOnstart()),
-                Utilities.getFunctionOfEvent(multipleFileUpload.getOnend()),
-                Utilities.getFunctionOfEvent(multipleFileUpload.getOnfilestart()),
-                Utilities.getFunctionOfEvent(multipleFileUpload.getOnfileinprogress()),
-                Utilities.getFunctionOfEvent(multipleFileUpload.getOnfileend()),
-                Utilities.getFunctionOfEvent(multipleFileUpload.getOnwrongfiletype()),
-                Utilities.getFunctionOfEvent(multipleFileUpload.getOndirectorydropped()),
+                Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(multipleFileUpload, "change")),
+                Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(multipleFileUpload, "start")),
+                Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(multipleFileUpload, "end")),
+                Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(multipleFileUpload, "uploadstart")),
+                Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(multipleFileUpload, "uploadinprogress")),
+                Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(multipleFileUpload, "uploadend")),
+                Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(multipleFileUpload, "wrongfileadded")),
+                Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(multipleFileUpload, "directorydropped")),
                 dropTargetDragoverClass,
                 multipleFileUpload.getUploadMode(),
                 getRender(context, multipleFileUpload),

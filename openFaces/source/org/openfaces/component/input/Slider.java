@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -15,7 +15,6 @@ package org.openfaces.component.input;
 import org.openfaces.component.FillDirection;
 import org.openfaces.component.OUIInputBase;
 import org.openfaces.component.chart.Orientation;
-import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
@@ -94,12 +93,6 @@ public class Slider extends OUIInputBase {
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
-
-    public void processRestoreState(FacesContext context, Object state) {
-        Object ajaxState = AjaxUtil.retrieveAjaxStateObject(context, this);
-        super.processRestoreState(context, ajaxState != null ? ajaxState : state);
-    }
-
 
     public Object saveState(FacesContext context) {
         return new Object[]{

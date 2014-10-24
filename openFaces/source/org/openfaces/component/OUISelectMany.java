@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -13,13 +13,27 @@ package org.openfaces.component;
 
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UISelectMany;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class OUISelectMany extends UISelectMany implements OUIInput {
+@ResourceDependencies({
+        @ResourceDependency(name = "default.css", library = "openfaces")
+})
+public class OUISelectMany extends UISelectMany implements OUIInput, ClientBehaviorHolder {
+    private static final List<String> EVENT_NAMES = Collections.unmodifiableList(Arrays.asList("valueChange", "blur",
+            "change", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove",
+            "mouseout", "mouseover", "mouseup", "select"));
+
     private String style;
     private String styleClass;
     private String focusedStyle;
@@ -270,6 +284,16 @@ public class OUISelectMany extends UISelectMany implements OUIInput {
         onkeydown = (String) values[i++];
         onkeyup = (String) values[i++];
         oncontextmenu = (String) values[i++];
+    }
+
+    @Override
+    public String getDefaultEventName() {
+        return "valueChange";
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
     }
 
 }

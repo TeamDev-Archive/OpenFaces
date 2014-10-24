@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -422,17 +422,6 @@ O$.DropDown = {
     O$.addUnloadHandler(popup, function () {
       O$.removeEventHandler(window, "resize", resizeHandlerOnWindow);
     });
-    /** Fix for issue with loading of style classes with javascript in IE. As a result "style" attributes was added by
-     * server, and we need to remove them to make other custom classes work correctly (added to address OFCS-109)
-     */
-    if (O$.isExplorer()){
-      if (dropDown.style)
-        dropDown.removeAttribute('style');
-      if (dropDown._field.style)
-        dropDown._field.removeAttribute('style');
-      if (dropDown._button.style)
-        dropDown._button.removeAttribute('style');
-    }
   },
 
   /*

@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,6 +11,7 @@
  */
 package org.openfaces.renderkit.ajax;
 
+import org.openfaces.application.ViewExpiredExceptionHandler;
 import org.openfaces.component.ajax.AjaxSettings;
 import org.openfaces.component.ajax.SessionExpiration;
 import org.openfaces.org.json.JSONObject;
@@ -55,15 +56,10 @@ public class AjaxSettingsRenderer extends AbstractSettingsRenderer implements Aj
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         AjaxSettings ajaxSettings = (AjaxSettings) component;
-        if (isAjaxSessionExpirationProcessing(context)) {
+        if (ViewExpiredExceptionHandler.isExpiredView(context)) {
 
             SessionExpiration expirationFacet = ajaxSettings.getSessionExpiration();
             expirationFacet.encodeAll(context);
-        }
-
-        if (isAjaxErrorProcessing(context)) {
-
-            // TODO [Eugene Goncharov]: add error processing here
         }
 
         processAjaxProgressMessage(context, (AjaxSettings) component);

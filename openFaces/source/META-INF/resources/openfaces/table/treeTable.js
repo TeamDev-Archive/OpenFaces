@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -442,7 +442,7 @@ O$.TreeTable = {
                 ajaxFailedProcessor();
               else {
                 table._subRowsRequestInProgress = true;
-                O$.requestComponentPortions(table.id, ["subRows:" + row._index], null, function () {
+                O$.Ajax.requestComponentPortions(table.id, ["subRows:" + row._index], null, function () {
                           table._subRowsRequestInProgress = false;
                           O$.Table._acceptLoadedRows.apply(null, arguments);
                           if (table._deferredSubRowsRequests && table._deferredSubRowsRequests.length > 0) {

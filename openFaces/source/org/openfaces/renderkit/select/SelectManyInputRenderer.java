@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -209,7 +209,7 @@ public abstract class SelectManyInputRenderer extends RendererBase {
         writeAttribute(writer, "accesskey", selectManyInputBase.getAccesskey());
         writeAttribute(writer, "dir", selectManyInputBase.getDir());
         writeAttribute(writer, "lang", selectManyInputBase.getLang());
-        writeAttribute(writer, "onselect", selectManyInputBase.getOnselect());
+        writeAttribute(writer, "onselect", Rendering.getEventHandlerScript(selectManyInputBase, "select"));
         writeAttribute(writer, "tabindex", selectManyInputBase.getTabindex());
 
         if (!selectManyInputBase.isDisabled() && !selectManyInputBase.isReadonly() && !selectItem.isDisabled()) {
@@ -252,7 +252,7 @@ public abstract class SelectManyInputRenderer extends RendererBase {
         }
 
         AnonymousFunction onchangeFunction = null;
-        String onchange = selectManyInputBase.getOnchange();
+        String onchange = Rendering.getChangeHandlerScript(selectManyInputBase);
 
         if (onchange != null) {
             onchangeFunction = new AnonymousFunction(onchange, "event");

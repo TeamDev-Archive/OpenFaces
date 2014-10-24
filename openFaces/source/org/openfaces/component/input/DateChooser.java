@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -17,10 +17,13 @@ import org.openfaces.util.MessageUtil;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.component.PartialStateHolder;
 import javax.faces.context.FacesContext;
-import static java.lang.Boolean.valueOf;
+import javax.faces.convert.Converter;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import static java.lang.Boolean.valueOf;
 
 /**
  * The DateChooser component enables the user to enter a date either by typing it in the text
@@ -104,6 +107,12 @@ public class DateChooser extends DropDownComponent {
 
     @Override
     public Object saveState(FacesContext context) {
+        Converter converter = getConverter();
+        if (converter instanceof PartialStateHolder) {
+            // make programmatically specified converter to be saved in state
+            ((PartialStateHolder) converter).clearInitialState();
+            clearInitialState();
+        }
         return new Object[]{super.saveState(context), calendarStyle, dayStyle,
                 rolloverDayStyle, inactiveMonthDayStyle, rolloverInactiveMonthDayStyle, selectedDayStyle,
                 rolloverSelectedDayStyle, todayStyle, rolloverTodayStyle, disabledDayStyle,

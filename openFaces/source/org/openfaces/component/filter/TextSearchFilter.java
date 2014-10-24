@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.filter;
 
+import org.openfaces.component.CompoundComponent;
 import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
@@ -21,8 +22,7 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class TextSearchFilter extends ExpressionFilter {
-
+public abstract class TextSearchFilter extends ExpressionFilter implements CompoundComponent {
     public static final String SEARCH_COMPONENT_SUFFIX = "searchComponent";
 
     private String rolloverStyle;
@@ -31,27 +31,30 @@ public abstract class TextSearchFilter extends ExpressionFilter {
     private String focusedClass;
     private Integer maxlength;
 
-    @Override
-    public void createSubComponents(FacesContext context) {
-        super.createSubComponents(context);
-        Components.createChildComponent(context, this, getInputComponentType(), SEARCH_COMPONENT_SUFFIX);
+    protected UIComponent createSearchComponent(FacesContext context) {
+        return Components.createChildComponent(context, this, getInputComponentType(), SEARCH_COMPONENT_SUFFIX);
     }
 
     protected abstract String getInputComponentType();
 
     public UIComponent getSearchComponent() {
+        createSubComponents(getFacesContext());
         List children = getChildren();
         if (children.size() != 1) {
             String message = "TextSearchFilter should have exactly one child component - " +
                     "the search component. children.size = " + children.size();
-            if (children.size() == 0)
-                message += " ; If you're creating the filter component programmatically, make sure to invoke its " +
-                        "createSubComponents() method (see the Creating Components Dynamically section in the " +
-                        "documentation: http://openfaces.org/documentation/developersGuide/index.html.";
             throw new IllegalStateException(message);
         }
         UIComponent searchComponent = (UIComponent) children.get(0);
         return searchComponent;
+    }
+
+    public void createSubComponents(FacesContext context) {
+        String createdKey = "_subComponentsCreated";
+        if (!getAttributes().containsKey(createdKey)) {
+            getAttributes().put(createdKey, true);
+            createSearchComponent(context);
+        }
     }
 
     public String getFocusedStyle() {

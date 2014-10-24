@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -20,7 +20,6 @@ import javax.faces.context.FacesContext;
  * based on user input and completes user input right in the input field. It has a similar
  * functionality to DropDownField, but unlike DropDownField it looks like a plain text field.
  * You can create a multi-column drop-down list and embed JSF components into it.
- * 
  */
 public class SuggestionField extends DropDownFieldBase {
     public static final String COMPONENT_TYPE = "org.openfaces.SuggestionField";

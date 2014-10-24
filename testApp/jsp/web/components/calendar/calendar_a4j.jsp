@@ -11,7 +11,7 @@
   <title>Calendar with Ajax4jsf</title>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 </head>
-
+<script src="../funcTestsUtil.js" type="text/javascript"></script>
 <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 <body>
 <f:view>

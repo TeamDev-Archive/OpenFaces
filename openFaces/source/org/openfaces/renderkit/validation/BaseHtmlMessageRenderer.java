@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -87,10 +87,9 @@ public abstract class BaseHtmlMessageRenderer extends BaseMessageRenderer {
         }
 
         startMessageElement(facesContext, messageComponent);
-        String clientId = null;
         Iterator messageIterator = null;
         if (forComponent != null) {
-            clientId = forComponent.getClientId(facesContext);
+            String clientId = forComponent.getClientId(facesContext);
             messageIterator = facesContext.getMessages(clientId);
         }
 
@@ -99,7 +98,7 @@ public abstract class BaseHtmlMessageRenderer extends BaseMessageRenderer {
             FacesMessage facesMessage = (FacesMessage) messageIterator.next();
 
             // and render it
-            renderSingleFacesMessage(facesContext, messageComponent, facesMessage, clientId);
+            renderSingleFacesMessage(facesContext, messageComponent, facesMessage);
         } else {
             String[] styleAndClass = getStyleAndStyleClass(messageComponent, FacesMessage.SEVERITY_ERROR);
             String style = Styles.mergeStyles(styleAndClass[0], DISPLAY_NONE_CSS);
@@ -119,9 +118,10 @@ public abstract class BaseHtmlMessageRenderer extends BaseMessageRenderer {
 
     protected void renderSingleFacesMessage(FacesContext facesContext,
                                             UIComponent messageComponent,
-                                            FacesMessage message,
-                                            String forClientId)
+                                            FacesMessage message)
             throws IOException {
+        message.rendered();
+
         // determine style and style class
         String[] styleAndClass = getStyleAndStyleClass(messageComponent, message.getSeverity());
         String style = styleAndClass[0];

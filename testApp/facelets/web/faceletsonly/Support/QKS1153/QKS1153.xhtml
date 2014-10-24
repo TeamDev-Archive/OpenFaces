@@ -5,12 +5,12 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:o="http://openfaces.org/"
       xmlns:s="http://jboss.com/products/seam/taglib"
-      xmlns:a4j="https://ajax4jsf.dev.java.net/ajax">
-<head>
+      xmlns:a4j="http://richfaces.org/a4j">
+<h:head>
   <title></title>
-</head>
+</h:head>
 
-<body>
+<h:body>
 <f:view>
   <h:form id="form1">
     <f:facet name="caption">
@@ -29,7 +29,7 @@
 
       <o:singleRowSelection
               rowData="#{QKS1153.selectedCandidate}">
-        <a4j:support event="onchange" reRender="candidateGrid" action="#{QKS1153.editCandidate}"/>
+        <a4j:ajax event="change" render="candidateGrid" action="#{QKS1153.editCandidate}"/>
       </o:singleRowSelection>
 
       <o:column id="candidateIdColumn"
@@ -92,5 +92,5 @@
   </h:form>
 </f:view>
 
-</body>
+</h:body>
 </html>

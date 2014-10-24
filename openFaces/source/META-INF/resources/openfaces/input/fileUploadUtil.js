@@ -250,7 +250,7 @@ O$.FileUploadUtil = {
         evt.preventDefault();
       },
       _sendCheckRequest:function (sendDataToEvent) {
-        O$.requestComponentPortions(fileUpload.id, ["nothing"],
+        O$.Ajax.requestComponentPortions(fileUpload.id, ["nothing"],
                 JSON.stringify({listOfFilesRequest:"true", idOfFiles:fileUpload._listOfids}),
                 function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
                   if (portionData['allUploaded'] == "true") {
@@ -659,7 +659,7 @@ O$.FileUploadUtil = {
       _renderAfterUploadEnd : function() {
         if (fileUpload._render) {
           if (fileUpload._render.length > 0) {
-            O$._ajaxReload(fileUpload._render, {"executeRenderedComponents":true,"immediate":false});
+            O$.Ajax._reload(fileUpload._render, {"executeRenderedComponents":true,"immediate":false});
           }
         }
       },
@@ -731,7 +731,7 @@ O$.FileUploadUtil = {
         var iframe;
         if (O$.isExplorer() &&
                 (O$.isQuirksMode()
-                        ||  ((O$.isExplorer6() ||O$.isExplorer7() || O$.isExplorer8() || O$.isExplorer9()) &&
+                        ||  ((O$.isExplorer6() ||O$.isExplorer7() || O$.isExplorer8() || O$.isExplorer9() || O$.isExplorer11()) &&
                         (document.documentMode == 7 || document.documentMode == 6)))) {
           iframe = document.createElement('<iframe name="' + formForInput.id + "::iframe" + '">');
           iframe.width = 0;

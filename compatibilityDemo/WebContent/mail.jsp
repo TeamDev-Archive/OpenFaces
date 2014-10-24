@@ -189,7 +189,7 @@
             <o:singleNodeSelection
                     style="background:url('images/treetable/selection.gif') repeat-x #168aff !important; color: white !important;"
                     nodeData="#{EMailBean.selectedEMail}">
-                <a4j:support event="onchange" process=":form:emailsTreeTable" reRender="emailDetails"/>
+                <a4j:ajax event="change" execute=":form:emailsTreeTable" render="emailDetails"/>
             </o:singleNodeSelection>
             <o:dynamicTreeStructure nodeChildren="#{EMailBean.selection.EMailsTreeChildren}"/>
             <o:treeColumn id="importance"

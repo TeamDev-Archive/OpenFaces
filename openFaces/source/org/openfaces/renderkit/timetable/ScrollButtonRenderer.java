@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -57,9 +57,9 @@ public class ScrollButtonRenderer extends org.openfaces.renderkit.RendererBase {
         String imageUrl;
         String buttonImageUrl = (String) scrollButton.getAttributes().get("buttonImageUrl");
         if (scrollButton.getScrollDirection().equals(ScrollDirection.UP))
-            imageUrl = Resources.getURL(context, buttonImageUrl, null, "input/scrollButtonUp.gif");
+            imageUrl = Resources.getURL(context, buttonImageUrl, "input/scrollButtonUp.gif");
         else
-            imageUrl = Resources.getURL(context, buttonImageUrl, null, "input/scrollButtonDown.gif");
+            imageUrl = Resources.getURL(context, buttonImageUrl, "input/scrollButtonDown.gif");
         writer.startElement("img", scrollButton);
         writeIdAttribute(context,scrollButton);
         writer.writeAttribute("src", imageUrl, null);

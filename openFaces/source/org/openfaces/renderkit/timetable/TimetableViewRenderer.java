@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -71,14 +71,18 @@ public abstract class TimetableViewRenderer extends TimetableRendererBase implem
     protected void encodeEventEditor(FacesContext context, TimetableView timetableView, List<TimetableResource> resources) throws IOException {
         UIComponent eventEditor = timetableView.getEventEditor();
         if (eventEditor == null) {
-            eventEditor = Components.getOrCreateFacet(context, timetableView,
-                    EventEditorDialog.COMPONENT_TYPE, "eventEditor", "_eventEditor", EventEditorDialog.class);
+            eventEditor = getOrCreateEventEditor(context, timetableView);
         }
         if (eventEditor instanceof EventEditorDialog)
             ((EventEditorDialog) eventEditor).setVisible(false);
         eventEditor.getAttributes().put(EVENTEDITOR_RESOURCES_ATTR, resources);
         eventEditor.encodeAll(context);
         eventEditor.getAttributes().remove(EVENTEDITOR_RESOURCES_ATTR);
+    }
+
+    private EventEditorDialog getOrCreateEventEditor(FacesContext context, TimetableView timetableView) {
+        return Components.getOrCreateFacet(context, timetableView,
+                EventEditorDialog.COMPONENT_TYPE, "eventEditor", "_eventEditor", EventEditorDialog.class);
     }
 
     protected void decodeTimetableChanges(FacesContext context, TimetableView timetableView) {

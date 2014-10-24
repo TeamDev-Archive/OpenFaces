@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.springframework.org/schema/webflow"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+      parent="parent-flow">
+  <!--parentFlow: /WEB-INF/flows/parent-flow.xml-->
+  <!--current view: /WEB-INF/flows/inputText/view.xml-->
+
+  <var name="inputTextBean" class="org.openfaces.demo.spring.beans.inputText.InputTextBean"/>
+  <view-state id="view" view="view.xhtml">
+    <transition on="suggest">
+      <evaluate
+              expression="inputTextBean.createOutputSuggestion()"
+              result="viewScope.outputSuggestion"/>
+    </transition>
+  </view-state>
+</flow>

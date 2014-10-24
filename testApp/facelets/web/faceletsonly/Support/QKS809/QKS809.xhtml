@@ -2,11 +2,11 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:a4j="https://ajax4jsf.dev.java.net/ajax"
+      xmlns:a4j="http://richfaces.org/a4j"
       xmlns:o="http://openfaces.org/"
       xmlns:c="http://java.sun.com/jstl/core">
 
-<body>
+<h:body>
 <f:view>
   <h:form id="mainForm">
     <o:clientValidationSupport clientValidation="onDemand"
@@ -15,7 +15,7 @@
       <o:floatingIconMessage showDetail="false" showSummary="true" noImage="true" style="background-color:yellow"/>
     </o:clientValidationSupport>
 
-    <a4j:commandLink reRender="testPanel">
+    <a4j:commandLink render="testPanel">
       Re Render Panel
     </a4j:commandLink>
 
@@ -36,6 +36,6 @@
     </a4j:outputPanel>
   </h:form>
 </f:view>
-</body>
+</h:body>
 
 </html>

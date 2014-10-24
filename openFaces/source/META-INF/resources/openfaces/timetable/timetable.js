@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -541,8 +541,8 @@ O$.Timetable = {
                     O$.submitEnclosingForm(actionBar._timetableView);
                   } else if (action.scope == "timetable") {
                     var timetable = timetableView._timetable || timetableView;
-                    O$._ajaxReload([timetable.id], {
-                              additionalParams: [
+                    O$.Ajax._reload([timetable.id], {
+                              params: [
                                 [actionBarId + "::" + this._index, eventId]
                               ]
                             });
@@ -738,15 +738,15 @@ O$.Timetable = {
 
                 this._loadingTimeRangeMap.addRange(start.getTime(), end.getTime());
                 var thisProvider = this;
-                O$.requestComponentPortions(this._timeTableView.id, ["loadEvents"],
+                O$.Ajax.requestComponentPortions(this._timeTableView.id, ["loadEvents"],
                         JSON.stringify(
                                 {startTime: O$.formatDateTime(start), endTime: O$.formatDateTime(end)},
                                 ["startTime", "endTime"]),
                         function(component, portionName, portionHTML, portionScripts, portionData) {
-                          var remainingElements = O$.replaceDocumentElements(portionHTML, true);
+                          var remainingElements = O$.Timetable.replaceDocumentElements(portionHTML, true);
                           if (remainingElements.hasChildNodes())
                             thisProvider._timeTableView._hiddenArea.appendChild(remainingElements);
-                          O$.executeScripts(portionScripts);
+                          O$.Ajax.executeScripts(portionScripts);
 
                           var newEvents = portionData.events;
                           thisProvider._loadedTimeRangeMap.addRange(start.getTime(), end.getTime());
@@ -849,6 +849,59 @@ O$.Timetable = {
       return 1;
     return 0;
   }
+};
+
+/*
+ Replaces all elements in htmlPortion if they have an appropriate counterpart with the same Id in the document. All
+ elements that couldn't be placed into the document (due to lack of id or a lack of an element with the same id in the
+ document) are retained in the returned "div" element. The "div" element itself is just a temporary container and is
+ not a part of HTML passed as a parameter.
+ */
+O$.Timetable.replaceDocumentElements = function(htmlPortion, allowElementsWithNewIds) {
+  var tempDiv = document.createElement("div");
+  try {
+    tempDiv.innerHTML = htmlPortion;
+  } catch (e) {
+    O$.log("ERROR: O$.replaceDocumentElements: couldn't set innerHTML for tempDiv. error message: " + e.message + "; htmlPortion: " + htmlPortion);
+//    O$.logError("O$.replaceDocumentElements: couldn't set innerHTML for tempDiv. error message: " + e.message + "; htmlPortion: " + htmlPortion);
+    throw e;
+  }
+
+  var newElements = [];
+  for (var i = 0, count = tempDiv.childNodes.length; i < count; i++) {
+    var el = tempDiv.childNodes[i];
+    O$.Ajax._pushElementsWithId(newElements, el);
+  }
+  for (var childIndex = 0, childCount = newElements.length; childIndex < childCount; childIndex++) {
+    var newElement = newElements[childIndex];
+    O$.assert(newElement.id, "_processSimpleUpdate: newElement without id encountered");
+    var elementId = newElement.id;
+    var oldElement = O$(elementId);
+    if (!oldElement) {
+      if (!allowElementsWithNewIds) {
+        O$.logError("Couldn't find component to replace: " + elementId + "; incoming HTML for this component: " + newElement.innerHTML);
+      }
+      continue;
+    }
+    var parent = oldElement.parentNode;
+
+    if (O$.isExplorer()) {
+      if (typeof oldElement._cleanUp == "function") {
+        oldElement._cleanUp();
+      }
+    }
+
+    parent.replaceChild(newElement, oldElement);
+
+    if (O$.isOpera()) { // needed for Opera8.5 only (JSFC-1170)
+      var oldClassName = parent.className;
+      parent.className = parent.className + " _non_existing_class_name_of__123_";
+      parent.className = oldClassName;
+    }
+
+    oldElement = null;
+  }
+  return tempDiv;
 };
 
 O$.TimetableViewSwitcher = {

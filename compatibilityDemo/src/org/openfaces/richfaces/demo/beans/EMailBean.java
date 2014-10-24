@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -14,6 +14,7 @@ package org.openfaces.richfaces.demo.beans;
 import java.util.Date;
 
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 
 import org.richfaces.component.html.HtmlTreeNode;
 import org.richfaces.event.NodeSelectedEvent;
@@ -39,11 +40,11 @@ public final class EMailBean {
 		selectedFolder = (EMailFolderBean) node.getData();
 	}
 	
-	public void saveMailListener(ActionEvent event) {
+	public void saveMailListener(AjaxBehaviorEvent event) {
 		drafts.getContent().addEMail(new EMail(messageAddress, messageSubject, new Date(), EMailImportance.NORMAL, false, "Drafts", messageText));
 	}
 	
-	public void sendMailListener(ActionEvent event) {
+	public void sendMailListener(AjaxBehaviorEvent event) {
 		sent.getContent().addEMail(new EMail(messageAddress, messageSubject, new Date(), EMailImportance.NORMAL, false, "Sent", messageText));
 	}
 	

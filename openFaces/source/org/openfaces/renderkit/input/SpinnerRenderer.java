@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -107,7 +107,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
                 buttonPressedStyleClass,
                 spinner.isDisabled(),
                 spinner.isRequired(),
-                spinner.getOnchange(),
+                Rendering.getChangeHandlerScript(spinner),
                 options);
 
         return new InitScript(sb, new String[]{
@@ -157,6 +157,8 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        Rendering.decodeBehaviors(context, component);
+
         Map<String, String> requestMap = context.getExternalContext().getRequestParameterMap();
         DropDownComponent dropDownComponent = (DropDownComponent) component;
         String fieldId = getFieldClientId(context, dropDownComponent);
@@ -167,7 +169,6 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
         if ("false".equals(state) && value != null) {
             dropDownComponent.setSubmittedValue(value);
         }
-
     }
 
     protected void encodeButton(FacesContext context, UIComponent component) throws IOException {
@@ -208,10 +209,10 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
         String resultImageUrl;
         if (spinner.isDisabled()) {
             String disabledButtonImageUrl = (String) spinner.getAttributes().get(disabledImageUrlAttr);
-            resultImageUrl = Resources.getURL(context, disabledButtonImageUrl, null, defaultDisabledImagePath);
+            resultImageUrl = Resources.getURL(context, disabledButtonImageUrl, defaultDisabledImagePath);
         } else {
             String buttonImageUrl = (String) spinner.getAttributes().get(imageUrlAttr);
-            resultImageUrl = Resources.getURL(context, buttonImageUrl, null, defaultImagePath);
+            resultImageUrl = Resources.getURL(context, buttonImageUrl, defaultImagePath);
         }
         writer.startElement("img", spinner);
         writer.writeAttribute("src", resultImageUrl, null);

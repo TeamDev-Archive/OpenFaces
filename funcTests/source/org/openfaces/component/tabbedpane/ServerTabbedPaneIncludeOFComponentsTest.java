@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -15,6 +15,7 @@ import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
+import org.openqa.selenium.By;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.ServerLoadingMode;
 import org.seleniuminspector.openfaces.*;
@@ -122,11 +123,13 @@ public class ServerTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         firstDropDown.assertElementExists();
         DropDownFieldInspector secondDropDown = dropDownField("fn:secondDropDown");
         secondDropDown.assertElementExists(false);
+
         firstDropDown.button().click();
         firstDropDown.popup().items().get(1).click();
         firstDropDown.field().assertValue("Yellow");
         element("fn:secondTabID").clickAndWait();
         secondDropDown.assertElementExists();
+
         secondDropDown.button().click();
         secondDropDown.popup().items().get(1).click();
         secondDropDown.field().assertValue("Yellow");
@@ -266,7 +269,8 @@ public class ServerTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
         element("fn:firstHeader").assertText("First tab");
         for (int i = 0; i < 3; i++) {
-            window().document().getElementsByTagName("img").get(i).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
+            getDriver().findElements(By.tagName("img")).get(i).click();
+            sleep(1000);
         }
 
         TreeTableInspector firstTreeTable = treeTable("fn:firstTreeTable");
@@ -274,8 +278,9 @@ public class ServerTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         firstTreeTable.column(0).filter(InputTextFilterInspector.class, "fn:firstTreeTable:filter1").makeFiltering("color");
 
         element("fn:secondHeader").clickAndWait();
-        for (int i = 0; i < 3; i++) {
-            window().document().getElementsByTagName("img").get(i).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
+        for (int i = 1; i < 4; i++) {
+            getDriver().findElements(By.tagName("img")).get(i).click();
+            sleep(1000);
         }
 
         TreeTableInspector secondTreeTable = treeTable("fn:secondTreeTable");

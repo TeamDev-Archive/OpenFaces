@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -26,7 +26,7 @@ public class DoubleRangeClientValidator extends AbstractClientValidator {
     private static final double PRECISION = 0.0000001;
 
     public DoubleRangeClientValidator() {
-        addJavascriptLibrary(new ValidationJavascriptLibrary("doubleRangeValidator.js", null));
+        addJavascriptLibrary(new ValidationJavascriptLibrary("doubleRangeValidator.js"));
     }
 
     public void setDoubleRangeValidator(DoubleRangeValidator doubleRangeValidator) {

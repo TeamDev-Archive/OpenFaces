@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,7 +11,6 @@
  */
 package org.openfaces.component.filter;
 
-import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.util.ValueBindings;
@@ -31,7 +30,7 @@ import java.util.TreeSet;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class ExpressionFilter extends Filter implements CompoundComponent, ValueHolder {
+public abstract class ExpressionFilter extends Filter implements ValueHolder {
     private static final String DEFAULT_ALL_RECORDS_CRITERION_NAME = "<All>";
     private static final String DEFAULT_EMPTY_RECORDS_CRITERION_NAME = "<Empty>";
     private static final String DEFAULT_NON_EMPTY_RECORDS_CRITERION_NAME = "<Non-empty>";
@@ -375,13 +374,13 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
     }
 
     /**
-     *
      * @param condition
      */
     public void setCondition(ExpressionFilterCriterion condition) {
-        if (condition.getPropertyLocator() != null) throw new IllegalArgumentException("The condition attribute should " +
-                "receive ExpressionFilterCriterion with just \"condition\" and \"inverse\" attributes specified, but " +
-                "propertyLocator was specified.");
+        if (condition.getPropertyLocator() != null)
+            throw new IllegalArgumentException("The condition attribute should " +
+                    "receive ExpressionFilterCriterion with just \"condition\" and \"inverse\" attributes specified, but " +
+                    "propertyLocator was specified.");
         if (condition.getArg1() != null) throw new IllegalArgumentException("The condition attribute should " +
                 "receive ExpressionFilterCriterion with just \"condition\" and \"inverse\" attributes specified, but " +
                 "arg1 was specified.");
@@ -435,9 +434,6 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
             criterionExpression.setValue(context.getELContext(), value);
             criterionModelUpdateRequired = false;
         }
-    }
-
-    public void createSubComponents(FacesContext context) {
     }
 
 }

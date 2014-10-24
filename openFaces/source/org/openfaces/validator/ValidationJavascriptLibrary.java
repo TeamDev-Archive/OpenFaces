@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -20,19 +20,9 @@ import javax.faces.context.FacesContext;
  */
 public class ValidationJavascriptLibrary {
     private String name;
-    private Class ownerClass;
 
-    public ValidationJavascriptLibrary(String name, Class ownerClass) {
+    public ValidationJavascriptLibrary(String name) {
         this.name = name;
-        this.ownerClass = ownerClass;
-    }
-
-    public Class getOwnerClass() {
-        return ownerClass;
-    }
-
-    public void setOwnerClass(Class ownerClass) {
-        this.ownerClass = ownerClass;
     }
 
     public String getName() {
@@ -44,8 +34,6 @@ public class ValidationJavascriptLibrary {
     }
 
     public String getUrl(FacesContext context) {
-        if (ownerClass != null)
-            return Resources.internalURL(context, ownerClass, name);
         return Resources.internalURL(context, name.startsWith("/") ? name.substring(1) : "validation/" + name);
     }
 }

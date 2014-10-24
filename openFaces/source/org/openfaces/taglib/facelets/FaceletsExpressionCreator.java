@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,13 +11,13 @@
  */
 package org.openfaces.taglib.facelets;
 
-import com.sun.facelets.FaceletContext;
-import com.sun.facelets.tag.TagAttribute;
 import org.openfaces.taglib.internal.AbstractTag;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
+import javax.faces.view.facelets.FaceletContext;
+import javax.faces.view.facelets.TagAttribute;
 
 public abstract class FaceletsExpressionCreator implements AbstractTag.ExpressionCreator {
     protected FaceletContext faceletContext;

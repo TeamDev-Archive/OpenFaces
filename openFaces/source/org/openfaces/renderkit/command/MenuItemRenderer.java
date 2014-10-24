@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -127,7 +127,7 @@ public class MenuItemRenderer extends RendererBase {
                     addMenuItemParameter(menuItem, "menuId", child.getClientId(context));
                 } else {
                     child.encodeAll(context);
-                    if (!(child instanceof OUIClientAction) && !Rendering.isA4jSupportComponent(child))
+                    if (!(child instanceof OUIClientAction))
                         renderValueAsContent = false;
                 }
             }
@@ -200,21 +200,21 @@ public class MenuItemRenderer extends RendererBase {
             if (disabledSubmenuImageUrl != null) {
                 addMenuItemParameter(menuItem, "disabledSubmenuImageUrl",
                         Resources.getURL(context, disabledSubmenuImageUrl,
-                                MenuItemRenderer.class, ""));
+                                ""));
             }
 
             String selectedDisabledSubmenuImageUrl = menuItem.getSelectedDisabledSubmenuImageUrl();
             if (selectedDisabledSubmenuImageUrl != null) {
                 addMenuItemParameter(menuItem, "selectedDisabledSubmenuImageUrl",
                         Resources.getURL(context, selectedDisabledSubmenuImageUrl,
-                                MenuItemRenderer.class, ""));
+                                ""));
             }
 
 
             if (submenuImageUrl != null) {
                 addMenuItemParameter(menuItem, "submenuImageUrl",
                         Resources.getURL(context, submenuImageUrl,
-                                MenuItemRenderer.class, ""));
+                                ""));
             }
 
 
@@ -222,7 +222,7 @@ public class MenuItemRenderer extends RendererBase {
             if (selectedSubmenuImageUrl != null) {
                 addMenuItemParameter(menuItem, "selectedSubmenuImageUrl",
                         Resources.getURL(context, selectedSubmenuImageUrl,
-                                MenuItemRenderer.class, ""));
+                                ""));
             }
         }
         writer.endElement("span");
@@ -298,6 +298,8 @@ public class MenuItemRenderer extends RendererBase {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        Rendering.decodeBehaviors(context, component);
+        
         Map<String, String> requestParameters = context.getExternalContext().getRequestParameterMap();
         String key = component.getClientId(context) + "::clicked";
         if (requestParameters.containsKey(key)) {

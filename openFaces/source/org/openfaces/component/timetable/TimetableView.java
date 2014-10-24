@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -15,7 +15,6 @@ package org.openfaces.component.timetable;
 import org.openfaces.component.OUIData;
 import org.openfaces.component.OUIObjectIteratorBase;
 import org.openfaces.component.window.Confirmation;
-import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.CalendarUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.Rendering;
@@ -26,12 +25,15 @@ import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -44,6 +46,10 @@ import java.util.TimeZone;
  * @author Dmitry Pikhulya
  * @author Roman Porotnikov
  */
+@ResourceDependencies({
+        @ResourceDependency(name = "jsf.js", library = "javax.faces"),
+        @ResourceDependency(name = "default.css", library = "openfaces")
+})
 public abstract class TimetableView extends OUIObjectIteratorBase {
     private static final String EVENT_EDITOR_FACET_NAME = "eventEditor";
     private static final String DELETE_EVENT_CONFIRMATION_FACET_NAME = "deleteEventConfirmation";
@@ -70,7 +76,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
 
     private String rowStyle;
     private String rowClass;
-    
+
     private Boolean editable;
     private String eventVar = "event";
     private AbstractTimetableEvent event;
@@ -305,10 +311,10 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
         List<EventArea> eventAreas = getEventAreas();
 
         if (this.event == null)
-            initialDescendantsState = OUIData.saveDescendantComponentStates(eventAreas.iterator(), true);
+            initialDescendantsState = OUIData.saveDescendantComponentStates(new ArrayList<UIComponent>(eventAreas).iterator(), true);
         else {
             String eventId = this.event.getId();
-            Object stateForEvent = OUIData.saveDescendantComponentStates(eventAreas.iterator(), true);
+            Object stateForEvent = OUIData.saveDescendantComponentStates(new ArrayList<UIComponent>(eventAreas).iterator(), true);
             descendantsStateForEvents.put(eventId, stateForEvent);
         }
 
@@ -318,11 +324,11 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
         this.event = event;
 
         if (this.event == null)
-            OUIData.restoreDescendantComponentStates(eventAreas.iterator(), initialDescendantsState, true);
+            OUIData.restoreDescendantComponentStates(new ArrayList<UIComponent>(eventAreas).iterator(), initialDescendantsState, true);
         else {
             Object stateForEvent = descendantsStateForEvents.get(this.event.getId());
             if (stateForEvent != null)
-                OUIData.restoreDescendantComponentStates(eventAreas.iterator(), stateForEvent, true);
+                OUIData.restoreDescendantComponentStates(new ArrayList<UIComponent>(eventAreas).iterator(), stateForEvent, true);
         }
 
         for (EventArea eventArea : eventAreas) {
@@ -332,6 +338,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
     }
 
     public void setObjectId(String objectId) {
+        super.setObjectId(objectId);
         if (objectId == null) {
             setEvent(null);
             return;
@@ -483,7 +490,7 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
                 ? timetable.getEditingOptions()
                 : Components.getChildWithClass(this, TimetableEditingOptions.class, "editingOptions");
     }
-    
+
     public UIComponent getEventEditor() {
         UIComponent result = Components.getFacet(this, EVENT_EDITOR_FACET_NAME);
         if (result == null) {
@@ -496,12 +503,6 @@ public abstract class TimetableView extends OUIObjectIteratorBase {
 
     public void setEventEditor(UIComponent dialog) {
         getFacets().put(EVENT_EDITOR_FACET_NAME, dialog);
-    }
-
-    @Override
-    public void processRestoreState(FacesContext context, Object state) {
-        Object ajaxState = AjaxUtil.retrieveAjaxStateObject(context, this);
-        super.processRestoreState(context, ajaxState != null ? ajaxState : state);
     }
 
     public ValueExpression getEventsValueExpression() {

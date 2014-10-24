@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -109,7 +109,7 @@ public class WeekTable extends TimeScaleTable { // todo: extract some common typ
 
     @Override
     public Object saveState(FacesContext context) {
-        return new Object[] {
+        return new Object[]{
                 super.saveState(context),
                 firstDayOfWeek,
                 weekdayColumnSeparator,
@@ -127,7 +127,7 @@ public class WeekTable extends TimeScaleTable { // todo: extract some common typ
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
-        firstDayOfWeek = (Integer) state[i++]; 
+        firstDayOfWeek = (Integer) state[i++];
         weekdayColumnSeparator = (String) state[i++];
         weekdayHeadersRowSeparator = (String) state[i++];
         weekdayHeadersRowStyle = (String) state[i++];

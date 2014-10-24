@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -26,7 +26,7 @@ public class DoubleConverterClientValidator extends AbstractClientValidator {
     private static final String CONVERSION_MESSAGE_ID = "javax.faces.convert.DoubleConverter.CONVERSION";
 
     public DoubleConverterClientValidator() {
-        addJavascriptLibrary(new ValidationJavascriptLibrary("doubleConverterValidator.js", null));
+        addJavascriptLibrary(new ValidationJavascriptLibrary("doubleConverterValidator.js"));
     }
 
     public String getJsValidatorName() {

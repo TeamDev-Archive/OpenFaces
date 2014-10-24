@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -16,10 +16,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.seleniuminspector.ElementInspector;
-import org.seleniuminspector.html.InputInspector;
 import org.seleniuminspector.openfaces.ConfirmationInspector;
 import org.seleniuminspector.openfaces.DateChooserInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
@@ -30,8 +27,7 @@ import org.seleniuminspector.openfaces.TabSetInspector;
  */
 public class LiveDemoTest extends OpenFacesTestCase {
 
-     @Test
-    @Ignore
+    @Test
     public void testAvailability() {
         assertDemoPageAvailable("/overview/homepage.jsf", "OpenFaces Online Demo \u2014 See Components in action");
         assertDemoPageAvailable("/borderlayoutpanel/BorderLayoutPanel.jsf", "Border Layout Panel \u2014 OpenFaces Demo");
@@ -83,7 +79,7 @@ public class LiveDemoTest extends OpenFacesTestCase {
     }
 
     // see JSFC-1840 TabSet with locales can switch own value but doesn't switch locale in DateChoosers if validation triggered
-     @Test
+    @Test
     @Ignore
     // todo: works locally, but investigate why it fails on the server
     public void testDateChooserTabSetValidation() {
@@ -108,7 +104,7 @@ public class LiveDemoTest extends OpenFacesTestCase {
 
     //todo: rework the test appropriately to new demo content
     @Ignore
-     @Test
+    @Test
     public void _testSaveFilterInSession() throws Exception {
         Selenium selenium = getSelenium();
         liveDemoPage("/datatable/DataTable_filteringAndPaging.jsf");
@@ -139,10 +135,12 @@ public class LiveDemoTest extends OpenFacesTestCase {
     }
 
 
-     @Test
+    @Test
     @Ignore
     public void testConfirmation() throws Exception {
+        Selenium selenium = getSelenium();
         liveDemoPage("/confirmation/ConfirmationDefault.jsf");
+
         element("confirmationForm:buttonInvoker1").click();
         element("confirmationForm:buttonPopup1").assertVisible(true);
 
@@ -208,20 +206,17 @@ public class LiveDemoTest extends OpenFacesTestCase {
         try {
             getDriver().findElement(By.xpath("//*[@id='confirmationForm:editableConfirmation']//*[contains(text(), 'Are you really sure?')]"));
             assertTrue(false);
-        } catch (NoSuchElementException e) {}
+        } catch (NoSuchElementException e) {
+        }
         try {
             getDriver().findElement(By.xpath("//*[@id='confirmationForm:editableConfirmation']//*[contains(text(), 'Think once again before doing it')]"));
             assertTrue(false);
-        } catch (NoSuchElementException e) {}
-
+        } catch (NoSuchElementException e) {
+        }
         ConfirmationInspector editableConfirmation = confirmation("confirmationForm:editableConfirmation");
         editableConfirmation.okButton().assertValue("Confirm");
         editableConfirmation.cancelButton().assertValue("Decline");
         editableConfirmation.okButton().click();
-//        WebElement okButton =
-//                getDriver().findElement(By.xpath(editableConfirmation.okButton().getXPath())).click();
-//        Actions click = new Actions(getDriver()).moveToElement(okButton).click();
-//        click.build().perform();
         assertTrue(window().document().isAlertPresent());
         acceptAlert();
         closeBrowser();

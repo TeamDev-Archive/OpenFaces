@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -244,7 +244,7 @@ O$.FileUpload = {
         }
       },
       _progressRequest:function (inputForFile, endHandler) {
-      O$.requestComponentPortions(fileUpload.id, ["nothing"],
+      O$.Ajax.requestComponentPortions(fileUpload.id, ["nothing"],
               JSON.stringify({progressRequest:"true", fileId:inputForFile._uniqueId}),
               function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
                 var infoDiv = O$(allInfos.id + inputForFile._idInputAndDiv);
@@ -331,7 +331,7 @@ O$.FileUpload = {
       );
     },
       _progressHTMl5Request:function (file, request, endHandler) {
-        O$.requestComponentPortions(fileUpload.id, ["nothing"],
+        O$.Ajax.requestComponentPortions(fileUpload.id, ["nothing"],
                 JSON.stringify({progressRequest:"true", fileId:file._uniqueId}),
                 function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
                   var infoDiv = O$(allInfos.id + file._infoId);
@@ -420,7 +420,7 @@ O$.FileUpload = {
         );
       },
       _sendIsErrorRequest:function (inputForFile, infoDiv, fileForAPI, endHandler) {
-        O$.requestComponentPortions(fileUpload.id, ["nothing"],
+        O$.Ajax.requestComponentPortions(fileUpload.id, ["nothing"],
                 JSON.stringify({stoppedRequest:true, uniqueIdOfFile:inputForFile._uniqueId}),
                 function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
                   if (portionData['isStopped'] == "true") {
@@ -442,7 +442,7 @@ O$.FileUpload = {
                 }, null, true);
       },
       _sendIsErrorRequestHTML5:function (file, infoDiv, fileForAPI, endHandler) {
-        O$.requestComponentPortions(fileUpload.id, ["nothing"],
+        O$.Ajax.requestComponentPortions(fileUpload.id, ["nothing"],
                 JSON.stringify({stoppedRequest:true, uniqueIdOfFile:file._uniqueId}),
                 function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
                   if (portionData['isStopped'] == "true") {
@@ -464,7 +464,7 @@ O$.FileUpload = {
                 }, null, true);
       },
       _sendIsStoppedRequest:function (inputForFile, infoDiv, fileForAPI, endHandler) {
-        O$.requestComponentPortions(fileUpload.id, ["nothing"],
+        O$.Ajax.requestComponentPortions(fileUpload.id, ["nothing"],
                 JSON.stringify({stoppedRequest:true, uniqueIdOfFile:inputForFile._uniqueId}),
                 function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
                   inputForFile._isInterrupted = true;
@@ -484,7 +484,7 @@ O$.FileUpload = {
                 }, null, true);
       },
       _sendIsStoppedRequestHTML5:function (file, infoDiv, fileForAPI, endHandler) {
-        O$.requestComponentPortions(fileUpload.id, ["nothing"],
+        O$.Ajax.requestComponentPortions(fileUpload.id, ["nothing"],
                 JSON.stringify({stoppedRequest:true, uniqueIdOfFile:file._uniqueId}),
                 function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
                   if (portionData['isStopped'] == "true") {

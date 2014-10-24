@@ -1,4 +1,4 @@
-<div xmlns:h="http://java.sun.com/jsf/html"
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
      xmlns:a4j="http://richfaces.org/a4j"
@@ -17,7 +17,7 @@
                    customValueAllowed="false"
                    listItemStyle="white-space:nowrap;">
     <o:dropDownItems value="#{DropDownBean.suggestedPlants}"/>
-    <a4j:support event="onchange" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    <a4j:ajax event="change" render="counter" action="#{A4jSupportBean.increase}"/>
   </o:dropDownField>
 
   <h3>The oncloseup event</h3>
@@ -26,7 +26,7 @@
                    suggestionMode="substring"
                    autoComplete="true"
                    suggestionDelay="0">
-    <a4j:support event="oncloseup" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    <a4j:ajax event="closeup" render="counter" action="#{A4jSupportBean.increase}"/>
     <o:dropDownItem value="Tahoma">
       <h:outputText value="Tahoma" style="font-family: 'Tahoma', sans-serif; font-size: 13px;"/>
     </o:dropDownItem>
@@ -47,7 +47,7 @@
                    suggestionMode="substring"
                    autoComplete="true"
                    suggestionDelay="0">
-    <a4j:support event="ondropdown" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    <a4j:ajax event="dropdown" render="counter" action="#{A4jSupportBean.increase}"/>
     <o:dropDownItem value="Tahoma">
       <h:outputText value="Tahoma" style="font-family: 'Tahoma', sans-serif; font-size: 13px;"/>
     </o:dropDownItem>

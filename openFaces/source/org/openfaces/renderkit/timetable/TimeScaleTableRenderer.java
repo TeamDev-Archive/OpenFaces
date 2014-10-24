@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -128,9 +128,9 @@ public abstract class TimeScaleTableRenderer extends TimetableViewRenderer {
                     TimetableResource resource = resources.get((colIndex - 1) % resources.size());
                     UIComponent resourceHeader = timetableView.getResourceHeader();
                     if (resourceHeader != null) {
-                        Components.setRequestVariable("resource", resource);
+                        Components.setRequestVariable("resourcce", resource);
                         resourceHeader.encodeAll(context);
-                        Components.restoreRequestVariable("resource");
+                        Components.restoreRequestVariable("resourcce");
                     } else {
                         writer.write(resource.getName());
                     }

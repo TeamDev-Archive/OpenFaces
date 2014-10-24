@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -218,7 +218,7 @@ public final class FileAttachmentsRenderer extends RendererBase implements AjaxP
         List<UIComponent> childComponents = new ArrayList<UIComponent>(fileAttachmentsChildren.size());
         for (UIComponent component : fileAttachmentsChildren) {
             if (!(component instanceof BaseColumn) &&
-                    !(component instanceof OUIClientAction) && !Rendering.isA4jSupportComponent(component)) {
+                    !(component instanceof OUIClientAction)) {
                 childComponents.add(component);
             } else if (component instanceof AbstractFileAttachmentAction) {
                 AbstractFileAttachmentAction fileAttachmentAction = (AbstractFileAttachmentAction) component;

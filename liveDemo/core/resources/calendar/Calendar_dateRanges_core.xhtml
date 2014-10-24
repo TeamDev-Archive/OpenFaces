@@ -20,8 +20,7 @@
             <tr>
               <td>
                 <o:dateChooser id="vacationStart" dateFormat="medium" value="#{CalendarBean.fromDate}">
-                  <o:ajax event="change" render="vacationCalendar"
-                                      execute="vacationStart vacationEnd"/>
+                  <o:ajax render="vacationCalendar" execute="vacationStart vacationEnd"/>
                 </o:dateChooser>
               </td>
             </tr>
@@ -33,8 +32,7 @@
             <tr>
               <td>
                 <o:dateChooser id="vacationEnd" dateFormat="medium" value="#{CalendarBean.toDate}">
-                  <o:ajax event="change" render="vacationCalendar"
-                                      execute="vacationStart vacationEnd"/>
+                  <o:ajax render="vacationCalendar" execute="vacationStart vacationEnd"/>
                 </o:dateChooser>
               </td>
             </tr>

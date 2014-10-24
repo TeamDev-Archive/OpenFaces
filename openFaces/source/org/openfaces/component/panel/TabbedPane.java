@@ -21,8 +21,11 @@ import org.openfaces.util.Components;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import java.io.IOException;
 
 /**
  * The TabbedPane component is a container that consists of several sub-containers called
@@ -73,6 +76,25 @@ public class TabbedPane extends MultiPageContainer implements TabSelectionHolder
     private String focusedClass;
     private String focusedStyle;
     private Boolean mirrorTabSetVisible;
+
+    private String disabledStyle;
+    private String disabledClassStyle;
+
+    public String getDisabledStyle() {
+        return ValueBindings.get(this, "disabledStyle", disabledStyle);
+    }
+
+    public void setDisabledStyle(String disabledStyle) {
+        this.disabledStyle = disabledStyle;
+    }
+
+    public String getDisabledClassStyle() {
+        return ValueBindings.get(this, "disabledClassStyle", disabledClassStyle);
+    }
+
+    public void setDisabledClassStyle(String disabledClassStyle) {
+        this.disabledClassStyle = disabledClassStyle;
+    }
 
     public TabbedPane() {
         setRendererType("org.openfaces.TabbedPaneRenderer");
@@ -362,15 +384,25 @@ public class TabbedPane extends MultiPageContainer implements TabSelectionHolder
 
     }
 
+    @Override
+    public void encodeBegin(FacesContext context) throws IOException {
+        createSubComponents(context);
+        super.encodeBegin(context);
+    }
+
     public void createSubComponents(FacesContext context) {
+        String alreadyDoneKey = "_subComponentsCreated";
+        if (getAttributes().containsKey(alreadyDoneKey))
+            return;
+        getAttributes().put(alreadyDoneKey, true);
         UIComponent tabSet = Components.createChildComponent(context, this, TabSet.COMPONENT_TYPE, TAB_SET_SUFFIX, 0);
-        TabSetItems items = new TabSetItems();
+        TabSetItems items = (TabSetItems) context.getApplication().createComponent(TabSetItems.COMPONENT_TYPE);
         items.setId(getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "tabSetItems");
         tabSet.getChildren().add(items);
 
-        UIComponent mirrorTabSet = Components.createChildComponent(context, this, TabSet.COMPONENT_TYPE, TAB_SET_SUFFIX, 1);
-        mirrorTabSet.setId(mirrorTabSet.getId() + MIRROR_TABSET_SUFFIX);
-        TabSetItems mirrorItems = new TabSetItems();
+        UIComponent mirrorTabSet = Components.createChildComponent(context, this, TabSet.COMPONENT_TYPE, TAB_SET_SUFFIX + MIRROR_TABSET_SUFFIX, 1);
+        //mirrorTabSet.setId(mirrorTabSet.getId()+ MIRROR_TABSET_SUFFIX);
+        TabSetItems mirrorItems = (TabSetItems) context.getApplication().createComponent(TabSetItems.COMPONENT_TYPE);
         mirrorItems.setId(getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "tabSetItems" + MIRROR_TABSET_SUFFIX);
         mirrorTabSet.getChildren().add(mirrorItems);
     }

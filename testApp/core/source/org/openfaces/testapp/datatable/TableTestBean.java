@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -18,8 +18,8 @@ import org.openfaces.component.filter.ExpressionFilterCriterion;
 import org.openfaces.component.table.FilterKind;
 import org.openfaces.util.Faces;
 
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
-import javax.faces.event.ActionEvent;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -485,11 +485,11 @@ public class TableTestBean {
         return "requestNo_" + _requestCounter++;
     }
 
-    public void resetCounter(ActionEvent actionEvent) {
+    public void resetCounter(AjaxBehaviorEvent event) {
         counter = 0;
     }
 
-    public void incrementCounter(ActionEvent actionEvent) {
+    public void incrementCounter(AjaxBehaviorEvent event) {
         counter++;
     }
 

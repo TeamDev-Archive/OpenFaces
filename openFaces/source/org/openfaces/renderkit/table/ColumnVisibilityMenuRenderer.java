@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -51,18 +51,18 @@ public class ColumnVisibilityMenuRenderer extends PopupMenuRenderer {
             MenuItem menuItem = Components.createComponent(context, MenuItem.COMPONENT_TYPE, MenuItem.class, cvm, "col" + i);
             menuItem.setValue(column.getColumnHeader());
             boolean columnVisible = visibleColumns.contains(column);
-            menuItem.setIconUrl(Resources.internalURL(context, null,
+            menuItem.setIconUrl(Resources.internalURL(context,
                     columnVisible
                             ? SelectBooleanCheckboxImageManager.DEFAULT_SELECTED_IMAGE
-                            : SelectBooleanCheckboxImageManager.DEFAULT_UNSELECTED_IMAGE,
-                    false));
+                            : SelectBooleanCheckboxImageManager.DEFAULT_UNSELECTED_IMAGE
+            ));
             menuChildren.add(menuItem);
         }
     }
 
     private AbstractTable getTable(ColumnVisibilityMenu cvm) {
         UIComponent parent = cvm.getParent();
-        while (parent != null && (parent instanceof MenuItem || parent instanceof PopupMenu))
+        while (parent != null && (parent instanceof MenuItem || parent instanceof PopupMenu || Components.isImplicitPanel(parent)))
             parent = parent.getParent();
         if (!(parent instanceof AbstractTable))
             throw new FacesException("<o:columnVisibilityMenu> can only be inserted into the \"columnMenu\" facet of " +

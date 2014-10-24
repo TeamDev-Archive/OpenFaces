@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -23,7 +23,6 @@ import org.openfaces.util.Components;
 import org.openfaces.util.DataUtil;
 import org.openfaces.util.InitScript;
 import org.openfaces.util.Rendering;
-import org.openfaces.util.RequestFacade;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 
@@ -52,13 +51,15 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
         DateChooser dateChooser = (DateChooser) component;
         Locale locale = dateChooser.getLocale();
         if (locale == null) {
-            locale = RequestFacade.getInstance(context.getExternalContext().getRequest()).getLocale();
+            locale = context.getExternalContext().getRequestLocale();
         }
         Rendering.registerDateTimeFormatObject(locale);
     }
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        Rendering.decodeBehaviors(context, component);
+
         Map requestMap = context.getExternalContext().getRequestParameterMap();
         String clientId = component.getClientId(context) + FIELD_SUFFIX;
         String value = (String) requestMap.get(clientId);
@@ -118,6 +119,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
                 ? dateChooser.getTimeZone()
                 : TimeZone.getDefault();
         converter.setTimeZone(timeZone);
+        converter.clearInitialState();
 
         dateChooser.setConverter(converter);
     }
@@ -128,21 +130,18 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
             return;
 
         DateChooser dateChooser = (DateChooser) component;
-        DateChooserPopup popup
-                = (DateChooserPopup) context.getApplication().createComponent(DateChooserPopup.COMPONENT_TYPE);
-        List<UIComponent> children = dateChooser.getChildren();
-        popup.setParent(dateChooser); // todo: it's not correct according to setParent's JavaDoc to use this method from applications, the proper way is to use parent.getChildren().add
+        DateChooserPopup popup = Components.getChildWithClass(dateChooser, DateChooserPopup.class, POPUP_SUFFIX);
 
-        popup.setId(component.getId() + POPUP_SUFFIX);
-        Calendar c = (Calendar) context.getApplication().createComponent(Calendar.COMPONENT_TYPE);
+        List<UIComponent> children = dateChooser.getChildren();
+        Calendar c = popup.getCalendar();
 
         c.getAttributes().put(CalendarRenderer.HIDE_DEFAULT_FOCUS_KEY, Boolean.TRUE);
 
         if (dateChooser.isValid()) {
             c.setValue(dateChooser.getValue());
         }
-        c.setTimeZone(dateChooser.getTimeZone());
         c.setStyle(dateChooser.getCalendarStyle());
+        c.setTimeZone(dateChooser.getTimeZone());
         c.setDayStyle(dateChooser.getDayStyle());
         c.setRolloverDayStyle(dateChooser.getRolloverDayStyle());
         c.setInactiveMonthDayStyle(dateChooser.getInactiveMonthDayStyle());
@@ -185,9 +184,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
 
         Locale locale = dateChooser.getLocale();
         if (locale == null) {
-            Object requestObj = context.getExternalContext().getRequest();
-            RequestFacade requestFacade = RequestFacade.getInstance(requestObj);
-            locale = requestFacade.getLocale();
+            locale = context.getExternalContext().getRequestLocale();
         }
         c.setLocale(locale);
 
@@ -199,8 +196,6 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
                 c.getChildren().add(child);
             }
         }
-
-        popup.setCalendar(c);
 
         popup.encodeAll(context);
         Rendering.encodeClientActions(context, component);
@@ -234,7 +229,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
                 pattern,
                 formatDate,
                 dc.getLocale(),
-                dc.getOnchange());
+                Rendering.getChangeHandlerScript(dc));
 
         return new InitScript(sb, new String[]{
                 Resources.utilJsURL(context),

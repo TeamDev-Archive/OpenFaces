@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -13,9 +13,7 @@ package org.openfaces.requests;
 
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.html.TextAreaInspector;
 
@@ -27,8 +25,7 @@ public class JSFC_2257Test extends OpenFacesTestCase {
     public void testTextAreaIsNotAffectedByOpenFacesValidation() throws Exception {
         testAppFunctionalPage("/requests/JSFC_2257.jsf");
 
-        ElementInspector dmf = element("dfm0");
-        dmf.assertElementExists(false);
+        assertPageContainsErrorIcon(false);
         TextAreaInspector textArea = new TextAreaInspector("fm:ta");
         textArea.type("Some text");
         ElementInspector button = element("fm:bt");
@@ -36,9 +33,8 @@ public class JSFC_2257Test extends OpenFacesTestCase {
         textArea.assertValue("Some text");
         for (int i = 0; i < "Some text".length(); i++)
             textArea.keyPress(Keys.BACK_SPACE);
-//        textArea.type("");
-        dmf.assertElementExists(false);
+        assertPageContainsErrorIcon(false);
         button.click();
-        dmf.assertElementExists(true);
+        assertPageContainsErrorIcon(true);
     }
 }

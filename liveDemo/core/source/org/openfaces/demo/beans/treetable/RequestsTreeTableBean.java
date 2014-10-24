@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -20,7 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -164,11 +164,11 @@ public class RequestsTreeTableBean implements Serializable {
         return !thereAreSubrequests;
     }
 
-    public void editRequest(ActionEvent event) {
+    public void editRequest(AjaxBehaviorEvent event) {
         currentlyEditedRequest = selectedRequests.get(0);
     }
 
-    public void addSubrequest(ActionEvent event) {
+    public void addSubrequest(AjaxBehaviorEvent event) {
         List<Request> requestList = getFirstSelectedRequest().getSubrequests();
         if (requestList == null) {
             requestList = new ArrayList<Request>();
@@ -177,7 +177,7 @@ public class RequestsTreeTableBean implements Serializable {
         addNewRequest(requestList);
     }
 
-    public void addRequest(ActionEvent event) {
+    public void addRequest(AjaxBehaviorEvent event) {
         List<Request> requestList = selectedRequests != null && selectedRequests.size() > 0 && getFirstSelectedRequest().getParentRequest() != null
                 ? getFirstSelectedRequest().getParentRequest().getSubrequests()
                 : rootRequests;
@@ -197,7 +197,7 @@ public class RequestsTreeTableBean implements Serializable {
         currentlyEditedRequest = newRequest;
     }
 
-    public void deleteRequest(ActionEvent event) {
+    public void deleteRequest(AjaxBehaviorEvent event) {
         Request siblingRequest = null;
         for (int i = 0, count = selectedRequests.size(); i < count; i++) {
             Request selectedRequest = selectedRequests.get(i);
@@ -280,7 +280,7 @@ public class RequestsTreeTableBean implements Serializable {
         return currentlyEditedRequest != null;
     }
 
-    public void saveChanges(ActionEvent event) {
+    public void saveChanges(AjaxBehaviorEvent event) {
         currentlyEditedRequest = null;
     }
 

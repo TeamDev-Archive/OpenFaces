@@ -1,0 +1,945 @@
+<?xml version="1.0"?>
+<!DOCTYPE menu [
+        <!ELEMENT menu (menuItem*)>
+        <!ELEMENT menuItem (name,
+                componentName,
+                url,
+                shortPath,
+                image,
+                selectedImage,
+                keyFeatures*,
+                demos?)>
+        <!ELEMENT name          (#PCDATA)>
+        <!ELEMENT componentName (#PCDATA)>
+        <!ELEMENT url           (#PCDATA)>
+        <!ELEMENT shortPath     (#PCDATA)>
+        <!ELEMENT image         (#PCDATA)>
+        <!ELEMENT selectedImage (#PCDATA)>
+        <!ELEMENT keyFeatures   (feature*)>
+        <!ELEMENT feature       (#PCDATA)>
+        <!ELEMENT demos         (demoItem*)>
+        <!ELEMENT demoItem      (demoName, demoUrl)>
+        <!ELEMENT demoName      (#PCDATA)>
+        <!ELEMENT demoUrl       (#PCDATA)>
+        ]>
+<menu>
+  <menuItem>
+    <name>Ajax Framework</name>
+    <componentName>Ajax Framework</componentName>
+    <url>/ajax/AjaxOff.jsf</url>
+    <shortPath>ajax</shortPath>
+    <image>AjaxFramework</image>
+    <selectedImage>/images/components/titles/AjaxFramework.png</selectedImage>
+    <keyFeatures>
+      <feature>Reloading components with Ajax</feature>
+      <feature>Executing server action on Ajax request</feature>
+      <feature>Controlling submitted data</feature>
+      <feature>Avoiding frequent requests</feature>
+      <feature>Programmatic usage</feature>
+      <feature>Ajax request life-cycle events</feature>
+      <feature>Customizing Ajax progress message</feature>
+      <feature>Session expiration handling</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/ajax/Ajax.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Border Layout Panel</name>
+    <componentName>Border Layout Panel</componentName>
+    <url>/borderlayoutpanel/BorderLayoutPanel.jsf</url>
+    <shortPath>borderLayoutPanel</shortPath>
+    <image>BorderLayoutPanel</image>
+    <selectedImage>/images/components/titles/BorderLayoutPanel.png</selectedImage>
+    <keyFeatures>
+      <feature>Static border layout</feature>
+      <feature>Side panel resizing</feature>
+      <feature>Side panel collapsing</feature>
+      <feature>Side panel captions</feature>
+      <feature>Nesting BorderLayoutPanels for complex layouts</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/borderlayoutpanel/BorderLayoutPanel.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Calendar</name>
+    <componentName>Calendar</componentName>
+    <url>/calendar/Calendar_styles.jsf</url>
+    <shortPath>calendar</shortPath>
+    <image>Calendar</image>
+    <selectedImage>/images/components/titles/Calendar.png</selectedImage>
+    <keyFeatures>
+      <feature>Multiple date ranges</feature>
+      <feature>I18n support</feature>
+      <feature>Style customization</feature>
+      <feature>Specific client-side events</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>Styles</demoName>
+        <demoUrl>/calendar/Calendar_styles.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>Date Ranges</demoName>
+        <demoUrl>/calendar/Calendar_dateRanges.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>Internationalization</demoName>
+        <demoUrl>/calendar/Calendar_internationalization.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Chart</name>
+    <componentName>Chart</componentName>
+    <url>/chart/ChartTypes.jsf</url>
+    <shortPath>chart</shortPath>
+    <image>Chart</image>
+    <selectedImage>/images/components/titles/Chart.png</selectedImage>
+    <keyFeatures>
+      <feature>Various chart types</feature>
+      <feature>Standard client-side events for chart elements</feature>
+      <feature>Easy-to-configure data model</feature>
+      <feature>CSS-like style definition</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>Chart Types</demoName>
+        <demoUrl>/chart/ChartTypes.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>Interactive Changes</demoName>
+        <demoUrl>/chart/ChartInteractive.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Command Button</name>
+    <componentName>Command Button</componentName>
+    <url>/commandbutton/CommandButton.jsf</url>
+    <shortPath>commandButton</shortPath>
+    <image>CommandButton</image>
+    <selectedImage>/images/components/titles/CommandButton.png</selectedImage>
+    <keyFeatures>
+      <feature>All features of the standard &lt;h:commandButton&gt; component</feature>
+      <feature>Support for Ajax action execution</feature>
+      <feature>Support for Ajax component submission/reloading</feature>
+      <feature>Specifying contents with HTML or child components</feature>
+      <feature>Allows specifying type="button"</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/commandbutton/CommandButton.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Command Link</name>
+    <componentName>Command Link</componentName>
+    <url>/commandlink/CommandLink.jsf</url>
+    <shortPath>commandLink</shortPath>
+    <image>CommandLink</image>
+    <selectedImage>/images/components/titles/CommandLink.png</selectedImage>
+    <keyFeatures>
+      <feature>All features of the standard &lt;h:commandLink&gt; component</feature>
+      <feature>Support for Ajax action execution</feature>
+      <feature>Support for Ajax component submission/reloading</feature>
+      <feature>Specifying contents with HTML or child components</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/commandlink/CommandLink.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Composite Filter</name>
+    <componentName>Composite Filter</componentName>
+    <url>/compositefilter/CompositeFilter.jsf</url>
+    <shortPath>compositeFilter</shortPath>
+    <image>CompositeFilter</image>
+    <selectedImage>/images/components/titles/CompositeFilter.png</selectedImage>
+    <keyFeatures>
+      <feature>Type-specific editors</feature>
+      <feature>In-memory collections filtering</feature>
+      <feature>Hibernate Criteria builder</feature>
+      <feature>DataTable and TreeTable integration</feature>
+      <feature>I18n support</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/compositefilter/CompositeFilter.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Confirmation</name>
+    <componentName>Confirmation</componentName>
+    <url>/confirmation/ConfirmationDefault.jsf</url>
+    <shortPath>confirmation</shortPath>
+    <image>Confirmation</image>
+    <selectedImage>/images/components/titles/Confirmation.png</selectedImage>
+    <keyFeatures>
+      <feature>Flexible invocation mechanism</feature>
+      <feature>Customizable appearance</feature>
+      <feature>Flexible position customization</feature>
+      <feature>Draggable</feature>
+      <feature>Style customization</feature>
+      <feature>Standard client-side events</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/confirmation/ConfirmationDefault.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Data Table</name>
+    <componentName>Data Table</componentName>
+    <url>/datatable/DataTable_general.jsf</url>
+    <shortPath>dataTable</shortPath>
+    <image>DataTable</image>
+    <selectedImage>/images/components/titles/DataTable.png</selectedImage>
+    <keyFeatures>
+      <feature>Interactive row grouping</feature>
+      <feature>Interactive filtering</feature>
+      <feature>Showing, hiding and reordering columns</feature>
+      <feature>Column resizing</feature>
+      <feature>Content scrolling with row/column freezing</feature>
+      <feature>Dynamic columns</feature>
+      <feature>Multiple headers and footers</feature>
+      <feature>Individual rows and cells customization</feature>
+      <feature>Ajax sorting and pagination</feature>
+      <feature>Single and multiple row selection</feature>
+      <feature>Handling large data sets</feature>
+      <feature>Keyboard navigation</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>Basic Features</demoName>
+        <demoUrl>/datatable/DataTable_general.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>Sorting and Selection</demoName>
+        <demoUrl>/datatable/DataTable_sortingAndSelection.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>Handling Large Datasets</demoName>
+        <demoUrl>/datatable/DataTable_handlingLargeData.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>Styling</demoName>
+        <demoUrl>/datatable/DataTable_styling.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>Embedded Components</demoName>
+        <demoUrl>/datatable/DataTable_embeddingComponents.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Date Chooser</name>
+    <componentName>Date Chooser</componentName>
+    <url>/datechooser/DateChooser.jsf</url>
+    <shortPath>dateChooser</shortPath>
+    <image>DateChooser</image>
+    <selectedImage>/images/components/titles/DateChooser.png</selectedImage>
+    <keyFeatures>
+      <feature>Built-in Calendar</feature>
+      <feature>I18n support</feature>
+      <feature>Various date formats</feature>
+      <feature>Flexible style customization</feature>
+      <feature>Specific client-side events</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/datechooser/DateChooser.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Day Table</name>
+    <componentName>Day Table</componentName>
+    <url>/timetable/DayTable_general.jsf</url>
+    <shortPath>timeTable</shortPath>
+    <image>DayTable</image>
+    <selectedImage>/images/components/titles/DayTable.png</selectedImage>
+    <keyFeatures>
+      <feature>Editable/read-only mode</feature>
+      <feature>Auto-saving changes with Ajax</feature>
+      <feature>Multi-resource timetables</feature>
+      <feature>Event time and duration editing with drag&amp;drop</feature>
+      <feature>Customizable time-scale</feature>
+      <feature>Support for large data sets</feature>
+      <feature>Embedding custom content areas</feature>
+      <feature>Support for custom event actions</feature>
+      <feature>Support for reserved-time events</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/timetable/DayTable_general.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>Multiple Resources</demoName>
+        <demoUrl>/timetable/DayTable_multipleResources.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>MonthTable</demoName>
+        <demoUrl>/timetable/MonthTable.jsf</demoUrl>
+      </demoItem>
+
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Drop Down Field</name>
+    <componentName>Drop Down Field</componentName>
+    <url>/dropdownfield/DropDownField_client.jsf</url>
+    <shortPath>dropDownField</shortPath>
+    <image>DropDownField</image>
+    <selectedImage>/images/components/titles/DropDownField.png</selectedImage>
+    <keyFeatures>
+      <feature>Ajax and client-side suggestion</feature>
+      <feature>Auto-completion</feature>
+      <feature>Columns within a drop-down list</feature>
+      <feature>Keyboard navigation</feature>
+      <feature>Embedding JSF components</feature>
+      <feature>Style customization</feature>
+      <feature>Standard and specific client-side events</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>Client-Side Features</demoName>
+        <demoUrl>/dropdownfield/DropDownField_client.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>Ajax and Styling</demoName>
+        <demoUrl>/dropdownfield/DropDownField_ajax.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Dynamic Image</name>
+    <componentName>Dynamic Image</componentName>
+    <url>/dynamicimage/DynamicImage_generated.jsf</url>
+    <shortPath>dynamicImage</shortPath>
+    <image>DynamicImage</image>
+    <selectedImage>/images/components/titles/DynamicImage.png</selectedImage>
+    <keyFeatures>
+      <feature>Various ways to specify image</feature>
+      <feature>Style customization</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>Generated Image</demoName>
+        <demoUrl>/dynamicimage/DynamicImage_generated.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>Byte Array Image</demoName>
+        <demoUrl>/dynamicimage/DynamicImage_byteArray.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>File Upload</name>
+    <componentName>File Upload</componentName>
+    <url>/fileupload/FileUpload.jsf</url>
+    <shortPath>fileUpload</shortPath>
+    <image>FileUpload</image>
+    <selectedImage>/images/components/titles/Slider.png</selectedImage>
+    <keyFeatures>
+      <feature>Multiple files upload support</feature>
+      <feature>Filtering names of files</feature>
+      <feature>File size limit support</feature>
+      <feature>Stopping uploading</feature>
+      <feature>Style customization</feature>
+      <feature>AutoUpload support</feature>
+      <feature>Drag and Drop support</feature>
+      <feature>Parallel or series uploading mode</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>Multiple File Upload</demoName>
+        <demoUrl>/fileupload/FileUpload.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>File Upload in DataTable</demoName>
+        <demoUrl>/fileupload/FileUpload_table.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Folding Panel</name>
+    <componentName>Folding Panel</componentName>
+    <url>/foldingpanel/FoldingPanel_basicFeatures.jsf</url>
+    <shortPath>foldingPanel</shortPath>
+    <image>FoldingPanel</image>
+    <selectedImage>/images/components/titles/FoldingPanel.png</selectedImage>
+    <keyFeatures>
+      <feature>Ajax-based content loading</feature>
+      <feature>Customizable caption &amp; toggle button</feature>
+      <feature>Different folding directions</feature>
+      <feature>Flexible styles customization</feature>
+      <feature>Standard and specific client-side events</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>Basic Features</demoName>
+        <demoUrl>/foldingpanel/FoldingPanel_basicFeatures.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>Dynamic Loading</demoName>
+        <demoUrl>/foldingpanel/FoldingPanel_dynamicLoading.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>For Each</name>
+    <componentName>For Each</componentName>
+    <url>/foreach/ForEach.jsf</url>
+    <shortPath>forEach</shortPath>
+    <image>ForEach</image>
+    <selectedImage>/images/components/titles/ForEach.png</selectedImage>
+
+    <keyFeatures>
+      <feature>Iterating over a collection of objects</feature>
+      <feature>Specifying iteration index range and step</feature>
+      <feature>Wide range of supported collection types</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/foreach/ForEach.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Graphic Text</name>
+    <componentName>Graphic Text</componentName>
+    <url>/graphictext/GraphicText.jsf</url>
+    <shortPath>graphicText</shortPath>
+    <image>GraphicText</image>
+    <selectedImage>/images/components/titles/GraphicText.png</selectedImage>
+    <keyFeatures>
+      <feature>Custom angle text rotation</feature>
+      <feature>CSS-like font style definition</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/graphictext/GraphicText.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>Flexible Configuration</demoName>
+        <demoUrl>/graphictext/GraphicText_flexibleConfiguration.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Hint Label</name>
+    <componentName>Hint Label</componentName>
+    <url>/hintlabel/HintLabel.jsf</url>
+    <shortPath>hintLabel</shortPath>
+    <image>HintLabel</image>
+    <selectedImage>/images/components/titles/HintLabel.png</selectedImage>
+    <keyFeatures>
+      <feature>Configurable display timeout</feature>
+      <feature>Style customization</feature>
+      <feature>Standard client-side events</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/hintlabel/HintLabel.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Input Text</name>
+    <componentName>Input Text</componentName>
+    <url>/inputtext/InputText.jsf</url>
+    <shortPath>inputText</shortPath>
+    <image>InputText</image>
+    <selectedImage>/images/components/titles/InputText.png</selectedImage>
+    <keyFeatures>
+      <feature>All features of the standard &lt;h:inputText&gt; component</feature>
+      <feature>Prompt text support</feature>
+      <feature>Focused and rollover style support</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/inputtext/</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Input Secret</name>
+    <componentName>Input Secret</componentName>
+    <url>/inputsecret/InputSecret.jsf</url>
+    <shortPath>inputSecret</shortPath>
+    <image>InputSecret</image>
+    <selectedImage>/images/components/titles/InputSecret.png</selectedImage>
+    <keyFeatures>
+      <feature>All features </feature>
+      <feature>feature 1</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/inputsecret/InputSecret.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Input Textarea</name>
+    <componentName>Input Textarea</componentName>
+    <url>/inputtextarea/InputTextarea.jsf</url>
+    <shortPath>inputTextArea</shortPath>
+    <image>InputTextarea</image>
+    <selectedImage>/images/components/titles/InputTextarea.png</selectedImage>
+    <keyFeatures>
+      <feature>All features of the standard &lt;h:inputTextarea&gt; component</feature>
+      <feature>Prompt text support</feature>
+      <feature>Automatic growing depending on the entered text</feature>
+      <feature>Focused and rollover style support</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/inputtextarea/InputTextarea.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Layered Pane</name>
+    <componentName>Layered Pane</componentName>
+    <url>/layeredpane/LayeredPane.jsf</url>
+    <shortPath>layeredPane</shortPath>
+    <image>LayeredPane</image>
+    <selectedImage>/images/components/titles/LayeredPane.png</selectedImage>
+    <keyFeatures>
+      <feature>Client side page switching with different loading modes</feature>
+      <feature>Declaring a static list of pages right within jsp/xhtml page</feature>
+      <feature>Support for a dynamic list of pages constructed programmatically</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/layeredpane/LayeredPane.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Level Indicator</name>
+    <componentName>Level Indicator</componentName>
+    <url>/levelindicator/LevelIndicator.jsf</url>
+    <shortPath>levelIndicator</shortPath>
+    <image>LevelIndicator</image>
+    <selectedImage>/images/components/titles/LevelIndicator.png</selectedImage>
+    <keyFeatures>
+      <feature>Client side page switching with different loading modes</feature>
+      <feature>Declaring a static list of pages right within jsp/xhtml page</feature>
+      <feature>Support for a dynamic list of pages constructed programmatically</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/levelindicator/LevelIndicator.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Popup Layer</name>
+    <componentName>Popup Layer</componentName>
+    <url>/popuplayer/PopupLayer.jsf</url>
+    <shortPath>popupLayer</shortPath>
+    <image>PopupLayer</image>
+    <selectedImage>/images/components/titles/PopupLayer.png</selectedImage>
+    <keyFeatures>
+      <feature>Embedding JSF components</feature>
+      <feature>Customizable placement</feature>
+      <feature>Client-side API</feature>
+      <feature>Modal and draggable modes</feature>
+      <feature>Auto-hiding by timeout</feature>
+      <feature>Style customization</feature>
+      <feature>Standard and specific client-side events</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/popuplayer/PopupLayer.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Popup Menu</name>
+    <componentName>Popup Menu</componentName>
+    <url>/popupmenu/PopupMenu.jsf</url>
+    <shortPath>popupMenu</shortPath>
+    <image>PopupMenu</image>
+    <selectedImage>/images/components/titles/PopupMenu.png</selectedImage>
+    <keyFeatures>
+      <feature>Flexible attachment mechanism</feature>
+      <feature>Client-side and Ajax event handlers</feature>
+      <feature>Keyboard support</feature>
+      <feature>Embedding JSF components</feature>
+      <feature>Customizable appearance</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/popupmenu/PopupMenu.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Select Boolean Checkbox</name>
+    <componentName>Select Boolean Checkbox</componentName>
+    <url>/selectbooleancheckbox/SelectBooleanCheckbox_general.jsf</url>
+    <shortPath>selectBooleanCheckbox</shortPath>
+    <image>SelectBooleanCheckbox</image>
+    <selectedImage>/images/components/titles/SelectBooleanCheckbox.png</selectedImage>
+    <keyFeatures>
+      <feature>All features of the standard &lt;h:selectBooleanCheckbox&gt; component</feature>
+      <feature>Tri-state mode</feature>
+      <feature>State list and order customization</feature>
+      <feature>Customizing appearance with images</feature>
+      <feature>Customizing state-dependent styles</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/selectbooleancheckbox/SelectBooleanCheckbox_general.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>Styles</demoName>
+        <demoUrl>/selectbooleancheckbox/SelectBooleanCheckbox_styles.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Select Many Checkbox</name>
+    <componentName>Select Many Checkbox</componentName>
+    <url>/selectmanycheckbox/SelectManyCheckbox.jsf</url>
+    <shortPath>selectManyCheckbox</shortPath>
+    <image>SelectManyCheckbox</image>
+    <selectedImage>/images/components/titles/SelectManyCheckbox.png</selectedImage>
+    <keyFeatures>
+      <feature>All features of the standard &lt;h:selectManyCheckbox&gt; component</feature>
+      <feature>Customizing appearance of checkboxes with images</feature>
+      <feature>Extended styling</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/selectmanycheckbox/SelectManyCheckbox.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Select One Menu</name>
+    <componentName>Select One Menu</componentName>
+    <url>/selectonemenu/SelectOneMenu.jsf</url>
+    <shortPath>selectOneMenu</shortPath>
+    <image>SelectOneMenu</image>
+    <selectedImage>/images/components/titles/SelectOneMenu.png</selectedImage>
+    <keyFeatures>
+      <feature>Support of all standard JSF &lt;h:selectOneMenu&gt; features </feature>
+      <feature>Embedding JSF components available both for item list and selected value.</feature>
+      <feature>Auto-completion</feature>
+      <feature>Ajax and client-side suggestion</feature>
+      <feature>Columns within a select-one-menu list</feature>
+      <feature>Keyboard navigation</feature>
+      <feature>Style customization</feature>
+      <feature>Standard and specific client-side events</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/selectonemenu/SelectOneMenu.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Select One Radio</name>
+    <componentName>Select One Radio</componentName>
+    <url>/selectoneradio/SelectOneRadio.jsf</url>
+    <shortPath>selectOneRadio</shortPath>
+    <image>SelectOneRadio</image>
+    <selectedImage>/images/components/titles/SelectOneRadio.png</selectedImage>
+    <keyFeatures>
+      <feature>All features of the standard &lt;h:selectOneRadio&gt; component</feature>
+      <feature>Customizing appearance of radio buttons with images</feature>
+      <feature>Extended styling</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/selectoneradio/SelectOneRadio.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Slider</name>
+    <componentName>Slider</componentName>
+    <url>/slider/Slider.jsf</url>
+    <shortPath>slider</shortPath>
+    <image>Slider</image>
+    <selectedImage>/images/components/titles/Slider.png</selectedImage>
+    <keyFeatures>
+      <feature>Support for integer and floating-point numbers</feature>
+      <feature>Keyboard support</feature>
+      <feature>Customizable appearance</feature>
+      <feature>Specifying allowed number range</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/slider/Slider.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Spinner</name>
+    <componentName>Spinner</componentName>
+    <url>/spinner/Spinner.jsf</url>
+    <shortPath>spinner</shortPath>
+    <image>Spinner</image>
+    <selectedImage>/images/components/titles/Spinner.png</selectedImage>
+    <keyFeatures>
+      <feature>Support for integer and floating-point numbers</feature>
+      <feature>Specifying number conversion settings and pattern</feature>
+      <feature>Specifying allowed number range</feature>
+      <feature>Number selection customization: cycling, step size</feature>
+      <feature>Focused and rollover style support</feature>
+      <feature>Appearance customization</feature>
+      <feature>Keyboard support</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/spinner/Spinner.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Suggestion Field</name>
+    <componentName>Suggestion Field</componentName>
+    <url>/suggestionfield/SuggestionField.jsf</url>
+    <shortPath>suggestionField</shortPath>
+    <image>SuggestionField</image>
+    <selectedImage>/images/components/titles/SuggestionField.png</selectedImage>
+    <keyFeatures>
+      <feature>Ajax and client-side suggestion</feature>
+      <feature>Auto-completion</feature>
+      <feature>Columns within a drop-down list</feature>
+      <feature>Embedding JSF components</feature>
+      <feature>Keyboard navigation</feature>
+      <feature>Style customization</feature>
+      <feature>Standard and specific client-side events</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/suggestionfield/SuggestionField.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Tab Set</name>
+    <componentName>Tab Set</componentName>
+    <url>/tabset/TabSet_placementAndStyling.jsf</url>
+    <shortPath>tabSet</shortPath>
+    <image>TabSet</image>
+    <selectedImage>/images/components/titles/TabSet.png</selectedImage>
+    <keyFeatures>
+      <feature>Customizable tabs placement</feature>
+      <feature>Embedding JSF components</feature>
+      <feature>Style customization</feature>
+      <feature>Standard client-side events</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>Placement and Styling</demoName>
+        <demoUrl>/tabset/TabSet_placementAndStyling.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>Embedded Components</demoName>
+        <demoUrl>/tabset/TabSet_embeddingComponents.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Tabbed Pane</name>
+    <componentName>Tabbed Pane</componentName>
+    <url>/tabbedpane/TabbedPane_placementAndAlignment.jsf</url>
+    <shortPath>tabbedPane</shortPath>
+    <image>TabbedPane</image>
+    <selectedImage>/images/components/titles/TabbedPane.png</selectedImage>
+    <keyFeatures>
+      <feature>Customizable tabs placement</feature>
+      <feature>Embedding JSF components</feature>
+      <feature>Ajax-based content loading</feature>
+      <feature>Style customization</feature>
+      <feature>Standard and specific client-side events</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>Placement &amp; Alignment</demoName>
+        <demoUrl>/tabbedpane/TabbedPane_placementAndAlignment.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>Loading Methods</demoName>
+        <demoUrl>/tabbedpane/TabbedPane_loadingModes.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>Styling</demoName>
+        <demoUrl>/tabbedpane/TabbedPane_styling.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Tag Cloud</name>
+    <componentName>Tag Cloud</componentName>
+    <url>/tagcloud/TagCloud.jsf</url>
+    <shortPath>tagCloud</shortPath>
+    <image>TagCloud</image>
+    <selectedImage>/images/components/titles/TagCloud.png</selectedImage>
+    <keyFeatures>
+      <feature>Customizable tags layout</feature>
+      <feature>Different order of tags rendering</feature>
+      <feature>Displaying tags weight and its customization</feature>
+      <feature>Tag Cloud style and tags style customization</feature>
+      <feature>Sphere layout with 3d animation, rotation and stop speed customization</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>Tag Cloud</demoName>
+        <demoUrl>/tagcloud/TagCloud.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Tree Table</name>
+    <componentName>Tree Table</componentName>
+    <url>/treetable/TreeTable_basicFeatures.jsf</url>
+    <shortPath>treeTable</shortPath>
+    <image>TreeTable</image>
+    <selectedImage>/images/components/titles/TreeTable.png</selectedImage>
+    <keyFeatures>
+      <feature>Ajax data loading</feature>
+      <feature>Ajax sorting &amp; filtering</feature>
+      <feature>Static and dynamic structure</feature>
+      <feature>Configurable preloaded nodes</feature>
+      <feature>Single, multiple and hierarchical selection</feature>
+      <feature>Column resizing</feature>
+      <feature>Showing, hiding and reordering columns</feature>
+      <feature>Content scrolling with row/column freezing</feature>
+      <feature>Dynamic columns</feature>
+      <feature>Multiple headers and footers</feature>
+      <feature>Individual rows and cells customization</feature>
+      <feature>Keyboard navigation</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>Basic Features</demoName>
+        <demoUrl>/treetable/TreeTable_basicFeatures.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>Selection &amp; Keyboard</demoName>
+        <demoUrl>/treetable/TreeTable_selectionAndKeyboard.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>Rows &amp; Cells Customization</demoName>
+        <demoUrl>/treetable/TreeTable_RowsAndCellsCustomization.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>Preloading Nodes &amp; More</demoName>
+        <demoUrl>/treetable/TreeTable_preloadingNodes.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Two List Selection</name>
+    <componentName>Two List Selection</componentName>
+    <url>/twolistselection/TwoListSelection.jsf</url>
+    <shortPath>twoListSelection</shortPath>
+    <image>TwoListSelection</image>
+    <selectedImage>/images/components/titles/TwoListSelection.png</selectedImage>
+    <keyFeatures>
+      <feature>Reordering of selected items</feature>
+      <feature>Sorting of selected items</feature>
+      <feature>Customizable appearance</feature>
+      <feature>Flexible styles customization</feature>
+      <feature>Specific client-side events</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/twolistselection/TwoListSelection.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Validation</name>
+    <componentName>Validation</componentName>
+    <url>/validators/Validators_standard.jsf</url>
+    <shortPath>validators</shortPath>
+    <image>ValidationFramework</image>
+    <selectedImage>/images/components/titles/Validation.png</selectedImage>
+    <keyFeatures>
+      <feature>Easy-to-configure client-side validation</feature>
+      <feature>Configurable validation error presentation</feature>
+      <feature>Flexible validation triggering</feature>
+      <feature>Flexible customization of validation messages</feature>
+      <feature>Set of additional validators (client and server side)</feature>
+      <feature>Default validation error presentation</feature>
+      <feature>Custom validation logic</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>Client Validation</demoName>
+        <demoUrl>/validators/Validators_standard.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>Validators</demoName>
+        <demoUrl>/validators/Validators_custom.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Window</name>
+    <componentName>Window</componentName>
+    <url>/window/Window.jsf</url>
+    <shortPath>window</shortPath>
+    <image>Window</image>
+    <selectedImage>/images/components/titles/Window.png</selectedImage>
+    <keyFeatures>
+      <feature>Draggable</feature>
+      <feature>Resizable</feature>
+      <feature>Can be made modal</feature>
+      <feature>Built-in minimize, maximize, close functions</feature>
+      <feature>Support for custom caption buttons</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/window/Window.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+
+</menu>

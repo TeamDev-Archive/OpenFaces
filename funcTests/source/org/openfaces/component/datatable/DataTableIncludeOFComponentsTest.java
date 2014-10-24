@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,7 +11,6 @@
  */
 package org.openfaces.component.datatable;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
@@ -64,7 +63,7 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
         testAppPage("/functionalTesting/datatable/foldingPanelIn.jsf");
       }
     */
-     @Test
+    @Test
     public void testHintLabelInside() {
         testAppFunctionalPage("/components/datatable/hintLabelIn.jsf");
 
@@ -98,6 +97,7 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
                 bodyHintLabel1.hint().mouseOut();
                 bodyHintLabel1.checkVisibilityAndContent(currentReferenceRow.getFirstColumn(), currentReferenceRow.getSecondColumn());
                 bodyHintLabel1.hint().mouseOut();
+
                 hintLabel("fn:hintLabelDataTable:" + rowIndex + ":body_hinLabel_2")
                         .checkVisibilityAndContent(currentReferenceRow.getSecondColumn(), currentReferenceRow.getFirstColumn());
 
@@ -126,9 +126,7 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
         hintLabel.hint().assertText("col3_row1");
     }
 
-
-     @Test
-    @Ignore
+    @Test
     public void testPopupLayerInside() {
         testAppFunctionalPage("/components/datatable/popupLayerIn.jsf");
 
@@ -151,18 +149,18 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
                 DataTableUtils.TestDataTableItem currentReferenceRow = currentPageValues.get(rowIndex);
 
                 // invoke popupLayers in current row
-                element("fn:popupDataTable:" + rowIndex + ":body_invoker").click();
-                element("fn:popupDataTable:" + rowIndex + ":body_invoker1").click();
 
-                //check is single selection performed well
-                dataTable("fn:popupDataTable").checkSelectedIndex(rowIndex);
 
                 //check: is popupLayers are visible
+                element("fn:popupDataTable:" + rowIndex + ":body_invoker").click();
                 ElementInspector bodyPopup = element("fn:popupDataTable:" + rowIndex + ":body_popup");
                 bodyPopup.assertVisible(true);
+                element("fn:popupDataTable:" + rowIndex + ":body_invoker1").click();
                 ElementInspector bodyPopup1 = element("fn:popupDataTable:" + rowIndex + ":body_popup1");
                 bodyPopup1.assertVisible(true);
 
+                //check is single selection performed well
+                dataTable("fn:popupDataTable").checkSelectedIndex(rowIndex);
                 //get text from the invoked popupLayers
                 String currentFirstCellValue = bodyPopup.text().substring(0, 9);
                 String currentSecondCellValue = bodyPopup1.text().substring(0, 9);
@@ -179,7 +177,7 @@ public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
             element("fn:popupDataTable:footer_popup1").assertSubtext(0, 29, "this is footer popup layer 2!");
 
             if (pageNo < pageCount)
-                nextPage.click();
+                nextPage.clickAndWait();
         }
         // a little sleep to wait until all visible popupLayers will be hidden
         sleep(4000);

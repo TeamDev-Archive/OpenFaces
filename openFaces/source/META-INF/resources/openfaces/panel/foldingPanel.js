@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -56,7 +56,7 @@ O$.FoldingPanel = {
         contentHolder.style.display = this._expanded ? "block" : "none";
         if (this._expanded && (!this._contentLoaded || loadingMode == "ajaxAlways")) {
           if (loadingMode != "server") {
-            O$.requestComponentPortions(this.id, ["content"], null, O$.FoldingPanel._ajaxResponseProcessor);
+            O$.Ajax.requestComponentPortions(this.id, ["content"], null, O$.FoldingPanel._ajaxResponseProcessor);
           } else {
             O$.submitEnclosingForm(this);
           }
@@ -165,7 +165,8 @@ O$.FoldingPanel = {
         }
       });
     }
-},
+
+  },
 
   _ajaxResponseProcessor: function(fp, portionName, portionHTML, portionScripts) {
     var oldComponent, prnt, tempDiv, newControl, oldId;
@@ -179,7 +180,7 @@ O$.FoldingPanel = {
       prnt.replaceChild(newControl, oldComponent);
       newControl.id = oldId;
     }
-    O$.executeScripts(portionScripts);
+    O$.Ajax.executeScripts(portionScripts);
     fp._contentLoaded = true;
   },
 

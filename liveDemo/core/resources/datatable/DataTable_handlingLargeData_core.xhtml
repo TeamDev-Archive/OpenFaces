@@ -50,7 +50,7 @@
 <f:facet name="below">
         <h:panelGroup>
           <o:dataTablePaginator id="paginator"
-                                style="margin-left: 170px; margin-top: 10px;"
+                                style="margin-left: 240px; margin-top: 10px;"
                                 firstDisabledImageUrl="#{BanksList.firstDisabledImageUrl}"
                                 firstImageUrl="#{BanksList.firstImageUrl}"
                                 nextDisabledImageUrl="#{BanksList.nextDisabledImageUrl}"
@@ -97,8 +97,7 @@
                       selectedTabClass="tabButton_active"
                       frontBorderStyle="0px"
                       backBorderStyle="0px">
-              <o:ajax event="change" render=":form:citiesTable"
-                      execute="form:paginatorStyleSelector"/>
+              <o:ajax render=":form:citiesTable"/>
               <o:tabSetItem>
                 <h:outputText value="Default Paginator"/>
               </o:tabSetItem>

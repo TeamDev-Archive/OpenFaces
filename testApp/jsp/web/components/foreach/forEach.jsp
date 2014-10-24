@@ -9,8 +9,6 @@
 <html>
 <head>
   <title>ForEach test page</title>
-  <script src="../funcTestsUtil.js" type="text/javascript"></script>
-
 </head>
 <body>
 <f:view>

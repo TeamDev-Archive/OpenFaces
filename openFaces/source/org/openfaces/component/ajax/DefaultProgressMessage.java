@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -16,6 +16,8 @@ import org.openfaces.component.VerticalAlignment;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.text.MessageFormat;
@@ -23,6 +25,9 @@ import java.text.MessageFormat;
 /**
  * @author Eugene Goncharov
  */
+@ResourceDependencies({
+        @ResourceDependency(name = "default.css", library = "openfaces")
+})
 public class DefaultProgressMessage extends ProgressMessage {
     public static final String COMPONENT_TYPE = "org.openfaces.DefaultProgressMessage";
     public static final String COMPONENT_FAMILY = "org.openfaces.DefaultProgressMessage";
@@ -47,6 +52,7 @@ public class DefaultProgressMessage extends ProgressMessage {
     private Integer backgroundTransparencyTransitionPeriod;
     private String backgroundStyle;
     private String backgroundClass;
+    private ProgressMessageMode mode;
 
     public String getFamily() {
         return COMPONENT_FAMILY;
@@ -72,7 +78,8 @@ public class DefaultProgressMessage extends ProgressMessage {
                 backgroundTransparency,
                 backgroundTransparencyTransitionPeriod,
                 backgroundStyle,
-                backgroundClass
+                backgroundClass,
+                mode
         };
     }
 
@@ -94,6 +101,7 @@ public class DefaultProgressMessage extends ProgressMessage {
         backgroundTransparencyTransitionPeriod = (Integer) stateArray[i++];
         backgroundStyle = (String) stateArray[i++];
         backgroundClass = (String) stateArray[i++];
+        mode = (ProgressMessageMode) stateArray[i++];
     }
 
     public String getText() {
@@ -231,5 +239,13 @@ public class DefaultProgressMessage extends ProgressMessage {
 
     public void setBackgroundClass(String backgroundClass) {
         this.backgroundClass = backgroundClass;
+    }
+
+    public ProgressMessageMode getMode() {
+        return ValueBindings.get(this, "mode", mode, ProgressMessageMode.ALL, ProgressMessageMode.class);
+    }
+
+    public void setMode(ProgressMessageMode mode) {
+        this.mode = mode;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -166,7 +166,7 @@ O$.ChartPopup = {
       prnt.replaceChild(newPopup, oldComponent);
       newPopup.id = oldId;
     }
-    O$.executeScripts(portionScripts);
+    O$.Ajax.executeScripts(portionScripts);
     newPopup._contentLoaded = true;
     newPopup._targetArea = popup._targetArea;
     var chart = newPopup.parentNode;
@@ -192,7 +192,7 @@ O$.ChartPopup = {
     if (popup._loadingMode == "ajaxAlways" || !popup._contentLoaded) {
       popup._eventX = eventPoint.x;
       popup._eventY = eventPoint.y;
-      O$.requestComponentPortions(popup.id, ["content"], null, O$.ChartPopup._ajaxResponseProcessor);
+      O$.Ajax.requestComponentPortions(popup.id, ["content"], null, O$.ChartPopup._ajaxResponseProcessor);
     } else {
       if (!popup.isVisible()) {
         if (chart._visiblePopup) {

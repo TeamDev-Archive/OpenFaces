@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -12,7 +12,7 @@
 
 package org.openfaces.demo.beans.spinner;
 
-import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class SpinnerBean {
         return products;
     }
 
-    public void calculateTotalCost(ActionEvent actionEvent) {
+    public void calculateTotalCost(AjaxBehaviorEvent actionEvent) {
         totalCost = 0;
         for (Product product : products) {
             totalCost += product.getPrice() * product.getQuantity();

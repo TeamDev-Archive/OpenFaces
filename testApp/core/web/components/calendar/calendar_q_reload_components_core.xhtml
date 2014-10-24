@@ -1,4 +1,4 @@
-<div xmlns:h="http://java.sun.com/jsf/html"
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
      xmlns:t="http://myfaces.apache.org/tomahawk">
@@ -22,17 +22,17 @@
   <br/>
   <br/>
   <h:commandButton title="REFRESH" value="REFRESH">
-    <o:ajax render="calendarID"/>
+    <o:ajax execute="calendarID" render="calendarID"/>
   </h:commandButton>
   <br/>
   <br/>
   <h:inputText>
-    <o:ajax render="calendarID"/>
+    <o:ajax execute="calendarID" render="calendarID"/>
   </h:inputText>
   <br/>
   <br/>
   <h:outputLabel value="REFRESH">
-    <o:ajax render="calendarID"/>
+    <o:ajax execute="calendarID" render="calendarID"/>
   </h:outputLabel>
 
 </div>

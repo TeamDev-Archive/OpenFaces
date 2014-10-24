@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -22,6 +22,8 @@ import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.event.PhaseId;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -206,6 +208,12 @@ public class RowGrouping extends OUIComponentBase implements ComponentConfigurat
     private boolean _evaluatingConverterInsideSetupCurrentRowVariables;
 
     public void setupCurrentRowVariables() {
+        PhaseId currentPhaseId = FacesContext.getCurrentInstance().getCurrentPhaseId();
+        if (currentPhaseId == PhaseId.RESTORE_VIEW) {
+            // no grouping-related variables are required on the restore view phase, and an attempt to calculate
+            // them during this stage can fail because no data model has been initialized yet
+            return;
+        }
         if (_evaluatingConverterInsideSetupCurrentRowVariables) {
             // Prevent endless recursion in the column.getGroupingValueConverter() call (see below).
             // The grouping-related variables are not required during calculation of groupingValueConverter,

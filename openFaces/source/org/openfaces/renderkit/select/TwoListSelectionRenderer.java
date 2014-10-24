@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -473,7 +473,7 @@ public class TwoListSelectionRenderer extends RendererBase {
 
         ScriptBuilder sb = new ScriptBuilder();
         sb.initScript(context, tls, "O$.TwoListSelection._init",
-                Rendering.getEventsParam(tls, "onadd", "onremove", "onchange"),
+                Rendering.getEventsParam(tls, "add", "remove", "change"),
                 tls.isAllowAddRemoveAll(),
                 tls.getReorderingAllowed(),
                 tls.isDisabled(),
@@ -547,6 +547,7 @@ public class TwoListSelectionRenderer extends RendererBase {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         if (!component.isRendered()) return;
+        Rendering.decodeBehaviors(context, component);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = component.getClientId(context);
         String key = clientId + LEFT_LISTBOX_SELECTION_SUFFIX;

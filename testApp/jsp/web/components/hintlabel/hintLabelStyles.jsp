@@ -9,9 +9,8 @@
 <html>
 <head>
   <title>HintLabel Styles Customization</title>
-
-  <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
   <script src="../funcTestsUtil.js" type="text/javascript"></script>
+  <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 </head>
 
 <body>

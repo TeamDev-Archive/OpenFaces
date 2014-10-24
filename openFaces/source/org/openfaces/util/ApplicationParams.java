@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -155,5 +155,16 @@ public class ApplicationParams {
             }
         }
         return fn;
+    }
+
+    private static Boolean iterationIndexWorkaround;
+
+    public static boolean getIterationIndexWorkaround() {
+        if (iterationIndexWorkaround == null) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            iterationIndexWorkaround = Rendering.getBooleanContextParam(context,
+                    "org.openfaces.resetIterationIndexesOnAddingComponents", true);
+        }
+        return iterationIndexWorkaround;
     }
 }

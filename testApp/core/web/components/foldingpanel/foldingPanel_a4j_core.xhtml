@@ -1,4 +1,4 @@
-<div xmlns:h="http://java.sun.com/jsf/html"
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
      xmlns:a4j="http://richfaces.org/a4j"
@@ -36,7 +36,7 @@
           </pre>
       </td>
       <td class="cells">
-        <a4j:commandButton id="refresher" value="Refresh" reRender="foldingPanelID"/>
+        <a4j:commandButton id="refresher" value="Refresh" render="foldingPanelID"/>
       </td>
     </tr>
   </table>
@@ -50,13 +50,13 @@
                         contentStyle="background: beige; color: red; font-size: 20px; padding: 20px 20px 20px 20px;"
                         style="border: 2px dashed blue;">
           <f:facet name="caption">
-            <a4j:htmlCommandLink id="foldingPanel_a4j_Caption" value="#{FoldingPanelBean.currentHeader}"/>
+            <a4j:commandLink id="foldingPanel_a4j_Caption" value="#{FoldingPanelBean.currentHeader}"/>
           </f:facet>
-          <a4j:htmlCommandLink id="foldingPanel_a4j_Content" value="#{FoldingPanelBean.currentContent}"/>
+          <a4j:commandLink id="foldingPanel_a4j_Content" value="#{FoldingPanelBean.currentContent}"/>
         </o:foldingPanel>
       </td>
       <td class="cells">
-        <a4j:commandButton id="refresher_a4j" value="Refresh" reRender="foldingPanel_a4j_ID"/>
+        <a4j:commandButton id="refresher_a4j" value="Refresh" render="foldingPanel_a4j_ID"/>
       </td>
     </tr>
   </table>

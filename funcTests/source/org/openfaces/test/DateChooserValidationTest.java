@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -12,8 +12,6 @@
 package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
-import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.seleniuminspector.openfaces.DateChooserInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
@@ -23,7 +21,7 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
  */
 public class DateChooserValidationTest extends OpenFacesTestCase {
 
-     @Test
+    @Test
     public void testClientValidationOff() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datechooser/dateChooserValid.jsf");
@@ -36,7 +34,7 @@ public class DateChooserValidationTest extends OpenFacesTestCase {
         assertConversionErrorOccured(true);
     }
 
-     @Test
+    @Test
     public void testClientValidationOnSubmit() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datechooser/dateChooserValid.jsf");
@@ -49,7 +47,7 @@ public class DateChooserValidationTest extends OpenFacesTestCase {
         assertConversionErrorOccured(true);
     }
 
-     @Test
+    @Test
     public void testClientValidationDefault() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datechooser/dateChooserValid.jsf");
@@ -62,8 +60,7 @@ public class DateChooserValidationTest extends OpenFacesTestCase {
         assertConversionErrorOccured(true);
     }
 
-     @Test
-    @Ignore
+    @Test
     public void testChangeLocaleFromBinding() {
         Selenium selenium = getSelenium();
         liveDemoPage("/datechooser/DateChooser.jsf");
@@ -93,4 +90,5 @@ public class DateChooserValidationTest extends OpenFacesTestCase {
         defaultDateChooser.field().type("17 oct. 2006");
         assertPageContainsErrorIcon(false);
     }
+
 }

@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.miscellaneous;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
@@ -22,7 +23,7 @@ public class FocusTest extends OpenFacesTestCase {
 
     private final static String FOCUSED = "FOCUSED";
 
-     @Test
+    @Test
     public void testAutoSaveFocusWithInputTextAndCommandButton() {
         testAppFunctionalPage("/components/scrollfocus/focus.jsf");
 
@@ -38,13 +39,14 @@ public class FocusTest extends OpenFacesTestCase {
         element("out").assertText(FOCUSED);
     }
 
-     @Test
+    @Test
     public void testFocusByPageLoadWithInputText() {
         testAppFunctionalPage("/components/scrollfocus/focus.jsf");
         element("out").assertText(FOCUSED);
     }
 
-     @Test
+    @Test
+    @Ignore
     public void testFocusWithOFDataTable() {
         testAppFunctionalPage("/components/scrollfocus/focusWithDataTable.jsf");
 

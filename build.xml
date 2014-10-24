@@ -11,7 +11,6 @@
   <property name="target.dir" location="target"/>
   <property name="target-lib.dir" location="${target.dir}/lib"/>
   <property name="openfaces-jar.file" location="${target-lib.dir}/openfaces-${of-version}.jar"/>
-  <property name="openfaces-weblogic-jar.file" location="${target-lib.dir}/openfaces-${of-version}-weblogic-jsp.jar"/>
 
   <property name="test-app-jsp.dir" location="testApp/jsp"/>
   <property name="test-app-facelets.dir" location="testApp/facelets"/>
@@ -46,7 +45,6 @@
     <ant dir="${components.dir}" target="build" inheritall="false">
       <property name="build.compiler" value="javac1.5"/>
       <property name="target-jar.file" value="${openfaces-jar.file}"/>
-      <property name="target-weblogic-jar.file" value="${openfaces-weblogic-jar.file}"/>
       <property name="lib.dir" value="../lib"/>
       <property name="retain.classes.dir" value="true"/>
       <property file="ofversion.properties"/>
@@ -95,6 +93,7 @@
         <pathelement path="lib/seleniuminspector/selenium-java-2.14.0.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-inspector.jar"/>
+        <pathelement path="lib/mojarra/javax.faces-2.1.11.jar"/>
         <pathelement path="testLib/junit.jar"/>
         <fileset file="${openfaces-jar.file}"/>
       </classpath>
@@ -163,7 +162,7 @@
         <pathelement path="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-java-2.14.0.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-inspector.jar"/>
-        <pathelement path="lib/mojarra/jsf-api-1.2_12-b01.jar"/>
+        <pathelement path="lib/mojarra/javax.faces-2.1.11.jar"/>
         <pathelement location="${funcTests-target.dir}/classes"/>
         <pathelement path="${openfaces-inspectors-jar.file}"/>
         <pathelement path="testLib/junit.jar"/>
@@ -193,20 +192,20 @@
     <fail if="junit_test_failed" message="FUNCTIONAL TEST(S) FAILED"/>
   </target>
 
-  <target name="run-func-tests-jsp" description="Run functional tests in JSP-based JSF 1.2 environment">
+  <target name="run-func-tests-jsp" description="Run functional tests in JSP-based JSF 2.0 environment">
     <property name="jsf.implementation" value="SUN12"/>
     <property name="is.facelets" value="false"/>
-    <property name="context.path" value="/TestAppJsp_2x"/>
-    <property name="demoContext.path" value="/LiveDemoJsp_2x"/>
-
+    <property name="context.path" value="/TestAppJsp_3x"/>
+    <property name="demoContext.path" value="/LiveDemoJsp_3x"/>
+    <antcall target="run-func-tests"/>
   </target>
 
-  <target name="run-func-tests-facelets" description="Run functional tests in Facelets-based JSF 1.2 environment">
+  <target name="run-func-tests-facelets" description="Run functional tests in Facelets-based JSF 2.0 environment">
     <property name="jsf.implementation" value="SUN12"/>
     <property name="is.facelets" value="true"/>
-    <property name="context.path" value="/TestAppFacelets_2x"/>
-    <property name="demoContext.path" value="/LiveDemoFacelets_2x"/>
-
+    <property name="context.path" value="/TestAppFacelets_3x"/>
+    <property name="demoContext.path" value="/LiveDemoFacelets_3x"/>
+    <antcall target="run-func-tests"/>
   </target>
 
 </project>

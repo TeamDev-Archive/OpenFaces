@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -196,7 +196,7 @@ O$.DropDownField = {
         var rowCount = totalItemCount - itemsLoaded;
         if (pageSize != -1 && rowCount > pageSize)
           rowCount = pageSize;
-        O$.requestComponentPortions(dropDownId,
+        O$.Ajax.requestComponentPortions(dropDownId,
                 ["filterCriterion:" + ((text != null && !loadFullList) ? "[" + text + "]" : "null")],
                 "{pageStart: " + itemsLoaded + ", pageSize: " + rowCount + ", forceReload:" + (forceReload === true) + "}",
                 O$.DropDownField._filteredItemsLoaded);
@@ -208,7 +208,7 @@ O$.DropDownField = {
         dropDown._filterCriterion = text;
         if (suggestionMode == "custom") {
           if (!dropDown._showCachedSuggestions(text, autoCompletionAllowedForThisKey))
-            O$.requestComponentPortions(dropDownId,
+            O$.Ajax.requestComponentPortions(dropDownId,
                     ["filterCriterion:" + ((text != null) ? "[" + text + "]" : "null")],
                     null,
                     O$.DropDownField._filteredItemsLoaded);
@@ -394,7 +394,7 @@ O$.DropDownField = {
             onclick:function () {
               O$.DropDownField._itemClicked(dropDown, this);
             },
-            onmouseup:function () {
+            onmousedown:function () {
               O$.DropDownField._itemClicked(dropDown, this);
             },
 
@@ -405,8 +405,6 @@ O$.DropDownField = {
               dropDown._filterCriterion = null;
             }
           });
-
-
         }
       },
 
@@ -713,13 +711,14 @@ O$.DropDownField = {
           }
         },
 
-        _hide:function () {
+        _hide:function (doNotClearList) {
           field._hidden = true;
           dropDown._field._oldValue = dropDown._selectedItemValue;
           dropDown._fieldContainer.style.display = "";
           dropDown._itemPresentationContainer.style.display = "";
           dropDown._fieldContainer.style.height = "0";
-          dropDown._setFilterCriterion(null);
+          if (!doNotClearList)
+            dropDown._setFilterCriterion(null);
           if (O$.isSafari() || O$.isChrome()) {
             if (!O$.checkClassNameUsed(this, ["o_hiddenFocusChromeSafari"]))
               O$.appendClassNames(this, ["o_hiddenFocusChromeSafari"]);
@@ -738,9 +737,9 @@ O$.DropDownField = {
               dropDown._field.value = "";
               dropDown.value = "";
             }
-            dropDown._setFilterCriterion(null);
-            dropDown._setItemPresentationValue();
-            dropDown._field._hide();
+            /*dropDown._setFilterCriterion(null);
+            dropDown._setItemPresentationValue();        */
+            dropDown._field._hide(true);
           }
         }
       });
@@ -923,8 +922,11 @@ O$.DropDownField = {
         var valueAfter = field.value;
         if (valueBefore == valueAfter)
           return;
-        if (dropDown._itemPresentation)
+        if (dropDown._itemPresentation) {
           field._show();
+          field.select();
+          field.selectionStart = field.selectionEnd = valueAfter.length;
+        }
         dropDown._setValue(valueAfter, undefined, true);
         if (suggestionMode == "none") {
           if (autoCompleteOn && autoCompletionAllowedForThisKey) {
@@ -1305,7 +1307,7 @@ O$.DropDownField = {
         dropDownField._highlightSelectedItem();
         dropDownField._scrollToHighlightedItem();
       };
-      O$.executeScripts(portionScripts);
+      O$.Ajax.executeScripts(portionScripts);
     } finally {
       if (cacheOnly)
         document.body.removeChild(tempDiv);

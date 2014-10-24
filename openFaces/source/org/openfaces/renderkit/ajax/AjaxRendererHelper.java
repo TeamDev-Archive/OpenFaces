@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -40,7 +40,7 @@ public class AjaxRendererHelper extends OUIClientActionRendererHelper {
         Ajax ajax = (Ajax) clientAction;
         AjaxInitializer initializer = new AjaxInitializer();
         ScriptBuilder script = new ScriptBuilder();
-        script.functionCall("O$._ajaxReload",
+        script.functionCall("O$.Ajax._reload",
                 initializer.getRenderArray(context, ajax, ajax.getRender()),
                 initializer.getAjaxParams(context, ajax)).semicolon();
         if (isDisableDefaultRequired(ajax))

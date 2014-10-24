@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -45,11 +45,11 @@ public class ColumnReorderingRenderer extends RendererBase {
                         cr.getDraggedCellTransparency(),
                         autoScrollAreaStyle,
                         cr.getAutoScrollAreaTransparency(),
-                        Resources.getURL(context, cr.getAutoScrollLeftImageUrl(), null, "table/autoScrollLeft.gif"),
-                        Resources.getURL(context, cr.getAutoScrollRightImageUrl(), null, "table/autoScrollRight.gif"),
+                        Resources.getURL(context, cr.getAutoScrollLeftImageUrl(), "table/autoScrollLeft.gif"),
+                        Resources.getURL(context, cr.getAutoScrollRightImageUrl(), "table/autoScrollRight.gif"),
                         dropTargetStyle,
-                        Resources.getURL(context, cr.getDropTargetTopImageUrl(), null, "table/dropTargetTop.gif"),
-                        Resources.getURL(context, cr.getDropTargetBottomImageUrl(), null, "table/dropTargetBottom.gif")
+                        Resources.getURL(context, cr.getDropTargetTopImageUrl(), "table/dropTargetTop.gif"),
+                        Resources.getURL(context, cr.getDropTargetBottomImageUrl(), "table/dropTargetBottom.gif")
                 ),
                 AbstractTableRenderer.getTableJsURL(context)
         );

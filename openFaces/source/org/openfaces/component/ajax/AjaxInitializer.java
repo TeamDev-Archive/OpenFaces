@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -20,8 +20,6 @@ import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.AnonymousFunction;
 
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
@@ -39,7 +37,7 @@ import java.util.Map;
 public class AjaxInitializer {
     private static final String EXPRESSION_PREFIX = "#{";
     private static final String EXPRESSION_SUFFIX = "}";
-    
+
     public static ThreadLocal<Boolean> BUILDING_VIEW = new ThreadLocal<Boolean>();
 
     public JSONArray getRenderArray(FacesContext context, UIComponent sourceComponent, Iterable<String> render) {
@@ -76,11 +74,6 @@ public class AjaxInitializer {
     }
 
     private UIComponent findComponent_cached(FacesContext context, UIComponent base, String componentId) {
-        if (Boolean.TRUE.equals(BUILDING_VIEW.get())) {
-            // avoid caching the value on this stage because the tree is not fully constructed yet and we might cache
-            // the wrong value here
-            return findComponent(context, base, componentId);
-        }
         Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
         String componentsByIdsKey = AjaxInitializer.class.getName() + ".componentsByIds";
         Map<String, UIComponent> componentsByIds = (Map<String, UIComponent>) requestMap.get(componentsByIdsKey);
@@ -88,7 +81,7 @@ public class AjaxInitializer {
             componentsByIds = new HashMap<String, UIComponent>();
             requestMap.put(componentsByIdsKey, componentsByIds);
         }
-        
+
         if (componentsByIds.containsKey(componentId))
             return componentsByIds.get(componentId);
 
@@ -146,7 +139,7 @@ public class AjaxInitializer {
             if (execute.iterator().hasNext() || submitAjaxInvoker) {
                 result.put("execute", getExecuteParam(context, command, execute));
             }
-            result.put("executeRenderedComponents", command.getExecuteRenderedComponents());
+
             String onajaxstart = command.getOnajaxstart();
             if (onajaxstart != null && onajaxstart.length() != 0) {
                 result.put("onajaxstart", new AnonymousFunction(onajaxstart, "event"));
@@ -159,9 +152,13 @@ public class AjaxInitializer {
             if (onerror != null && onerror.length() != 0) {
                 result.put("onerror", new AnonymousFunction(onerror, "event"));
             }
-            String onsuccess = command.getOnerror();
+            String onsuccess = command.getOnsuccess();
             if (onsuccess != null && onsuccess.length() != 0) {
                 result.put("onsuccess", new AnonymousFunction(onsuccess, "event"));
+            }
+            String onevent = (command instanceof Ajax) ? ((Ajax) command).getOnevent() : null;
+            if (onevent != null && onevent.length() != 0) {
+                result.put("onevent", new AnonymousFunction(onevent, "event"));
             }
             Integer delayObj = (Integer) command.getAttributes().get("delay");
             int delay = delayObj != null ? delayObj : 0;
@@ -170,25 +167,7 @@ public class AjaxInitializer {
                 result.put("delayId", getAjaxComponentParam(context, command));
             }
 
-            MethodExpression action = !(command instanceof Ajax) ? command.getActionExpression() : null;
-            if (action != null) {
-                String actionExpressionString = action.getExpressionString();
-                validateExpressionString(actionExpressionString);
-                result.put("_action", actionExpressionString.substring(
-                        EXPRESSION_PREFIX.length(), actionExpressionString.length() - EXPRESSION_SUFFIX.length()));
-                result.put("actionComponent", command.getClientId(context));
-            }
-
-            ValueExpression actionListener = command instanceof Ajax
-                    ? command.getValueExpression("listener")
-                    : command.getValueExpression("actionListener");
-            if (actionListener != null) {
-                String actionListenerExpressionString = actionListener.getExpressionString();
-                validateExpressionString(actionListenerExpressionString);
-                result.put("listener", actionListenerExpressionString.substring(EXPRESSION_PREFIX.length(),
-                        actionListenerExpressionString.length() - EXPRESSION_SUFFIX.length()));
-                result.put("actionComponent", getAjaxComponentParam(context, command));
-            }
+            result.put("actionTriggerParam", command.getActionTriggerParam());
 
             result.put("immediate", command.isImmediate());
             return result;

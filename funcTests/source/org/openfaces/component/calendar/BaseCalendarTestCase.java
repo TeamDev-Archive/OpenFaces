@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -12,9 +12,8 @@
 package org.openfaces.component.calendar;
 
 import org.openfaces.test.OpenFacesTestCase;
-import org.openqa.selenium.By;
-import org.seleniuminspector.openfaces.CalendarInspector;
 import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.openfaces.CalendarInspector;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -73,7 +72,6 @@ public abstract class BaseCalendarTestCase extends OpenFacesTestCase {
         calendar.month().assertText(initialMonthName);
 
         //next month
-//        calendar.monthIncrease().evalExpression("click()");
         // Make it bigger to Selenium could click.
         calendar.monthIncrease().evalExpression("style.fontSize='100%'");
         calendar.monthIncrease().evalExpression("style.width='100%'");
@@ -84,7 +82,6 @@ public abstract class BaseCalendarTestCase extends OpenFacesTestCase {
         calendar.monthDecrease().evalExpression("style.fontSize='100%'");
         calendar.monthDecrease().evalExpression("style.width='100%'");
         calendar.monthDecrease().click();
-//        calendar.monthDecrease().evalExpression("click()");
         calendar.month().assertText(previousMonthName);
 
         //choose from month popup list

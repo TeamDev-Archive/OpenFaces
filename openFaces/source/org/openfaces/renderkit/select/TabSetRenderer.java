@@ -103,7 +103,6 @@ public class TabSetRenderer extends BaseTabSetRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
         TabSet tabSet = (TabSet) component;
-        List<UIComponent> tabChildren = tabSet.getChildren();
 
         TabPlacement tabPlacement = getTabPlacement(tabSet);
         boolean verticalTabs = tabPlacement.equals(TabPlacement.LEFT) || tabPlacement.equals(TabPlacement.RIGHT);
@@ -174,7 +173,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
                         !Environment.isExplorer6() ? "border: 1px solid transparent;" : "", StyleGroup.selectedStyleGroup(1));
                 writer.writeAttribute("class", defaultFocusedClass, null);
             }
-            /*...............*/
+
             if (item instanceof String) {
                 writer.writeText(item, null);
             } else if (item instanceof UIComponent) {
@@ -182,7 +181,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
             } else if (item != null) {
                 writer.writeText(item.toString(), null);
             }
-            /*                      */
+
             if (tabSet.isFocusable()) {
                 writer.endElement("div");
             }
@@ -400,8 +399,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
 
         String onchange = tabSet.getOnchange();
 
-        String defaultDisabledClass = DEFAULT_CLASS_PREFIX + "disabled";
-             ScriptBuilder sb = new ScriptBuilder();
+        ScriptBuilder sb = new ScriptBuilder();
         sb.initScript(context, tabSet, "O$.TabSet._init",
                 getTabIds(context, tabSet, tabs),
                 selectedIndex,
@@ -422,7 +420,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
                 tabSet.isFocusable(),
                 focusAreaClass,
                 focusedClass,
-               onchange != null ? new AnonymousFunction(onchange, "event") : null);
+                onchange != null ? new AnonymousFunction(onchange, "event") : null);
 
         Rendering.renderInitScript(context, sb,
                 Resources.utilJsURL(context),

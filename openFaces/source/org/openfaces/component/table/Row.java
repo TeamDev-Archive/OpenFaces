@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -17,14 +17,22 @@ import org.openfaces.util.Styles;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponentBase;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class Row extends UIComponentBase {
+public class Row extends UIComponentBase implements ClientBehaviorHolder {
     public static final String COMPONENT_TYPE = "org.openfaces.Row";
     public static final String COMPONENT_FAMILY = "org.openfaces.Row";
+
+    private static final List<String> EVENT_NAMES = Collections.unmodifiableList(Arrays.asList("click", "dblclick",
+            "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup"));
 
     private Boolean condition;
     private String style;
@@ -209,4 +217,15 @@ public class Row extends UIComponentBase {
         return result;
 
     }
+
+    @Override
+    public String getDefaultEventName() {
+        return "click";
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
+
 }

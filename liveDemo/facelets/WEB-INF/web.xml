@@ -19,6 +19,12 @@
   </context-param>
 
   <context-param>
+      <param-name>javax.faces.PROJECT_STAGE</param-name>
+      <param-value>Production</param-value>
+      <!--<param-value>Development</param-value>-->
+  </context-param>
+
+  <context-param>
     <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
     <param-value>server</param-value>
   </context-param>
@@ -191,21 +197,12 @@
     <filter-class>org.openfaces.demo.filter.LiveDemoFilter</filter-class>
   </filter>
 
-  <!-- MAPPING FOR OPENFACES RESOURCE FILTER -->
   <filter-mapping>
     <filter-name>ResourceFilter</filter-name>
     <servlet-name>Faces Servlet</servlet-name>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
   </filter-mapping>
-
-  <filter-mapping>
-    <filter-name>ResourceFilter</filter-name>
-    <url-pattern>/openFacesResources/*</url-pattern>
-    <dispatcher>REQUEST</dispatcher>
-    <dispatcher>FORWARD</dispatcher>
-  </filter-mapping>
-
 
   <filter-mapping>
     <filter-name>LiveDemoFilter</filter-name>

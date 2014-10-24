@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -264,8 +264,8 @@ public class Summary extends OUIOutput {
                         usageContext.getTable(),
                         popupMenu,
                         selectedMenuItem,
-                        popupMenu != null ? Resources.internalURL(context, null, SelectBooleanCheckboxImageManager.DEFAULT_SELECTED_IMAGE, true) : null,
-                        popupMenu != null ? Resources.internalURL(context, null, SelectBooleanCheckboxImageManager.DEFAULT_UNSELECTED_IMAGE, true) : null
+                        popupMenu != null ? Resources.internalURL(context, SelectBooleanCheckboxImageManager.DEFAULT_SELECTED_IMAGE) : null,
+                        popupMenu != null ? Resources.internalURL(context, SelectBooleanCheckboxImageManager.DEFAULT_UNSELECTED_IMAGE) : null
                 ).semicolon();
             }
         }
@@ -361,8 +361,8 @@ public class Summary extends OUIOutput {
                     menuItem.setOnclick(new ScriptBuilder().functionCall(
                             "O$.Summary._setFunction", functionName.toLowerCase()
                     ).toString());
-                    menuItem.setIconUrl(Resources.internalURL(context, null,
-                            SelectBooleanCheckboxImageManager.DEFAULT_UNSELECTED_IMAGE, false));
+                    menuItem.setIconUrl(Resources.internalURL(context,
+                            SelectBooleanCheckboxImageManager.DEFAULT_UNSELECTED_IMAGE));
                     menuItem.getAttributes().put(ATTR_FUNCTION_NAME, functionName);
                     popupMenu.getChildren().add(menuItem);
                 }
@@ -423,7 +423,7 @@ public class Summary extends OUIOutput {
                         int prevRowIndex = table.getRowIndex();
                         if (prevRowIndex != -1) table.setRowIndex(-1);
                         try {
-                            String clientId = getSummary().getClientId(context);
+                            String clientId = Components.getFreshClientId(getSummary(), context);
                             globalCalculationContext.setRenderedSummaryClientId(clientId);
                         } finally {
                             if (prevRowIndex != -1) table.setRowIndex(prevRowIndex);
@@ -843,9 +843,10 @@ public class Summary extends OUIOutput {
         UsageContext usageContext = stampState.getUsageContext();
         if (!usageContext.isApplicableInThisContext()) return;
 
+        String clientId = Components.getFreshClientId(this, context);
+
         DataTable table = stampState.getTable();// getTable invocation validates the parent tag
         super.encodeBegin(context);
-        String clientId = getClientId(context);
         if (usageContext.getCalculatedGlobally()) {
             stampState.getGlobalCalculationContext().setRenderedSummaryClientId(clientId);
         } else {
@@ -873,7 +874,7 @@ public class Summary extends OUIOutput {
         if (usageContext.getTable().getRowIndex() != -1)
             throw new IllegalArgumentException("table's rowIndex is expected to be -1 when invoking the " +
                     "prepare method for it to be able to detect its 'original' client id");
-        stampState.originalClientId = getClientId(context);
+        stampState.originalClientId = Components.getFreshClientId(this, context);
     }
 
 

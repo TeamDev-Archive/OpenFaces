@@ -9,7 +9,7 @@
 <html>
 <head>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
-
+  <script src="../funcTestsUtil.js" type="text/javascript"></script>
   <title>TreeTable Selection Onchange Row Events</title>
 </head>
 

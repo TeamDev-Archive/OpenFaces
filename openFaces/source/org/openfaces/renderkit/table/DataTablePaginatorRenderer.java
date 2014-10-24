@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -110,26 +110,26 @@ public class DataTablePaginatorRenderer extends RendererBase {
 
     private String getFirstImageUrl(FacesContext context, DataTablePaginator paginator, boolean active) {
         return active
-                ? Resources.getURL(context, paginator.getFirstImageUrl(), null, "table/first.gif", false)
-                : Resources.getURL(context, paginator.getFirstDisabledImageUrl(), null, "table/firstDisabled.gif", false);
+                ? Resources.getURL(context, paginator.getFirstImageUrl(), "table/first.gif", false)
+                : Resources.getURL(context, paginator.getFirstDisabledImageUrl(), "table/firstDisabled.gif", false);
     }
 
     private String getLastImageUrl(FacesContext context, DataTablePaginator paginator, boolean active) {
         return active
-                ? Resources.getURL(context, paginator.getLastImageUrl(), null, "table/last.gif", false)
-                : Resources.getURL(context, paginator.getLastDisabledImageUrl(), null, "table/lastDisabled.gif", false);
+                ? Resources.getURL(context, paginator.getLastImageUrl(), "table/last.gif", false)
+                : Resources.getURL(context, paginator.getLastDisabledImageUrl(), "table/lastDisabled.gif", false);
     }
 
     private String getPreviousImageUrl(FacesContext context, DataTablePaginator paginator, boolean active) {
         return active
-                ? Resources.getURL(context, paginator.getPreviousImageUrl(), null, "table/prev.gif", false)
-                : Resources.getURL(context, paginator.getPreviousDisabledImageUrl(), null, "table/prevDisabled.gif", false);
+                ? Resources.getURL(context, paginator.getPreviousImageUrl(), "table/prev.gif", false)
+                : Resources.getURL(context, paginator.getPreviousDisabledImageUrl(), "table/prevDisabled.gif", false);
     }
 
     private String getNextImageUrl(FacesContext context, DataTablePaginator paginator, boolean active) {
         return active
-                ? Resources.getURL(context, paginator.getNextImageUrl(), null, "table/next.gif", false)
-                : Resources.getURL(context, paginator.getNextDisabledImageUrl(), null, "table/nextDisabled.gif", false);
+                ? Resources.getURL(context, paginator.getNextImageUrl(), "table/next.gif", false)
+                : Resources.getURL(context, paginator.getNextDisabledImageUrl(), "table/nextDisabled.gif", false);
     }
 
     @Override

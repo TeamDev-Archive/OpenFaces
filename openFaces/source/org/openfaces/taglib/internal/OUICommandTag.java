@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -12,9 +12,12 @@
 package org.openfaces.taglib.internal;
 
 import org.openfaces.component.OUICommand;
+import org.openfaces.event.UnifiedActionListener;
 
+import javax.faces.component.ActionSource;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionListener;
 
 /**
  * @author Dmitry Pikhulya
@@ -48,5 +51,20 @@ public abstract class OUICommandTag extends AbstractComponentTag {
         setStringProperty(component, "onerror");
         setStringProperty(component, "onsuccess");
         setIntProperty(component, "delay");
+    }
+
+    protected ActionListener createUnifiedActionListener(FacesContext context) {
+        String propertyValue = getPropertyValue("actionListener");
+        if (propertyValue != null) {
+            return new UnifiedActionListener(getExpressionCreator(), context, propertyValue);
+        }
+        return null;
+    }
+
+    @Override
+    protected void setActionListener(FacesContext context, ActionSource component) {
+        ActionListener actionListener = createUnifiedActionListener(context);
+        if (actionListener != null)
+            component.addActionListener(actionListener);
     }
 }

@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -13,10 +13,10 @@
 package org.openfaces.component.inputtext;
 
 import com.thoughtworks.selenium.Selenium;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
-import org.openqa.selenium.By;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.InputTextInspector;
 
@@ -26,7 +26,7 @@ import java.awt.event.KeyEvent;
  * @author Vladimir Kurganov
  */
 public class InputTextTest extends OpenFacesTestCase {
-     @Test
+    @Test
     public void testTypedValue() {
         testAppFunctionalPage("/components/inputtext/inputTextFieldBaseFunctionality.jsf");
 
@@ -43,11 +43,10 @@ public class InputTextTest extends OpenFacesTestCase {
 
         // fill by empty values
         first.clear();
-        second.clear();
         first.assertValue("");
+        second.clear();
         second.assertValue("");
-//        second.fireEvent("onblur");
-        value.click(); // onblur
+        value.click();
         second.assertValue("some prompt text");
         submit.clickAndWait();
         value.assertText("");
@@ -56,7 +55,6 @@ public class InputTextTest extends OpenFacesTestCase {
         second.assertValue("some prompt text");
 
         // type own value
-        // fill by empty values
         first.clear();
         second.clear();
         first.type("val1");
@@ -70,7 +68,7 @@ public class InputTextTest extends OpenFacesTestCase {
         second.assertValue("val2");
     }
 
-     @Test
+    @Test
     public void testFocusAndBlurEvent() {
         testAppFunctionalPage("/components/inputtext/inputTextFieldBaseFunctionality.jsf");
 
@@ -104,7 +102,7 @@ public class InputTextTest extends OpenFacesTestCase {
         second.assertValue("val2");
     }
 
-     @Test
+    @Test
     public void testStyles() {
         testAppFunctionalPage("/components/inputtext/inputTextStyling.jsf");
 
@@ -153,7 +151,7 @@ public class InputTextTest extends OpenFacesTestCase {
         secondInput.mouseOut();
     }
 
-     @Test
+    @Test
     public void testValueChangeListener() {
         testAppFunctionalPage("/components/inputtext/inputTextValueChangeListener.jsf");
 
@@ -171,7 +169,7 @@ public class InputTextTest extends OpenFacesTestCase {
         asTagOutput.assertText("true");
     }
 
-     @Test
+    @Test
     public void testClientSideEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/inputtext/inputTextEvents.jsf");
@@ -245,7 +243,9 @@ public class InputTextTest extends OpenFacesTestCase {
         assertTrue(selenium.isTextPresent("mousemove"));
     }
 
-     @Test
+    @Test
+    @Ignore
+    // revive this test when RichFaces 4 is fully functional
     public void testReRenderingThroughA4J() {
         testAppFunctionalPage("/components/inputtext/inputText_a4j.jsf");
 
@@ -264,8 +264,7 @@ public class InputTextTest extends OpenFacesTestCase {
         inputText.assertWidth(230, 4);
         inputText.mouseOut();
 
-//        inputText.type("");
-        getDriver().findElement(By.xpath(inputText.getXPath())).clear();
+        inputText.clear();
         inputText.fireEvent("onblur");
         sleep(1000);
         inputText.assertValue("ajax4jsf prompt text");

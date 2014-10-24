@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -12,9 +12,9 @@
 package org.openfaces.component.select;
 
 import org.openfaces.component.OUIInputBase;
-import org.openfaces.util.ValueBindings;
 import org.openfaces.event.SelectionChangeEvent;
 import org.openfaces.event.SelectionChangeListener;
+import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;

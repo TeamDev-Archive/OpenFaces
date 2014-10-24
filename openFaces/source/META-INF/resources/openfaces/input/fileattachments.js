@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -19,7 +19,7 @@ O$.FileAttachments = {
   },
   _fileUploadEndEventHandler:function (fileAttachmentsCompId, fileUploadCompId) {
     O$(fileUploadCompId).removeAllFiles();
-    O$._ajaxReload([fileAttachmentsCompId], {"executeRenderedComponents":true, "immediate":false});
+    O$.Ajax._reload([fileAttachmentsCompId], {"executeRenderedComponents":true, "immediate":false});
   }
 
 };
@@ -92,7 +92,7 @@ O$.RemoveAttachment = {
         return false;
       },
       _initRemove:function () {
-        O$.requestComponentPortions(removeAttachment._fileAttachmentsComponent.id, ["nothing"],
+        O$.Ajax.requestComponentPortions(removeAttachment._fileAttachmentsComponent.id, ["nothing"],
                 JSON.stringify({callRemoveListener:true, attachmentId:removeAttachment._fileAttachmentId}),
                 function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
                   if (portionData['isCalled'] == "true") {
@@ -174,7 +174,7 @@ O$.AttachmentUtils = {
         }
       },
       _reloadComponent:function () {
-        O$._ajaxReload([attachment._fileAttachmentsComponent.id], {"executeRenderedComponents":true, "immediate":false});
+        O$.Ajax._reload([attachment._fileAttachmentsComponent.id], {"executeRenderedComponents":true, "immediate":false});
       }
     });
     return attachment;

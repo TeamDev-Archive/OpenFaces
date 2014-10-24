@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,7 +11,6 @@
  */
 package org.openfaces.component.timetable;
 
-import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.input.DateChooser;
 import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.window.Window;
@@ -20,11 +19,12 @@ import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import java.io.IOException;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class EventEditorDialog extends Window implements CompoundComponent {
+public class EventEditorDialog extends Window {
     public static final String COMPONENT_TYPE = "org.openfaces.EventEditorDialog";
     public static final String COMPONENT_FAMILY = "org.openfaces.EventEditorDialog";
 
@@ -235,7 +235,17 @@ public class EventEditorDialog extends Window implements CompoundComponent {
         deleteButtonText = value;
     }
 
-    public void createSubComponents(FacesContext context) {
+    @Override
+    public void encodeBegin(FacesContext context) throws IOException {
+        String subComponentsCreatedKey = "_subComponentsCreated";
+        if (!getAttributes().containsKey(subComponentsCreatedKey)) {
+            getAttributes().put(subComponentsCreatedKey, true);
+            createSubComponents(context);
+        }
+        super.encodeBegin(context);
+    }
+
+    private void createSubComponents(FacesContext context) {
         ((CompoundComponentRenderer) getRenderer(context)).createSubComponents(context, this);
     }
 

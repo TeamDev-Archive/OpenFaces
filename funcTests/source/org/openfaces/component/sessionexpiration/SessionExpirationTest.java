@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -14,6 +14,7 @@ package org.openfaces.component.sessionexpiration;
 
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
+import org.openqa.selenium.By;
 import org.seleniuminspector.openfaces.ConfirmationInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 
@@ -25,7 +26,8 @@ public class SessionExpirationTest extends OpenFacesTestCase {
     public void testSessionExpiration() {
         testAppFunctionalPage("/components/sessionexpiration/rawTesting.jsf");
 
-        element("//img[1]").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
+        getDriver().findElements(By.tagName("img")).get(0).click();
+        sleep(15000);
 
         ConfirmationInspector confirmation = confirmation("formID:openfaces_internal_sessionexpiration_confirmation");
         confirmation.assertElementExists();

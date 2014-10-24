@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -96,7 +96,7 @@ O$.Table = {
         return this._showingMenuForColumn ? table._getColumn(this._showingMenuForColumn) : null;
       },
       _loadRows:function (completionCallback) {
-        O$.requestComponentPortions(this.id, ["rows"], null, function (table, portionName, portionHTML, portionScripts, portionData) {
+        O$.Ajax.requestComponentPortions(this.id, ["rows"], null, function (table, portionName, portionHTML, portionScripts, portionData) {
           if (portionName != "rows") throw "Unknown portionName: " + portionName;
           table.body._removeAllRows();
           O$.Table._acceptLoadedRows(table, portionName, portionHTML, portionScripts, portionData);
@@ -127,9 +127,6 @@ O$.Table = {
       );
     }
     ;
-    if (table._commonTableFunctionsInitialized)
-      return;
-    table._commonTableFunctionsInitialized = true;
 
     try {
       O$.Tables._init(table, initParams);
@@ -710,7 +707,7 @@ O$.Table = {
     table.__newRows = newRows;
 
     table._addLoadedRows(portionData);
-    O$.executeScripts(portionScripts);
+    O$.Ajax.executeScripts(portionScripts);
   },
 
   // -------------------------- KEYBOARD NAVIGATION SUPPORT
@@ -856,36 +853,6 @@ O$.Table = {
               if (newIdx != null) {
                 passEvent = false;
                 this.__setSelectedRowIndexes([newIdx]);
-                ///////////////////////////////////////////////////
-                var activeElement = null
-                if (O$._activeElement != null) {
-                  activeElement = O$._activeElement
-                } else if (document.activeElement != null) {
-                  activeElement = document.activeElement;
-                }
-                if (activeElement.nodeName == "INPUT") {
-                  var needElement = O$._activeElement;
-                  var isNeedNode = true;
-                  var needColumn = null;
-                  var needChildrenNodes = null;
-                  while (isNeedNode) {
-                    needElement = needElement.parentNode;
-                    if (needElement.nodeName == "TD") {
-                      if (needElement._column._table == this) {
-                        needColumn = needElement.cellIndex;
-                        needElement = needElement.parentNode.parentNode;
-                        needChildrenNodes = needElement.childNodes;
-                        needElement = needChildrenNodes[newIdx];
-                        needChildrenNodes = needElement.childNodes
-                        needElement = needChildrenNodes[needColumn];
-                        needElement = O$.getFirstFocusableControl(needElement);
-                        needElement.focus();
-                        isNeedNode = false;
-                      }
-                    }
-                  }
-                }
-                ///////////////////////////////////////////////////////
                 O$.Table._scrollToRowIndexes(this, [newIdx]);
                 this._baseRowIndex = null;
                 this._baseSelectedRowIndexes = null;
@@ -918,36 +885,6 @@ O$.Table = {
             if (newIdx != null) {
               passEvent = false;
               this.__setSelectedRowIndex(newIdx);
-              ///////////////////////////////////////////////////
-              var activeElement = null
-              if (O$._activeElement != null) {
-                activeElement = O$._activeElement
-              } else if (document.activeElement != null) {
-                activeElement = document.activeElement;
-              }
-              if (activeElement.nodeName == "INPUT") {
-                var needElement = O$._activeElement;
-                var isNeedNode = true;
-                var needColumn = null;
-                var needChildrenNodes = null;
-                while (isNeedNode) {
-                  needElement = needElement.parentNode;
-                  if (needElement.nodeName == "TD") {
-                    if (needElement._column._table == this) {
-                      needColumn = needElement.cellIndex;
-                      needElement = needElement.parentNode.parentNode;
-                      needChildrenNodes = needElement.childNodes;
-                      needElement = needChildrenNodes[newIdx];
-                      needChildrenNodes = needElement.childNodes
-                      needElement = needChildrenNodes[needColumn];
-                      needElement = O$.getFirstFocusableControl(needElement);
-                      needElement.focus();
-                      isNeedNode = false;
-                    }
-                  }
-                }
-              }
-              ///////////////////////////////////////////////////////
               O$.Table._scrollToRowIndexes(this, [newIdx]);
             }
           }
@@ -1151,9 +1088,7 @@ O$.Table = {
         // allow focus traversal with Tab key while the table is focused
         return true;
       }
-    }
-    ;
-
+    };
     O$.addUnloadHandler(table, function () {
       table[eventName] = null;
     });
@@ -1199,9 +1134,9 @@ O$.Table = {
   _deinitializeKeyboardNavigation:function (table) {
     table.onfocus = null;
     table.onblur = null;
-    if (table._focusControl && table._focusControl.parentNode) {
-      table._focusControl.parentNode.removeChild(table._focusControl);
-    }
+    /*if (table._focusControl && table._focusControl.parentNode) {
+     table._focusControl.parentNode.removeChild(table._focusControl);
+     } */
   },
 
   _scrollToRowIndexes:function (table, rowIndexes) {
@@ -1209,29 +1144,6 @@ O$.Table = {
     O$.scrollElementIntoView(rowIndexes.map(function (i) {
       return i != -1 && bodyRows[i]._rowNode;
     }), true, false);
-  },
-
-  _setActiveInput:function (newIdx) {
-    var needElement = O$._activeElement;
-    var isNeedNode = true;
-    var needColumn = null;
-    var needChildrenNodes = null;
-    while (isNeedNode) {
-      needElement = needElement.parentNode;
-      if (needElement.nodeName == "TD") {
-        if (needElement._column._table == this) {
-          needColumn = needElement.cellIndex;
-          needElement = needElement.parentNode.parentNode;
-          needChildrenNodes = needElement.childNodes;
-          needElement = needChildrenNodes[newIdx];
-          needChildrenNodes = needElement.childNodes
-          needElement = needChildrenNodes[needColumn];
-          needElement = O$.getFirstFocusableControl(needElement);
-          needElement.focus();
-          isNeedNode = false;
-        }
-      }
-    }
   },
 
   _scrollToCells:function (table, cells) {
@@ -1627,15 +1539,6 @@ O$.Table = {
         var selectionField = O$(selectionFieldId);
         O$.assert(selectionField, "Couldn't find selectionField by id: " + selectionFieldId);
         selectionField.value = value;
-
-
-      },
-
-      _setClearSelectionField:function (value) {
-        var clearSelectionFieldId = this.id + "::clear_selection";
-        var clearSselectionField = O$(clearSelectionFieldId);
-        O$.assert(clearSselectionField, "Couldn't find selectionField by id: " + clearSelectionFieldId);
-        clearSselectionField.value = value;
       },
 
       _setSelectedItems:function (items, forceUpdate) {
@@ -2085,7 +1988,6 @@ O$.Table = {
       }
     }
     table._setSelectionFieldValue("");
-    table._setClearSelectionField("false");
 
     if (selectionChangeHandler) {
       eval("table.onchange = function(event) {if (!event._of_event)return;" + selectionChangeHandler + "}");
@@ -2371,10 +2273,8 @@ O$.Table = {
           table._baseRowIndex = (newSelectedRowIndexes.indexOf(row._index) != -1) ? row._index : null;
           table._baseSelectedRowIndexes = newSelectedRowIndexes;
           table._rangeEndRowIndex = null;
-        } else {
-          table._setClearSelectionField("true");
+        } else
           table._setSelectedItems([row._index]);
-        }
       } else {
         // don't change hierarchical selection on row click
       }
@@ -2613,10 +2513,20 @@ O$.Table = {
         },
 
         onclick:function (e) {
-          if (this.isSelected())
-            table._selectAllItems();
-          else
-            table._unselectAllItems();
+          //Fix bug OF-229
+          e = e || window.event;
+          if (e.pageX == null && e.clientX != null) {
+            var html = document.documentElement;
+            var body = document.body;
+            e.pageX = e.clientX + (html && html.scrollLeft || body && body.scrollLeft || 0) - (html.clientLeft || 0);
+            e.pageY = e.clientY + (html && html.scrollTop || body && body.scrollTop || 0) - (html.clientTop || 0);
+          }
+          if ((e.pageX != 0) && (e.pageY != 0)) {
+            if (this.isSelected())
+              table._selectAllItems();
+            else
+              table._unselectAllItems();
+          }
           O$.stopEvent(e);
         }
 
@@ -2927,9 +2837,10 @@ O$.Table = {
   _initColumnResizing:function (tableId, retainTableWidth, minColWidth, resizeHandleWidth, columnParams, autoSaveState) {
     var thisRef = this;
     var args = arguments;
+    var table = O$(tableId)
+    var visibleParent = O$.isVisibleParentRecursive(table)
     O$.addLoadEvent(function () {
-      var table = O$(tableId);
-      if (!O$.isVisibleRecursive(table)) {
+      if (!O$.isVisible(visibleParent) && visibleParent != null) {
         setTimeout(function () {
           O$.Table._initColumnResizing.apply(thisRef, args);
           args = null;
@@ -3039,11 +2950,11 @@ O$.Table = {
         resizeHandle.style.position = "absolute";
         resizeHandle.style.border = "0px none transparent";
 
-        if (O$.isExplorer()) {
+        if (O$.isExplorer10AndOlder()) {
           // IE needs an explicit background because otherwise this absolute div will "leak" some events to the underlying
           // component (when a mouse is directly over any of table's gridline)
-          resizeHandle.style.background = "silver";
-          resizeHandle.style.filter = "alpha(opacity=0)";
+          resizeHandle.style.filter = "progid:DXImageTransform.Microsoft.Alpha(Opacity=30);";
+          resizeHandle.style.filter = resizeHandle.style.filter + "alpha(opacity=30);";
         }
 
         headerCell.appendChild(resizeHandle);
@@ -3063,6 +2974,7 @@ O$.Table = {
             if (!table._showingMenuForColumn)
               table._columns.forEach(function (c) {
                 var headerCell = c.header && c.header._cell;
+
                 if (headerCell && headerCell.setForceHover) headerCell.setForceHover(false);
               });
           },
@@ -3189,11 +3101,11 @@ O$.Table = {
                     "[" + colWidths.join(",") + "]";
             if (autoSaveState) {
               if (table._params.additionalParams.forceAjax)
-                O$.requestComponentPortions(table.id, ["columnResizingState"], null, function () {
+                O$.Ajax.requestComponentPortions(table.id, ["columnResizingState"], null, function () {
                   // no client-side updates are required -- the request was just for saving data
                 }, null, true, [table.id + "::columnsOrder", table.getColumnsOrder()])
               else
-                O$.requestComponentPortions(table.id, ["columnResizingState"], null, function () {
+                O$.Ajax.requestComponentPortions(table.id, ["columnResizingState"], null, function () {
                   // no client-side updates are required -- the request was just for saving data
                 }, null, true);
             }
@@ -3324,7 +3236,7 @@ O$.Table = {
         setTimeout(updateResizeHandlePositions, 10);
         if (table._params.scrolling && table._params.scrolling.autoSaveState) {
           O$.invokeFunctionAfterDelay(function () {
-            O$.requestComponentPortions(table.id, ["scrollingState"], null, function () {
+            O$.Ajax.requestComponentPortions(table.id, ["scrollingState"], null, function () {
               // no client-side updates are required -- the request was just for saving data
             }, null, true);
           }, table._params.scrolling.autoSaveStateDelay, table.id + "::scrollingStateSaving")
@@ -3440,6 +3352,7 @@ O$.Table = {
           parentColumn.push(sourceColumn._parentColumn);
         }
       }
+
       var headerCell = sourceColumn.header ? sourceColumn.header._cell : null;
       if (!headerCell) return;
       headerCell._clone = function () {
@@ -3484,36 +3397,34 @@ O$.Table = {
           if (dropTargets) return dropTargets;
           dropTargets = [];
           var column = headerCell._column;
-          if (table._rowGroupingBox && column._groupable) {
-            dropTargets = dropTargets.concat(table._rowGroupingBox._innerDropTargets(column.columnId));
-          }
-          dropTargets = dropTargets.concat(table._innerDropTargetsByColumnId(sourceColumn.columnId, function (newIndex) {
-            var columnIds = table.getColumnsOrder();
-            var sourceColumnId = sourceColumn.columnId;
-            var oldIndex = columnIds.indexOf(sourceColumnId);
-            var isGropingId = true;
-            /* debugger;*/
-            for (var i = 0; i < columnIds.length; i++) {
-              if (columnIds[i] == sourceColumnId) {
-                isGropingId = false;
-              }
-            }
-            if (isGropingId) {
+          if (table._rowGroupingBox && column._groupable)
+            dropTargets = dropTargets.concat(table._innerDropTargetsByColumnId(sourceColumn.columnId, function (newIndex) {
+              var columnIds = table.getColumnsOrder();
+              var sourceColumnId = sourceColumn.columnId;
+              var oldIndex = columnIds.indexOf(sourceColumnId);
+              var isGropingId = true;
+              /* debugger;*/
               for (var i = 0; i < columnIds.length; i++) {
-                var column = O$(columnIds[i]);
-                if (column._parentColumn != null) {
-
+                if (columnIds[i] == sourceColumnId) {
+                  isGropingId = false;
                 }
               }
-              table.setColumnsOrder(columnIds);
-            } else {
-              columnIds.splice(newIndex, 0, sourceColumnId);
-              columnIds.splice(oldIndex < newIndex ? oldIndex : oldIndex + 1, 1);
-            }
+              if (isGropingId) {
+                for (var i = 0; i < columnIds.length; i++) {
+                  var column = O$(columnIds[i]);
+                  if (column._parentColumn != null) {
 
-            table.setColumnsOrder(columnIds);
-          }));
-          return dropTargets;
+                  }
+                }
+                table.setColumnsOrder(columnIds);
+              } else {
+                columnIds.splice(newIndex, 0, sourceColumnId);
+                columnIds.splice(oldIndex < newIndex ? oldIndex : oldIndex + 1, 1);
+              }
+
+              table.setColumnsOrder(columnIds);
+            }));
+            return dropTargets;
         }
 
         O$.makeDraggable(headerCell, function (evt) {
@@ -3602,7 +3513,7 @@ O$.Table = {
         }
       });
     });
-//    debugger;
+
     parentColumn.forEach(function (sourceColumn) {
               if (!interGroupDraggingAllowed && sourceColumn.parentColumn) {
                 if (sourceColumn.parentColumn._columns.length == 1)
@@ -3709,7 +3620,7 @@ O$.Table = {
                               }
 
 
-                              columnIds.splice(oldIndex < newIndex ? oldIndex : oldIndex + gropingColumnIds.length, gropingColumnIds.length);
+                              columnIds.splice(oldIndex < newIndex ? oldIndex : oldIndex+gropingColumnIds.length , gropingColumnIds.length);
                             }
                             else {
                               columnIds.splice(newIndex, 0, sourceColumnId);
@@ -3812,10 +3723,7 @@ O$.Table = {
                 }
               });
             }
-    )
-    ;
-
-
+    ) ;
     table._columnsLogicalStructure = function () {
       var currentColumnsOrder = table.getColumnsOrder();
 
@@ -4085,13 +3993,13 @@ O$.Table = {
     table._setRowGroupingBox = function (rowGroupingBox) {
       table._rowGroupingBox = rowGroupingBox;
     };
-//todo: move it out of here
+    //todo: move it out of here
     table._getColumn = function (columnId) {
       return table._columns.filter(function (column) {
         return column.columnId == columnId
       })[0];
     };
-//todo: move it out of here
+    //todo: move it out of here
     table._getHeaderCell = function (columnId) {
       function retrieveAllCells() {
         var candidates = table._columns.slice(0);
@@ -4896,8 +4804,7 @@ O$.Table = {
   HEADER_CELL_Z_INDEX_COLUMN_MENU_BUTTON:1,
   HEADER_CELL_Z_INDEX_COLUMN_MENU_RESIZE_HANDLE:2
 
-}
-;
+};
 
 
 // -------------------------- COLUMN MENU SUPPORT
@@ -5007,6 +4914,12 @@ O$.ColumnMenu = {
       result.style.position = "absolute";
       result._tr.appendChild(columnMenuButton);
       O$.setOpacityLevel(result, 1 - menuInvokerAreaTransparency);
+
+      if(O$.isExplorer10AndOlder()){
+        result.style.filter = "alpha(opacity=30)";
+        result.style.zoom = 1;
+      }
+
       O$.extend(result, {
         showForCell:function (cell) {
           this.hide();

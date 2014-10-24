@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -135,7 +135,7 @@ public abstract class AbstractSwitcherRenderer extends RendererBase {
         writer.writeAttribute("class", Styles.getCSSClass(context, switcher,
                 switcher.getPreviousButtonStyle(), "o_timeSwitcher_previous_button",
                 switcher.getPreviousButtonClass()), null);
-        String previousButtonImageUrl = Resources.getURL(context, switcher.getPreviousButtonImageUrl(), null,
+        String previousButtonImageUrl = Resources.getURL(context, switcher.getPreviousButtonImageUrl(),
                 "timetable/previousButton.gif");
         writer.startElement("img", switcher);
         writer.writeAttribute("src", previousButtonImageUrl, null);
@@ -150,7 +150,7 @@ public abstract class AbstractSwitcherRenderer extends RendererBase {
         writer.writeAttribute("id", clientId + "::next_button", null);
         writer.writeAttribute("class", Styles.getCSSClass(context,
                 switcher, switcher.getNextButtonStyle(), "o_timeSwitcher_next_button", switcher.getNextButtonClass()), null);
-        String nextButtonImageUrl = Resources.getURL(context, switcher.getNextButtonImageUrl(), null,
+        String nextButtonImageUrl = Resources.getURL(context, switcher.getNextButtonImageUrl(),
                 "timetable/nextButton.gif");
         writer.startElement("img", switcher);
         writer.writeAttribute("src", nextButtonImageUrl, null);

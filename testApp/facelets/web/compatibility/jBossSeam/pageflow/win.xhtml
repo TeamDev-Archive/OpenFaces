@@ -4,10 +4,10 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:o="http://openfaces.org/"
       xmlns:s="http://jboss.com/products/seam/taglib">
-<head>
+<h:head>
     <title>You won!</title>
-  </head>
-  <body>
+  </h:head>
+  <h:body>
     <h1>You won!</h1>
     <f:view>
       Yes, the answer was <h:outputText value="#{numberGuess.currentGuess}" />.
@@ -15,5 +15,5 @@
       <h:outputText value="But you cheated, so it doesn't count!" rendered="#{numberGuess.cheat}"/>
       Would you like to <a href="numberGuess.jsf">play again</a>?
     </f:view>
-  </body>
+  </h:body>
   </html>

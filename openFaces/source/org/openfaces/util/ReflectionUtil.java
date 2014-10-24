@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -48,6 +48,10 @@ public class ReflectionUtil {
                                       Class[] methodParameterClasses,
                                       Object[] methodParameterObjects,
                                       Object invokeOnObject) {
+        if (methodParameterClasses == null)
+            methodParameterClasses = new Class[0];
+        if (methodParameterObjects == null)
+            methodParameterObjects = new Object[0];
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Object result = null;
         String className = clazz.getName();
@@ -159,7 +163,7 @@ public class ReflectionUtil {
 
     }
 
-    public final static boolean isNumberType(final Class<?> type) {
+    public static boolean isNumberType(final Class<?> type) {
         return type == Long.TYPE || type == Double.TYPE ||
                 type == Byte.TYPE || type == Short.TYPE ||
                 type == Integer.TYPE || type == Float.TYPE ||

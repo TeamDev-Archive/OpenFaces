@@ -3,19 +3,19 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:o="http://openfaces.org/"
-      xmlns:a4j="https://ajax4jsf.dev.java.net/ajax">
-<head>
+      xmlns:a4j="http://richfaces.org/a4j">
+<h:head>
   <title></title>
-</head>
+</h:head>
 
-<body>
+<h:body>
 <f:view>
   <h:form id="form1">
-    <a4j:commandButton value="render" action="#{QKS1731.makeRendered}" reRender="panelGrid"/>
-    <a4j:commandButton value="hide" action="#{QKS1731.hide}" reRender="panelGrid"/>
+    <a4j:commandButton value="render" action="#{QKS1731.makeRendered}" render="panelGrid"/>
+    <a4j:commandButton value="hide" action="#{QKS1731.hide}" render="panelGrid"/>
     <ui:include src="newitemmessagetable.xhtml"/>
   </h:form>
 </f:view>
 
-</body>
+</h:body>
 </html>

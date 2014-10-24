@@ -1,4 +1,4 @@
-<div xmlns:h="http://java.sun.com/jsf/html"
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
      xmlns:a4j="http://richfaces.org/a4j"
@@ -6,7 +6,7 @@
     <a href="richScrollableDataTable.jsf">Back to the main page</a>
     <br/>
     <h3>DropDownField in the scrollableDataTable</h3>
-<rich:scrollableDataTable value="#{RichTestBean.tableValue}"
+<rich:extendedDataTable value="#{RichTestBean.tableValue}"
                           var="item"
                           width="350px"
                           height="200px"
@@ -51,7 +51,7 @@
     </o:dropDownField>
   </rich:column>
   <f:facet name="footer">
-    <rich:datascroller/>
+    <rich:dataScroller/>
   </f:facet>
-</rich:scrollableDataTable>
+</rich:extendedDataTable>
 </div>

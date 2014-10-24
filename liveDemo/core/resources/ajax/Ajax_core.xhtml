@@ -18,6 +18,7 @@
 
   <table cellspacing="0" cellpadding="0">
     <tr>
+      <o:commandButton value="Click me" onclick="O$.ajax.request(this, null, {render: ':form:taskList', execute:'form:doneList', immediate:'true'})"/>
       <h:commandButton value="Ajax settings..." style="position: absolute; right: 20px; top: 27px;"
                        onclick="O$('form:ajaxSettingsWindow').show(); return false;"/>
       <td><h3>Task List</h3></td>
@@ -111,7 +112,7 @@
     </h:panelGroup>
   </div>
 
-  <o:ajax id="updateTasks" standalone="true" render="taskList doneList doneListCaption" immediate="true"/>
+  <o:ajax id="updateTasks" standalone="true" execute="taskList doneList" render="taskList doneList doneListCaption" immediate="true"/>
 
   <o:ajaxSettings>
     <f:facet name="progressMessage">
@@ -132,6 +133,10 @@
 
   <o:window id="ajaxSettingsWindow" width="600px" height="410px" left="140" top="65" resizable="false"
             caption="#{AjaxSettings.windowCaption}">
+    <o:captionArea>
+      <o:minimizeWindowButton/>
+      <o:closeWindowButton/>
+    </o:captionArea>
     <o:tabbedPane style="width: 100%; height: 325px" loadingMode="client">
       <o:subPanel caption="Progress Message">
         <verbatim>These are some of the options provided by the <a class="tagReference" target="_blank"

@@ -8,9 +8,7 @@
 
 <html>
 <head>
-  <title>ScrollPosition component test page</title>      .
-  <script src="../funcTestsUtil.js" type="text/javascript"></script>
-
+  <title>ScrollPosition component test page</title>
 </head>
 
 <body>

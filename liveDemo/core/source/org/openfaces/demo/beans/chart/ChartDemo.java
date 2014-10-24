@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -25,6 +25,7 @@ import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.util.Faces;
 
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import java.awt.*;
 import java.io.Externalizable;
 import java.io.IOException;
@@ -96,7 +97,7 @@ public class ChartDemo implements Serializable {
         this.cityTemperature = cityTemperature;
     }
 
-    public void generateNewData(ActionEvent event) {
+    public void generateNewData(AjaxBehaviorEvent event) {
         cityPrecipitation.makeData();
         averageTemp.makeData();
         monthPrecipitation.makeData();

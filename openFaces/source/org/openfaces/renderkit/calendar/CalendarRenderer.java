@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -84,6 +84,8 @@ public class CalendarRenderer extends RendererBase {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        Rendering.decodeBehaviors(context, component);
+        
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         Calendar calendar = ((Calendar) component);
         String newValue = params.get(component.getClientId(context) + VALUE_DATE_HOLDER_SUFFIX);
@@ -191,13 +193,13 @@ public class CalendarRenderer extends RendererBase {
         String clientId = component.getClientId(context);
         ScriptBuilder sb = new ScriptBuilder();
 
-        String onchange = calendar.getOnchange();
+        String onchange = Rendering.getChangeHandlerScript(calendar);
         if (onchange != null && onchange.length() > 0) {
             sb.append("O$('").append(clientId).append("').onchange = " +  // todo: refactor passing events into passing them as a single JSON param to the initialization function
                     "function(event) {").append(onchange).append("};\n");
         }
 
-        String onPeriodChange = calendar.getOnperiodchange();
+        String onPeriodChange = Rendering.getEventHandlerScript(calendar, "periodchange");
         if (onPeriodChange != null && onPeriodChange.length() > 0) {
             sb.append("O$('").append(clientId).append("').onperiodchange = " +
                     "function(event) {").append(onPeriodChange).append("};\n");
@@ -285,7 +287,6 @@ public class CalendarRenderer extends RendererBase {
         writer.startElement("table", calendar);
         writeHeaderStyleAndClassAttributes(context, calendar);
         writer.startElement("tr", calendar);
-        createSubComponents(calendar);
         renderMonthSelectorSection(context, calendar);
         renderYearSelectorSection(context, calendar);
         writer.endElement("tr");

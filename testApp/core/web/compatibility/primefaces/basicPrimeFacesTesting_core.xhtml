@@ -1,7 +1,7 @@
-<div xmlns:h="http://java.sun.com/jsf/html"
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
-     xmlns:p="http://primefaces.prime.com.tr/ui"
+     xmlns:p="http://primefaces.org/ui"
      xmlns:a4j="http://richfaces.org/a4j"
      xmlns:rich="http://richfaces.org/rich"
      xmlns:t="http://myfaces.apache.org/tomahawk"
@@ -18,33 +18,33 @@
   </o:foldingPanel>
 
 
-  <o:window id="win" caption="p:menuBar and p:calendar inside of o:window" style="z-index: 1">
+  <o:window id="win" caption="p:menuBar and p:calendar inside of o:window" style="z-index: 1" width="450px">
     <p:menubar>
       <p:submenu label="Barca" styleClass="barca">
-        <p:menuitem label="Home" url="http://www.fcbarcelona.com"></p:menuitem>
+        <p:menuitem value="Home" url="http://www.fcbarcelona.com"/>
       </p:submenu>
 
       <p:submenu label="File">
-        <p:submenu label="New" styleClass="new">
-          <p:menuitem label="Project" url="#" helpText="CTRL+N"/>
-          <p:menuitem label="Other" url="#" helpText="CTRL+O"/>
+        <p:submenu value="New" styleClass="new">
+          <p:menuitem value="Project" url="#" helpText="CTRL+N"/>
+          <p:menuitem value="Other" url="#" helpText="CTRL+O"/>
         </p:submenu>
-        <p:menuitem label="Open" url="#" styleClass="open"></p:menuitem>
-        <p:menuitem label="Quit" url="#"></p:menuitem>
+        <p:menuitem value="Open" url="#" styleClass="open"/>
+        <p:menuitem value="Quit" url="#"/>
       </p:submenu>
 
       <p:submenu label="Edit">
-        <p:menuitem label="Undo" url="#" styleClass="undo" helpText="CTRL+Z"></p:menuitem>
-        <p:menuitem label="Redo" url="#" styleClass="redo" helpText="CTRL+Y"></p:menuitem>
+        <p:menuitem value="Undo" url="#" styleClass="undo" helpText="CTRL+Z"/>
+        <p:menuitem value="Redo" url="#" styleClass="redo" helpText="CTRL+Y"/>
       </p:submenu>
 
       <p:submenu label="Help">
-        <p:menuitem label="Contents" url="#"></p:menuitem>
-        <p:submenu label="Search" styleClass="search">
-          <p:submenu label="Text">
-            <p:menuitem label="Workspace" url="#"/>
+        <p:menuitem value="Contents" url="#"/>
+        <p:submenu value="Search" styleClass="search">
+          <p:submenu value="Text">
+            <p:menuitem value="Workspace" url="#"/>
           </p:submenu>
-          <p:menuitem label="File" url="#"/>
+          <p:menuitem value="File" url="#"/>
         </p:submenu>
       </p:submenu>
 
@@ -63,10 +63,10 @@
                      pageSize="7"
                      bodyRowStyle="background: white" bodyOddRowStyle="background: #f0f0f8">
           <f:facet name="above">
-            <o:dataTablePaginator styleClass="defaultTableStyle"/>
+            <o:dataTablePaginator id="paginator1" styleClass="defaultTableStyle"/>
           </f:facet>
           <f:facet name="below">
-            <o:dataTablePaginator styleClass="defaultTableStyle"/>
+            <o:dataTablePaginator id="paginator2" styleClass="defaultTableStyle"/>
           </f:facet>
           <o:singleRowSelection/>
           <o:column sortingExpression="#{user.userName}">

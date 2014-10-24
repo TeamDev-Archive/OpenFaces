@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,14 +11,13 @@
  */
 package org.openfaces.util;
 
-import java.beans.FeatureDescriptor;
-import java.util.Iterator;
-
 import javax.el.ELContext;
 import javax.el.ELException;
 import javax.el.ELResolver;
 import javax.el.PropertyNotFoundException;
 import javax.el.PropertyNotWritableException;
+import java.beans.FeatureDescriptor;
+import java.util.Iterator;
 
 /**
  * @author Roman Porotnikov

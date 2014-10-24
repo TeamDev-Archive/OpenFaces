@@ -1,4 +1,4 @@
-<div xmlns:h="http://java.sun.com/jsf/html"
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
      xmlns:a4j="http://richfaces.org/a4j"
@@ -14,7 +14,7 @@
            legendVisible="true">
     <o:pieChartView colors="#5a87be, #94c237, #fff555, #da6a28"
                     labelsVisible="true">
-      <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
+      <a4j:ajax event="click" render="counter" action="#{A4jSupportBean.increase}"/>
     </o:pieChartView>
     <o:chartTitle text="Pie Chart"/>
   </o:chart>
@@ -25,7 +25,7 @@
            legendVisible="true">
     <o:lineChartView colors="#5a87be, #94c237, #fff555, #da6a28"
                      labelsVisible="true" onmouseout="alert('onmouseout!');">
-      <a4j:support event="onmouseover" reRender="counter" action="#{A4jSupportBean.increase}"/>
+      <a4j:ajax event="mouseover" render="counter" action="#{A4jSupportBean.increase}"/>
     </o:lineChartView>
     <o:chartTitle text="Line Chart"/>
   </o:chart>
@@ -36,7 +36,7 @@
            legendVisible="true">
     <o:barChartView colors="#5a87be, #94c237, #fff555, #da6a28"
                     labelsVisible="true" onmouseover="alert('onmouseover!');">
-      <a4j:support event="onmouseout" reRender="counter" action="#{A4jSupportBean.increase}"/>
+      <a4j:ajax event="mouseout" render="counter" action="#{A4jSupportBean.increase}"/>
     </o:barChartView>
     <o:chartTitle text="Bar Chart"/>
   </o:chart>

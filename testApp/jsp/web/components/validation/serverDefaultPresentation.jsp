@@ -9,7 +9,6 @@
 <html>
 <head>
   <title>Test server defult presentation</title>
-  <script src="../funcTestsUtil.js" type="text/javascript"></script>
   <script type="text/javascript">
     function fillInvalidData() {
       var formName = "testForm:";

@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -158,14 +158,15 @@ public class Chart extends OUIObjectIteratorBase implements StyledComponent, Nam
 
         if (view == null) {
             view = viewType.createChartView();
+            Components.addChild(this, view);
             children.add(view);
             return view;
         }
 
         if (!viewType.isViewOfThisType(view)) {
-            children.remove(view);
+            Components.removeChild(this, view);
             view = viewType.createChartView();
-            children.add(view);
+            Components.addChild(this, view);
         }
         return view;
     }
@@ -292,6 +293,7 @@ public class Chart extends OUIObjectIteratorBase implements StyledComponent, Nam
     }
 
     public void setObjectId(String objectId) {
+        super.setObjectId(objectId);
         if (objectId != null) {
             setEntityIndex(Integer.valueOf(objectId));
             setId(getId());

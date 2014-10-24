@@ -7,24 +7,12 @@
       <sourceFolder url="file://$MODULE_DIR$/source" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
-    <orderEntry type="jdk" jdkName="1.5" jdkType="JavaSDK" />
+    <orderEntry type="jdk" jdkName="1.6" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="servlet-api" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="jstl" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Facelets" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="portlet-api-lib" level="project" />
-    <orderEntry type="library" exported="" name="OpenFaces Dependencies" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="trinidad-stub" level="project" />
-    <orderEntry type="module-library" scope="PROVIDED">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/portals/exoportal-stub.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="library" scope="PROVIDED" name="adf-faces" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="OpenFaces Dependencies" level="project" />
+    <orderEntry type="library" exported="" name="JSF Implementation - Mojarra 2.0" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -37,34 +25,14 @@
     <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/mojarra/jsf-api-1.2_12-b01.jar!/" />
+          <root url="jar://$MODULE_DIR$/../lib/el/el-api-2.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="PROVIDED" name="RichFaces" level="project" />
     <orderEntry type="library" name="JEE" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Jsf-portlet bridge 1.2" level="project" />
-    <orderEntry type="module-library" scope="PROVIDED">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/myfaces/myfaces-impl-1.2.3.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/apache/commons-logging-1.1.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="library" name="jboss portlet brige" level="project" />
+    <orderEntry type="library" name="portlet-api-lib" level="project" />
   </component>
 </module>
 

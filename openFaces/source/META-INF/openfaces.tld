@@ -4,7 +4,7 @@
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
         version="2.1">
   <description>Tags for the OpenFaces library</description>
-  <tlib-version>__OpenFacesVersion__</tlib-version>
+  <tlib-version>3.0</tlib-version>
   <short-name>o</short-name>
   <uri>http://openfaces.org/</uri>
 
@@ -6118,19 +6118,6 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
       <description>Specifies how selection will work - in a way similar to selection in text documents ("document"), or
         in a way similar to spreadsheet applications ("rectangular").
       </description>
@@ -6395,19 +6382,6 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
       <description>Specifies how selection will work - in a way similar to selection in text documents ("document"), or
         in a way similar to spreadsheet applications ("rectangular"). That is, in the "document" mode, if the Shift key
         is held down, multiple rows will be selected, but in the "rectangular" mode, if Shift is held down, multiple
@@ -6508,7 +6482,7 @@
     </attribute>
     <attribute>
       <description>Id's of components, which will be rerendered after successful Ajax request.
-        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) list if id's.
       </description>
       <name>render</name>
       <required>false</required>
@@ -6539,7 +6513,7 @@
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
         depends on some other component on a page.
-        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
       </description>
       <name>execute</name>
       <required>false</required>
@@ -6655,19 +6629,6 @@
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-    <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
-      <!-- @el true -->
-    </attribute>
   </tag>
 
   <tag>
@@ -6753,7 +6714,7 @@
     </attribute>
     <attribute>
       <description>Id's of components, which will be rerendered after successful Ajax request.
-        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
       </description>
       <name>render</name>
       <required>false</required>
@@ -6784,7 +6745,7 @@
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
         depends on some other component on a page.
-        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
       </description>
       <name>execute</name>
       <required>false</required>
@@ -6899,19 +6860,6 @@
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
       <!-- @el true -->
     </attribute>
   </tag>
@@ -11063,7 +11011,7 @@ means that only root nodes and their immediate children are preloaded -->
     </attribute>
     <attribute>
       <description>Id's of components, which will be rerendered after successful Ajax request.
-        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
       </description>
       <name>render</name>
       <required>false</required>
@@ -11094,7 +11042,7 @@ means that only root nodes and their immediate children are preloaded -->
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
         depends on some other component on a page.
-        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
       </description>
       <name>execute</name>
       <required>false</required>
@@ -11210,19 +11158,6 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-    <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
-      <!-- @el true -->
-    </attribute>
   </tag>
 
   <tag>
@@ -11312,7 +11247,7 @@ means that only root nodes and their immediate children are preloaded -->
     </attribute>
     <attribute>
       <description>Id's of components, which will be rerendered after successful Ajax request.
-        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
       </description>
       <name>render</name>
       <required>false</required>
@@ -11343,7 +11278,7 @@ means that only root nodes and their immediate children are preloaded -->
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
         depends on some other component on a page.
-        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
       </description>
       <name>execute</name>
       <required>false</required>
@@ -11458,19 +11393,6 @@ means that only root nodes and their immediate children are preloaded -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
       <!-- @el true -->
     </attribute>
   </tag>
@@ -14903,7 +14825,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>Id's of components, which will be rerendered after successful Ajax request.
-        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
       </description>
       <name>render</name>
       <required>false</required>
@@ -14918,7 +14840,7 @@ entering a value and returns a list of suggestions from the server -->
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
         depends on some other component on a page.
-        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
       </description>
       <name>execute</name>
       <required>false</required>
@@ -15122,19 +15044,6 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
       <!-- @el true -->
     </attribute>
   </tag>
@@ -16391,6 +16300,20 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies whether this progress message should be shown for all Ajax requests or just for OpenFaces&apos;
+        ones.
+      </description>
+      <name>mode</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.ajax.ProgressMessageMode -->
+      <!-- @default "all" -->
+      <!-- @value "all" The progress message should be shown for all Ajax requests. -->
+      <!-- @value "openFaces" The progress message should be shown only for OpenFaces Ajax requests. -->
       <!-- @el true -->
     </attribute>
   </tag>
@@ -20926,7 +20849,6 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-
     <attribute>
       <description>Specifies the default style of the chart items shape outlines.</description>
       <name>defaultOutlineStyle</name>
@@ -24980,7 +24902,7 @@ and it is automatically triggered on any form submission. -->
     <attribute>
       <description>Id's of components, which will be rerendered after successful Ajax request.
         Evaluates to Iterable. If a literal is specified
-        can be a single id or a comma-separated list if id's.
+        can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
       </description>
       <name>render</name>
       <required>false</required>
@@ -24995,7 +24917,7 @@ and it is automatically triggered on any form submission. -->
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
         depends on some other component on a page.
-        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x)
         list if id's.
       </description>
       <name>execute</name>
@@ -25352,19 +25274,6 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-    <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
-      <!-- @el true -->
-    </attribute>
   </tag>
 
   <!-- CommandLink tag declaration -->
@@ -25455,7 +25364,7 @@ and it is automatically triggered on any form submission. -->
     <attribute>
       <description>Id's of components, which will be rerendered after successful Ajax request.
         Evaluates to Iterable. If a literal is specified
-        can be a single id or a comma-separated list if id's.
+        can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
       </description>
       <name>render</name>
       <required>false</required>
@@ -25470,7 +25379,7 @@ and it is automatically triggered on any form submission. -->
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
         depends on some other component on a page.
-        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x)
         list if id's.
       </description>
       <name>execute</name>
@@ -25874,19 +25783,6 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -27787,7 +27683,7 @@ and it is automatically triggered on any form submission. -->
 
     <attribute>
       <description>Id's of components, which will be rerendered after successful Ajax request.
-        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
       </description>
       <name>render</name>
       <required>false</required>
@@ -27802,7 +27698,7 @@ and it is automatically triggered on any form submission. -->
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
         depends on some other component on a page.
-        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
       </description>
       <name>execute</name>
       <required>false</required>
@@ -28178,19 +28074,6 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-    <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
-      <!-- @el true -->
-    </attribute>
   </tag>
 
   <tag>
@@ -28560,7 +28443,7 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>listener</name>
       <deferred-method>
-        <method-signature>void actionListener(javax.faces.event.ActionEvent)</method-signature>
+        <method-signature>void actionListener(javax.faces.event.AjaxBehaviorEvent)</method-signature>
       </deferred-method>
       <!-- @bindingType javax.el.MethodExpression -->
       <!-- @default null -->
@@ -28569,7 +28452,7 @@ and it is automatically triggered on any form submission. -->
     <attribute>
       <description>Id's of components, which will be rerendered after successful Ajax request.
         Evaluates to Iterable. If a literal is specified
-        can be a single id or a comma-separated list if id's.
+        can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
       </description>
       <name>render</name>
       <required>false</required>
@@ -28584,7 +28467,7 @@ and it is automatically triggered on any form submission. -->
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
         depends on some other component on a page.
-        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x)
         list if id's.
       </description>
       <name>execute</name>
@@ -28686,19 +28569,6 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
       <!-- @el true -->
     </attribute>
   </tag>
@@ -38471,7 +38341,7 @@ and it is automatically triggered on any form submission. -->
 
   </tag>
   <tag>
-    <description>An extended version of the standard &amp;lt;selectOneMenu&gt; component.</description>
+    <description>An extended version of the standard &amp;lt;selectOneMenu&gt; component. This component is under construction.</description>
     <name>selectOneMenu</name>
     <tag-class>org.openfaces.taglib.jsp.select.SelectOneMenuJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -39446,7 +39316,7 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <tag>
-    <description>Displays a time-table for one week.</description>
+    <description>Displays a time-table for one week. This component is under construction.</description>
     <name>weekTable</name>
     <tag-class>org.openfaces.taglib.jsp.timetable.WeekTableJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -40217,7 +40087,7 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <tag>
-    <description>Displays a time-table for one month.</description>
+    <description>Displays a time-table for one month. This component is under construction.</description>
     <name>monthTable</name>
     <tag-class>org.openfaces.taglib.jsp.timetable.MonthTableJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -41942,7 +41812,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>Id's of components, which will be rerendered after successful Ajax request.
-        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
       </description>
       <name>render</name>
       <required>false</required>
@@ -41957,7 +41827,7 @@ entering a value and returns a list of suggestions from the server -->
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
         depends on some other component on a page.
-        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+        Evaluates to Iterable. If a literal is specified can be a single id or a space-separated (comma-separated in OpenFaces 2.x) listif id's.
       </description>
       <name>execute</name>
       <required>false</required>
@@ -44351,19 +44221,6 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>Specifies whether the components listed in the &quot;render&quot; attribute undergo the &quot;execute&quot;
-        lifecycle (Restore View, Apply Request Values, Process Validations and Update Model Values) phases as if these
-        components are implicitly specified in the &quot;execute&quot; attribute as well.
-      </description>
-      <name>executeRenderedComponents</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
       <!-- @el true -->
     </attribute>
     <attribute>

@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.table;
 
+import org.openfaces.ajax.PartialViewContext;
 import org.openfaces.component.filter.Filter;
 import org.openfaces.component.table.impl.NodeComparator;
 import org.openfaces.component.table.impl.NodeInfo;
@@ -24,7 +25,10 @@ import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -312,8 +316,20 @@ public class TreeTable extends AbstractTable {
             expansionStateExpression.setValue(context.getELContext(), expansionState);
     }
 
+
+    private boolean encodingStarted;
+
+    private boolean isPreEncodingStage(FacesContext context) {
+        // This is to check whether this component is being used by some JSF visiting code (e.g. during building a view
+        // on the Render Response phase prior to actual rendering). It's important to know if this is the case because
+        // some component's fields that are initialized after encodeBegin is invoked are not available yet, and we might
+        // have to skip some functionality which is not actual on this stage yet to avoid unwanted exceptions.
+        return !encodingStarted && context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE;
+    }
+
     @Override
     public void encodeBegin(FacesContext context) throws IOException {
+        encodingStarted = true;
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
 
@@ -688,16 +704,28 @@ public class TreeTable extends AbstractTable {
     @Override
     public void setRowIndex(int rowIndex) {
         super.setRowIndex(rowIndex);
-        boolean rowAvailable = isRowAvailable();
-        Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
-        if (nodePathVar != null)
-            requestMap.put(nodePathVar, rowAvailable ? getNodePath() : null);
-        if (nodeLevelVar != null)
-            requestMap.put(nodeLevelVar, rowAvailable ? getNodeLevel() : null);
-        if (nodeHasChildrenVar != null)
-            requestMap.put(nodeHasChildrenVar, rowAvailable ? getNodeHasChildren() : null);
+        boolean rowAvailable = rowIndex != -1 && isRowAvailable();
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        boolean preEncodingStage = isPreEncodingStage(context);
+        // JSF 2.1.8 visits the tree during build view on the Render Response phase, which results in setRowIndex
+        // invocations, but nodes have not been initialized yet, so we have to skip variable declaration here (it's not
+        // needed during building a view anyway)
+        if (!preEncodingStage) {
+            if (nodePathVar != null)
+                requestMap.put(nodePathVar, rowAvailable ? getNodePath() : null);
+            if (nodeLevelVar != null)
+                requestMap.put(nodeLevelVar, rowAvailable ? getNodeLevel() : null);
+            if (nodeHasChildrenVar != null)
+                requestMap.put(nodeHasChildrenVar, rowAvailable ? getNodeHasChildren() : null);
+        }
     }
 
+
+    @Override
+    public boolean visitTree(VisitContext context, VisitCallback callback) {
+        return super.visitTree(context, callback);
+    }
 
     public Object getNodeKey() {
         if (nodeInfoForRows == null)
@@ -933,7 +961,7 @@ public class TreeTable extends AbstractTable {
 
     private boolean isTableRerenderingNeeded(FacesContext context) {
         String render = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().
-                get(AjaxUtil.PARAM_RENDER);
+                get(PartialViewContext.PARTIAL_RENDER_PARAM_NAME);
         return render != null ? render.contains(getClientId(context)) : false;
     }
 

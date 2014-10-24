@@ -1,4 +1,4 @@
-<div xmlns:h="http://java.sun.com/jsf/html"
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
      xmlns:a4j="http://richfaces.org/a4j"
@@ -87,7 +87,7 @@
     </o:dataTable>
   </td>
   <td class="cells">
-    <a4j:commandButton id="refresher" value="Refresh" reRender="dataTableID"/>
+    <a4j:commandButton id="refresher" value="Refresh" render="dataTableID"/>
   </td>
 </tr>
 <tr>
@@ -246,7 +246,7 @@
       </o:dataTable>
     </td>
     <td class="cells">
-      <a4j:commandButton id="refresher_a4j" value="Refresh" reRender="dataTable_a4j_ID"/>
+      <a4j:commandButton id="refresher_a4j" value="Refresh" render="dataTable_a4j_ID"/>
     </td>
   </tr>
 </table>
@@ -254,7 +254,7 @@
 <table>
   <tr>
     <td class="cells">
-      <rich:scrollableDataTable frozenColCount="1" value="#{RichTestBean.tableValue}"
+      <rich:extendedDataTable frozenColCount="1" value="#{RichTestBean.tableValue}"
                                 var="item"
                                 rows="40"
                                 id="richDataTableTest">
@@ -271,11 +271,11 @@
           <f:facet name="header"><h:outputText value="Column 3"/></f:facet>
           <h:outputText value="#{item.intField1}"/>
         </rich:column>
-      </rich:scrollableDataTable>
+      </rich:extendedDataTable>
     </td>
     <td class="cells">
       <a4j:commandButton id="refresher_a4j2" value="Refresh" style="font-weight: bold; text-decoration: underline;"
-                         reRender="richDataTableTest"/>
+                         render="richDataTableTest"/>
 
     </td>
   </tr>
@@ -358,7 +358,7 @@
     </td>
     <td class="cells">
       <a4j:commandButton id="refresher_a4j3" value="Refresh" style="font-weight: bold; text-decoration: underline;"
-                         reRender="richDataTableTest2"/>
+                         render="richDataTableTest2"/>
 
     </td>
   </tr>

@@ -10,7 +10,7 @@
 <head>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
   <title>DateChooser client-side events</title>
-
+  <script src="../funcTestsUtil.js" type="text/javascript"></script>
 </head>
 
 <body>

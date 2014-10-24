@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,8 +11,6 @@
  */
 
 package org.openfaces.testapp.richfaces;
-
-import org.richfaces.event.DropEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,10 +40,10 @@ public class DndBean {
         this.frameworks = frameworks;
     }
 
-    public void processDrop(DropEvent arg0) {
-        frameworks.remove(arg0.getDragValue());
-        containerPHP.add((Framework) arg0.getDragValue());
-    }
+//    public void processDrop(DropEvent arg0) {
+//        frameworks.remove(arg0.getDragValue());
+//        containerPHP.add((Framework) arg0.getDragValue());
+//    }
 
     public List<Framework> getContainerPHP() {
         return containerPHP;

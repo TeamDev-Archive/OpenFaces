@@ -9,7 +9,7 @@
       xmlns:rich="http://richfaces.org/rich"
       xmlns:t="http://myfaces.apache.org/tomahawk"
         >
-<head>
+<h:head>
   <title>Table Demo</title>
 
   <style type="text/css">
@@ -50,9 +50,9 @@
       O$.ajax.request(this, event, {render: 'form1:checkedUsers', execute: 'form1:checkBoxColumnTable'});
     }
   </script>
-</head>
+</h:head>
 
-<body onload="showCurrentIndex();" onclick="O$('form1:selectColumnsPopup').hide();">
+<h:body onload="showCurrentIndex();" onclick="O$('form1:selectColumnsPopup').hide();">
 <h2 style="background: #e0e0e0; padding-bottom: 5px; border-bottom: 1px solid black;">Table Component Demo</h2>
 <f:view>
   <h:form id="form1">
@@ -60,5 +60,5 @@
   </h:form>
 </f:view>
 
-</body>
+</h:body>
 </html>

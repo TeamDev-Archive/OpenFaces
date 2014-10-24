@@ -10,7 +10,6 @@
 <head>
   <title>InputText Base Functionality</title>
   <script src="../funcTestsUtil.js" type="text/javascript"></script>
-
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 </head>
 

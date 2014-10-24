@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,9 +11,11 @@
  */
 package org.openfaces.component.chart;
 
+import org.openfaces.component.command.PopupMenu;
+
 import javax.faces.context.FacesContext;
 
-public class ChartMenu extends org.openfaces.component.command.PopupMenu {
+public class ChartMenu extends PopupMenu {
     public static final String COMPONENT_TYPE = "org.openfaces.ChartMenu";
     public static final String COMPONENT_FAMILY = "org.openfaces.ChartMenu";
 

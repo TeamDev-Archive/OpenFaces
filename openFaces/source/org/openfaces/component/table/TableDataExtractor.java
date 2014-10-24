@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -17,6 +17,7 @@ import org.openfaces.component.table.export.CellDataExtractor;
 import org.openfaces.component.table.export.ComponentDataExtractor;
 import org.openfaces.component.table.export.SelectValueExtractor;
 import org.openfaces.component.table.export.UICommandDataExtractor;
+import org.openfaces.component.table.export.UIInstructionsDataExtractor;
 import org.openfaces.component.table.export.ValueHolderDataExtractor;
 
 import javax.faces.context.FacesContext;
@@ -38,6 +39,7 @@ public class TableDataExtractor {
         defaultComponentExtractors.add(new UICommandDataExtractor());
         defaultComponentExtractors.add(new SelectValueExtractor());
         defaultComponentExtractors.add(new ValueHolderDataExtractor());
+        defaultComponentExtractors.add(new UIInstructionsDataExtractor());
     }
 
     private List<ComponentDataExtractor> componentExtractors = new LinkedList<ComponentDataExtractor>();

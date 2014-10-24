@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,6 +11,7 @@
  */
 package org.openfaces.util;
 
+import org.openfaces.application.OpenFacesApplication;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 
@@ -32,8 +33,6 @@ import java.util.SortedSet;
  * @author Dmitry Pikhulya
  */
 public class Styles {
-    public static final String DEFAULT_CSS_REQUESTED = Styles.class.getName() + ".defaultCssRequested";
-
     private static final String GENERATED_CLASS_NAME_PREFIX = "o_class_";
     private static final String REGISTERED_STYLE_PREFIX = Styles.class.getName() + ".registeredStyle:";
     private static final String REGISTERED_STYLE_CLASSES = Styles.class.getName() + ".registeredStyleClasses";
@@ -305,7 +304,6 @@ public class Styles {
      */
     public static void renderStyleClasses(FacesContext context, UIComponent component,
                                           boolean forcedStyleAsScript, boolean forceStyleAsOnloadScript) throws IOException {
-        requestDefaultCss(context);
         List<String> cssClasses = getAllStyleClassesForComponent(context, component);
         if (cssClasses != null && cssClasses.size() > 0) {
             String stylesId = component.getClientId(context) + STYLES_ID_SUFFIX;
@@ -313,13 +311,10 @@ public class Styles {
             int suffix = 1;
             while (elementsIds.contains(stylesId)) {
                 stylesId = component.getClientId(context) + STYLES_ID_SUFFIX + suffix++;
-//        logWarning(context, "Style elements with id \"" + stylesId + "\" already rendered. Component: " + component);
-
-                // warning was removed because there are cases when renderStyleClasses should be invoked several times per component - see AbstractTableRenderer as an example
             }
             elementsIds.add(stylesId);
             if (Environment.isExplorer() || Environment.isMozillaXhtmlPlusXmlContentType(context)
-                    || forcedStyleAsScript
+                    || forcedStyleAsScript || OpenFacesApplication.isConstructingView(context)
                     || isForceStylesAsScriptElements()) {
                 // Case for fixing JSFC-2341. Style tags added to DOM using JavaScript are ignored by Mozilla with
                 // "application/xhtml+xml" content-type. So to fix this, the styles are added using stylesheet API.
@@ -346,10 +341,11 @@ public class Styles {
      */
     public static void writeCssClassesAsScriptElement(FacesContext context, UIComponent component, List<String> cssRules, boolean asOnloadScript) throws IOException {
         ScriptBuilder styleRegistrationScript = new ScriptBuilder().functionCall("O$.addUnloadableCssRules", component, cssRules).semicolon();
-        if (asOnloadScript)
+        if (asOnloadScript || OpenFacesApplication.isConstructingView(context)) {
             Rendering.appendOnLoadScript(context, styleRegistrationScript);
-        else
+        } else {
             Rendering.renderInitScript(context, styleRegistrationScript, Resources.utilJsURL(context));
+        }
     }
 
     /**
@@ -437,15 +433,6 @@ public class Styles {
             }
         }
         return newClassKeys.iterator();
-    }
-
-    /**
-     * Add default css to request
-     *
-     * @param context {@link FacesContext} for the current request
-     */
-    public static void requestDefaultCss(FacesContext context) {
-        context.getExternalContext().getRequestMap().put(DEFAULT_CSS_REQUESTED, Boolean.TRUE);
     }
 
     /**

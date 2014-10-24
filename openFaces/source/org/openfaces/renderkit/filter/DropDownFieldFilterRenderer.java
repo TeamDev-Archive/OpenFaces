@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -20,7 +20,6 @@ import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
 
-import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
@@ -126,9 +125,6 @@ public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
         allRecordsItem.getChildren().add(outputText);
         itemList.add(0, allRecordsItem);
         dropDownItems.setValue(itemList);
-        List<UIComponent> children = field.getChildren();
-        children.clear();
-        children.add(dropDownItems);
     }
 
     protected String[] getCopiedFilterAttributes() {

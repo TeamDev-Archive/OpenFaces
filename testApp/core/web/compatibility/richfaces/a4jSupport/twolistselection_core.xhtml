@@ -1,4 +1,4 @@
-<div xmlns:h="http://java.sun.com/jsf/html"
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
      xmlns:a4j="http://richfaces.org/a4j"
@@ -16,8 +16,8 @@
                       leftListboxHeader="Available items"
                       rightListboxHeader="Selected items">
     <f:selectItems value="#{RichTestBean.items}"/>
-    <a4j:support event="onadd" reRender="counter" action="#{A4jSupportBean.increase}"/>
-    <a4j:support event="onremove" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    <a4j:ajax event="add" render="counter" action="#{A4jSupportBean.increase}"/>
+    <a4j:ajax event="remove" render="counter" action="#{A4jSupportBean.increase}"/>
   </o:twoListSelection>
 
 

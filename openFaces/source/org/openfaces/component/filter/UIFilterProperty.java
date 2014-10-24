@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -51,6 +51,20 @@ public class UIFilterProperty extends OUIComponentBase implements ValueHolder, S
     private boolean caseSensitive;
 
     public UIFilterProperty() {
+    }
+
+    public UIFilterProperty(FilterProperty property){
+        this.name = property.getName();
+        this.value = property.getTitle();
+        this.type = property.getType();
+        this.dataProvider = property.getDataProvider();
+        this.converter = property.getConverter();
+        this.maxValue = property.getMaxValue();
+        this.minValue = property.getMinValue();
+        this.step = property.getStep();
+        this.pattern = property.getPattern();
+        this.timeZone = property.getTimeZone();
+        this.caseSensitive = property.isCaseSensitive();
     }
 
     public String getFamily() {

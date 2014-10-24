@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -47,6 +47,8 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        Rendering.decodeBehaviors(context, component);
+        
         Map requestMap = context.getExternalContext().getRequestParameterMap();
         OUIInputText inputText = (OUIInputText) component;
         String clientId = inputText.getClientId(context);
@@ -86,7 +88,7 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
         writeAttribute(writer, "title", inputText.getTitle());
         if (inputText.isDisabled())
             writeAttribute(writer, "disabled", "disabled");
-        writeAttribute(writer, "onchange", inputText.getOnchange());
+        writeAttribute(writer, "onchange", Rendering.getChangeHandlerScript(inputText));
         writeAttribute(writer, "accesskey", inputText.getAccesskey());
         writeAttribute(writer, "tabindex", inputText.getTabindex());
         Rendering.writeStandardEvents(writer, inputText);

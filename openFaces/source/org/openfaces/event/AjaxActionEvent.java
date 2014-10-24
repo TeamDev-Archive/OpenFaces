@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -12,16 +12,17 @@
 package org.openfaces.event;
 
 import javax.faces.component.UIComponent;
-import javax.faces.event.ActionEvent;
+import javax.faces.component.behavior.Behavior;
+import javax.faces.event.AjaxBehaviorEvent;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class AjaxActionEvent extends ActionEvent {
+public class AjaxActionEvent extends AjaxBehaviorEvent {
     private Object ajaxResult;
 
-    public AjaxActionEvent(UIComponent component) {
-        super(component);
+    public AjaxActionEvent(UIComponent component, Behavior behavior) {
+        super(component, behavior);
     }
 
     /**

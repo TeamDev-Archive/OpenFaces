@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -14,6 +14,7 @@ package org.openfaces.renderkit;
 import org.openfaces.component.OUICommand;
 import org.openfaces.component.ajax.AjaxInitializer;
 import org.openfaces.util.FunctionCallScript;
+import org.openfaces.util.RawScript;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;

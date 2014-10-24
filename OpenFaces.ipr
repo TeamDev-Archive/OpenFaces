@@ -31,7 +31,10 @@
             <element id="module-output" name="LiveDemoFacelets" />
           </element>
           <element id="directory" name="lib">
-            <element id="library" level="project" name="Facelets (without el-api.jar -- for Tomcat 6.0)" />
+            <element id="library" level="project" name="JSF Implementation - Mojarra 2.0" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/apache/commons-digester-1.8.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/apache/commons-logging-1.1.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/apache/commons-beanutils-1.7.0.jar" />
           </element>
         </element>
         <element id="artifact" artifact-name="LiveDemoCore:LiveDemoCore exploded" />
@@ -66,7 +69,7 @@
             </element>
             <element id="library" level="project" name="OpenFaces Dependencies" />
             <element id="library" level="project" name="commons-lang" />
-            <element id="library" level="project" name="JSF Implementation - Mojarra 1.2" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/apache/commons-logging-1.1.1.jar" />
           </element>
         </element>
       </root>
@@ -79,6 +82,9 @@
           <element id="directory" name="classes">
             <element id="module-output" name="TestAppCore" />
             <element id="module-output" name="TestAppJsp" />
+          </element>
+          <element id="directory" name="lib">
+            <element id="library" level="project" name="JSF Implementation - Mojarra 2.0" />
           </element>
         </element>
         <element id="artifact" artifact-name="TestAppCore:TestAppCore exploded" />
@@ -136,7 +142,7 @@
             <element id="module-output" name="TestAppFacelets" />
           </element>
           <element id="directory" name="lib">
-            <element id="library" level="project" name="Facelets (without el-api.jar -- for Tomcat 6.0)" />
+            <element id="library" level="project" name="JSF Implementation - Mojarra 2.0" />
           </element>
         </element>
         <element id="artifact" artifact-name="TestAppCore:TestAppCore exploded" />
@@ -150,6 +156,12 @@
           <element id="directory" name="classes">
             <element id="module-output" name="LiveDemoCore" />
             <element id="module-output" name="LiveDemoJsp" />
+          </element>
+          <element id="directory" name="lib">
+            <element id="library" level="project" name="JSF Implementation - Mojarra 2.0" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/apache/commons-digester-1.8.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/apache/commons-logging-1.1.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/apache/commons-beanutils-1.7.0.jar" />
           </element>
         </element>
         <element id="artifact" artifact-name="LiveDemoCore:LiveDemoCore exploded" />
@@ -198,24 +210,46 @@
           <element id="directory" name="lib">
             <element id="library" level="project" name="OpenFaces Dependencies" />
             <element id="library" level="project" name="RichFaces" />
-            <element id="library" level="project" name="tomahawk12-1.1.8" />
+            <element id="library" level="project" name="Tomahawk" />
             <element id="archive" name="openfaces.jar">
               <element id="module-output" name="OpenFaces" />
             </element>
             <element id="library" level="project" name="hibernate" />
-            <element id="library" level="project" name="JSF Implementation - Mojarra 1.2" />
             <element id="library" level="project" name="PrimeFaces" />
           </element>
         </element>
       </root>
     </artifact>
-  </component>
-  <component name="ClearCaseSharedConfig">
-    <option name="myUseUcmModel" value="true" />
-  </component>
-  <component name="CodeStyleProjectProfileManger">
-    <option name="PROJECT_PROFILE" />
-    <option name="USE_PROJECT_LEVEL_SETTINGS" value="false" />
+    <artifact type="exploded-war" name="LiveDemoSpringWebFlow:war exploded">
+      <output-path>$PROJECT_DIR$/out/artifacts/LiveDemoSpringWebFlow_war_exploded</output-path>
+      <root id="root">
+        <element id="directory" name="WEB-INF">
+          <element id="directory" name="classes">
+            <element id="module-output" name="LiveDemoSpringWebFlow" />
+            <element id="module-output" name="OpenFaces" />
+          </element>
+          <element id="directory" name="lib">
+            <element id="library" level="project" name="spring" />
+            <element id="library" level="project" name="JSF Implementation - Mojarra 2.0" />
+            <element id="library" level="project" name="el" />
+            <element id="library" level="project" name="commons-lang" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/el/el-api-2.2.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/apache/commons-beanutils-1.8.3.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/apache/commons-digester-1.8.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/apache/commons-logging-1.1.1.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/apache/commons-validator-1.3.1.jar" />
+            <element id="library" level="application" name="Tomcat 6" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/log4j-1.2.14.jar" />
+            <element id="library" level="project" name="servlet-api" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/jsp-api-2.1.jar" />
+            <element id="library" level="project" name="JEE" />
+            <element id="library" level="project" name="portlet-api-lib" />
+            <element id="library" level="project" name="OpenFaces Dependencies" />
+          </element>
+        </element>
+        <element id="javaee-facet-resources" facet="LiveDemoSpringWebFlow/web/LiveDemoSpringWebFlow" />
+      </root>
+    </artifact>
   </component>
   <component name="CodeStyleSettingsManager">
     <option name="PER_PROJECT_SETTINGS">
@@ -386,11 +420,18 @@
       <profile default="true" name="Default" enabled="false">
         <processorPath useClasspath="true" />
       </profile>
+      <profile default="false" name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="LiveDemoSWF" />
+      </profile>
     </annotationProcessing>
   </component>
   <component name="CopyrightManager" default="OpenFaces">
     <copyright>
-      <option name="notice" value="OpenFaces - JSF Component Library 2.0&#10;Copyright (C) 2007-&amp;#36;today.year, TeamDev Ltd.&#10;licensing@openfaces.org&#10;Unless agreed in writing the contents of this file are subject to &#10;the GNU Lesser General Public License Version 2.1 (the &quot;LGPL&quot; License).&#10;This library is distributed in the hope that it will be useful, but &#10;WITHOUT ANY WARRANTY; without even the implied warranty of &#10;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. &#10;Please visit http://openfaces.org/licensing/ for more details." />
+      <option name="notice" value="OpenFaces - JSF Component Library 3.0&#10;Copyright (C) 2007-&amp;#36;today.year, TeamDev Ltd.&#10;licensing@openfaces.org&#10;Unless agreed in writing the contents of this file are subject to &#10;the GNU Lesser General Public License Version 2.1 (the &quot;LGPL&quot; License).&#10;This library is distributed in the hope that it will be useful, but&#10;WITHOUT ANY WARRANTY; without even the implied warranty of &#10;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. &#10;Please visit http://openfaces.org/licensing/ for more details." />
       <option name="keyword" value="Copyright" />
       <option name="allowReplaceKeyword" value="OpenFaces" />
       <option name="myName" value="OpenFaces" />
@@ -415,31 +456,12 @@
       <option name="fileTypeOverride" value="1" />
     </LanguageOptions>
   </component>
-  <component name="DependenciesAnalyzeManager">
-    <option name="myForwardDirection" value="false" />
-  </component>
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
-  </component>
-  <component name="EclipseCompilerSettings">
-    <option name="GENERATE_NO_WARNINGS" value="true" />
-    <option name="DEPRECATION" value="false" />
-  </component>
-  <component name="EclipseEmbeddedCompilerSettings">
-    <option name="DEBUGGING_INFO" value="true" />
-    <option name="GENERATE_NO_WARNINGS" value="true" />
-    <option name="DEPRECATION" value="false" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
-    <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" defaultCharsetForPropertiesFiles="UTF-8" />
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
-  </component>
-  <component name="ExportToHTMLSettings">
-    <option name="PRINT_LINE_NUMBERS" value="false" />
-    <option name="OPEN_IN_BROWSER" value="false" />
-    <option name="OUTPUT_DIRECTORY" value="" />
   </component>
   <component name="FacetAutodetectingManager">
     <autodetection-disabled>
@@ -455,11 +477,6 @@
         <modules>
           <module name="Root" />
           <module name="TestAppCore" />
-          <module name="TestAppFacelets">
-            <files>
-              <file url="file://$PROJECT_DIR$/TestApp/TestAppFacelets/target/classes/META-INF/persistence.xml" />
-            </files>
-          </module>
           <module name="TestAppJsp" />
         </modules>
       </facet-type>
@@ -519,7 +536,6 @@
           <module name="TestAppFacelets" />
           <module name="TestAppJsp">
             <files>
-              <file url="file://$PROJECT_DIR$/TestApp/TestAppJsp/target/resources/WEB-INF/web.xml" />
               <file url="file://$PROJECT_DIR$/testApp/jsp/web/WEB-INF/web.xml" />
             </files>
           </module>
@@ -781,10 +797,10 @@
         <inspection_tool class="UnusedLibrary" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="UtilityClassWithPublicConstructor" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="UtilityClassWithoutPrivateConstructor" enabled="true" level="WARNING" enabled_by_default="true">
-          <option name="ignoreClassesWithOnlyMain" value="false" />
           <option name="ignorableAnnotations">
             <value />
           </option>
+          <option name="ignoreClassesWithOnlyMain" value="false" />
         </inspection_tool>
         <inspection_tool class="ZeroLengthArrayInitialization" enabled="true" level="WARNING" enabled_by_default="true" />
       </profile>
@@ -821,11 +837,12 @@
   <component name="JsfProjectComponent">
     <option name="faceletsSupport" value="ENABLED" />
   </component>
-  <component name="LogConsolePreferences">
-    <option name="FILTER_ERRORS" value="false" />
-    <option name="FILTER_WARNINGS" value="false" />
-    <option name="FILTER_INFO" value="false" />
-    <option name="CUSTOM_FILTER" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/liveDemo/LiveDemoSWF/pom.xml" />
+      </list>
+    </option>
   </component>
   <component name="Palette2">
     <group name="Swing">
@@ -1001,9 +1018,6 @@
     </option>
     <option name="USE_PER_PROJECT_SETTINGS" value="true" />
   </component>
-  <component name="ProjectDetails">
-    <option name="projectName" value="OpenFaces" />
-  </component>
   <component name="ProjectDictionaryState">
     <dictionary name="Dallas">
       <words>
@@ -1015,6 +1029,8 @@
         <w>attr</w>
         <w>attribute's</w>
         <w>autocomplete</w>
+        <w>backbase</w>
+        <w>beanutils</w>
         <w>borderlayoutpanel</w>
         <w>brvbar</w>
         <w>cedil</w>
@@ -1028,6 +1044,7 @@
         <w>commandlink</w>
         <w>compositefilter</w>
         <w>coords</w>
+        <w>cssparser</w>
         <w>curren</w>
         <w>dashized</w>
         <w>datas</w>
@@ -1037,10 +1054,13 @@
         <w>daytable</w>
         <w>dblclick</w>
         <w>decodable</w>
+        <w>digester</w>
         <w>dont</w>
         <w>dropdown</w>
         <w>dropdownfield</w>
         <w>dynamicimage</w>
+        <w>facelet</w>
+        <w>fileupload</w>
         <w>firefox</w>
         <w>foldingpanel</w>
         <w>func</w>
@@ -1059,7 +1079,13 @@
         <w>instanceof</w>
         <w>invokation</w>
         <w>iterable</w>
+        <w>javaee</w>
         <w>javascript</w>
+        <w>javax</w>
+        <w>jcommon</w>
+        <w>jdom</w>
+        <w>jfreechart</w>
+        <w>jstl</w>
         <w>keyup</w>
         <w>laquo</w>
         <w>layeredpane</w>
@@ -1072,6 +1098,7 @@
         <w>macr</w>
         <w>maxlength</w>
         <w>middot</w>
+        <w>mojarra</w>
         <w>monospace</w>
         <w>mouseover</w>
         <w>mozilla</w>
@@ -1135,6 +1162,7 @@
         <w>programmatically</w>
         <w>raquo</w>
         <w>renderers</w>
+        <w>replacer</w>
         <w>rerendered</w>
         <w>resizable</w>
         <w>richfaces</w>
@@ -1172,13 +1200,11 @@
         <w>vert</w>
         <w>viewchange</w>
         <w>viewtypechange</w>
+        <w>webapp</w>
         <w>wikipedia</w>
         <w>xhtml</w>
       </words>
     </dictionary>
-  </component>
-  <component name="ProjectKey">
-    <option name="state" value="http://svn-new/TeamDev/OpenFaces/trunk/OpenFaces.ipr" />
   </component>
   <component name="ProjectModuleManager">
     <modules>
@@ -1186,6 +1212,7 @@
       <module fileurl="file://$PROJECT_DIR$/liveDemo/core/LiveDemoCore.iml" filepath="$PROJECT_DIR$/liveDemo/core/LiveDemoCore.iml" group="LiveDemo" />
       <module fileurl="file://$PROJECT_DIR$/liveDemo/facelets/LiveDemoFacelets.iml" filepath="$PROJECT_DIR$/liveDemo/facelets/LiveDemoFacelets.iml" group="LiveDemo" />
       <module fileurl="file://$PROJECT_DIR$/liveDemo/jsp/LiveDemoJsp.iml" filepath="$PROJECT_DIR$/liveDemo/jsp/LiveDemoJsp.iml" group="LiveDemo" />
+      <module fileurl="file://$PROJECT_DIR$/liveDemo/swf/LiveDemoSpringWebFlow.iml" filepath="$PROJECT_DIR$/liveDemo/swf/LiveDemoSpringWebFlow.iml" group="LiveDemo" />
       <module fileurl="file://$PROJECT_DIR$/openFaces/OpenFaces.iml" filepath="$PROJECT_DIR$/openFaces/OpenFaces.iml" />
       <module fileurl="file://$PROJECT_DIR$/openFacesInspectors/OpenFacesInspectors.iml" filepath="$PROJECT_DIR$/openFacesInspectors/OpenFacesInspectors.iml" />
       <module fileurl="file://$PROJECT_DIR$/portlets/common/PortletsCommon.iml" filepath="$PROJECT_DIR$/portlets/common/PortletsCommon.iml" group="Portlets" />
@@ -1202,73 +1229,12 @@
   <component name="ProjectResources">
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.5" project-jdk-type="JavaSDK" />
-  <component name="ResourceManagerContainer">
-    <option name="myResourceBundles">
-      <value>
-        <list size="0" />
-      </value>
-    </option>
-  </component>
-  <component name="Scrappy">
-    <scrapTab name="Scrap" />
-    <imports />
-  </component>
-  <component name="SvnBranchConfigurationManager">
-    <option name="myConfigurationMap">
-      <map>
-        <entry key="$PROJECT_DIR$">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchMap">
-                <map>
-                  <entry key="http://svn-new.teamdev.local/TeamDev/QuipuKit/branches">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                </map>
-              </option>
-              <option name="branchUrls">
-                <list>
-                  <option value="http://svn-new.teamdev.local/TeamDev/QuipuKit/branches" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="http://svn-new.teamdev.local/TeamDev/QuipuKit/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="myVersion" value="124" />
-    <option name="mySupportsUserInfoFilter" value="true" />
-  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK" />
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
-  <component name="com.intellij.jsf.UserDefinedFacesConfigs">
-    <option name="USER_DEFINED_CONFIGS">
-      <value>
-        <list size="0" />
-      </value>
-    </option>
-  </component>
-  <component name="jetbrains.fabrique.ide.findUsages.FindUsagesManager">
-    <setting name="OPEN_NEW_TAB" value="false" />
-  </component>
-  <component name="jetbrains.fabrique.ide.findUsages.FindUsagesManagerImpl">
-    <setting name="OPEN_NEW_TAB" value="false" />
-  </component>
   <component name="libraryTable">
-    <library name="adf-faces">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/adf-faces/adf-faces-api-10.1.3.0.4.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/adf-faces/adf-faces-impl-10.1.3.0.4.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
     <library name="commons-lang">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-lang-2.1.jar!/" />
@@ -1278,31 +1244,11 @@
     </library>
     <library name="el">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/el/el-api.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/el/el-ri.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/el/el-ri-1.5.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/el/el-api-1.5.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
-    </library>
-    <library name="Facelets">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/el/el-api.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/el/el-ri.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/facelets/jsf-facelets-1.1.15.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="Facelets (without el-api.jar -- for Tomcat 6.0)">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/facelets/jsf-facelets-1.1.14.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/el/el-ri.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/facelets-1.1.14-src.zip!/facelets-1.1.14-src/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/facelets-1.1.14-src.zip!/facelets-1.1.14-src/test" />
-      </SOURCES>
     </library>
     <library name="hibernate">
       <CLASSES>
@@ -1332,27 +1278,6 @@
         <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-2.1.0.FINAL-src.zip!/JBossPortletBridge-2.1.0.FINAL-src/portletbridge-impl/src/main/java" />
       </SOURCES>
     </library>
-    <library name="JBoss Seam 2.0">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-el.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-seam-ui-2.0.0.GA.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-seam-2.0.0.GA.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/test/integration/src" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/main" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/remoting" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/ioc" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/gen" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/ui/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/mail" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/test/unit" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/pdf" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/ui/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/debug" />
-      </SOURCES>
-    </library>
     <library name="JBoss Seam 2.1">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-el.jar!/" />
@@ -1377,35 +1302,26 @@
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="JSF Implementation - Mojarra 1.2">
+    <library name="JSF Implementation - Mojarra 2.0">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-digester-1.8.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/standard-1.1.2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/jstl-1.1.0.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-beanutils-1.6.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-el-1.0.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-impl-1.2_12-b01.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-api-1.2_12-b01.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-logging-1.1.1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-collections-3.2.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/mojarra/javax.faces-2.1.12.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-1.2_12-source.zip!/mojarra-1.2_12-b01-FCS-sources/jsf-api/src" />
-        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-1.2_12-source.zip!/mojarra-1.2_12-b01-FCS-sources/jsf-ri/src" />
+        <root url="jar://$PROJECT_DIR$/libsrc/javax.faces-2.1.11-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="JSF Implementation - MyFaces 1.2">
+    <library name="JSF Implementation - MyFaces 2.0">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-digester-1.8.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-beanutils-1.7.0.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-el-1.0.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-discovery-0.4.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-codec-1.3.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/apache/commons-logging-1.1.1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-collections-3.2.1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/myfaces/myfaces-impl-1.2.10.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/myfaces/myfaces-api-1.2.10.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-beanutils-1.8.3.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-collections-3.2.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/myfaces/myfaces-api-2.0.5.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/myfaces/myfaces-impl-2.0.5.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
@@ -1448,7 +1364,6 @@
     </library>
     <library name="OpenFaces Dependencies">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/jdom-1.0.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/jboss-el.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/hibernate-validator.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/hibernate-commons-annotations.jar!/" />
@@ -1459,8 +1374,8 @@
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-collections-3.2.1.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/poi-3.7-20101029.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/poi-ooxml-3.7-20101029.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-io-2.1.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-fileupload-1.2.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-io-2.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
@@ -1483,105 +1398,40 @@
     </library>
     <library name="PrimeFaces">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/primefaces/primefaces-1.0.0.RC.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/primefaces/primefaces-2.2.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/primefaces-1.0.0.RC-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/primefaces-2.2.1-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="RichFaces">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-ui-3.3.3.Final.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-api-3.3.3.Final.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-impl-3.3.3.Final.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/google/guava-r07.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-core-impl-4.0.0.Final.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-components-api-4.0.0.Final.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-core-api-4.0.0.Final.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-components-ui-4.0.0.Final.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/sandbox/samples/maven-rd-plugin-sample/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/framework/test/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/inputnumber-spinner/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/framework/impl/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/editor/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/framework/impl/src/main/java-jsf20" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/togglePanel/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/gmap/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/sandbox/ui/rex-messageBox/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/framework/impl/src/main/java-jsf12" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/datascroller/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/tabPanel/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/jQuery/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/cdk/generator/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/componentControl/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/dataTable/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/sandbox/samples/fileUploadPOC/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/pickList/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/extendedDataTable/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/orderingList/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/sandbox/impl/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/fileUpload/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/menu-components/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/sandbox/api/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/scrollableDataTable/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/sandbox/ui/sortableHeader/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/state/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/toolBar/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/core/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/sandbox/ui/rex-button/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/framework/jsf-test/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/contextMenu/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/inplaceInput/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/dropdown-menu/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/functions/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/panelmenu/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/sandbox/ui/simpleTogglePanel2/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/panel/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/panelbar/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/columns/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/insert/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/modal-panel/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/beanValidator/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/spacer/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/inplaceSelect/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/hotKey/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/sandbox/ui/editorOld/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/colorPicker/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/framework/api/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/treeModel/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/listShuttle/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/virtualEarth/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/message/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/drag-drop/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/tooltip/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/tree/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/dataFilterSlider/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/paint2D/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/effect/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/sandbox/ui/rex-resizable/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/separator/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/sandbox/ui/dialog-window/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/inputnumber-slider/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/sandbox/samples/rex-demo/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/calendar/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/progressBAR/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/simpleTogglePanel/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/sandbox/samples/simpleTogglePanel2-sample/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/combobox/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/sandbox/ui/panel2/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/suggestionbox/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.3.Final-src.zip!/richfaces-ui-3.3.3.Final/ui/layout/src/main/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/guava-src-r07.zip!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-core-impl-4.0.0.Final-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-components-api-4.0.0.Final-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-components-ui-4.0.0.Final-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-core-api-4.0.0.Final-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="selenium-java-client-driver">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-java-2.34.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-java-2.14.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
     <library name="selenium-server">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-server-standalone-2.34.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-server-standalone-2.14.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
@@ -1603,22 +1453,26 @@
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="tomahawk12-1.1.8">
+    <library name="spring">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-lang-2.1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/tomahawk/tomahawk12-1.1.8.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-fileupload-1.2.2.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
-    <library name="trinidad-stub">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/trinidad/trinidad-stub.jar!/" />
+        <root url="file://$PROJECT_DIR$/lib/spring" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/trinidad-stub-scr.zip!/" />
+        <root url="jar://$USER_HOME$/.ideaLibSources/spring-webflow-2.3.3.RELEASE-sources.jar!/" />
+      </SOURCES>
+      <jarDirectory url="file://$PROJECT_DIR$/lib/spring" recursive="false" />
+    </library>
+    <library name="Tomahawk">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/tomahawk/tomahawk20-1.1.10.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-fileupload-1.2.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-lang-2.4.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-logging-1.1.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/libsrc/tomahawk20-1.1.10-src.zip!/tomahawk20-1.1.10/src" />
       </SOURCES>
     </library>
   </component>

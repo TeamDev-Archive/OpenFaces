@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,7 +11,6 @@
  */
 package org.openfaces.component.table;
 
-import org.openfaces.component.CompoundComponent;
 import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
@@ -21,7 +20,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-public class TreeColumn extends Column implements CompoundComponent {
+public class TreeColumn extends Column {
     public static final String COMPONENT_TYPE = "org.openfaces.TreeColumn";
     public static final String COMPONENT_FAMILY = "org.openfaces.TreeColumn";
     private static final String FACET_EXPANSION_TOGGLE = "expansionToggle";
@@ -47,6 +46,7 @@ public class TreeColumn extends Column implements CompoundComponent {
     }
 
     @Override
+
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
         super.restoreState(context, state[0]);
@@ -56,11 +56,6 @@ public class TreeColumn extends Column implements CompoundComponent {
         showAsTree = (Boolean) state[4];
     }
 
-
-    public void createSubComponents(FacesContext context) {
-        Components.getOrCreateFacet(context, this, ImageExpansionToggle.COMPONENT_TYPE, FACET_EXPANSION_TOGGLE, ImageExpansionToggle.class);
-    }
-
     public Object encodeParamsAsJsObject(FacesContext context) {
         ExpansionToggle expansionToggle = getExpansionToggle();
         Object result = expansionToggle.encodeExpansionDataAsJsObject(context);
@@ -68,7 +63,9 @@ public class TreeColumn extends Column implements CompoundComponent {
     }
 
     public ExpansionToggle getExpansionToggle() {
-        ExpansionToggle expansionToggle = (ExpansionToggle) getFacet(FACET_EXPANSION_TOGGLE);
+        ExpansionToggle expansionToggle = Components.getOrCreateFacet(getFacesContext(), this,
+                ImageExpansionToggle.COMPONENT_TYPE, FACET_EXPANSION_TOGGLE, ImageExpansionToggle.class);
+
         if (expansionToggle == null) {
             expansionToggle = new ImageExpansionToggle();
             setExpansionToggle(expansionToggle);
@@ -93,6 +90,7 @@ public class TreeColumn extends Column implements CompoundComponent {
     }
 
 
+    @Override
     public void setValueExpression(String name, ValueExpression expression) {
         if ("expandedToggleImageUrl".equals(name))
             getExpansionToggle().setValueExpression("expandedImageUrl", expression);

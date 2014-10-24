@@ -1,0 +1,167 @@
+/*
+ * OpenFaces - JSF Component Library 3.0
+ * Copyright (C) 2007-2013, TeamDev Ltd.
+ * licensing@openfaces.org
+ * Unless agreed in writing the contents of this file are subject to
+ * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * Please visit http://openfaces.org/licensing/ for more details.
+ */
+
+#Navigation{
+	height:64px;
+	border-top:solid 1px #565656;
+	border-bottom:solid 1px #4f4f4f;
+	position:relative;
+	z-index:105;
+}
+
+.NavigationPanel{
+	background:url(/resources/images/backgrounds/navigation.png) repeat-x 0 0;
+	position:absolute;
+	top:0;
+	right:0;
+	bottom:0;
+}
+.NavigationPanel h1{
+	color:white;
+	float:left;
+	text-shadow:black 1px -1px 1px;
+	line-height:62px;
+	padding:0 12px;
+}
+.NavigationPanel h1 img{margin-bottom:-8px;}
+
+.NavigationPanel a.label{
+	color:white;
+	font-size:11px;
+	float:left;
+	text-shadow:black 1px -1px 1px;
+	line-height:60px;
+	padding:3px 12px 5px;
+}
+
+.NavigationPanel h1,
+.NavigationPanel a.label{display:none;}
+
+
+#Navigation-Email{background-color:#060606; background-position:0 0; left:0; border-left:solid 1px #141414; border-right:solid 1px #141414; z-index:1;}
+#Navigation-Calendar{background-color:#009201; background-position:0 -64px; border-left:solid 1px #047700; border-right:solid 1px #047700; z-index:2;}
+#Navigation-Tasks{background-color:#f28c00; background-position:0 -128px; border-left:solid 1px #bc6800; border-right:solid 1px #bc6800; z-index:3;}
+
+
+.NavigationSelected-Email #Navigation-Email{}
+.NavigationSelected-Email #Navigation-Calendar{left:auto; width:70px;}
+.NavigationSelected-Email #Navigation-Tasks{left:auto; width:35px;}
+
+.NavigationSelected-Email #Navigation-Email h1{display:block;}
+.NavigationSelected-Email #Navigation-Calendar a.label,
+.NavigationSelected-Email #Navigation-Tasks a.label{display:block;}
+
+
+.NavigationSelected-Calendar #Navigation-Email{}
+.NavigationSelected-Calendar #Navigation-Calendar{left:35px;}
+.NavigationSelected-Calendar #Navigation-Tasks{left:auto; width:35px;}
+
+.NavigationSelected-Calendar #Navigation-Calendar h1{display:block;}
+.NavigationSelected-Calendar #Navigation-Email a.label,
+.NavigationSelected-Calendar #Navigation-Tasks a.label{display:block;}
+
+
+.NavigationSelected-Tasks #Navigation-Email{}
+.NavigationSelected-Tasks #Navigation-Calendar{left:35px;}
+.NavigationSelected-Tasks #Navigation-Tasks{left:70px;}
+
+.NavigationSelected-Tasks #Navigation-Tasks h1{display:block;}
+.NavigationSelected-Tasks #Navigation-Email a.label,
+.NavigationSelected-Tasks #Navigation-Calendar a.label{display:block;}
+
+.NavigationControls{
+	position:absolute;
+	margin:0;
+	padding:0;
+	list-style:none;
+	left:182px;
+	right:0;
+	top:3px;
+}
+
+.NavigationControls a,
+.NavigationControls .dr-menu-label{
+	color:#333;
+	display:block;
+	width:50px;
+	height:50px;
+	outline:none;
+	position:relative;
+	text-decoration:none;
+	float:left;
+	margin:0 5px 0 10px;
+    padding:0;
+}
+.NavigationControls .dr-menu-label{height:45px;}
+
+.NavigationControls a span,
+.NavigationControls .dr-menu-label .dr-label-text-decor{
+	position:absolute;
+	top:0px;
+    font-size:7pt;
+	white-space:nowrap;
+	text-align:center;
+	left:-10px;
+	right:-10px;
+    line-height:100px;
+    vertical-align:bottom;
+}
+
+.NavigationControls a:hover,
+.NavigationControls .dr-menu-label:hover{color:#e7f8ff;}
+.NavigationControls a:active,
+.NavigationControls .dr-menu-label:active,{color:#b3b3b3;}
+
+.NavigationControls-mail-new,
+.NavigationControls-mail-reply,
+.NavigationControls-mail-forward{background-image:url(/resources/images/icons/navigation-mail.png); color:white;}
+
+.NavigationControls-mail-new{background-position:0 0;}
+.NavigationControls-mail-new:hover{background-position:-50px 0;}
+.NavigationControls-mail-new:active{background-position:-100px 0;}
+
+.NavigationControls-mail-reply{background-position:0 -50px;}
+.NavigationControls-mail-reply:hover{background-position:-50px -50px;}
+.NavigationControls-mail-reply:active{background-position:-100px -50px;}
+
+.NavigationControls-mail-forward{background-position:0 -100px;}
+.NavigationControls-mail-forward:hover{background-position:-50px -100px;}
+.NavigationControls-mail-forward:active{background-position:-100px -100px;}
+
+
+.NavigationControls a.NavigationControls-tasks-new,
+.NavigationControls a.NavigationControls-tasks-edit,
+.NavigationControls a.NavigationControls-tasks-delete,
+.NavigationControls a.NavigationControls-tasks-save,
+.NavigationControls .NavigationControls-tasks-columns{background-image:url(/resources/images/icons/navigation-tasks.png); background-color:transparent !important; border:none !important; color:#333;}
+
+.NavigationControls-tasks-new{background-position:0 0;}
+.NavigationControls-tasks-new:hover{background-position:-50px 0;}
+.NavigationControls-tasks-new:active{background-position:-100px 0;}
+
+.NavigationControls-tasks-edit{background-position:0 -50px;}
+.NavigationControls-tasks-edit:hover{background-position:-50px -50px;}
+.NavigationControls-tasks-edit:active{background-position:-100px -50px;}
+
+.NavigationControls-tasks-delete{background-position:0 -100px;}
+.NavigationControls-tasks-delete:hover{background-position:-50px -100px;}
+.NavigationControls-tasks-delete:active{background-position:-100px -100px;}
+
+.NavigationControls-tasks-columns{background-position:0 -150px;}
+.NavigationControls-tasks-columns:hover{background-position:-50px -150px;}
+.NavigationControls-tasks-columns:active{background-position:-100px -150px;}
+
+.NavigationControls-tasks-save{background-position:0 -200px;}
+.NavigationControls-tasks-save:hover{background-position:-50px -200px;}
+.NavigationControls-tasks-save:active{background-position:-100px -200px;}
+
+.CancelChanges{background:url('/resources/images/icons/cancel.png') no-repeat 10px 10px;}

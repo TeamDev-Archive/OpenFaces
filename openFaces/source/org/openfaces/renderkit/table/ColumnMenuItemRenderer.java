@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -15,6 +15,7 @@ import org.openfaces.component.command.MenuItem;
 import org.openfaces.component.command.PopupMenu;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.renderkit.command.MenuItemRenderer;
+import org.openfaces.util.Components;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -25,7 +26,7 @@ import javax.faces.component.UIComponent;
 public class ColumnMenuItemRenderer extends MenuItemRenderer {
     protected AbstractTable getTable(String tagName, MenuItem menuItem) {
         UIComponent parent = menuItem.getParent();
-        while (parent != null && (parent instanceof MenuItem || parent instanceof PopupMenu))
+        while (parent != null && (parent instanceof MenuItem || parent instanceof PopupMenu || Components.isImplicitPanel(parent)))
             parent = parent.getParent();
         if (!(parent instanceof AbstractTable))
             throw new FacesException(tagName + " can only be inserted into the \"columnMenu\" facet of " +

@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -14,20 +14,13 @@ package org.openfaces.util;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 
-import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.context.PartialViewContext;
 import javax.portlet.PortletRequest;
 import javax.portlet.RenderRequest;
-import javax.servlet.http.HttpServletRequest;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -35,48 +28,20 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
 /**
  * @author Eugene Goncharov
  */
 public class AjaxUtil {
-    public static final String AJAX_REQUEST_MARKER = "_openFaces_ajax";
-    public static final String PARAM_RENDER = "_of_render";
     private static final String COMPONENT_DELIMITER = ",";
     public static final String UPDATE_PORTIONS_SUFFIX = "_of_ajax_portions";
     public static final String CUSTOM_JSON_PARAM = "_of_customJsonParam";
 
     public static final String KEY_RENDERING_PORTLETS_AJAX_RESPONSE = AjaxUtil.class.getName() + ".renderingPortletsAjaxResponse";
-    private static final String STATE_CHARSET = "ISO-8859-1";
     private static final int LENGTH_UNICODE = 4;
     private static final int LENGTH_BACKSLASH_AND_UNICODE = 5;
 
-    private static long iInitLibraryNameCounter = 0;
-    private static final Random random = new Random();
-    public static final String ATTR_PORTLET_UNIQUE_RTLIBRARY_NAME = "org.openfaces.portletUniqueRTLibraryName";
-    public static final String AJAX_SUPPORT_RENDERED = "org.openfaces.ajaxSupportOnPageRendered";
-
-    /**
-     * Runtime javascript library unique name generator. Runtime library is required for third-party JSF components
-     * support in OpenFaces Ajaxed components in case when third-party components uses own JavaScript for initialization
-     * and these scripts contains global variables declarations. In such situation simple javascript eval() function does
-     * not work correctly under IE (meaning that global variables declared in script executed by eval() under IE would
-     * not be declared).
-     *
-     * @return string with unique name for runtime library
-     */
-    public static String generateUniqueInitLibraryName() {
-        long partOne = System.currentTimeMillis();
-        int partTwo = random.nextInt(1000);
-        long partThree = iInitLibraryNameCounter++;
-        if (iInitLibraryNameCounter == Long.MAX_VALUE) iInitLibraryNameCounter = 0;
-
-        StringBuilder buffer = new StringBuilder().append(partOne).append(partTwo).append(partThree).append(".js");
-        return buffer.toString();
-    }
+    private static final String AJAX_SUPPORT_RENDERED = "org.openfaces.ajaxSupportOnPageRendered";
 
     public static boolean isAjax4jsfRequest() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -139,35 +104,8 @@ public class AjaxUtil {
         return false;
     }
 
-    /**
-     * Checks whether the current request is an Ajax request
-     *
-     * @param request incoming request.
-     * @return <code>true</code> - if the current request is an Ajax request. <code>false</code> otherwise.
-     */
-    public static boolean isAjaxRequest(RequestFacade request) {
-        // for portlets: String browser = request.getProperty(...);
-        return request.getParameter(AJAX_REQUEST_MARKER) != null;
-    }
-
     public static boolean isAjaxRequest(FacesContext context) {
-        if (isPortletRenderRequest(context)) {
-            Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
-            boolean ajaxKeyExists = sessionMap.containsKey(AJAX_REQUEST_MARKER);
-            if (ajaxKeyExists)
-                return true;
-            // isPortletRenderRequest also returns true for action requests under Liferay, so it's safe to perform the default check to address this
-        }
-
-        ExternalContext externalContext = context.getExternalContext();
-        if (isPortletRequest(FacesContext.getCurrentInstance())) {
-            RequestFacade request = RequestFacade.getInstance(externalContext.getRequest());
-            // for portlets: String browser = request.getProperty(...);
-            return request.getParameter(AJAX_REQUEST_MARKER) != null;
-        } else {
-            HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
-            return request.getParameter(AJAX_REQUEST_MARKER) != null;
-        }
+        return context.getPartialViewContext().isAjaxRequest();
     }
 
     private static boolean considerPortlets = true;
@@ -198,30 +136,6 @@ public class AjaxUtil {
         }
     }
 
-    public static String getComponentStateFieldName(String clientId) {
-        return clientId + "::_state";
-    }
-
-    public static String objectToString(Object object) throws IOException {
-        byte[] bytes;
-        {
-            ByteArrayOutputStream compressedBytesStream = new ByteArrayOutputStream();
-            OutputStream compressingStream = new GZIPOutputStream(compressedBytesStream);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(compressingStream);
-            try {
-                objectOutputStream.writeObject(object);
-            } finally {
-                objectOutputStream.close();
-                compressingStream.close();
-                compressedBytesStream.close();
-            }
-            bytes = compressedBytesStream.toByteArray();
-        }
-        Base64 base64 = new Base64();
-        byte[] encodedBytes = base64.encode(bytes);
-        return new String(encodedBytes, STATE_CHARSET);
-    }
-
     public static void prepareComponentForAjax(FacesContext context, UIComponent component) {
         if (!component.isRendered())
             return;
@@ -239,13 +153,6 @@ public class AjaxUtil {
         if (requestMap.put(AJAX_SUPPORT_RENDERED, Boolean.TRUE) == null) {
             try {
                 renderAjaxSupport(context);
-                if (isPortletRequest(context)) {
-                    String uniqueRTLibraryName = ResourceFilter.RUNTIME_INIT_LIBRARY_PATH + generateUniqueInitLibraryName();
-                    context.getExternalContext().getSessionMap().put(ATTR_PORTLET_UNIQUE_RTLIBRARY_NAME, uniqueRTLibraryName);
-                    String initLibraryUrl = Resources.applicationURL(context, uniqueRTLibraryName);
-                    Resources.renderJSLinkIfNeeded(context, initLibraryUrl);
-                }
-
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -253,60 +160,9 @@ public class AjaxUtil {
     }
 
     public static void renderAjaxSupport(FacesContext context) throws IOException {
-        Resources.renderJSLinkIfNeeded(context, Resources.utilJsURL(context));
-        Resources.renderJSLinkIfNeeded(context, Resources.ajaxUtilJsURL(context));
+        Resources.renderJSLinkIfNeeded(context, Resources.UTIL_JS_PATH);
+        Resources.renderJSLinkIfNeeded(context, Resources.AJAX_UTIL_JS_PATH);
         UtilPhaseListener.encodeFormSubmissionAjaxInactivityTimeout(context);
-    }
-
-    public static Object retrieveAjaxStateObject(FacesContext context, UIComponent component) {
-        Object stateObj;
-        try {
-            String componentId = getComponentId(component);
-            stateObj = readState(context, componentId);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return stateObj;
-    }
-
-    private static String getComponentId(UIComponent component) {
-        UIComponent namingContainer = component.getParent();
-        for (; namingContainer != null;
-             namingContainer = namingContainer.getParent())
-            if (namingContainer instanceof NamingContainer)
-                break;
-        StringBuilder buf = new StringBuilder();
-        if (namingContainer != null)
-            buf.append(getComponentId(namingContainer)).append(NamingContainer.SEPARATOR_CHAR);
-        buf.append(component.getId());
-        return buf.toString();
-    }
-
-    private static Object readState(FacesContext context, String clientId) throws IOException {
-        Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
-        String stateFieldName = getComponentStateFieldName(clientId);
-        String stateStr = requestParameterMap.get(stateFieldName);
-        if (stateStr == null)
-            return null;
-        return stringToObject(stateStr);
-    }
-
-    private static Object stringToObject(String str) throws IOException {
-        Base64 base64 = new Base64();
-        byte[] encodedBytes = str.getBytes(STATE_CHARSET);
-        byte[] decodedBytes = base64.decode(encodedBytes);
-        ByteArrayInputStream compressedBytesStream = new ByteArrayInputStream(decodedBytes);
-        InputStream decompressingStream = new GZIPInputStream(compressedBytesStream);
-        ObjectInputStream objectInputStream = new ObjectInputStream(decompressingStream);
-        try {
-            return objectInputStream.readObject();
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } finally {
-            objectInputStream.close();
-            decompressingStream.close();
-            compressedBytesStream.close();
-        }
     }
 
     /**
@@ -324,10 +180,12 @@ public class AjaxUtil {
             }
         }
         Iterator<UIComponent> descendants = component.getFacetsAndChildren();
-        while (descendants.hasNext()) {
+        //Commented to avoid wrong partial response working for new versions of mojara
+        //Request: http://stackoverflow.com/questions/14397257/openfaces-datatable-issue-throwing-exception-com-sun-faces-facelets-compile
+        /*while (descendants.hasNext()) {
             UIComponent descendant = descendants.next();
             makeComponentsNonTransient(context, descendant);
-        }
+        } */
     }
 
     public static boolean getSkipExtraRenderingOnPortletsAjax(FacesContext context) {
@@ -343,10 +201,12 @@ public class AjaxUtil {
         return result;
     }
 
-    public static List<String> getRequestedAjaxPortionNames(FacesContext context) {
-        ExternalContext externalContext = context.getExternalContext();
-        RequestFacade request = RequestFacade.getInstance(externalContext.getRequest());
-        return getAjaxPortionNames(context, request);
+
+    public static boolean isAjaxPortionRequest(FacesContext context) {
+        if (!isAjaxRequest(context))
+            return false;
+        List<String> portionNames = getAjaxPortionNames(context);
+        return portionNames != null && portionNames.size() > 0;
     }
 
     /**
@@ -362,23 +222,19 @@ public class AjaxUtil {
     public static boolean isAjaxPortionRequest(FacesContext context, UIComponent component) {
         if (!isAjaxRequest(context))
             return false;
-        RequestFacade request = RequestFacade.getInstance(context.getExternalContext().getRequest());
-        List<String> portionNames = getAjaxPortionNames(context, request);
+        List<String> portionNames = getAjaxPortionNames(context);
         if (portionNames == null || portionNames.size() == 0)
             return false;
-        Map sessionMap = context.getExternalContext().getSessionMap();
-        String componentId = (String) sessionMap.get(PARAM_RENDER);
-        if (componentId == null) // not portlets
-            componentId = request.getParameter(PARAM_RENDER);
+        String componentId = context.getExternalContext().getRequestParameterMap().get(
+                PartialViewContext.PARTIAL_RENDER_PARAM_NAME);
         boolean requestForSpecifiedComponent = component.getClientId(context).equals(componentId);
         return requestForSpecifiedComponent;
 
     }
 
-    public static JSONObject getCustomJSONParam(FacesContext context, RequestFacade request) {
-        String jsonParamStr = isPortletRequest(context)
-                ? (String) context.getExternalContext().getSessionMap().get(CUSTOM_JSON_PARAM)
-                : request.getParameter(CUSTOM_JSON_PARAM);
+    public static JSONObject getCustomJSONParam(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
+        String jsonParamStr = externalContext.getRequestParameterMap().get(CUSTOM_JSON_PARAM);
         if (jsonParamStr == null)
             return null;
         JSONObject param;
@@ -390,10 +246,9 @@ public class AjaxUtil {
         return param;
     }
 
-    public static List<String> getAjaxPortionNames(FacesContext context, RequestFacade request) {
-        String updateIds = isPortletRequest(context)
-                ? (String) context.getExternalContext().getSessionMap().get(UPDATE_PORTIONS_SUFFIX)
-                : request.getParameter(UPDATE_PORTIONS_SUFFIX);
+    public static List<String> getAjaxPortionNames(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
+        String updateIds = externalContext.getRequestParameterMap().get(UPDATE_PORTIONS_SUFFIX);
         List<String> result = new ArrayList<String>();
         if (updateIds == null || updateIds.equals("")) {
             return Collections.emptyList();

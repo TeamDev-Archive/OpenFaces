@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -31,6 +31,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dmitry Pikhulya
@@ -38,6 +39,7 @@ import java.util.List;
 public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
     private static final String DEFAULT_CAPTION_CLASS = "o_window_caption";
     private static final String DEFAULT_CAPTION_WIDTH_CLASS = "o_default_caption_width";
+    private static int uniqIdSuffix = 0;
     public static final String MIDDLE_AREA_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "content";
 
     public static String getWindowJs(FacesContext context) {
@@ -55,7 +57,13 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
             area.setAlignment(Side.RIGHT);
             AbstractWindow win = (AbstractWindow) component;
             CloseWindowButton closeButton = new CloseWindowButton();
-            closeButton.setId(win.getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "closeButton");
+            //TODO: this is temporary solution for duplicate ID's inside dataTable rows it mus be removed when the problem will be solved
+
+            String uid = UUID.randomUUID().toString();
+
+            uid = uid.replaceAll("-","");
+
+            closeButton.setId(win.getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "closeButton" + uid);
             List<UIComponent> areaChildren = area.getChildren();
             if (isMinimizeAllowed())
                 areaChildren.add(new MinimizeWindowButton());

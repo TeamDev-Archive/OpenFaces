@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -26,7 +26,7 @@ public class BigDecimalConverterClientValidator extends AbstractClientValidator 
     private static final String CONVERSION_MESSAGE_ID = "javax.faces.convert.BigDecimalConverter.CONVERSION";
 
     public BigDecimalConverterClientValidator() {
-        addJavascriptLibrary(new ValidationJavascriptLibrary("bigDecimalConverterValidator.js", null));
+        addJavascriptLibrary(new ValidationJavascriptLibrary("bigDecimalConverterValidator.js"));
     }
 
     public String getJsValidatorName() {

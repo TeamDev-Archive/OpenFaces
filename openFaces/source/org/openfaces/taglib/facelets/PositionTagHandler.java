@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,7 +11,7 @@
  */
 package org.openfaces.taglib.facelets;
 
-import com.sun.facelets.tag.jsf.ComponentConfig;
+import javax.faces.view.facelets.ComponentConfig;
 import org.openfaces.taglib.internal.PositionTag;
 
 public class PositionTagHandler extends org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler {

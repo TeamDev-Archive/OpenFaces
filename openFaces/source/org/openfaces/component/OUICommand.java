@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -14,18 +14,31 @@ package org.openfaces.component;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.FacesException;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UICommand;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class OUICommand extends UICommand implements OUIComponent {
+@ResourceDependencies({
+        @ResourceDependency(name = "default.css", library = "openfaces"),
+        @ResourceDependency(name = "jsf.js", library = "javax.faces")
+})
+public abstract class OUICommand extends UICommand implements OUIComponent, ClientBehaviorHolder {
+    private static final List<String> EVENT_NAMES = Collections.unmodifiableList(Arrays.asList("action", "blur",
+            "change", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove",
+            "mouseout", "mouseover", "mouseup", "select"));
+
     private Iterable<String> execute;
     private Iterable<String> render;
-    private Boolean executeRenderedComponents;
 
     private String style;
     private String styleClass;
@@ -60,7 +73,6 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
         return new Object[]{superState,
                 saveAttachedState(context, execute),
                 saveAttachedState(context, render),
-                executeRenderedComponents,
                 disabled,
                 disabledStyle,
                 disabledClass,
@@ -78,7 +90,6 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
         super.restoreState(context, state[i++]);
         execute = (Iterable<String>) restoreAttachedState(context, state[i++]);
         render = (Iterable<String>) restoreAttachedState(context, state[i++]);
-        executeRenderedComponents = (Boolean) state[i++];
         disabled = (Boolean) state[i++];
         disabledStyle = (String) state[i++];
         disabledClass = (String) state[i++];
@@ -105,6 +116,17 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
         onsuccess = (String) state[i++];
         delay = (Integer) state[i++];
     }
+
+    @Override
+    public String getDefaultEventName() {
+        return "action";
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
+
 
     public Iterable<String> getExecute() {
         return ValueBindings.get(this, "execute", execute, Collections.<String>emptySet(), Iterable.class);
@@ -290,14 +312,6 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
         this.onsuccess = onsuccess;
     }
 
-    public boolean getExecuteRenderedComponents() {
-        return ValueBindings.get(this, "executeRenderedComponents", executeRenderedComponents, true);
-    }
-
-    public void setExecuteRenderedComponents(boolean executeRenderedComponents) {
-        this.executeRenderedComponents = executeRenderedComponents;
-    }
-
     public Integer getDelay() {
         return ValueBindings.get(this, "delay", delay, 0);
     }
@@ -357,6 +371,9 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
                 }
             }
         }
+    }
+    public String getActionTriggerParam() {
+        return getClientId(getFacesContext());
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -32,7 +32,7 @@ public interface AjaxPortionRenderer {
      * @param portionName actually a server-side id for the inner component to be rendered. In further, there
      *                    may be an extension for this method to support not only inner components rendering, but data
      *                    retrieval too. Or maybe other method will be declared.
-     * @param jsonParam   the JSON object that is passed as a parameter to O$.requestComponentPortions on the client-side,
+     * @param jsonParam   the JSON object that is passed as a parameter to O$.Ajax.requestComponentPortions on the client-side,
      *                    or null if no parameter was passed.
      * @throws IOException   propagates any IO exceptions that might occur inside of this method
      * @throws JSONException in case of any JSON manipulation failure. It is declared as a checked exception here just

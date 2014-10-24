@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,6 +11,7 @@
  */
 package org.openfaces.richfaces.demo.beans;
 
+import javax.faces.event.AjaxBehaviorEvent;
 import org.openfaces.component.timetable.AbstractTimetableEvent;
 import org.openfaces.component.timetable.TimetableChangeEvent;
 import org.openfaces.component.timetable.TimetableEvent;
@@ -168,7 +169,7 @@ public class DayTableBean implements CalendarDataModel, Serializable {
     	date = new Date(date.getTime() - MS_IN_ONE_DAY);
     }
     
-	public void doLater() {
+	public void doLater(AjaxBehaviorEvent event) {
         TimetableEvent modifiedEvent = getEvent();
         if (modifiedEvent != null) {
             AbstractTimetableEvent event = eventById(events, modifiedEvent.getId());

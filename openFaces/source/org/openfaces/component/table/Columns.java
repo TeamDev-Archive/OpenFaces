@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -26,6 +26,7 @@ import javax.faces.component.ContextCallback;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
+import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -129,6 +130,11 @@ public class Columns extends UIComponentBase implements ValueHolder, NamingConta
 
     @Override
     public Object saveState(FacesContext context) {
+        if (getColumnIndex() != -1) {
+            // the index might not be reset in some circumstances (e.g. rendering in-group summaries in a grouped table)
+            // make sure the state is going to be saved under a correct client id in the JSF's state map
+            setColumnIndex(-1);
+        }
         return new Object[]{
                 super.saveState(context), prevValueFromBinding,
                 columnRendered, headerValue, footerValue, var, indexVar, sortingEnabled, sortingComparator,
@@ -1054,7 +1060,7 @@ public class Columns extends UIComponentBase implements ValueHolder, NamingConta
         if (columnIndex == -1) {
             return clientId;
         }
-        return clientId + NamingContainer.SEPARATOR_CHAR + columnIndex;
+        return clientId + UINamingContainer.getSeparatorChar(context) + columnIndex;
     }
 
     /**

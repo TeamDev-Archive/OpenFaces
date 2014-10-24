@@ -9,7 +9,7 @@
 <html>
 <head>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
-
+  <script src="../funcTestsUtil.js" type="text/javascript"></script>
   <title>Tree Table Column Footer Client-Side Events</title>
 </head>
 

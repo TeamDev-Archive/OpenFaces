@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -41,7 +41,7 @@ public abstract class AbstractCustomValidator extends AbstractClientValidator im
     private List<String> params;
 
     protected AbstractCustomValidator() {
-        addJavascriptLibrary(new ValidationJavascriptLibrary("customValidator.js", null));
+        addJavascriptLibrary(new ValidationJavascriptLibrary("customValidator.js"));
     }
 
     public void setParams(List<String> params) {

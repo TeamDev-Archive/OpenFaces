@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -14,6 +14,7 @@ package org.openfaces.component.table;
 import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
+import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.ValueHolder;
@@ -190,7 +191,9 @@ public class Column extends BaseColumn implements ValueHolder {
      * by any application code.
      */
     public Object getValue() {
-        throw new UnsupportedOperationException();
+        //Commented to support some unexpected call to this method by Spring + JSF during ajax reRendering
+        //throw new UnsupportedOperationException();
+        return super.getValueExpression("value");
     }
 
     /**
@@ -198,7 +201,8 @@ public class Column extends BaseColumn implements ValueHolder {
      * by any application code.
      */
     public void setValue(Object value) {
-        throw new UnsupportedOperationException();
+        //Commented to support some unexpected call to this method by Spring + JSF during ajax reRendering
+        //throw new UnsupportedOperationException();
     }
 
     public UIComponent getEditor() {

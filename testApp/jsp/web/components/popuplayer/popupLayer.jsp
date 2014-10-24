@@ -9,7 +9,6 @@
 <html>
 <head>
   <script src="../funcTestsUtil.js" type="text/javascript"></script>
-
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
   <title>PopupLayer client-side events</title>
 </head>

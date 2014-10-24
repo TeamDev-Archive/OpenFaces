@@ -10,7 +10,6 @@
 <head>
   <title>Check TwoListSelection js-functions</title>
   <script src="../funcTestsUtil.js" type="text/javascript"></script>
-
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 </head>
 

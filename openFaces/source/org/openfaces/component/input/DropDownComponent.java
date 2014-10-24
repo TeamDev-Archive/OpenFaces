@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -194,7 +194,7 @@ public abstract class DropDownComponent extends OUIInputText {
         this.buttonAlignment = buttonAlignment;
     }
 
-    public String getButtonStyle() {
+    protected String getButtonStyle() {
         return ValueBindings.get(this, "buttonStyle", buttonStyle);
     }
 
@@ -210,7 +210,7 @@ public abstract class DropDownComponent extends OUIInputText {
         this.rolloverButtonStyle = rolloverButtonStyle;
     }
 
-    public String getFieldStyle() {
+    protected String getFieldStyle() {
         return ValueBindings.get(this, "fieldStyle", fieldStyle);
     }
 

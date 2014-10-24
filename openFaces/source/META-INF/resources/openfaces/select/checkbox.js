@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,22 +11,22 @@
  */
 O$.Checkbox = {
 
-  _init: function(checkboxId, images, styles, stateList, disabled, onchange) {
+  _init:function (checkboxId, images, styles, stateList, disabled, onchange) {
     function getClassName(classKey) {
       var className = styles ? styles[classKey] : null;
       return (className == null) ? "" : className;
     }
 
     var checkbox = O$.initComponent(checkboxId, null, {
-      className: getClassName("styleClass"),
+      className:getClassName("styleClass"),
 
-      _rolloverClass: getClassName("rolloverClass"),
-      _focusedClass: getClassName("focusedClass"),
-      _selectedClass: getClassName("selectedClass"),
-      _unselectedClass: getClassName("unselectedClass"),
-      _undefinedClass: getClassName("undefinedClass"),
+      _rolloverClass:getClassName("rolloverClass"),
+      _focusedClass:getClassName("focusedClass"),
+      _selectedClass:getClassName("selectedClass"),
+      _unselectedClass:getClassName("unselectedClass"),
+      _undefinedClass:getClassName("undefinedClass"),
 
-      _onchange: onchange
+      _onchange:onchange
     });
 
     if (images) {
@@ -34,25 +34,25 @@ O$.Checkbox = {
       // image-based checkbox
 
       O$.extend(checkbox, {
-        _state: O$(checkboxId + "::state"),
-        _images: images,
-        _stateList: stateList,
-        _disabled: disabled,
+        _state:O$(checkboxId + "::state"),
+        _images:images,
+        _stateList:stateList,
+        _disabled:disabled,
 
-        _indents: {},
-        _defaultIndents: {
-          marginLeft: O$.getNumericElementStyle(checkbox, "margin-left") + "px",
-          marginRight: O$.getNumericElementStyle(checkbox, "margin-right") + "px",
-          marginBottom: O$.getNumericElementStyle(checkbox, "margin-bottom") + "px"
+        _indents:{},
+        _defaultIndents:{
+          marginLeft:O$.getNumericElementStyle(checkbox, "margin-left") + "px",
+          marginRight:O$.getNumericElementStyle(checkbox, "margin-right") + "px",
+          marginBottom:O$.getNumericElementStyle(checkbox, "margin-bottom") + "px"
         },
 
         // using "getDisabled" instead of "isDisabled "
         // because of standard "isDisabled" property
-        getDisabled: function() {
+        getDisabled:function () {
           return this._disabled;
         },
 
-        setDisabled: function(flag) {
+        setDisabled:function (flag) {
           if (this._disabled !== flag) {
             this._disabled = flag;
             if (flag) {
@@ -66,11 +66,11 @@ O$.Checkbox = {
           }
         },
 
-        isSelected: function() {
+        isSelected:function () {
           return this._state.value === "selected";
         },
 
-        setSelected: function(flag) {
+        setSelected:function (flag) {
           if (!this.isDefined() || this.isSelected() !== flag) {
             this._state.value = flag ? "selected" : "unselected";
             updateImage(this);
@@ -78,11 +78,11 @@ O$.Checkbox = {
           }
         },
 
-        isDefined: function() {
+        isDefined:function () {
           return this._state.value !== "undefined";
         },
 
-        setDefined: function(flag) {
+        setDefined:function (flag) {
           if (this.isDefined() !== flag) {
             if (flag) {
               if (this._state.value === "undefined") {
@@ -111,7 +111,7 @@ O$.Checkbox = {
 
       updateImage(checkbox); // Firefox page reload keeps form values
 
-      O$.addEventHandler(checkbox, "mousedown", function() {
+      O$.addEventHandler(checkbox, "mousedown", function () {
         if (checkbox.onclick && O$.isExplorer() && !checkbox._onclickProcessed) {
           // Prevent the issue when JavaScript onclick handler assigned to the onclick field explicitly is invoked
           // before the new state is actually available. We do it by substituting field-based event with an
@@ -119,10 +119,12 @@ O$.Checkbox = {
           // after it is initialized)
           var onclickHandler = checkbox.onclick;
           checkbox._stolenClickHandler = onclickHandler;
-          checkbox.onclick = checkbox._guaranteedStopEventOnClickRequested ? function(e) {O$.stopEvent(e);} : null;
+          checkbox.onclick = checkbox._guaranteedStopEventOnClickRequested ? function (e) {
+            O$.stopEvent(e);
+          } : null;
 
-          O$.addEventHandler(checkbox, "click", function() {
-            setTimeout(function() {
+          O$.addEventHandler(checkbox, "click", function () {
+            setTimeout(function () {
               var e = O$.createEvent("click");
               onclickHandler.call(checkbox, e);
             }, 1);
@@ -135,7 +137,7 @@ O$.Checkbox = {
         checkbox._onclickProcessed = true;
       });
 
-      O$.addEventHandler(checkbox, "keydown", function(e) {
+      O$.addEventHandler(checkbox, "keydown", function (e) {
         if (!checkbox._disabled) {
           if (isSpacebar(e)) {
             checkbox._pressed = true;
@@ -146,7 +148,7 @@ O$.Checkbox = {
 
       // space-bar also fires "click" in non-Opera browsers
       if (O$.isOpera()) {
-        O$.addEventHandler(checkbox, "keypress", function(e) {
+        O$.addEventHandler(checkbox, "keypress", function (e) {
           if (!checkbox._disabled) {
             if (e.which === 32) {
               checkbox._pressed = false;
@@ -162,48 +164,73 @@ O$.Checkbox = {
       // html checkbox
 
       O$.extend(checkbox, {
-        setDisabled: function(flag) { this.disabled = flag; updateStyles(this); },
-        getDisabled: function() { return this.disabled; },
-        setSelected: function(flag) { this.checked = flag; updateStyles(this); },
-        isSelected: function() { return this.checked; },
-        setDefined: function() { /* do nothing */ }, 
-        isDefined: function() { return true; }
+        setDisabled:function (flag) {
+          this.disabled = flag;
+          updateStyles(this);
+        },
+        getDisabled:function () {
+          return this.disabled;
+        },
+        setSelected:function (flag) {
+          this.checked = flag;
+          updateStyles(this);
+        },
+        isSelected:function () {
+          return this.checked;
+        },
+        setDefined:function () { /* do nothing */
+        },
+        isDefined:function () {
+          return true;
+        }
       });
 
     }
 
     updateStyles(checkbox);
 
-    O$.addEventHandler(checkbox, "focus", function() {
+    O$.addEventHandler(checkbox, "focus", function () {
       if (shouldProcessEvents(checkbox)) {
         checkbox._focused = true;
         updateStyles(checkbox);
       }
     });
 
-    O$.addEventHandler(checkbox, "blur", function() {
+    O$.addEventHandler(checkbox, "blur", function () {
       if (shouldProcessEvents(checkbox)) {
         checkbox._focused = false;
         updateStyles(checkbox);
       }
     });
 
-    O$.addEventHandler(checkbox, "click", function(e) {
-      if (shouldProcessEvents(checkbox)) {
-        checkbox._pressed = false;
-        if (checkbox._images) {
-          nextState(checkbox);
-          fireOnChange(checkbox);
-        } else {
-          updateStyles(checkbox);
-        }
-      }
-      if (checkbox._images) {
-        O$.preventDefaultEvent(e); // no form submission
-      }
-    });
+    O$.addEventHandler(checkbox, "click", function (e) {
+              //Fix bug OF-229
+              e = e || window.event;
+              if (e.pageX == null && e.clientX != null) {
+                var html = document.documentElement;
+                var body = document.body;
+                e.pageX = e.clientX + (html && html.scrollLeft || body && body.scrollLeft || 0) - (html.clientLeft || 0);
+                e.pageY = e.clientY + (html && html.scrollTop || body && body.scrollTop || 0) - (html.clientTop || 0);
+              }
+              if ((e.pageX != 0) && (e.pageY != 0)) {
+                if (shouldProcessEvents(checkbox)) {
+                  checkbox._pressed = false;
+                  if (checkbox._images) {
+                    nextState(checkbox);
+                    fireOnChange(checkbox);
+                  } else {
+                    updateStyles(checkbox);
+                  }
+                }
+              }
 
-    O$.addEventHandler(checkbox, "mouseover", function(e) {
+              if (checkbox._images) {
+                O$.preventDefaultEvent(e); // no form submission
+              }
+            }
+    );
+
+    O$.addEventHandler(checkbox, "mouseover", function (e) {
       if (shouldProcessEvents(checkbox)) {
         checkbox._rollover = true;
         if (checkbox._images) {
@@ -221,7 +248,7 @@ O$.Checkbox = {
       }
     });
 
-    O$.addEventHandler(checkbox, "mouseout", function() {
+    O$.addEventHandler(checkbox, "mouseout", function () {
       if (shouldProcessEvents(checkbox)) {
         checkbox._rollover = false;
         if (checkbox._images) {
@@ -234,10 +261,10 @@ O$.Checkbox = {
 
     function nextState(checkbox) {
       var nextStateIndex = 0;
-      for (var i=0; i<checkbox._stateList.length; i++) {
-         if (checkbox._stateList[i] == checkbox._state.value) {
-           nextStateIndex = i+1;
-         }
+      for (var i = 0; i < checkbox._stateList.length; i++) {
+        if (checkbox._stateList[i] == checkbox._state.value) {
+          nextStateIndex = i + 1;
+        }
       }
       if (nextStateIndex >= checkbox._stateList.length) {
         nextStateIndex = 0;
@@ -251,7 +278,9 @@ O$.Checkbox = {
       if (checkbox._onchange) {
         var event = O$.createEvent("change");
         var returnValue = checkbox._onchange(event);
-        if (returnValue == undefined) { returnValue = event.returnValue; }
+        if (returnValue == undefined) {
+          returnValue = event.returnValue;
+        }
         return returnValue;
       }
       return undefined;
@@ -284,11 +313,11 @@ O$.Checkbox = {
       resetPosition(checkbox);
 
       O$.setStyleMappings(checkbox, {
-        selected: checkbox.isSelected() ? checkbox._selectedClass : null,
-        unselected: (checkbox.isDefined() && !checkbox.isSelected()) ? checkbox._unselectedClass : null,
-        _undefined: checkbox.isDefined() ? null  : checkbox._undefinedClass,
-        rollover: checkbox._rollover ? checkbox._rolloverClass : null,
-        focused: checkbox._focused ? checkbox._focusedClass : null
+        selected:checkbox.isSelected() ? checkbox._selectedClass : null,
+        unselected:(checkbox.isDefined() && !checkbox.isSelected()) ? checkbox._unselectedClass : null,
+        _undefined:checkbox.isDefined() ? null : checkbox._undefinedClass,
+        rollover:checkbox._rollover ? checkbox._rolloverClass : null,
+        focused:checkbox._focused ? checkbox._focusedClass : null
       });
 
       fixPosition(checkbox);
@@ -320,37 +349,42 @@ O$.Checkbox = {
 
     function getStyleKey(checkbox) {
       var result = checkbox.isDefined() ? (checkbox.isSelected() ? "selected" : "unselected") : "undefined";
-      if (checkbox._rollover) { result += "+rollover"; }
-      if (checkbox._focused) { result += "+focused"; }
+      if (checkbox._rollover) {
+        result += "+rollover";
+      }
+      if (checkbox._focused) {
+        result += "+focused";
+      }
       return result;
     }
 
   },
 
-  indentDelta :
-    // in-place call
-    function() {
-      var delta = {};
+  indentDelta:// in-place call
+          function () {
+            var delta = {};
 
-      if (O$.isExplorer8()) {
-        delta.marginLeft = 3;
-      } else if (!O$.isOpera()) {
-        delta.marginLeft = 4;
-      }
+            if (O$.isExplorer8()) {
+              delta.marginLeft = 3;
+            } else if (!O$.isOpera()) {
+              delta.marginLeft = 4;
+            }
 
-      if (O$.isSafari3()) {
-        delta.marginRight = 1;
-      } else {
-        delta.marginRight = 3;
-      }
+            if (O$.isSafari3()) {
+              delta.marginRight = 1;
+            } else {
+              delta.marginRight = 3;
+            }
 
-      if (O$.isExplorer7() || O$.isExplorer6() || O$.isOpera()) {
-        delta.marginBottom = -1;
-      } else if (O$.isSafari3()) {
-        delta.marginBottom = -3;
-      }
+            if (O$.isExplorer7() || O$.isExplorer6() || O$.isOpera()) {
+              delta.marginBottom = -1;
+            } else if (O$.isSafari3()) {
+              delta.marginBottom = -3;
+            }
 
-      return delta;
-    } ()
+            return delta;
+          }
+
+                  ()
 
 };

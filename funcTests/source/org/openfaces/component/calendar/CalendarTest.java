@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -14,7 +14,6 @@ package org.openfaces.component.calendar;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
-import org.openqa.selenium.By;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.CalendarInspector;
 
@@ -139,6 +138,7 @@ public class CalendarTest extends BaseCalendarTestCase {
         dateRangesPrinter.click();
         ElementInspector emptyDiv = element("empty");
         emptyDiv.assertText("3 4 5 6 7 8 9 10 11 ");
+
         dateChooser("formID:fromDateChooser").field().clear();
         dateChooser("formID:fromDateChooser").field().type("Nov 6, 2007");
         dateChooser("formID:toDateChooser").field().clear();

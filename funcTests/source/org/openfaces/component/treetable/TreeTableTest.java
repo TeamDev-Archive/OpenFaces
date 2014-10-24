@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -16,7 +16,6 @@ import org.openfaces.test.OpenFacesTestCase;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.LoadingMode;
@@ -105,15 +104,13 @@ public class TreeTableTest extends OpenFacesTestCase {
         for (int i = 1; i < 26; i++) {
             if (i == 1 || i == 4 || i == 16 || i == 19 || i == 21 || i == 24) {
                 //click right arrow to expand first TreeTable node
-                Actions right = new Actions(getDriver()).sendKeys(Keys.ARROW_RIGHT);
-                right.build().perform();
+                new Actions(getDriver()).sendKeys(Keys.ARROW_RIGHT).build().perform();
                 OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
             }
             //get selected index value
             emptyElement.assertText(String.valueOf(i - 1));
             //click down arrow
-            Actions down = new Actions(getDriver()).sendKeys(Keys.ARROW_DOWN);
-            down.build().perform();
+            new Actions(getDriver()).sendKeys(Keys.ARROW_DOWN).build().perform();
         }
         //check mouse selection for the same TreeTable
         element("formID:singleSelectionTreeTableID:1:categoryID").click();
@@ -145,11 +142,10 @@ public class TreeTableTest extends OpenFacesTestCase {
     public void testMultipleSelectionAndKeyboardNavigation() {
         testAppFunctionalPage("/components/treetable/treeTableMultipleSelection.jsf");
         ElementInspector categoryOutput = element("formID:multipleSelectionTreeTableID:0:categoryID");
-        Actions click= new Actions(getDriver()).moveToElement(
+        new Actions(getDriver()).moveToElement(
                 getDriver().findElement(By.id("formID:multipleSelectionTreeTableID:0:categoryID")))
-                .click();
-        click.build().perform();
-//        categoryOutput.click();
+                .click().build().perform();
+
 
         TreeTableInspector multipleSelectionTreeTable = treeTable("formID:multipleSelectionTreeTableID");
         multipleSelectionTreeTable.focus();
@@ -196,38 +192,31 @@ public class TreeTableTest extends OpenFacesTestCase {
         //check root nodes
         element("formID:multipleNodePathsSelectionTreeTableID:0:categoryID").click();
         TreeTableInspector multipleNodePathsTreeTable = treeTable("formID:multipleNodePathsSelectionTreeTableID");
-        Actions down = new Actions(getDriver()).moveToElement(
+        new Actions(getDriver()).moveToElement(
                 getDriver().findElement(By.xpath(multipleNodePathsTreeTable.getXPath())))
-                .sendKeys(Keys.ARROW_DOWN);
-        down.build().perform();
-//        multipleNodePathsTreeTable.keyPress(Keys.ARROW_DOWN);
+                .sendKeys(Keys.ARROW_DOWN).build().perform();
         element("formID:multipleNodeDatasSelectionTreeTableID:0:categoryID").click();
         TreeTableInspector multipleNodeDataTreeTable = treeTable("formID:multipleNodeDatasSelectionTreeTableID");
-        down = new Actions(getDriver()).moveToElement(
+        new Actions(getDriver()).moveToElement(
                 getDriver().findElement(By.xpath(multipleNodeDataTreeTable.getXPath())))
-                .sendKeys(Keys.ARROW_DOWN);
-        down.build().perform();
-//        multipleNodeDataTreeTable.keyPress(Keys.ARROW_DOWN);
+                .sendKeys(Keys.ARROW_DOWN).build().perform();
 
         //check root + expanded child nodes
         element("formID:multipleNodePathsSelectionTreeTableID:4:categoryID").click();
 
         //click right arrow
-        Actions right = new Actions(getDriver()).moveToElement(
+        new Actions(getDriver()).moveToElement(
                 getDriver().findElement(By.xpath(multipleNodeDataTreeTable.getXPath())))
-                .sendKeys(Keys.ARROW_RIGHT);
-        right.build().perform();
-//        multipleNodePathsTreeTable.keyPress(Keys.ARROW_RIGHT);
+                .sendKeys(Keys.ARROW_RIGHT).build().perform();
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         for (int i = 0; i < 3; i++) {
             createEvent(multipleNodePathsTreeTable, null, EventType.KEY, "keypress", KeyEvent.VK_DOWN, true);
         }
 
-        click= new Actions(getDriver()).moveToElement(
+        new Actions(getDriver()).moveToElement(
                 getDriver().findElement(By.id("formID:multipleNodeDatasSelectionTreeTableID:2:categoryID")))
-                .click();
-        click.build().perform();
-//        element("formID:multipleNodeDatasSelectionTreeTableID:2:categoryID").click();
+                .click().build().perform();
+
         multipleNodeDataTreeTable.keyPress(Keys.ARROW_RIGHT);
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         for (int i = 0; i < 3; i++) {
@@ -259,17 +248,14 @@ public class TreeTableTest extends OpenFacesTestCase {
         TreeTableInspector treeTable = treeTable("formID:treeTableKeyboardNavigation");
 
         treeTable.focus();
-//        Actions dpwn = new Actions(getDriver()).moveToElement(
-//                getDriver().findElement(By.xpath(treeTable.bodyRow(0).getXPath())))
-//                .sendKeys(getDriver().findElement(By.xpath(treeTable.bodyRow(0).getXPath())), Keys.ARROW_DOWN);
-//        dpwn.build().perform();
+
         ElementInspector emptyElement = element("empty");
         //down arrow
         createEvent(treeTable, null, EventType.KEY, "keypress", KeyEvent.VK_DOWN, false);
         emptyElement.assertText("  0");
 
         //'End' button
-        createEvent(treeTable, null, EventType.KEY, "keypress", KeyEvent.VK_END, false);
+                createEvent(treeTable, null, EventType.KEY, "keypress", KeyEvent.VK_END, false);
         emptyElement.assertText("  6");
 
         //up arrow

@@ -7,19 +7,18 @@
       xmlns:rich="http://richfaces.org/rich"
       xmlns:t="http://myfaces.apache.org/tomahawk"
         >
-<head>
+<h:head>
   <title>Confirmation Test Invokers</title>
-  <script src="../funcTestsUtil.js" type="text/javascript"></script>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
+  <script src="../funcTestsUtil.js" type="text/javascript"></script>
+</h:head>
 
-</head>
-
-<body onload="O$('form1:setConfirmationTexts').setTexts('header custom text', 'details custom text', 'accept', 'decline');">
+<h:body onload="O$('form1:setConfirmationTexts').setTexts('header custom text', 'details custom text', 'accept', 'decline');">
 <f:view>
   <h:form id="form1">
   <ui:include src="confirmationTestInvokers_core.xhtml"/>
 </h:form>
 </f:view>
 
-</body>
+</h:body>
         </html>

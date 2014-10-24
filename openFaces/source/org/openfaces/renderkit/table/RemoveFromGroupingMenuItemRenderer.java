@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -29,8 +29,7 @@ public class RemoveFromGroupingMenuItemRenderer extends ColumnMenuItemRenderer {
         menuItem.setOnclick(new ScriptBuilder().functionCall("O$.ColumnMenu._removeFromGrouping",
                 getTable("<o:sortDescendingMenuItem>", menuItem)).toString());
         if (menuItem.getIconUrl() == null)
-            menuItem.setIconUrl(Resources.internalURL(
-                    context, null, "table/removeFromGrouping.png", false));
+            menuItem.setIconUrl(Resources.internalURL(context, "table/removeFromGrouping.png"));
         super.encodeBegin(context, component);
     }
 }

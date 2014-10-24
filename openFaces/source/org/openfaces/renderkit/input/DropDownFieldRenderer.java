@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -90,6 +90,8 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
     public void decode(FacesContext context, UIComponent component) {
         if (AjaxUtil.isAjaxPortionRequest(context, component))
             return;
+        Rendering.decodeBehaviors(context, component);
+
         Map<String, String> requestMap = context.getExternalContext().getRequestParameterMap();
         DropDownFieldBase dropDownField = (DropDownFieldBase) component;
         String fieldId = getFieldClientId(context, dropDownField);
@@ -120,8 +122,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
 
         String state = requestMap.get(fieldId + PROMPT_VISIBLE_SUFFIX);
         if ("false".equals(state)) {
-            if (!dropDownField.isDisabled())
-                dropDownField.setSubmittedValue(submittedValue);
+            dropDownField.setSubmittedValue(submittedValue);
         }
     }
 
@@ -267,18 +268,24 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
 
         Collection itemCollection = (Collection) itemsValue;
         Collection<UISelectItem> items = new ArrayList<UISelectItem>(itemCollection.size());
-        for (Object collectionItem : itemCollection) {
-            if (collectionItem instanceof UISelectItem) {
-                items.add((UISelectItem) collectionItem);
-            } else if (collectionItem instanceof SelectItem) {
-                UISelectItem selectItem = new UISelectItem();
-                fillUISelectItemFromValue(selectItem, collectionItem);
-                items.add(selectItem);
-            } else {
-                UISelectItem selectItem = new UISelectItem();
-                selectItem.setItemValue(collectionItem);
-                items.add(selectItem);
+        if (component.getChildCount() == 0) {
+            for (Object collectionItem : itemCollection) {
+                if (collectionItem instanceof UISelectItem) {
+                    items.add((UISelectItem) collectionItem);
+                } else if (collectionItem instanceof SelectItem) {
+                    UISelectItem selectItem = new UISelectItem();
+                    fillUISelectItemFromValue(selectItem, collectionItem);
+                    items.add(selectItem);
+                } else {
+                    UISelectItem selectItem = new UISelectItem();
+                    selectItem.setItemValue(collectionItem);
+                    items.add(selectItem);
+                }
             }
+        }else{
+            MockItem mockItem = new MockItem();
+            mockItem.setChildren(component.getChildren());
+            items.add(mockItem);
         }
         return items;
     }
@@ -352,7 +359,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
     protected int getItemPresentationColumn(DropDownComponent dropDown) {
         return -1;
     }
-    
+
     protected InitScript renderInitScript(FacesContext context, DropDownComponent dropDown) throws IOException {
         DropDownFieldBase dropDownField = (DropDownFieldBase) dropDown;
 
@@ -387,19 +394,19 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         if (!dropDown.isReadonly()) {
             Map<String, Script> eventHandlers = new HashMap<String, Script>();
 
-            String onchange = dropDownField.getOnchange();
+            String onchange = Rendering.getChangeHandlerScript(dropDownField);
             if (onchange != null)
                 eventHandlers.put("onchange_adapted", new AnonymousFunction(new RawScript(onchange), "event"));
 
-            String onkeypress = dropDownField.getOnkeypress();
+            String onkeypress = Rendering.getEventHandlerScript(dropDownField, "keypress");
             if (onkeypress != null)
                 eventHandlers.put("onkeypress_adapted", new AnonymousFunction(new RawScript(onkeypress), "event"));
 
-            String ondropdown = dropDownField.getOndropdown();
+            String ondropdown = Rendering.getEventHandlerScript(dropDownField, "dropdown");
             if (ondropdown != null)
                 eventHandlers.put("ondropdown", new AnonymousFunction(new RawScript(ondropdown), "event"));
 
-            String oncloseup = dropDownField.getOncloseup();
+            String oncloseup = Rendering.getEventHandlerScript(dropDownField, "closeup");
             if (oncloseup != null)
                 eventHandlers.put("oncloseup", new AnonymousFunction(new RawScript(oncloseup), "event"));
 
@@ -537,31 +544,15 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         String initialStyleClass = getInitialStyleClass(context, dropDown);
         if (initialStyleClass != null)
             writer.writeAttribute("class", initialStyleClass, null);
-        /** Fix for issue with loading of style classes with javascript in IE. As a result "style" attributes problems
-         *  wasn't fixed by the code above, and we need to add style attribute to make loaded component look the same
-         *  as after initialization. This attribute removed on the client after complete loading.
-        */
-        if (Environment.isExplorer()){
-            if (dropDown.getStyle() != null)
-                writer.writeAttribute("style", dropDown.getStyle(), null);
-        }
     }
 
     @Override
     protected void writeDefaultFieldStyle(FacesContext context, ResponseWriter writer,
                                           DropDownComponent dropDown) throws IOException {
-        super.writeDefaultFieldStyle(context,writer,dropDown);
+        super.writeDefaultFieldStyle(context, writer, dropDown);
         String fieldClass = getFieldClass(context, dropDown);
         if (fieldClass != null)
             writer.writeAttribute("class", fieldClass, null);
-        /** Fix for issue with loading of style classes with javascript in IE. As a result "style" attributes problems
-         *  wasn't fixed by the code above, and we need to add style attribute to make loaded component look the same
-         *  as after initialization. This attribute removed on the client after complete loading.
-         */
-        if (Environment.isExplorer()){
-            if (dropDown.getFieldStyle() != null)
-                writer.writeAttribute("style", dropDown.getFieldStyle(), null);
-        }
     }
 
     /**
@@ -578,13 +569,5 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         super.writeAdditionalButtonAttributes(context, writer, dropDown);
         String buttonClass = getButtonClass(context, dropDown);
         writer.writeAttribute("class", buttonClass, null);
-        /** Fix for issue with loading of style classes with javascript in IE. As a result "style" attributes problems
-         *  wasn't fixed by the code above, and we need to add style attribute to make loaded component look the same
-         *  as after initialization. This attribute removed on the client after complete loading.
-         */
-        if (Environment.isExplorer()){
-            if (dropDown.getButtonStyle() != null)
-                writer.writeAttribute("style", dropDown.getButtonStyle(), null);
-        }
     }
 }

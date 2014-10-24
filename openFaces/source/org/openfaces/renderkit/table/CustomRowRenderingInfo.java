@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -14,7 +14,7 @@ package org.openfaces.renderkit.table;
 import org.openfaces.component.table.Row;
 import org.openfaces.util.Rendering;
 
-import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehavior;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,13 +43,13 @@ public class CustomRowRenderingInfo implements Serializable {
         return customCellInfos[colIndex];
     }
 
-    public List<UIComponent> getA4jSupportComponentsForThisRow(List customRows) {
+    public List<ClientBehavior> getA4jAjaxBehaviorsForThisRow(List customRows) {
         if (a4jEnabledRowDeclarationIndexes == null)
             return Collections.emptyList();
-        List<UIComponent> result = new ArrayList<UIComponent>();
+        List<ClientBehavior> result = new ArrayList<ClientBehavior>();
         for (Integer index : a4jEnabledRowDeclarationIndexes) {
             Row tableRow = (Row) customRows.get(index);
-            UIComponent a4jSupport = Rendering.getA4jSupportForComponent(tableRow);
+            ClientBehavior a4jSupport = Rendering.getA4jAjaxForComponent(tableRow);
             result.add(a4jSupport);
         }
 

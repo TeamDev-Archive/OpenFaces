@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -26,7 +26,7 @@ public class IntegerConverterClientValidator extends AbstractClientValidator {
     private static final String CONVERSION_MESSAGE_ID = "javax.faces.convert.IntegerConverter.CONVERSION";
 
     public IntegerConverterClientValidator() {
-        addJavascriptLibrary(new ValidationJavascriptLibrary("integerConverterValidator.js", null));
+        addJavascriptLibrary(new ValidationJavascriptLibrary("integerConverterValidator.js"));
     }
 
     public String getJsValidatorName() {

@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -14,6 +14,7 @@ package org.openfaces.component.table.export;
 
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -56,7 +57,16 @@ public class CellComponentsDataExtractor implements CellDataExtractor {
             }
         }
         List<Object> result = new LinkedList<Object>();
-        for (UIComponent child : component.getChildren()) {
+        List<UIComponent> children;
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (UIComponent.isCompositeComponent(component)) {
+            children = component.getFacet(UIComponent.COMPOSITE_FACET_NAME).getChildren();
+            component.pushComponentToEL(context, component);
+        } else {
+            children = component.getChildren();
+        }
+        for (UIComponent child : children) {
+            child.pushComponentToEL(context, child);
             result.addAll(getData(child));
         }
         return result;

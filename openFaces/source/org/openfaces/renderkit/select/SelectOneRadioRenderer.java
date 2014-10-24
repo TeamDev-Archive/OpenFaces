@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -122,7 +122,7 @@ public class SelectOneRadioRenderer extends SelectManyInputRenderer {
             if (isValueEquals(selectOneRadio, selectItem)) {
                 writeAttribute(writer, "checked", "checked");
             }
-            writeAttribute(writer, "onchange", selectOneRadio.getOnchange());
+            writeAttribute(writer, "onchange", Rendering.getChangeHandlerScript(selectOneRadio));
             writer.endElement(TAG_NAME);
 
             writer.startElement("label", selectOneRadio);
@@ -141,6 +141,8 @@ public class SelectOneRadioRenderer extends SelectManyInputRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+        Rendering.decodeBehaviors(context, component);
+        
         SelectOneRadio selectOneRadio = (SelectOneRadio) component;
 
         Map<String, String> requestMap = context.getExternalContext().getRequestParameterMap();

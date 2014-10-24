@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,8 +11,6 @@
  */
 package org.openfaces.util;
 
-import org.openfaces.ajax.AjaxRequest;
-import org.openfaces.component.OUIObjectIterator;
 import org.openfaces.component.ajax.DefaultProgressMessage;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.Columns;
@@ -20,23 +18,12 @@ import org.openfaces.component.table.impl.DynamicColumn;
 import org.openfaces.event.AjaxActionEvent;
 import org.openfaces.renderkit.ajax.DefaultProgressMessageRenderer;
 
-import javax.el.ELContext;
-import javax.el.MethodExpression;
-import javax.el.MethodNotFoundException;
 import javax.faces.FacesException;
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
-import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
-import javax.portlet.faces.Bridge;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -56,11 +43,6 @@ public class UtilPhaseListener extends PhaseListenerBase {
     private static final String SUBMISSION_AJAX_INACTIVITY_TIMEOUT_CONTEXT_PARAM = "org.openfaces.submissionAjaxInactivityTimeout";
     private static final long DEFAULT_SUBMISSION_AJAX_INACTIVITY_TIMEOUT = 2000;
 
-    public static final String PARAM_ACTION_COMPONENT = "_of_actionComponent";
-    public static final String PARAM_ACTION_LISTENER = "_of_actionListener";
-    public static final String PARAM_ACTION = "_of_action";
-    public static final String PARAM_IMMEDIATE = "_of_immediate";
-
     public void beforePhase(PhaseEvent event) {
     }
 
@@ -71,67 +53,43 @@ public class UtilPhaseListener extends PhaseListenerBase {
         FacesContext context = event.getFacesContext();
         PhaseId phaseId = event.getPhaseId();
         if (phaseId.equals(PhaseId.RENDER_RESPONSE)) {
-            List<String> renderedJsLinks = Resources.getRenderedJsLinks(context);
-            String utilJs = Resources.utilJsURL(context);
-            boolean renderFocusScript = isAutoFocusTrackingEnabled(context);
-            boolean renderScrollingScript = isAutoScrollPosTrackingEnabled(context);
-            boolean renderContextMenuScript = isDisabledContextMenuEnabled(context);
-            if (!renderedJsLinks.contains(utilJs)) {
-                if (renderFocusScript ||
-                        renderScrollingScript ||
-                        renderContextMenuScript ||
-                        getForceIncludingUtilJs(context)) {
-                    Resources.registerJavascriptLibrary(context, utilJs);
-                }
-            }
-            if (renderFocusScript)
-                Rendering.appendOnLoadScript(context, encodeFocusTracking(context));
-            if (renderScrollingScript)
-                Rendering.appendOnLoadScript(context, encodeScrollPosTracking(context));
-
-            if (renderContextMenuScript)
-                Rendering.appendOnLoadScript(context, encodeDisabledContextMenu(context));
-            encodeAjaxProgressMessage(context);
-
-            // Processing of Ajax requests as ResourceRequest is required under GateIn portal in order to
-            // comply with existing navigationalState. This is important for RichFaces Ajax functionality
-            if (Environment.isGateInPortal(context)) {
-                String viewId = context.getViewRoot().getViewId();
-                String ajaxRequestUrl = context.getApplication().getViewHandler().getActionURL(context, viewId);
-                String encodedAjaxRequestUrl;
-
-                if (null != context.getExternalContext().getRequestMap().get(Bridge.PORTLET_LIFECYCLE_PHASE)) {
-                    ajaxRequestUrl = ajaxRequestUrl
-                            + ((ajaxRequestUrl.lastIndexOf('?') > 0) ? "&" : "?")
-                            + Bridge.FACES_VIEW_ID_PARAMETER + "=" + viewId;
-                    encodedAjaxRequestUrl = context.getExternalContext().encodeResourceURL(ajaxRequestUrl);
-                } else {
-                    encodedAjaxRequestUrl = context.getExternalContext().encodeActionURL(ajaxRequestUrl);
-                }
-
-                Rendering.appendUniqueRTLibraryScripts(context, new ScriptBuilder().functionCall("O$._initAjaxRequestUrl", encodedAjaxRequestUrl).semicolon());
-
-            }
+//            appendHeaderContent(context);
         } else if (phaseId.equals(PhaseId.APPLY_REQUEST_VALUES)) {
             decodeFocusTracking(context);
             decodeScrollPosTracking(context);
         }
     }
 
-    private void encodeAjaxProgressMessage(FacesContext context) {
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-
-        if (requestMap.containsKey(DefaultProgressMessageRenderer.PROGRESS_MESSAGE)) {
-            requestMap.put(DefaultProgressMessageRenderer.RENDERING, Boolean.TRUE);
-            DefaultProgressMessage defaultProgressMessage = (DefaultProgressMessage) requestMap.get(DefaultProgressMessageRenderer.PROGRESS_MESSAGE);
-            renderProgressMessage(context, defaultProgressMessage);
-        } else if (requestMap.containsKey(AjaxUtil.AJAX_SUPPORT_RENDERED)) {
-            DefaultProgressMessage defaultProgressMessage = new DefaultProgressMessage();
-            renderProgressMessage(context, defaultProgressMessage);
+    public static void appendHeaderContent(FacesContext context) {
+        List<String> renderedJsLinks = Resources.getRenderedJsLinks(context);
+        String utilJs = Resources.utilJsURL(context);
+        boolean renderFocusScript = isAutoFocusTrackingEnabled(context);
+        boolean renderScrollingScript = isAutoScrollPosTrackingEnabled(context);
+        boolean renderContextMenuScript = isDisabledContextMenuEnabled(context);
+        if (!renderedJsLinks.contains(utilJs)) {
+            if (renderFocusScript ||
+                    renderScrollingScript ||
+                    renderContextMenuScript ||
+                    getForceIncludingUtilJs(context)) {
+                Resources.addHeaderResource(context, Resources.UTIL_JS_PATH, Resources.LIBRARY_NAME);
+            }
         }
+        if (renderFocusScript)
+            Resources.addHeaderInitScript(context, encodeFocusTracking(context));
+        if (renderScrollingScript)
+            Resources.addHeaderInitScript(context, encodeScrollPosTracking(context));
+
+        if (renderContextMenuScript)
+            Rendering.appendOnLoadScript(context, encodeDisabledContextMenu(context));
+        encodeAjaxProgressMessage(context);
     }
 
-    private void renderProgressMessage(FacesContext context, DefaultProgressMessage defaultProgressMessage) {
+    private static void encodeAjaxProgressMessage(FacesContext context) {
+        DefaultProgressMessage defaultProgressMessage = new DefaultProgressMessage();
+        renderProgressMessage(context, defaultProgressMessage);
+    }
+
+    private static void renderProgressMessage(FacesContext context, DefaultProgressMessage defaultProgressMessage) {
         try {
             defaultProgressMessage.encodeAll(context);
         } catch (IOException e) {
@@ -139,23 +97,23 @@ public class UtilPhaseListener extends PhaseListenerBase {
         }
     }
 
-    private boolean getForceIncludingUtilJs(FacesContext context) {
+    private static boolean getForceIncludingUtilJs(FacesContext context) {
         return Rendering.getBooleanContextParam(context, FORCE_UTIL_JS_CONTEXT_PARAM);
     }
 
-    private boolean isAutoFocusTrackingEnabled(FacesContext context) {
+    private static boolean isAutoFocusTrackingEnabled(FacesContext context) {
         return Rendering.getBooleanContextParam(context, AUTO_FOCUS_TRACKING_CONTEXT_PARAM);
     }
 
-    private boolean isDisabledContextMenuEnabled(FacesContext context) {
+    private static boolean isDisabledContextMenuEnabled(FacesContext context) {
         return Rendering.getBooleanContextParam(context, DISABLED_CONTEXT_MENU_CONTEXT_PARAM);
     }
 
-    private boolean isAutoScrollPosTrackingEnabled(FacesContext context) {
+    private static boolean isAutoScrollPosTrackingEnabled(FacesContext context) {
         return Rendering.getBooleanContextParam(context, AUTO_SCROLL_POS_TRACKING_CONTEXT_PARAM);
     }
 
-    private Script encodeFocusTracking(FacesContext facesContext) {
+    private static Script encodeFocusTracking(FacesContext facesContext) {
         ExternalContext externalContext = facesContext.getExternalContext();
         Map requestMap = externalContext.getRequestMap();
         String focusedComponentId = (String) requestMap.get(FOCUSED_COMPONENT_ID_KEY);
@@ -164,7 +122,7 @@ public class UtilPhaseListener extends PhaseListenerBase {
                 focusedComponentId != null ? focusedComponentId : null).semicolon();
     }
 
-    private Script encodeScrollPosTracking(FacesContext facesContext) {
+    private static Script encodeScrollPosTracking(FacesContext facesContext) {
         ExternalContext externalContext = facesContext.getExternalContext();
         Map requestMap = externalContext.getRequestMap();
         String scrollPos = (String) requestMap.get(SCROLL_POS_KEY);
@@ -173,7 +131,7 @@ public class UtilPhaseListener extends PhaseListenerBase {
                 scrollPos != null ? scrollPos : null).semicolon();
     }
 
-    private Script encodeDisabledContextMenu(FacesContext facesContext) {
+    private static Script encodeDisabledContextMenu(FacesContext facesContext) {
         return new RawScript("O$.disabledContextMenuFor(document);");
     }
 
@@ -193,19 +151,8 @@ public class UtilPhaseListener extends PhaseListenerBase {
         }
 
         final ScriptBuilder script = new ScriptBuilder("O$.setSubmissionAjaxInactivityTimeout(" + inactivityTimeout + ");");
-        boolean isAjax4jsfRequest = AjaxUtil.isAjax4jsfRequest();
-        boolean isPortletRequest = AjaxUtil.isPortletRequest(context);
 
-        if (isAjax4jsfRequest || isPortletRequest) {
-            try {
-                Rendering.renderInitScript(context, script);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        } else {
-            Rendering.appendOnLoadScript(context, script);
-        }
-
+        Rendering.appendOnLoadScript(context, script);
     }
 
     private void decodeFocusTracking(FacesContext facesContext) {
@@ -233,262 +180,4 @@ public class UtilPhaseListener extends PhaseListenerBase {
         return PhaseId.ANY_PHASE;
     }
 
-
-    public static String processAjaxExecutePhase(FacesContext context, RequestFacade request, UIViewRoot viewRoot) {
-        String listener = request.getParameter(PARAM_ACTION_LISTENER);
-        String action = request.getParameter(PARAM_ACTION);
-        String actionComponentId = request.getParameter(PARAM_ACTION_COMPONENT);
-        if (listener != null || action != null) {
-            ELContext elContext = context.getELContext();
-            UIComponent component = null;
-            List<Runnable> restoreDataPointerRunnables = new ArrayList<Runnable>();
-            if (actionComponentId != null)
-                component = findComponentById(viewRoot, actionComponentId, true, false, true, restoreDataPointerRunnables);
-            if (component == null)
-                component = viewRoot;
-
-            Object result = null;
-            if (action != null) {
-                MethodExpression methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
-                        elContext, "#{" + action + "}", String.class, new Class[]{});
-                /*result = */
-                methodBinding.invoke(elContext, null);
-            }
-            if (listener != null) {
-                AjaxActionEvent event = new AjaxActionEvent(component);
-                event.setPhaseId(Boolean.valueOf(request.getParameter(PARAM_IMMEDIATE)) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION);
-                MethodExpression methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
-                        elContext, "#{" + listener + "}", void.class, new Class[]{ActionEvent.class});
-                try {
-                    methodExpression.getMethodInfo(elContext);
-                } catch (MethodNotFoundException e1) {
-                    // both actionEvent and AjaxActionEvent parameter declarations are allowed
-                    methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
-                            elContext, "#{" + listener + "}", void.class, new Class[]{AjaxActionEvent.class});
-                    try {
-                        methodExpression.getMethodInfo(elContext);
-                    } catch (MethodNotFoundException e2) {
-                        Log.log("Couldn't find Ajax action handler method. Method expression: #{" + listener + "} . " +
-                                "Note, the appropriate method should receive one parameter of either javax.faces.event.ActionEvent or " +
-                                "org.openfaces.event.AjaxActionEvent type.", e2);
-                        throw e2;
-                    }
-                }
-                methodExpression.invoke(elContext, new Object[]{event});
-                Object listenerResult = event.getAjaxResult();
-                if (listenerResult != null)
-                    result = listenerResult;
-            }
-            if (result != null)
-                AjaxRequest.getInstance().setAjaxResult(result);
-            for (Runnable restoreDataPointerRunnable : restoreDataPointerRunnables) {
-                restoreDataPointerRunnable.run();
-            }
-        }
-        return actionComponentId;
-    }
-
-    public static UIComponent findComponentById(UIComponent parent,
-                                                String id,
-                                                boolean preProcessDecodesOnTables,
-                                                boolean preRenderResponseOnTables,
-                                                boolean checkComponentPresence) {
-        return findComponentById(parent, id, preProcessDecodesOnTables, preRenderResponseOnTables, checkComponentPresence, null);
-    }
-
-    public static UIComponent findComponentById(UIComponent parent,
-                                                String id,
-                                                boolean preProcessDecodesOnTables,
-                                                boolean preRenderResponseOnTables,
-                                                boolean checkComponentPresence,
-                                                List<Runnable> restoreDataPointerRunnables) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (Environment.isGateInPortal(context) && parent instanceof UIViewRoot) {
-            String rootId = parent.getClientId(context);
-            int idx = rootId.indexOf(parent.getId());
-            String prefix = rootId.substring(0, idx);
-            if (id.startsWith(prefix))
-                id = id.substring(prefix.length());
-        }
-
-        UIComponent componentByPath = findComponentByPath(parent, id, preProcessDecodesOnTables,
-                preRenderResponseOnTables, restoreDataPointerRunnables);
-        if (checkComponentPresence && componentByPath == null)
-            throw new FacesException("Component by id not found: " + id);
-        return componentByPath;
-    }
-
-    private static UIComponent findComponentByPath(UIComponent parent,
-                                                   String path,
-                                                   boolean preProcessDecodesOnTables,
-                                                   boolean preRenderResponseOnTables,
-                                                   List<Runnable> restoreDataPointerRunnables) {
-        while (true) {
-            if (path == null) {
-                return null;
-            }
-
-            int separator = path.indexOf(NamingContainer.SEPARATOR_CHAR, 1);
-            if (separator == -1)
-                return componentById(parent, path, true, preProcessDecodesOnTables,
-                        preRenderResponseOnTables, restoreDataPointerRunnables);
-
-            String id = path.substring(0, separator);
-            UIComponent nextParent = componentById(parent, id, false, preProcessDecodesOnTables,
-                    preRenderResponseOnTables, restoreDataPointerRunnables);
-            if (nextParent == null) {
-                return null;
-            }
-            parent = nextParent;
-            path = path.substring(separator + 1);
-        }
-    }
-
-    private static UIComponent componentById(UIComponent parent, String id, boolean isLastComponentInPath,
-                                             boolean preProcessDecodesOnTables, boolean preRenderResponseOnTables,
-                                             List<Runnable> restoreDataPointerRunnables) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (id.length() > 0 && (isNumberBasedId(id) || id.startsWith(":")) && parent instanceof AbstractTable) {
-            final AbstractTable table = ((AbstractTable) parent);
-            if (!isLastComponentInPath) {
-                if (preProcessDecodesOnTables)
-                    table.invokeBeforeProcessDecodes(context);
-                if (preRenderResponseOnTables) {
-                    table.invokeBeforeRenderResponse(context);
-                    table.setRowIndex(-1); // make the succeeding setRowIndex call provide the just-read actual row data through request-scope variables
-                }
-
-                int rowIndex = table.getRowIndexByClientSuffix(id);
-                final int prevRowIndex = table.getRowIndex();
-                if (prevRowIndex == rowIndex) {
-                    // ensure row index setting will be run anew to ensure proper request-scope variable values
-                    table.setRowIndex(-1);
-                }
-                table.setRowIndex(rowIndex);
-                if (!table.isRowAvailable()) {
-                    table.setRowIndex(-1);
-                    String tableClientId = table.getClientId(context);
-                    table.setRowIndex(prevRowIndex);
-                    throw new IllegalStateException("Couldn't find table row for this Ajax request (row data for the requested row is missing). Table's clientId=" + tableClientId + "; rowIndex=" + rowIndex);
-                }
-                if (restoreDataPointerRunnables != null)
-                    restoreDataPointerRunnables.add(new Runnable() {
-                        public void run() {
-                            table.setRowIndex(prevRowIndex);
-                        }
-                    });
-            } else {
-                int rowIndex = table.getRowIndexByClientSuffix(id);
-                final int prevRowIndex = table.getRowIndex();
-                if (prevRowIndex == rowIndex) {
-                    // ensure row index setting will be run anew to ensure proper request-scope variable values
-                    table.setRowIndex(-1);
-                }
-                table.setRowIndex(rowIndex);
-                if (!table.isRowAvailable()) {
-                    table.setRowIndex(-1);
-                    String tableClientId = table.getClientId(context);
-                    table.setRowIndex(prevRowIndex);
-                    throw new IllegalStateException("Couldn't find table row for this Ajax request (row data for the requested row is missing). Table's clientId=" + tableClientId + "; rowIndex=" + rowIndex);
-                }
-                if (restoreDataPointerRunnables != null)
-                    restoreDataPointerRunnables.add(new Runnable() {
-                        public void run() {
-                            table.setRowIndex(prevRowIndex);
-                        }
-                    });
-            }
-            return table;
-        } else if (isNumberBasedId(id) && parent instanceof UIData) {
-            final UIData uiData = ((UIData) parent);
-            int rowIndex = Integer.parseInt(id);
-            final int prevRowIndex = uiData.getRowIndex();
-            uiData.setRowIndex(rowIndex);
-            if (!uiData.isRowAvailable()) {
-                uiData.setRowIndex(-1);
-                String tableClientId = uiData.getClientId(context);
-                uiData.setRowIndex(prevRowIndex);
-                throw new IllegalStateException("Couldn't find UIData component row for this Ajax request (row data for the requested row is missing). Table's clientId=" + tableClientId + "; rowIndex=" + rowIndex);
-            }
-
-            if (restoreDataPointerRunnables != null)
-                restoreDataPointerRunnables.add(new Runnable() {
-                    public void run() {
-                        uiData.setRowIndex(prevRowIndex);
-                    }
-                });
-            return uiData;
-        } else if (id.charAt(0) == ':' && parent instanceof OUIObjectIterator) {
-            id = id.substring(1);
-            final OUIObjectIterator iterator = (OUIObjectIterator) parent;
-            final String prevObjectId = iterator.getObjectId();
-            iterator.setObjectId(id);
-            if (restoreDataPointerRunnables != null)
-                restoreDataPointerRunnables.add(new Runnable() {
-                    public void run() {
-                        iterator.setObjectId(prevObjectId);
-                    }
-                });
-            return (UIComponent) iterator;
-        } else if (isNumberBasedId(id)) {
-            Class clazz;
-            try {
-                clazz = Class.forName("com.sun.facelets.component.UIRepeat");
-            } catch (ClassNotFoundException e) {
-                clazz = null;
-            }
-            if (clazz != null && clazz.isInstance(parent)) {
-                final Object uiRepeat = parent;
-                ReflectionUtil.invokeMethod("com.sun.faces.facelets.component.UIRepeat", "setIndex",
-                        new Class[]{Integer.TYPE}, new Object[]{Integer.parseInt(id)}, parent);
-                if (restoreDataPointerRunnables != null)
-                    restoreDataPointerRunnables.add(new Runnable() {
-                        public void run() {
-                            // there's no getIndex method in com.sun.faces.component.UIRepeat, so we can't restore
-                            // the index in this way here
-                        }
-                    });
-                return parent;
-            } else if (parent instanceof Columns) {
-                List<DynamicColumn> dynamicColumns = ((Columns) parent).toColumnList(context);
-                int columnIndex = Integer.parseInt(id);
-                final DynamicColumn dynamicColumn = dynamicColumns.get(columnIndex);
-                final Runnable restoreVariables = dynamicColumn.enterComponentContext();
-                if (restoreDataPointerRunnables != null)
-                    restoreDataPointerRunnables.add(new Runnable() {
-                        public void run() {
-                            if (restoreVariables != null) restoreVariables.run();
-                        }
-                    });
-                return parent;
-            }
-        }
-        if (id.equals(parent.getId()))
-            return parent;
-
-        Iterator<UIComponent> iterator = parent.getFacetsAndChildren();
-        while (iterator.hasNext()) {
-            UIComponent child = iterator.next();
-            Object prependId = child.getAttributes().get("prependId");
-            if (child instanceof NamingContainer && !Boolean.FALSE.equals(prependId)) {
-                if (id.equals(child.getId()))
-                    return child;
-            } else {
-                UIComponent component = componentById(child, id,
-                        isLastComponentInPath, preProcessDecodesOnTables, preRenderResponseOnTables,
-                        restoreDataPointerRunnables);
-                if (component != null)
-                    return component;
-            }
-        }
-        return null;
-    }
-
-    private static boolean isNumberBasedId(String id) {
-        if (id == null || id.length() == 0)
-            return false;
-
-        char c = id.charAt(0);
-        return Character.isDigit(c);
-    }
 }

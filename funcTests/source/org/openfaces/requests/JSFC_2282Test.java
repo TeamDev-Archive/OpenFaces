@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -21,23 +21,18 @@ import org.openqa.selenium.WebElement;
  * @author Pavel Kaplin
  */
 public class JSFC_2282Test extends OpenFacesTestCase {
-    //achtung
+
     // modal layer in ie6 behaves incorrectly if there's no background color or image specified
      @Test
     public void testDefaultStyleForModalLayerIncludesClearGif() {
         testAppFunctionalPage("/requests/JSFC_2282.jsf");
         WebElement element = getDriver().findElement(By.id("fm:bt"));
         element.click();
-//        element("fm:bt").click();
         try {
-            element = getDriver().findElement(By.id("fm:cn::blockingLayer"));
         } catch (WebDriverException e) {
             assert false;
         }
         getDriver().findElement(By.id("fm:cn::no_button")).click();
-//        element("fm:cn::blockingLayer").assertElementExists(true);
-
-//        element("test").click();
         element = getDriver().findElement(By.id("test"));
         element.click();
         assertEquals("OK", window().document().getAlert());

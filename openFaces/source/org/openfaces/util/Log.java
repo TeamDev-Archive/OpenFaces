@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,6 +11,7 @@
  */
 package org.openfaces.util;
 
+import javax.faces.application.ProjectStage;
 import javax.faces.context.FacesContext;
 
 /**
@@ -18,7 +19,8 @@ import javax.faces.context.FacesContext;
  */
 public class Log {
     public static void log(FacesContext context, String message) {
-        context.getExternalContext().log(message);
+        if (context.getApplication().getProjectStage() != ProjectStage.Production)
+            context.getExternalContext().log(message);
     }
 
     public static void log(FacesContext context, String message, Throwable exception) {

@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -17,11 +17,10 @@ import org.openfaces.util.ValueBindings;
 import javax.faces.context.FacesContext;
 
 /**
- *
  * The HintLabel component is used to display a single-line text that may not fit in the
  * allotted space, but when the user places mouse pointer over the truncated text, the
  * full text is displayed in a tool-tip.
- * 
+ *
  * @author Andrew Palval
  */
 public class HintLabel extends OUIOutput {

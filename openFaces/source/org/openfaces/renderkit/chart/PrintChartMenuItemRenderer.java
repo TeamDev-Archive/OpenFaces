@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -21,9 +21,20 @@ import org.openfaces.util.ScriptBuilder;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ComponentSystemEventListener;
+import javax.faces.event.ListenerFor;
+import javax.faces.event.PostAddToViewEvent;
 import java.io.IOException;
 
-public class PrintChartMenuItemRenderer extends MenuItemRenderer {
+@ListenerFor(systemEventClass = PostAddToViewEvent.class)
+public class PrintChartMenuItemRenderer extends MenuItemRenderer implements ComponentSystemEventListener {
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        if (event instanceof PostAddToViewEvent)
+            Resources.includeJQuery();
+    }
+
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         MenuItem menuItem = (MenuItem) component;
@@ -34,10 +45,9 @@ public class PrintChartMenuItemRenderer extends MenuItemRenderer {
                 getChart("<o:printChartMenuItem>", menuItem)).getScript());
         if (menuItem.getIconUrl() == null)
             menuItem.setIconUrl(Resources.internalURL(
-                    context, null, "chart/print.png", false));
+                    context, "chart/print.png"));
 
         super.encodeBegin(context, component);
-        Resources.includeJQuery(context);
         Resources.renderJSLinkIfNeeded(context,
                 Resources.internalURL(context, "thirdparty/printelement/printElement.js"));
     }

@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -225,7 +225,7 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
         String defStopUrl = null;
         if (fileUpload.getStopButtonNearProgress()) {
             if (stopButton == null) {
-                defStopUrl = Resources.getURL(context, null, null, DEFAULT_STOP_URL);
+                defStopUrl = Resources.getURL(context, null, DEFAULT_STOP_URL);
                 listOfImages.add(defStopUrl);
                 Rendering.renderPreloadImagesScript(context, listOfImages, false);
             }
@@ -251,14 +251,14 @@ public final class SingleFileUploadRenderer extends AbstractFileUploadRenderer {
                 fileUpload.getStoppedStatusText(),
                 fileUpload.getStoppingStatusText(),
                 uniqueId,
-                Utilities.getFunctionOfEvent(fileUpload.getOnchange()),
-                Utilities.getFunctionOfEvent(fileUpload.getOnstart()),
-                Utilities.getFunctionOfEvent(fileUpload.getOnend()),
-                Utilities.getFunctionOfEvent(fileUpload.getOnfilestart()),
-                Utilities.getFunctionOfEvent(fileUpload.getOnfileinprogress()),
-                Utilities.getFunctionOfEvent(fileUpload.getOnfileend()),
-                Utilities.getFunctionOfEvent(fileUpload.getOnwrongfiletype()),
-                Utilities.getFunctionOfEvent(fileUpload.getOndirectorydropped()),
+                Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(fileUpload, "change")),
+                Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(fileUpload, "start")),
+                Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(fileUpload, "end")),
+                Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(fileUpload, "uploadstart")),
+                Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(fileUpload, "uploadinprogress")),
+                Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(fileUpload, "uploadend")),
+                Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(fileUpload, "wrongfileadded")),
+                Utilities.getFunctionOfEvent(Rendering.getEventHandlerScript(fileUpload, "directorydropped")),
                 dropTargetDragoverClass,
                 getRender(context, fileUpload),
                 getExternalDropTargetId(context, fileUpload),

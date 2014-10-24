@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -12,7 +12,7 @@
 
 package org.openfaces.demo.beans.inputtextarea;
 
-import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 
 public class InputTextareaBean {
 
@@ -35,7 +35,7 @@ public class InputTextareaBean {
         this.feedback = feedback;
     }
 
-    public void send(ActionEvent actionEvent) {
+    public void send(AjaxBehaviorEvent actionEvent) {
         if (feedback != null && !"".equals(feedback)) {
             this.successfullySent = true;
         }

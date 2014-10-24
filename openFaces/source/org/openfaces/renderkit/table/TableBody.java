@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -24,6 +24,7 @@ import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.TableUtil;
+import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
@@ -144,13 +145,19 @@ public class TableBody extends TableSection {
         ResponseWriter writer = context.getResponseWriter();
         StringWriter stringWriter = new StringWriter();
         List<BodyRow> rows = new ArrayList<BodyRow>();
-        context.setResponseWriter(writer.cloneWithWriter(stringWriter));
+        ResponseWriter responseWriter = writer.cloneWithWriter(stringWriter);
+        if (AjaxUtil.isAjaxRequest(context))
+            responseWriter.startCDATA();
+        stringWriter.getBuffer().setLength(0);
+        context.setResponseWriter(responseWriter);
         try {
             if (tableStructure.getScrolling() == null)
                 rows = createNonScrollableRows(context, stringWriter, firstRowIndex, rowCount, columns);
             else
                 rows = createScrollableRows(context, stringWriter, firstRowIndex, rowCount, columns);
         } finally {
+            if (AjaxUtil.isAjaxRequest(context))
+                responseWriter.endCDATA();
             context.setResponseWriter(writer);
         }
         return rows;
@@ -688,7 +695,7 @@ public class TableBody extends TableSection {
 
                 List<Integer> applicableRowDeclarationIndexes = new ArrayList<Integer>();
                 for (Row tableRow : applicableCustomRows) {
-                    if (Rendering.isComponentWithA4jSupport(tableRow)) {
+                    if (Rendering.isComponentWithA4jAjax(tableRow)) {
                         if (customRowRenderingInfo == null)
                             customRowRenderingInfo = new CustomRowRenderingInfo(columnCount);
                         Integer rowDeclarationIndex =
@@ -938,7 +945,7 @@ public class TableBody extends TableSection {
                             ? ((ContextDependentComponent) cell).enterComponentContext() : null;
                     boolean cellWithCustomContent = cell.getChildCount() > 0;
                     if (exitContext != null) exitContext.run();
-                    if (cellWithCustomContent || Rendering.isComponentWithA4jSupport(cell)) {
+                    if (cellWithCustomContent || Rendering.isComponentWithA4jAjax(cell)) {
                         if (customRowRenderingInfo == null)
                             customRowRenderingInfo = new CustomRowRenderingInfo(columnCount);
                         if (cellWithCustomContent)

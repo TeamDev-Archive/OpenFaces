@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -97,7 +97,7 @@ public class MultitypeBeanSupport {
 
     public Converter getColumnConverter() {
         String col = Faces.var("col", String.class);
-        if (col.startsWith("double")) {
+        if (col != null && col.startsWith("double")) {
             return DOUBLE_COL_CONVERTER;
         } else {
             return null;

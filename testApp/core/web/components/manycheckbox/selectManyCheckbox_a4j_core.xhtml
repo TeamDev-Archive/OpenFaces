@@ -1,4 +1,4 @@
-<div xmlns:h="http://java.sun.com/jsf/html"
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
      xmlns:a4j="http://richfaces.org/a4j"
@@ -27,13 +27,13 @@
               <td class="container">
                 <h:selectOneMenu id="selectOneMenu7" value="#{ManyCheckboxTest.selectOneMenu7}">
                   <f:selectItems value="#{ManyCheckboxTest.selectItemsGroup7}"/>
-                  <a4j:support reRender="selectManyCheckbox7"
-                               event="onchange" action="#{ManyCheckboxTest.reloadSelectManyCheckbox7}"/>
+                  <a4j:ajax render="selectManyCheckbox7"
+                               event="change" action="#{ManyCheckboxTest.reloadSelectManyCheckbox7}"/>
                 </h:selectOneMenu>
                 <br/>
                 <o:selectManyCheckbox id="selectManyCheckbox7" value="#{ManyCheckboxTest.checkboxGroup7}">
                   <f:selectItems value="#{ManyCheckboxTest.selectManyCheckboxItemsGroup7}"/>
-                  <a4j:support reRender="checkboxGroup7Value" event="onchange"/>
+                  <a4j:ajax render="checkboxGroup7Value" event="change"/>
                 </o:selectManyCheckbox>
               </td>
               <td class="container">
@@ -48,8 +48,8 @@
               <td class="container">
                 <h:selectOneMenu id="selectOneMenu8" value="#{ManyCheckboxTest.selectOneMenu8}">
                   <f:selectItems value="#{ManyCheckboxTest.selectItemsGroup8}"/>
-                  <a4j:support reRender="selectManyCheckbox8"
-                               event="onchange" action="#{ManyCheckboxTest.reloadSelectManyCheckbox8}"/>
+                  <a4j:ajax render="selectManyCheckbox8"
+                               event="change" action="#{ManyCheckboxTest.reloadSelectManyCheckbox8}"/>
                 </h:selectOneMenu>
                 <br/>
                 <o:selectManyCheckbox id="selectManyCheckbox8" value="#{ManyCheckboxTest.checkboxGroup8}"
@@ -62,7 +62,7 @@
                                   disabledSelectedImageUrl="/images/disabledSelectedCheckbox.png"
                                   disabledUnselectedImageUrl="/images/disabledUnselectedCheckbox.png">
                   <f:selectItems value="#{ManyCheckboxTest.selectManyCheckboxItemsGroup8}"/>
-                  <a4j:support reRender="checkboxGroup8Text" event="onchange"/>
+                  <a4j:ajax render="checkboxGroup8Text" event="change"/>
                 </o:selectManyCheckbox>
               </td>
               <td class="container">

@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -11,7 +11,10 @@
  */
 package org.openfaces.util;
 
-import org.ajax4jsf.component.UIAjaxSupport;
+import org.openfaces.application.DynamicResource;
+import org.openfaces.application.OpenFacesApplication;
+import org.openfaces.application.OpenFacesResourceHandler;
+import org.openfaces.application.ViewExpiredExceptionHandler;
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUICommand;
 import org.openfaces.component.OUIComponent;
@@ -31,14 +34,20 @@ import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
+import javax.faces.application.Resource;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIInput;
+import javax.faces.component.UIParameter;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.ValueHolder;
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorContext;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.context.PartialViewContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
@@ -48,12 +57,11 @@ import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.Writer;
 import java.lang.reflect.Array;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -71,6 +79,17 @@ public class Rendering {
 
     public static final String DEFAULT_FOCUSED_STYLE = "border: 1px dotted black;";
     public static final String ON_LOAD_SCRIPTS_KEY = UtilPhaseListener.class.getName() + ".loadScripts";
+    private static final Class<?> A4J_AJAX_BEHAVIOR_CLASS;
+
+    static {
+        Class<?> cls;
+        try {
+            cls = Class.forName("org.ajax4jsf.component.behavior.AjaxBehavior");
+        } catch (ClassNotFoundException e) {
+            cls = null;
+        }
+        A4J_AJAX_BEHAVIOR_CLASS = cls;
+    }
 
     private Rendering() {
     }
@@ -157,32 +176,6 @@ public class Rendering {
     public static void renderJavascriptEnd(ResponseWriter writer) throws IOException {
         writer.write("\n");
         writer.endElement("script");
-    }
-
-    /**
-     * Write javascript function start with name and opening bracket
-     *
-     * @param writer The character-based output
-     * @param name   The name of javascript function
-     * @throws IOException if an input/output error occurs
-     */
-    public static void renderJavascriptFunctionStart(Writer writer, String name) throws IOException {
-        if (name == null)
-            throw new IllegalArgumentException("Name for Javascript function can not be null");
-        if (name.length() == 0)
-            throw new IllegalArgumentException("Name for Javascript function can not be empty");
-        writer.write("\n");
-        writer.write("function " + name + "(){\n");
-    }
-
-    /**
-     * Write javascript function end with closing bracket
-     *
-     * @param writer The character-based output
-     * @throws IOException if an input/output error occurs
-     */
-    public static void renderJavascriptFunctionEnd(Writer writer) throws IOException {
-        writer.write("}\n");
     }
 
     private static List<String> allButEmpty(String[] strings) {
@@ -275,20 +268,6 @@ public class Rendering {
             }
         }
         return false;
-    }
-
-    /**
-     * Wraps the passed java string into the quoted javascript string (double quotes are used). The text is properly
-     * escaped to handle non-latin symbols correctly.
-     *
-     * @param text The text that should be quoted into a js string
-     * @return the string which represents a js string literal containing the text passed as a parameter. If null is
-     *         passed as a parameter then this method also return snull
-     */
-    public static String wrapTextIntoJsString(String text) { // todo: replace usages with ScriptBuilder and remove this method
-        if (text == null)
-            return "null";
-        return '\"' + escapeStringForJS(text) + '\"';
     }
 
     static String escapeStringForJS(String str) {
@@ -587,38 +566,6 @@ public class Rendering {
         buf.append(scriptStr);
     }
 
-    public static void appendUniqueRTLibraryScripts(FacesContext context,
-                                                    Script setMessageScript) {
-        boolean isAjax4jsfRequest = AjaxUtil.isAjax4jsfRequest();
-        boolean isPortletRequest = AjaxUtil.isPortletRequest(context);
-
-        Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
-        String uniqueRTLibraryName = isPortletRequest
-                ? (String) sessionMap.get(AjaxUtil.ATTR_PORTLET_UNIQUE_RTLIBRARY_NAME)
-                : ResourceFilter.RUNTIME_INIT_LIBRARY_PATH + AjaxUtil.generateUniqueInitLibraryName();
-
-        String initLibraryUrl = Resources.applicationURL(context, uniqueRTLibraryName);
-
-        try {
-            if (isAjax4jsfRequest) {
-                Resources.renderJSLinkIfNeeded(context, initLibraryUrl);
-            }
-
-            if (sessionMap != null && uniqueRTLibraryName != null) {
-                String scripts = (String) context.getExternalContext().getSessionMap().get(uniqueRTLibraryName);
-                if (scripts != null) {
-                    setMessageScript = new ScriptBuilder(setMessageScript.toString()).append(scripts);
-                }
-
-                sessionMap.put(uniqueRTLibraryName, setMessageScript.toString());
-            }
-        } catch (IOException e) {
-            context.getExternalContext()
-                    .log("Exception was thrown during appending of unique runtime library scripts for library name - "
-                            + uniqueRTLibraryName, e);
-        }
-    }
-
     /**
      * Renders the specified JavaScript code into the response and ensures including the specified JavaScript files to
      * the rendered page prior to the rendered script.
@@ -636,16 +583,39 @@ public class Rendering {
         if (jsFiles != null)
             for (String jsFile : jsFiles) {
                 if (jsFile == null) continue;
-                if (jsFile.equals("jquery.js"))
-                    Resources.includeJQuery(context);
-                else
-                    Resources.renderJSLinkIfNeeded(context, jsFile);
+                Resources.renderJSLinkIfNeeded(context, jsFile);
             }
+        if (OpenFacesApplication.isConstructingView(context)) {
+            Resources.addHeaderInitScript(context, script);
+            return;
+        }
 
-        ResponseWriter writer = context.getResponseWriter();
-        renderJavascriptStart(writer, null);
-        writer.writeText(initScript, null);
-        renderJavascriptEnd(writer);
+        PartialViewContext partialViewContext = context.getPartialViewContext();
+        if (partialViewContext.isAjaxRequest() && /*Environment.isMozilla() && */
+                (!AjaxUtil.isAjaxPortionRequest(context) || ViewExpiredExceptionHandler.isExpiredView(context))) {
+            // JSF 2.0.2 (Mojarra) Ajax doesn't auto-execute in-place scripts under FireFox 3.6.3 transitional mode,
+            // so we're simulating this here
+            if (partialViewContext.isAjaxRequest()) {
+                List<InitScript> initScripts = getAjaxInitScripts(context);
+                initScripts.add(new InitScript(script, jsFiles));
+            }
+        } else {
+            ResponseWriter writer = context.getResponseWriter();
+            renderJavascriptStart(writer, null);
+            writer.writeText(initScript, null);
+            renderJavascriptEnd(writer);
+        }
+    }
+
+    public static List<InitScript> getAjaxInitScripts(FacesContext context) {
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        String key = Rendering.class.getName() + ".ajaxInitScripts";
+        List<InitScript> list = (List<InitScript>) requestMap.get(key);
+        if (list == null) {
+            list = new ArrayList<InitScript>();
+            requestMap.put(key, list);
+        }
+        return list;
     }
 
     /**
@@ -820,17 +790,6 @@ public class Rendering {
     }
 
     /**
-     * Check resource uri if it is dynamic resource or not
-     *
-     * @param uri The uri to check
-     * @return true, if uri represent dynamic image, false otherwise
-     */
-    public static boolean isDynamicResource(String uri) {
-        // todo: extract this as a generic mechanism of dynamic resources (see also todo in startWriteIMG method)
-        return (uri.indexOf("dynamicimage") != -1);
-    }
-
-    /**
      * Render image html tag with hack for ie transparency
      *
      * @param writer    The character-based output
@@ -854,8 +813,9 @@ public class Rendering {
             String id = imagePool.putModel(model);
             writer.writeAttribute("id", component.getClientId(context), null);
 
-            String imagePath = ResourceFilter.INTERNAL_RESOURCE_PATH + "dynamicimage." + extension + "?id=" + id; // todo: extract this as a generic mechanism of dynamic resources (this also involves the isDynamicResource method)
-            imageUrl = Resources.applicationURL(context, imagePath);
+            String imagePath = OpenFacesResourceHandler.DYNAMIC_RESOURCE_IDENTIFIER + "/" + id + "." + extension;
+            Resource resource = new DynamicResource(imagePath);
+            imageUrl = resource.getRequestPath();
         } else {
             imageUrl = "";
         }
@@ -1135,8 +1095,8 @@ public class Rendering {
      * @param component The component to check
      * @return true, if component has ajax4jsf support
      */
-    public static boolean isComponentWithA4jSupport(UIComponent component) {
-        return getA4jSupportForComponent(component) != null;
+    public static boolean isComponentWithA4jAjax(UIComponent component) {
+        return getA4jAjaxForComponent(component) != null;
     }
 
     /**
@@ -1145,32 +1105,19 @@ public class Rendering {
      * @param component The component to check
      * @return {@link UIComponent} of ajax support, if component has support, null, otherwise
      */
-    public static UIComponent getA4jSupportForComponent(UIComponent component) {
-        Iterator<UIComponent> kids = component.getFacetsAndChildren();
-        while (kids.hasNext()) {
-            UIComponent kid = kids.next();
-            if (kid.getClass().getName().equals("org.ajax4jsf.component.html.HtmlAjaxSupport"))
-                return kid;
+    public static ClientBehavior getA4jAjaxForComponent(UIComponent component) {
+        if (!(component instanceof ClientBehaviorHolder) || A4J_AJAX_BEHAVIOR_CLASS == null)
+            return null;
+        Collection<List<ClientBehavior>> behaviors = ((ClientBehaviorHolder) component).getClientBehaviors().values();
+        for (List<ClientBehavior> behavior : behaviors) {
             try {
-                if (kid instanceof UIAjaxSupport)
-                    return kid;
+                if (A4J_AJAX_BEHAVIOR_CLASS.isAssignableFrom(behavior.getClass()))
+                    return (ClientBehavior) behavior;
             } catch (Throwable e) {
-                return null; // the component can't have A4j support if UIAjaxSupport class can't be found
+                return null; // a component can't have A4j support if AjaxBehavior class can't be found
             }
         }
         return null;
-    }
-
-    public static boolean isA4jSupportComponent(UIComponent component) {
-        boolean result;
-        try {
-            result = component.getClass().getName().equals("org.ajax4jsf.component.html.HtmlAjaxSupport") ||
-                    component instanceof UIAjaxSupport;
-        } catch (Throwable e) {
-            return false; // failure to find a component means that it's not actually a4j:support component
-        }
-        return result;
-
     }
 
     /**
@@ -1272,11 +1219,14 @@ public class Rendering {
     public static JSONObject getEventsParam(UIComponent component, String... eventNames) {
         JSONObject events = new JSONObject();
         for (String eventName : eventNames) {
-            String eventHandlerScript = (String) component.getAttributes().get(eventName);
+            String eventHandlerScript =
+                    "change".equals(eventName)
+                            ? Rendering.getEventHandlerScript(component, eventName, "valueChange")
+                            : Rendering.getEventHandlerScript(component, eventName);
             if (Rendering.isNullOrEmpty(eventHandlerScript))
                 continue;
             try {
-                events.put(eventName, eventHandlerScript);
+                events.put("on" + eventName, eventHandlerScript);
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
@@ -1348,21 +1298,111 @@ public class Rendering {
     }
 
     public static void writeStandardEvents(ResponseWriter writer, OUIComponent component, boolean skipOnclick) throws IOException {
+        UIComponent c = (UIComponent) component;
         if (!skipOnclick)
-            writeAttribute(writer, "onclick", component.getOnclick());
-        writeAttribute(writer, "ondblclick", component.getOndblclick());
-        writeAttribute(writer, "onmousedown", component.getOnmousedown());
-        writeAttribute(writer, "onmouseup", component.getOnmouseup());
-        writeAttribute(writer, "onmousemove", component.getOnmousemove());
-        writeAttribute(writer, "onmouseout", component.getOnmouseout());
-        writeAttribute(writer, "onmouseover", component.getOnmouseover());
-        writeAttribute(writer, "oncontextmenu", component.getOncontextmenu());
+            writeAttribute(writer, "onclick", getEventHandlerScript(c, "click", "action"));
+        writeAttribute(writer, "ondblclick", getEventHandlerScript(c, "dblclick"));
+        writeAttribute(writer, "onmousedown", getEventHandlerScript(c, "mousedown"));
+        writeAttribute(writer, "onmouseup", getEventHandlerScript(c, "mouseup"));
+        writeAttribute(writer, "onmousemove", getEventHandlerScript(c, "mousemove"));
+        writeAttribute(writer, "onmouseout", getEventHandlerScript(c, "mouseout"));
+        writeAttribute(writer, "onmouseover", getEventHandlerScript(c, "mouseover"));
+        writeAttribute(writer, "oncontextmenu", getEventHandlerScript(c, "contextmenu"));
 
-        writeAttribute(writer, "onfocus", component.getOnfocus());
-        writeAttribute(writer, "onblur", component.getOnblur());
-        writeAttribute(writer, "onkeypress", component.getOnkeypress());
-        writeAttribute(writer, "onkeydown", component.getOnkeydown());
-        writeAttribute(writer, "onkeyup", component.getOnkeyup());
+        writeAttribute(writer, "onfocus", getEventHandlerScript(c, "focus"));
+        writeAttribute(writer, "onblur", getEventHandlerScript(c, "blur"));
+        writeAttribute(writer, "onkeypress", getEventHandlerScript(c, "keypress"));
+        writeAttribute(writer, "onkeydown", getEventHandlerScript(c, "keydown"));
+        writeAttribute(writer, "onkeyup", getEventHandlerScript(c, "keyup"));
+    }
+
+    public static String getEventHandlerScript(UIComponent component, String event) {
+        return getEventHandlerScript(component, event, null);
+    }
+
+    public static String getChangeHandlerScript(UIComponent component) {
+        return getEventHandlerScript(component, "change", "valueChange");
+    }
+
+    public static String getEventHandlerScript(UIComponent component, String event, String logicalEvent) {
+        return getEventHandlerScript(component, component, event, logicalEvent);
+    }
+
+    public static String getEventHandlerScript(UIComponent component, UIComponent sourceComponent, String event, String logicalEvent) {
+        String script = (String) component.getAttributes().get("on" + event);
+        List<ClientBehavior> behaviors = null;
+        List<ClientBehavior> behaviors2 = null;
+        if (component instanceof ClientBehaviorHolder) {
+            Map<String, List<ClientBehavior>> clientBehaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
+            behaviors = clientBehaviors.get(event);
+            if (logicalEvent != null)
+                behaviors2 = clientBehaviors.get(logicalEvent);
+        }
+
+
+        if (script == null &&
+                (behaviors == null || behaviors.size() == 0) &&
+                (behaviors2 == null || behaviors2.size() == 0)) return null;
+        StringBuilder b = new StringBuilder();
+        if (script != null) {
+            b.append(script);
+            if ((behaviors != null && behaviors.size() > 0) || (behaviors2 != null && behaviors2.size() > 0))
+                if (!script.trim().endsWith(";")) b.append("; ");
+        }
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (behaviors != null)
+            appendBehaviorScripts(context, b, behaviors, component, sourceComponent, event);
+        if (behaviors2 != null)
+            appendBehaviorScripts(context, b, behaviors2, component, sourceComponent, logicalEvent);
+        return b.toString();
+    }
+
+    private static void appendBehaviorScripts(
+            FacesContext context,
+            StringBuilder stringBuilder,
+            List<ClientBehavior> behaviors,
+            UIComponent component,
+            UIComponent sourceComponent,
+            String event) {
+        for (ClientBehavior behavior : behaviors) {
+            String sourceId = sourceComponent.getClientId(context);
+            ClientBehaviorContext behaviorContext = ClientBehaviorContext.createClientBehaviorContext(
+                    context, component, event, sourceId,
+                    getBehaviorParameters(sourceComponent));
+            String behaviorScript = behavior.getScript(behaviorContext);
+            stringBuilder.append(behaviorScript);
+            if (!behaviorScript.trim().endsWith(";")) stringBuilder.append(";");
+        }
+    }
+
+    public static Collection<ClientBehaviorContext.Parameter> getBehaviorParameters(UIComponent sourceComponent) {
+        List<ClientBehaviorContext.Parameter> result = new ArrayList<ClientBehaviorContext.Parameter>();
+        List<UIParameter> uiParameters = Components.findChildrenWithClass(sourceComponent, UIParameter.class);
+        for (UIParameter uiParameter : uiParameters) {
+            String name = uiParameter.getName();
+            if (name == null || name.equals("")) continue;
+            Object value = uiParameter.getValue();
+            result.add(new ClientBehaviorContext.Parameter(name, value));
+        }
+        return result;
+    }
+
+    public static void decodeBehaviors(FacesContext context, UIComponent component) {
+        if (!(component instanceof ClientBehaviorHolder)) return;
+
+        Map<String, List<ClientBehavior>> behaviorsMap = ((ClientBehaviorHolder) component).getClientBehaviors();
+        if (behaviorsMap.size() == 0) return;
+
+        String clientId = component.getClientId();
+        Map<String, String> requestParams = context.getExternalContext().getRequestParameterMap();
+        String event = requestParams.get("javax.faces.behavior.event");
+        String source = requestParams.get("javax.faces.source");
+        if (event == null || source == null || !source.equals(clientId)) return;
+
+        List<ClientBehavior> behaviors = behaviorsMap.get(event);
+        for (ClientBehavior behavior : behaviors) {
+            behavior.decode(context, component);
+        }
     }
 
     public static String getEventWithOnPrefix(FacesContext context, OUIClientAction component, String componentName) {
@@ -1448,7 +1488,7 @@ public class Rendering {
             OUICommand command,
             String submitIfNoAjax
     ) throws IOException {
-        String userClickHandler = command.getOnclick();
+        String userClickHandler = Rendering.getEventHandlerScript(command, "click", "action");
         Script componentClickHandler = null;
         Iterable<String> render = command.getRender();
         Iterable<String> execute = command.getExecute();
@@ -1458,9 +1498,11 @@ public class Rendering {
                 throw new FacesException("'execute' attribute can't be specified without the 'render' attribute. Component id: " + command.getId());
 
             AjaxInitializer initializer = new AjaxInitializer();
-            componentClickHandler = new ScriptBuilder().functionCall("O$._ajaxReload",
+            componentClickHandler = new ScriptBuilder().functionCall("O$.Ajax._reload",
                     initializer.getRenderArray(context, command, render),
-                    initializer.getAjaxParams(context, command)).semicolon().append("return false;");
+                    initializer.getAjaxParams(context, command),
+                    new RawScript("this"),
+                    new RawScript("event")).semicolon().append("return false;");
             ajaxJsRequired = true;
         } else {
             if (submitIfNoAjax != null) {

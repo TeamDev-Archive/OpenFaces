@@ -1,4 +1,4 @@
-<div xmlns:h="http://java.sun.com/jsf/html"
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
      xmlns:a4j="http://richfaces.org/a4j"
@@ -41,9 +41,9 @@
     <h:message for="requiredField" style="color: #ff7f7f;"/>
   </h:panelGroup>
 </a4j:outputPanel>
-<h:outputText id="refresher_required" value="Refresh" style="font-weight: bold; text-decoration:underline;">
-  <a4j:support event="onclick" reRender="requiredPanel"/>
-</h:outputText>
+<o:commandButton type="button" id="refresher_required" value="Refresh" style="font-weight: bold; text-decoration:underline;">
+  <a4j:ajax event="click" render="requiredPanel"/>
+</o:commandButton>
 
 
 <a4j:outputPanel id="doubleRangePanel">
@@ -59,9 +59,9 @@
     <h:message for="doubleRangeField" style="color: #ff7f7f;"/>
   </h:panelGroup>
 </a4j:outputPanel>
-<h:outputText id="refresher_doubleRange" value="Refresh" style="font-weight: bold; text-decoration:underline;">
-  <a4j:support event="onclick" reRender="doubleRangePanel"/>
-</h:outputText>
+<o:commandButton type="button" id="refresher_doubleRange" value="Refresh" style="font-weight: bold; text-decoration:underline;">
+  <a4j:ajax event="click" render="doubleRangePanel"/>
+</o:commandButton>
 
 <a4j:outputPanel id="longRangePanel">
   <h:panelGroup style="margin-top:20px;; border: 1px solid black;">
@@ -76,9 +76,9 @@
     <h:message for="longRangeField" style="color: #ff7f7f;"/>
   </h:panelGroup>
 </a4j:outputPanel>
-<h:outputText id="refresher_longRange" value="Refresh" style="font-weight: bold; text-decoration:underline;">
-  <a4j:support event="onclick" reRender="longRangePanel"/>
-</h:outputText>
+<o:commandButton type="button" id="refresher_longRange" value="Refresh" style="font-weight: bold; text-decoration:underline;">
+  <a4j:ajax event="click" render="longRangePanel"/>
+</o:commandButton>
 
 
 <a4j:outputPanel id="integerPanel">
@@ -98,9 +98,9 @@
     <h:message for="integerField" style="color: #ff7f7f;"/>
   </h:panelGroup>
 </a4j:outputPanel>
-<h:outputText id="refresher_integer" value="Refresh" style="font-weight: bold; text-decoration:underline;">
-  <a4j:support event="onclick" reRender="integerPanel"/>
-</h:outputText>
+<o:commandButton type="button" id="refresher_integer" value="Refresh" style="font-weight: bold; text-decoration:underline;">
+  <a4j:ajax event="click" render="integerPanel"/>
+</o:commandButton>
 
 <a4j:outputPanel id="doubleFieldPanel">
   <h:panelGroup style="margin-top:20px;; border: 1px solid black;">
@@ -121,9 +121,9 @@
   </h:panelGroup>
 
 </a4j:outputPanel>
-<h:outputText id="refresher_double" value="Refresh" style="font-weight: bold; text-decoration:underline;">
-  <a4j:support event="onclick" reRender="doubleFieldPanel"/>
-</h:outputText>
+<o:commandButton type="button" id="refresher_double" value="Refresh" style="font-weight: bold; text-decoration:underline;">
+  <a4j:ajax event="click" render="doubleFieldPanel"/>
+</o:commandButton>
 
 
 <a4j:outputPanel id="byteFieldPanel">
@@ -143,9 +143,9 @@
     <h:message for="byteField" style="color: #ff7f7f;"/>
   </h:panelGroup>
 </a4j:outputPanel>
-<h:outputText id="refresher_byte" value="Refresh" style="font-weight: bold; text-decoration:underline;">
-  <a4j:support event="onclick" reRender="byteFieldPanel"/>
-</h:outputText>
+<o:commandButton type="button" id="refresher_byte" value="Refresh" style="font-weight: bold; text-decoration:underline;">
+  <a4j:ajax event="click" render="byteFieldPanel"/>
+</o:commandButton>
 
 <a4j:outputPanel id="dateTimeField2Panel">
   <h:panelGroup style="margin-top:20px;; border: 1px solid black;">
@@ -164,9 +164,9 @@
     <h:message for="dateTimeField2" style="color: #ff7f7f;"/>
   </h:panelGroup>
 </a4j:outputPanel>
-<h:outputText id="refresher_dateTime" value="Refresh" style="font-weight: bold; text-decoration:underline;">
-  <a4j:support event="onclick" reRender="dateTimeField2Panel"/>
-</h:outputText>
+<o:commandButton type="button" id="refresher_dateTime" value="Refresh" style="font-weight: bold; text-decoration:underline;">
+  <a4j:ajax event="click" render="dateTimeField2Panel"/>
+</o:commandButton>
 
 </div>
 

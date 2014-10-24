@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -114,9 +114,9 @@ public class PopupMenuRenderer extends RendererBase {
         String defaultDisabledClass = Styles.getCSSClass(context, popupMenu, popupMenu.getDisabledItemStyle(), StyleGroup.disabledStyleGroup(1), popupMenu.getDisabledItemClass(),
                 DEFAULT_DISABLED_ITEM);
 
-        String submenuImageUrl = Resources.getURL(context, popupMenu.getSubmenuImageUrl(), null, "command/submenuImage.gif");
-        String disabledSubmenuImageUrl = Resources.getURL(context, popupMenu.getDisabledSubmenuImageUrl(), null, "command/disabledSubmenuImage.gif");
-        String selectedSubmenuImageUrl = Resources.getURL(context, popupMenu.getSelectedSubmenuImageUrl(), null, "command/submenuImage.gif");
+        String submenuImageUrl = Resources.getURL(context, popupMenu.getSubmenuImageUrl(), "command/submenuImage.gif");
+        String disabledSubmenuImageUrl = Resources.getURL(context, popupMenu.getDisabledSubmenuImageUrl(), "command/disabledSubmenuImage.gif");
+        String selectedSubmenuImageUrl = Resources.getURL(context, popupMenu.getSelectedSubmenuImageUrl(), "command/submenuImage.gif");
 
         JSONObject eventsObj = new JSONObject();
         Rendering.addJsonParam(eventsObj, "onhide", popupMenu.getOnhide());

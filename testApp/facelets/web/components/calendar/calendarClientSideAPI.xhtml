@@ -7,10 +7,9 @@
       xmlns:rich="http://richfaces.org/rich"
       xmlns:t="http://myfaces.apache.org/tomahawk"
         >
-<head>
+<h:head>
   <title>Calendar client-side API</title>
   <script src="../funcTestsUtil.js" type="text/javascript"></script>
-
   <script type="text/javascript">
     function getActualSelectedDate() {
       var calendar = getControl('formID:calendarAPI::body');
@@ -63,14 +62,14 @@
       background: blue !important;
     }
   </style>
-</head>
+</h:head>
 
-<body id="styledCalendarPage">
+<h:body id="styledCalendarPage">
 <f:view>
   <h:form id="formID">
     <ui:include src="calendarClientSideAPI_core.xhtml"/>
   </h:form>
 </f:view>
 
-</body>
+</h:body>
 </html>

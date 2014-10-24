@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2013, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -19,7 +19,7 @@ import org.openfaces.component.table.ExpansionState;
 import org.openfaces.demo.beans.util.FacesUtils;
 import org.openfaces.util.Faces;
 
-import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -125,7 +125,7 @@ public class BanksList implements Serializable {
         return bankStates;
     }
 
-    public void selectState(ActionEvent event) {
+    public void selectState(AjaxBehaviorEvent event) {
         String state = (String) FacesUtils.getEventParameter(event, "state");
         if (state != null) {
             for (State bankState : bankStates) {

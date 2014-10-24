@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -28,6 +28,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -597,4 +598,15 @@ public class DataTable extends AbstractTable {
         super.restoreRowVariables();
         Components.restoreRequestVariable(getRowIndexVar());
     }
+
+    @Override
+    protected List<UIComponent> getExtensionComponents() {
+        ArrayList<UIComponent> result = new ArrayList<UIComponent>(super.getExtensionComponents());
+        result.addAll(Arrays.asList(
+                getRowGrouping(),
+                getSummaries()
+        ));
+        return result;
+    }
+
 }

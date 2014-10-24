@@ -1,5 +1,5 @@
 /*
- * OpenFaces - JSF Component Library 2.0
+ * OpenFaces - JSF Component Library 3.0
  * Copyright (C) 2007-2012, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
@@ -14,12 +14,11 @@ package org.openfaces.component.input;
 import org.openfaces.component.Side;
 
 /**
- *
  * The DropDownField is an input component which allows either type in a value or select one
  * of the values from an attached drop-down list. The component provides a way to show a list
  * of suggestions based on user input and the ability to auto-complete user input in the input
  * field. The drop-down list can be displayed in multiple columns and contain other JSF components.
- * 
+ *
  * @author Andriy Palval
  */
 public class DropDownField extends DropDownFieldBase {
