@@ -5789,6 +5789,7 @@ if (!window.O$) {
   O$._disabledClassLink = null;
   O$.Link = {
     _init:function (id, disabled, disabledStyle) {
+      O$._disabledClassLink = disabledStyle;
       var link = O$.initComponent(id, null, {
         _disabled:false,
 
