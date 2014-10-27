@@ -12,9 +12,14 @@
 package org.openfaces.component.command;
 
 import org.openfaces.component.OUICommand;
+import org.openfaces.component.ajax.AjaxInitializer;
+import org.openfaces.org.json.JSONException;
+import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.ValueBindings;
 
+import javax.el.MethodExpression;
 import javax.faces.context.FacesContext;
+import java.util.Map;
 
 /**
  * @author Vladimir Kurganov
@@ -255,5 +260,53 @@ public class MenuItem extends OUICommand {
         submenuIconAreaStyle = (String) values[i++];
         submenuIconAreaClass = (String) values[i++];
     }
+
+    public JSONObject toJSONObject(Map params) throws JSONException {
+        JSONObject obj = new JSONObject();
+        obj.put("iconUrl", getIconUrl());
+        obj.put("contentAreaStyle", getContentAreaStyle());
+        obj.put("contentAreaClass", getContentAreaClass());
+        obj.put("disabledIconUrl", getDisabledIconUrl());
+        obj.put("selectedIconUrl", getSelectedIconUrl());
+
+        obj.put("selectedDisabledIconUrl", getSelectedDisabledIconUrl());
+
+        obj.put("oncontextmenu", getOncontextmenu());
+        obj.put("onajaxstart", getOnajaxstart());
+        obj.put("onajaxend", getOnajaxend());
+        obj.put("onerror", getOnerror());
+        obj.put("onsuccess", getOnsuccess());
+
+        obj.put("onclick", getOnclick());
+        obj.put("value", getValue());
+
+        obj.put("style",getStyle());
+        obj.put("styleClass", getStyleClass());
+
+
+
+        obj.put("delay", getDelay());
+        obj.put("disabled", isDisabled());
+        obj.put("disabledStyle", getDisabledStyle());
+        obj.put("disabledClass", getDisabledClass());
+
+        obj.put("id", getClientId(FacesContext.getCurrentInstance()));
+
+        FacesContext context = (FacesContext) params.get("context");
+        Iterable<String>  render = getRender();
+        Iterable<String>  execute = getExecute();
+        AjaxInitializer ajaxInitializer = new AjaxInitializer();
+        if (render!=null && render.iterator().hasNext() ){
+            obj.put("render", ajaxInitializer.getRenderArray(context, this, render));
+        }
+        if (execute!=null && execute.iterator().hasNext() ){
+            obj.put("execute", ajaxInitializer.getExecuteParam(context, this, getExecute()));
+        }
+        MethodExpression action = getActionExpression();
+        obj.put("action", action!=null ? action.getExpressionString() : null);
+
+        return obj;
+    }
+
 
 }

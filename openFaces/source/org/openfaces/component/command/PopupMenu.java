@@ -21,6 +21,8 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Vladimir Kurganov
@@ -75,6 +77,16 @@ public class PopupMenu extends OUIComponentBase implements OUIClientAction, Unex
     /* properties that are not inherited */
     private String onshow;
     private String onhide;
+    /*Field which contains predefined from code menuItems*/
+    private List<MenuItem> preloadedItems = new ArrayList<MenuItem>();
+
+    public List<MenuItem> getPreloadedItems() {
+        return preloadedItems;
+    }
+
+    public void setPreloadedItems(List<MenuItem> preloadedItems) {
+        this.preloadedItems = preloadedItems;
+    }
 
     @Override
     public String getStyle() {
