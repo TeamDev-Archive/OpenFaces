@@ -163,4 +163,8 @@ public class PopupMenuJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("onhide", onhide);
     }
 
+    public void setLazy(ValueExpression lazy) {
+        getDelegate().setPropertyValue("lazy", lazy);
+    }
+
 }

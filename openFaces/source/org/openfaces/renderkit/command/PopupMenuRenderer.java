@@ -81,8 +81,12 @@ public class PopupMenuRenderer extends RendererBase {
         writer.endElement("ul");
 
         Styles.renderStyleClasses(facesContext, popupMenu);
+        if(popupMenu.isLazy()){
+           renderLazyInitJS(facesContext, popupMenu);
+        } else{
+            renderInitJS(facesContext, popupMenu);
+        }
 
-        renderInitJS(facesContext, popupMenu);
     }
 
     private JSONArray getMenuItemParameters(PopupMenu popupMenu) {
@@ -230,7 +234,7 @@ public class PopupMenuRenderer extends RendererBase {
 
         Rendering.renderInitScript(context, initScript,
                 Resources.utilJsURL(context),
-                Resources.internalURL(context, "command/popupMenu.js"),
+                Resources.internalURL(context, "command/lazyPopupMenu.js"),
                 Resources.internalURL(context, "command/menuItemConstructor.js"),
                 Resources.internalURL(context, "popup.js"));
     }
@@ -255,6 +259,8 @@ public class PopupMenuRenderer extends RendererBase {
 
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        PopupMenu popupMenu = (PopupMenu) component;
+        if(popupMenu.isLazy()) return;
         if (!component.isRendered())
             return;
 
@@ -321,7 +327,8 @@ public class PopupMenuRenderer extends RendererBase {
                                 addCommand = true;
                             }
                         }
-                        JSONObject menuItem = ((ConvertibleToJSON)child).toJSONObject(params);
+                        JSONObject menuItem;
+                        menuItem = ((ConvertibleToJSON)child).toJSONObject(params);
                         if (addCommand)
                             menuItem.put("addCommand",true);
                         menuItems.put(menuItem);

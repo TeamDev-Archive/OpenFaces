@@ -13,18 +13,23 @@ package org.openfaces.component.command;
 
 import org.openfaces.component.OUICommand;
 import org.openfaces.component.ajax.AjaxInitializer;
+import org.openfaces.component.table.AbstractTable;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
+import org.openfaces.util.Components;
+import org.openfaces.util.ConvertibleToJSON;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.MethodExpression;
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.util.Map;
 
 /**
  * @author Vladimir Kurganov
  */
-public class MenuItem extends OUICommand {
+public class MenuItem extends OUICommand implements ConvertibleToJSON {
     public static final String COMPONENT_TYPE = "org.openfaces.MenuItem";
     public static final String COMPONENT_FAMILY = "org.openfaces.MenuItem";
 
@@ -308,5 +313,13 @@ public class MenuItem extends OUICommand {
         return obj;
     }
 
-
+    protected AbstractTable getTable(String tagName, MenuItem menuItem) {
+        UIComponent parent = menuItem.getParent();
+        while (parent != null && (parent instanceof MenuItem || parent instanceof PopupMenu || Components.isImplicitPanel(parent)))
+            parent = parent.getParent();
+        if (!(parent instanceof AbstractTable))
+            throw new FacesException(tagName + " can only be inserted into the \"columnMenu\" facet of " +
+                    "the <o:dataTable> or <o:treeTable> components (either directly or as its sub-menu).");
+        return (AbstractTable) parent;
+    }
 }

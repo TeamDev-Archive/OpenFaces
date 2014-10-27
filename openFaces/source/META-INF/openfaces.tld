@@ -27422,6 +27422,16 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>A CSS class name for disabled menu items of the PopupMenu component.</description>
+      <name>lazy</name>
+      <deferred-value>
+        <type>java.lang.boolean</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>A default style for content of menu items of the PopupMenu component.</description>
       <name>itemContentStyle</name>
       <deferred-value>
