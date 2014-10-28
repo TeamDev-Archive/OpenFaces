@@ -12,7 +12,7 @@
 
 // ================================== END OF PUBLIC API METHODS
 
-O$.PopupMenu = {
+O$.LazyPopupMenu = {
   _init:function (popupMenuId, rolloverClass, forId, forEventName, indentVisible, indentClass, defaultItemClass, defaultSelectedClass, defaultContentClass, defaultDisabledClass, itemIconUrl, disabledItemIconUrl, selectedItemIconUrl, selectedDisabledItemIconUrl, submenuImageUrl, disabledSubmenuImageUrl, selectedSubmenuImageUrl, selectedDisabledSubmenuImageUrl, isRootMenu, submenuHorizontalOffset, submenuShowDelay, submenuHideDelay, selectDisabledItems, events, menuItemsList, defaultMenuItemsParams) {
     O$.Popup._init(popupMenuId, false);
     O$.MenuItemConsctructor.defaultMenuItemsParams = defaultMenuItemsParams;
@@ -26,24 +26,20 @@ O$.PopupMenu = {
         }, 1);
         this.style.visibility = "visible";
         this.style.display = "block";
-        O$.PopupMenu._initIEWidthWorkaround(this);
+        O$.LazyPopupMenu._initIEWidthWorkaround(this);
         if (this.onshow)
           this.onshow();
       },
 
       hide:function () {
-
-
-        if (!popupMenu.initialized) return;
-        finishInitialization();
         O$.removeIETransparencyControl(popupMenu);
         this.closeChildMenus();
-        if (O$.PopupMenu._getStyleProperty(this, "visibility") != "hidden" &&
-                O$.PopupMenu._getStyleProperty(this, "display") != "none") {
+        if (O$.LazyPopupMenu._getStyleProperty(this, "visibility") != "hidden" &&
+                O$.LazyPopupMenu._getStyleProperty(this, "display") != "none") {
           this.style.visibility = "hidden";
           this.style.display = "none";
 
-          O$.PopupMenu._clearSelection(popupMenu);
+          O$.LazyPopupMenu._clearSelection(popupMenu);
           if (popupMenu._closeAllTask)
             clearTimeout(popupMenu._closeAllTask);
 
@@ -140,6 +136,7 @@ O$.PopupMenu = {
 
     popupMenu._deferredInitializers = [];
     function finishInitialization() {
+      console.log(popupMenu.id)
       if (popupMenu.initialized) return;
       popupMenu.initialized = true;
 
@@ -167,7 +164,7 @@ O$.PopupMenu = {
             if (this._properties.disabled == disabled) return;
             this._properties.disabled = disabled;
             this._disabled = disabled;
-            O$.PopupMenu.setMenuItemEnabled(this.id, !disabled, selectDisabledItems);
+            O$.LazyPopupMenu.setMenuItemEnabled(this.id, !disabled, selectDisabledItems);
           }
         });
 
@@ -211,16 +208,16 @@ O$.PopupMenu = {
         // can be the case if a PopupMenu was unloaded earlier than the postponed initialization occurred
         return;
       }
-      O$.PopupMenu._handlePaddings(popupMenu);
+      O$.LazyPopupMenu._handlePaddings(popupMenu);
 
       if (popupMenu._isRoot() && forId)
-        O$.PopupMenu._addHandlersToOpenMenu(popupMenu, forId, forEventName);
+        O$.LazyPopupMenu._addHandlersToOpenMenu(popupMenu, forId, forEventName);
 
       /*Set styles for each item*/
       for (i = 0; i < popupMenu._items.length; i++) {
         menuItem = popupMenu._items[i];
 
-        O$.PopupMenu._updateMenuItemBackground(menuItem);
+        O$.LazyPopupMenu._updateMenuItemBackground(menuItem);
 
         if (!menuItem._isSeparator()) {
           O$.setStyleMappings(menuItem._anchor, {
@@ -229,24 +226,24 @@ O$.PopupMenu = {
 
           menuItem._disabled = menuItem._properties.disabled;
 
-          O$.PopupMenu._setStyleForSubmenuArea(menuItem, submenuImageUrl, selectedSubmenuImageUrl, disabledSubmenuImageUrl, selectedDisabledSubmenuImageUrl);
+          O$.LazyPopupMenu._setStyleForSubmenuArea(menuItem, submenuImageUrl, selectedSubmenuImageUrl, disabledSubmenuImageUrl, selectedDisabledSubmenuImageUrl);
         }
 
-        O$.PopupMenu._setStylesForIndentArea(menuItem, indentVisible, indentClass, itemIconUrl, selectedItemIconUrl, disabledItemIconUrl, selectedDisabledItemIconUrl);
+        O$.LazyPopupMenu._setStylesForIndentArea(menuItem, indentVisible, indentClass, itemIconUrl, selectedItemIconUrl, disabledItemIconUrl, selectedDisabledItemIconUrl);
 
         /* Update styles of fake spans */
         if (menuItem._iconspan)
-          menuItem._imagefakespan.style.verticalAlign = O$.PopupMenu._getStyleProperty(menuItem._iconspan, "vertical-align");
+          menuItem._imagefakespan.style.verticalAlign = O$.LazyPopupMenu._getStyleProperty(menuItem._iconspan, "vertical-align");
         if (menuItem._arrowfakespan)
-          menuItem._arrowfakespan.style.verticalAlign = O$.PopupMenu._getStyleProperty(menuItem._arrowspan, "vertical-align");
+          menuItem._arrowfakespan.style.verticalAlign = O$.LazyPopupMenu._getStyleProperty(menuItem._arrowspan, "vertical-align");
       }
 
       if (!indentVisible) {
         /*set default style if indent is not visible*/
-        popupMenu.style.backgroundColor = O$.PopupMenu._getStyleProperty(popupMenu, "backgroundColor");
+        popupMenu.style.backgroundColor = O$.LazyPopupMenu._getStyleProperty(popupMenu, "backgroundColor");
       }
 
-      O$.PopupMenu._updatePopupMenuBackground(popupMenu, indentClass);
+      O$.LazyPopupMenu._updatePopupMenuBackground(popupMenu, indentClass);
 
       //-------------------------Events----------------------------------
       var eventName = (O$.isSafariOnMac() || O$.isOpera() || O$.isMozillaFF()) ? "onkeypress" : "onkeydown";
@@ -256,21 +253,21 @@ O$.PopupMenu = {
         var menuItem;
         switch (e.keyCode) {
           case 27: // escape
-            O$.PopupMenu._closeAllMenu(popupMenu);
+            O$.LazyPopupMenu._closeAllMenu(popupMenu);
             break;
           case 13: // enter
             if (popupMenu._selectedIndex != null) {
               menuItem = popupMenu._items[popupMenu._selectedIndex];
               O$.sendEvent(menuItem._anchor, "click");
-              O$.PopupMenu._closeAllMenu(popupMenu);
+              O$.LazyPopupMenu._closeAllMenu(popupMenu);
               O$.cancelEvent(evt);
             }
             break;
           case 38: // up
-            O$.PopupMenu._setSelectedMenuItem(popupMenu, -1, selectDisabledItems);
+            O$.LazyPopupMenu._setSelectedMenuItem(popupMenu, -1, selectDisabledItems);
             break;
           case 40: // down
-            O$.PopupMenu._setSelectedMenuItem(popupMenu, 1, selectDisabledItems);
+            O$.LazyPopupMenu._setSelectedMenuItem(popupMenu, 1, selectDisabledItems);
             break;
           case 37: // left
             if (popupMenu._parentPopupMenu) {
@@ -280,11 +277,11 @@ O$.PopupMenu = {
             break;
           case 39: // right
             if (popupMenu._selectedIndex == null) {
-              O$.PopupMenu._setSelectedMenuItem(popupMenu, 1, selectDisabledItems);
+              O$.LazyPopupMenu._setSelectedMenuItem(popupMenu, 1, selectDisabledItems);
             } else {
               menuItem = popupMenu._items[popupMenu._selectedIndex];
-              O$.PopupMenu._showSubmenu(popupMenu, menuItem._anchor, submenuHorizontalOffset);
-              O$.PopupMenu._showFirstMenuItemonChild(menuItem, selectDisabledItems);
+              O$.LazyPopupMenu._showSubmenu(popupMenu, menuItem._anchor, submenuHorizontalOffset);
+              O$.LazyPopupMenu._showFirstMenuItemonChild(menuItem, selectDisabledItems);
             }
             break;
         }
@@ -297,17 +294,19 @@ O$.PopupMenu = {
           menuItem.selectedDisabledClass = O$.combineClassNames([menuItem.selectedClass, defaultSelectedClass]);
           menuItem.selectedClass = O$.combineClassNames([menuItem.selectedClass, defaultSelectedClass]);
 
-          O$.PopupMenu.setMenuItemEnabled(menuItem.id, !menuItem._properties.disabled, selectDisabledItems);
+          O$.LazyPopupMenu.setMenuItemEnabled(menuItem.id, !menuItem._properties.disabled, selectDisabledItems);
 
-          O$.PopupMenu._setAdditionalIEStylesForMenuItem(menuItem);
-          O$.PopupMenu._addMenuItemClickHandler(menuItem, submenuHorizontalOffset, selectDisabledItems);
+          O$.LazyPopupMenu._setAdditionalIEStylesForMenuItem(menuItem);
+          O$.LazyPopupMenu._addMenuItemClickHandler(menuItem, submenuHorizontalOffset, selectDisabledItems);
 
-          O$.PopupMenu._addMouseOverOutEvents(menuItem, selectDisabledItems, submenuHorizontalOffset, submenuShowDelay, submenuHideDelay);
+          O$.LazyPopupMenu._addMouseOverOutEvents(menuItem, selectDisabledItems, submenuHorizontalOffset, submenuShowDelay, submenuHideDelay);
         }
       }
       if (popupMenu._allItemsDisabled != undefined) {
         popupMenu.setAllMenuItemsDisabled(popupMenu._allItemsDisabled);
       }
+      popupMenu.style.top = "3px";
+      popupMenu.style.left = "3px";
 
     }
 
@@ -317,12 +316,12 @@ O$.PopupMenu = {
 
   setMenuItemEnabled:function (menuItemId, enabled, selectDisabledItems) {
     if (!menuItemId)
-      throw "O$.PopupMenu.setMenuItemEnabled: MenuItem's clientId must be passed as a parameter";
+      throw "O$.LazyPopupMenu.setMenuItemEnabled: MenuItem's clientId must be passed as a parameter";
     var menuItem = O$(menuItemId);
     if (!menuItem)
-      throw "O$.PopupMenu.setMenuItemEnabled: Invalid clientId passed - no such component was found: " + menuItemId;
+      throw "O$.LazyPopupMenu.setMenuItemEnabled: Invalid clientId passed - no such component was found: " + menuItemId;
     if (menuItem._isSeparator())
-      throw "O$.PopupMenu.setMenuItemEnabled: MenuItem must not be separator";
+      throw "O$.LazyPopupMenu.setMenuItemEnabled: MenuItem must not be separator";
 
     O$.setHiddenField(menuItem, menuItemId + "::disabled", !enabled);
 
@@ -379,19 +378,19 @@ O$.PopupMenu = {
 
     /*When user adds the border on rollover then menuItems jumps on mouseover*/
     /*we need to compensate rollover border with padding*/
-    menuItem._diffTop = O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(rolloverStyle, "borderTopWidth")) -
-            O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(style, "borderTopWidth"));
+    menuItem._diffTop = O$.calculateNumericCSSValue(O$.LazyPopupMenu._getCssProperty(rolloverStyle, "borderTopWidth")) -
+            O$.calculateNumericCSSValue(O$.LazyPopupMenu._getCssProperty(style, "borderTopWidth"));
 
-    menuItem._diffBottom = O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(rolloverStyle, "borderBottomWidth")) -
-            O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(style, "borderBottomWidth"));
+    menuItem._diffBottom = O$.calculateNumericCSSValue(O$.LazyPopupMenu._getCssProperty(rolloverStyle, "borderBottomWidth")) -
+            O$.calculateNumericCSSValue(O$.LazyPopupMenu._getCssProperty(style, "borderBottomWidth"));
 
-    menuItem._diffLeft = O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(rolloverStyle, "borderLeftWidth")) -
-            O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(style, "borderLeftWidth"));
+    menuItem._diffLeft = O$.calculateNumericCSSValue(O$.LazyPopupMenu._getCssProperty(rolloverStyle, "borderLeftWidth")) -
+            O$.calculateNumericCSSValue(O$.LazyPopupMenu._getCssProperty(style, "borderLeftWidth"));
 
-    menuItem._diffRight = O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(rolloverStyle, "borderRightWidth")) -
-            O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(style, "borderRightWidth"));
+    menuItem._diffRight = O$.calculateNumericCSSValue(O$.LazyPopupMenu._getCssProperty(rolloverStyle, "borderRightWidth")) -
+            O$.calculateNumericCSSValue(O$.LazyPopupMenu._getCssProperty(style, "borderRightWidth"));
 
-    O$.PopupMenu._addPaddingToMenuItem(menuItem);
+    O$.LazyPopupMenu._addPaddingToMenuItem(menuItem);
   },
 
   _getCssProperty:function (styleClass, propertyName) {
@@ -409,7 +408,7 @@ O$.PopupMenu = {
   _setHighlightMenuItem:function (popupMenu, anchor, selectDisabledItems) {
     var menuItem = anchor.parentNode;
     if (menuItem._popupMenu._selectedIndex != menuItem._index) {
-      O$.PopupMenu._clearSelection(popupMenu);
+      O$.LazyPopupMenu._clearSelection(popupMenu);
       popupMenu._selectedIndex = menuItem._index;
       anchor._focused = true;
       popupMenu.focus();
@@ -450,7 +449,7 @@ O$.PopupMenu = {
         else if (arrow.arrowSelectedDisabledImage && menuItem._disabled)
           arrow.src = arrow.arrowSelectedDisabledImage;
       }
-      O$.PopupMenu._substractPaddingFromMenuItem(menuItem);
+      O$.LazyPopupMenu._substractPaddingFromMenuItem(menuItem);
       if (menuItem._popupMenu._openedChildMenu != null &&
               menuItem._popupMenu._openedChildMenu == O$(menuItem._menuId)) {
         var childMenu = menuItem._popupMenu._openedChildMenu;
@@ -488,7 +487,7 @@ O$.PopupMenu = {
           if (menuItem._icon && menuItem._icon.disabledImgSelectedSrc)
             menuItem._icon.src = menuItem._icon.disabledImgSrc;
         }
-        O$.PopupMenu._addPaddingToMenuItem(menuItem);
+        O$.LazyPopupMenu._addPaddingToMenuItem(menuItem);
 
         /* avoid jumping submenu if border changes*/
         if (menuItem._popupMenu._openedChildMenu != null &&
@@ -506,7 +505,7 @@ O$.PopupMenu = {
     var children = popupMenu.childNodes;
     for (var i = 0; i < children.length; i++) {
       if (children._popupMenu)
-        O$.PopupMenu._unselectMenuItem(children[i]);
+        O$.LazyPopupMenu._unselectMenuItem(children[i]);
     }
   },
 
@@ -531,10 +530,10 @@ O$.PopupMenu = {
     }
     if (menuItems[nextIndex]._isSeparator() || (!selectDisabledItems && menuItems[nextIndex].disabled)) {
       var inc_add = inc >= 0 ? inc + 1 : inc - 1;
-      O$.PopupMenu._setSelectedMenuItem(popupMenu, inc_add, selectDisabledItems);
+      O$.LazyPopupMenu._setSelectedMenuItem(popupMenu, inc_add, selectDisabledItems);
     }
     else {
-      O$.PopupMenu._setHighlightMenuItem(popupMenu, popupMenu._items[nextIndex]._anchor, selectDisabledItems);
+      O$.LazyPopupMenu._setHighlightMenuItem(popupMenu, popupMenu._items[nextIndex]._anchor, selectDisabledItems);
     }
   },
 
@@ -544,7 +543,7 @@ O$.PopupMenu = {
       clearTimeout(popupMenu._closeAllTask);
       popupMenu._closeAllTask = null;
     }
-    O$.PopupMenu._clearSubmenuTask(menuItem);
+    O$.LazyPopupMenu._clearSubmenuTask(menuItem);
 
     if (menuItem._disabled)
       return;
@@ -573,7 +572,7 @@ O$.PopupMenu = {
         childPopupMenu.setTop(y - (subMenuRect.getMaxY() - visibleRect.getMaxY()) - 5);
       }
 
-      O$.PopupMenu._clearSelection(childPopupMenu);
+      O$.LazyPopupMenu._clearSelection(childPopupMenu);
 
       childPopupMenu.focus();
     }
@@ -586,7 +585,7 @@ O$.PopupMenu = {
       var childNodes = childPopupMenu.childNodes;
       for (var i = 0; i < childNodes.length; i++) {
         if (!childNodes[i]._isSeparator() && !(!!childNodes[i]._disabled && !selectDisabledItems)) {
-          O$.PopupMenu._setHighlightMenuItem(childPopupMenu, childNodes[i]._anchor, selectDisabledItems);
+          O$.LazyPopupMenu._setHighlightMenuItem(childPopupMenu, childNodes[i]._anchor, selectDisabledItems);
           break;
         }
       }
@@ -597,7 +596,7 @@ O$.PopupMenu = {
     popupMenu.closeChildMenus();
     while (popupMenu) {
       popupMenu._items.forEach(function (menuItem) {
-        O$.PopupMenu._clearSubmenuTask(menuItem);
+        O$.LazyPopupMenu._clearSubmenuTask(menuItem);
       });
       popupMenu.hide();
       popupMenu = popupMenu._parentPopupMenu;
@@ -659,7 +658,7 @@ O$.PopupMenu = {
 
         var padding = element._cachedSubstractedPaddings[paddingName];
         if (!padding)
-          padding = element._cachedSubstractedPaddings[paddingName] = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(element, paddingName) - diff) + "px";
+          padding = element._cachedSubstractedPaddings[paddingName] = O$.LazyPopupMenu._getNonNegative(O$.getNumericElementStyle(element, paddingName) - diff) + "px";
         element.style[paddingName] = padding;
       }
     }
@@ -700,7 +699,7 @@ O$.PopupMenu = {
 
         var padding = element._cachedAddedPaddings[paddingName];
         if (!padding)
-          padding = element._cachedAddedPaddings[paddingName] = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(element, paddingName) + diff) + "px";
+          padding = element._cachedAddedPaddings[paddingName] = O$.LazyPopupMenu._getNonNegative(O$.getNumericElementStyle(element, paddingName) + diff) + "px";
         element.style[paddingName] = padding;
       }
     }
@@ -715,15 +714,15 @@ O$.PopupMenu = {
               [menuItem._diffTop, menuItem._diffBottom]);
       var iconSpanStyle = menuItem._iconspan.style;
       if (O$.isExplorer() && O$.isStrictMode()) {
-        iconSpanStyle.paddingLeft = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "padding-left") + menuItem._diffLeft -
+        iconSpanStyle.paddingLeft = O$.LazyPopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "padding-left") + menuItem._diffLeft -
                 O$.getNumericElementStyle(menuItem._anchor, "border-left-width", true) -
                 O$.getNumericElementStyle(menuItem._anchor, "border-right-width", true)) + "px";
       }
       else {
-        iconSpanStyle.paddingLeft = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "padding-left") + menuItem._diffLeft) + "px";
+        iconSpanStyle.paddingLeft = O$.LazyPopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "padding-left") + menuItem._diffLeft) + "px";
       }
       if (O$.isExplorer())
-        iconSpanStyle.width = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "width") + menuItem._diffLeft) + "px";
+        iconSpanStyle.width = O$.LazyPopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "width") + menuItem._diffLeft) + "px";
     }
 
     if (menuItem._arrowspan != null) {
@@ -732,22 +731,22 @@ O$.PopupMenu = {
               [menuItem._diffTop, menuItem._diffBottom]);
       var arrowSpanStyle = menuItem._arrowspan.style;
       if (O$.isExplorer() && O$.isStrictMode()) {
-        arrowSpanStyle.paddingRight = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "padding-right") + menuItem._diffRight -
+        arrowSpanStyle.paddingRight = O$.LazyPopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "padding-right") + menuItem._diffRight -
                 O$.getNumericElementStyle(menuItem._anchor, "border-left-width", true) -
                 O$.getNumericElementStyle(menuItem._anchor, "border-right-width", true)) + "px";
       }
       else {
-        arrowSpanStyle.paddingRight = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "padding-right") + menuItem._diffRight) + "px";
+        arrowSpanStyle.paddingRight = O$.LazyPopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "padding-right") + menuItem._diffRight) + "px";
       }
       if (O$.isExplorer())
-        arrowSpanStyle.width = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "width") + menuItem._diffRight) + "px";
+        arrowSpanStyle.width = O$.LazyPopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "width") + menuItem._diffRight) + "px";
     }
   },
 
   _getWidth:function (element) {
-    return O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(element, "width")) +
-            O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(element, "padding-right")) +
-            O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(element, "padding-left"));
+    return O$.calculateNumericCSSValue(O$.LazyPopupMenu._getStyleProperty(element, "width")) +
+            O$.calculateNumericCSSValue(O$.LazyPopupMenu._getStyleProperty(element, "padding-right")) +
+            O$.calculateNumericCSSValue(O$.LazyPopupMenu._getStyleProperty(element, "padding-left"));
   },
 
   _setAdditionalIEStylesForMenuItem:function (menuItem) {
@@ -780,20 +779,20 @@ O$.PopupMenu = {
 
   /*When user defines padding for the PopupMenu we need to transform padding to margin of the menuItems*/
   _handlePaddings:function (popupMenu) {
-    var paddingBottom = O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(popupMenu, "padding-bottom"));
-    var paddingTop = O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(popupMenu, "padding-top"));
-    var paddingRight = O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(popupMenu, "padding-right"));
+    var paddingBottom = O$.calculateNumericCSSValue(O$.LazyPopupMenu._getStyleProperty(popupMenu, "padding-bottom"));
+    var paddingTop = O$.calculateNumericCSSValue(O$.LazyPopupMenu._getStyleProperty(popupMenu, "padding-top"));
+    var paddingRight = O$.calculateNumericCSSValue(O$.LazyPopupMenu._getStyleProperty(popupMenu, "padding-right"));
 
-    popupMenu._items[0].style.paddingTop = O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(popupMenu._items[0], "padding-top")) + paddingTop + "px";
+    popupMenu._items[0].style.paddingTop = O$.calculateNumericCSSValue(O$.LazyPopupMenu._getStyleProperty(popupMenu._items[0], "padding-top")) + paddingTop + "px";
     var lastMenuItem = popupMenu._items[popupMenu._items.length - 1];
-    lastMenuItem.style.paddingBottom = O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(lastMenuItem, "padding-bottom")) + paddingBottom + "px";
+    lastMenuItem.style.paddingBottom = O$.calculateNumericCSSValue(O$.LazyPopupMenu._getStyleProperty(lastMenuItem, "padding-bottom")) + paddingBottom + "px";
     popupMenu.style.paddingTop = 0;
     popupMenu.style.paddingBottom = 0;
     popupMenu.style.paddingRight = 0;
 
     for (var i = 0; i < popupMenu._items.length; i++) {
       var menuItem = popupMenu._items[i];
-      menuItem.style.paddingRight = O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(lastMenuItem, "padding-right")) + paddingRight + "px";
+      menuItem.style.paddingRight = O$.calculateNumericCSSValue(O$.LazyPopupMenu._getStyleProperty(lastMenuItem, "padding-right")) + paddingRight + "px";
     }
   },
 
@@ -810,26 +809,26 @@ O$.PopupMenu = {
 
   _updatePopupMenuBackground:function (popupMenu, indentClass) {
     var popupTagStyle = popupMenu.style;
-    popupTagStyle.backgroundColor = O$.PopupMenu._getCssProperty(indentClass, "background-color");
-    popupTagStyle.backgroundAttachment = O$.PopupMenu._getCssProperty(indentClass, "background-attachment");
-    popupTagStyle.backgroundImage = O$.PopupMenu._getCssProperty(indentClass, "background-imagee");
-    popupTagStyle.backgroundPositionX = O$.PopupMenu._getCssProperty(indentClass, "background-position-x");
-    popupTagStyle.backgroundPositionY = O$.PopupMenu._getCssProperty(indentClass, "background-position-y");
-    popupTagStyle.backgroundRepeat = O$.PopupMenu._getCssProperty(indentClass, "background-repeat");
+    popupTagStyle.backgroundColor = O$.LazyPopupMenu._getCssProperty(indentClass, "background-color");
+    popupTagStyle.backgroundAttachment = O$.LazyPopupMenu._getCssProperty(indentClass, "background-attachment");
+    popupTagStyle.backgroundImage = O$.LazyPopupMenu._getCssProperty(indentClass, "background-imagee");
+    popupTagStyle.backgroundPositionX = O$.LazyPopupMenu._getCssProperty(indentClass, "background-position-x");
+    popupTagStyle.backgroundPositionY = O$.LazyPopupMenu._getCssProperty(indentClass, "background-position-y");
+    popupTagStyle.backgroundRepeat = O$.LazyPopupMenu._getCssProperty(indentClass, "background-repeat");
   },
 
   _setStylesForIndentArea:function (menuItem, indentVisible, indentClass, defaultIconItemUrl, defaultSelectedIconItemUrl, defaultDisabledIconItemUrl, defaultSelectedDisabledIconItemUrl) {
     if (indentVisible) {
-      var indentWidth = O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(indentClass, "width"));
-      var indentAlign = O$.PopupMenu._getCssProperty(indentClass, "text-align");
-      var indentPaddingLeft = O$.PopupMenu._getCssProperty(indentClass, "padding-left");
-      var indentBorderRight = O$.PopupMenu._getCssProperty(indentClass, "borderRight");
-      var indentBorderRightWidth = O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(indentClass, "borderRightWidth"));
+      var indentWidth = O$.calculateNumericCSSValue(O$.LazyPopupMenu._getCssProperty(indentClass, "width"));
+      var indentAlign = O$.LazyPopupMenu._getCssProperty(indentClass, "text-align");
+      var indentPaddingLeft = O$.LazyPopupMenu._getCssProperty(indentClass, "padding-left");
+      var indentBorderRight = O$.LazyPopupMenu._getCssProperty(indentClass, "borderRight");
+      var indentBorderRightWidth = O$.calculateNumericCSSValue(O$.LazyPopupMenu._getCssProperty(indentClass, "borderRightWidth"));
       menuItem.style.borderLeft = indentBorderRight;
       menuItem.style.marginLeft = indentWidth + "px";
 
       if (!menuItem._separator) {
-        var margin = O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(menuItem._anchor, "margin-left"));
+        var margin = O$.calculateNumericCSSValue(O$.LazyPopupMenu._getStyleProperty(menuItem._anchor, "margin-left"));
         menuItem._anchor.style.marginLeft = (-1 * (indentWidth + indentBorderRightWidth) + margin) + "px";
 
         if (menuItem._icon) {
@@ -865,8 +864,8 @@ O$.PopupMenu = {
         var paddingLeft = O$.getNumericElementStyle(menuItem._caption, "padding-left");
         menuItem._caption.style.paddingLeft = (paddingLeft + indentWidth + indentBorderRightWidth) + "px";
       } else {
-        margin = O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(menuItem._separator, "margin-left"));
-        var padding = O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(menuItem, "padding-left"));
+        margin = O$.calculateNumericCSSValue(O$.LazyPopupMenu._getStyleProperty(menuItem._separator, "margin-left"));
+        var padding = O$.calculateNumericCSSValue(O$.LazyPopupMenu._getStyleProperty(menuItem, "padding-left"));
         menuItem._separator.style.marginLeft = (-1 * (indentWidth + indentBorderRightWidth) + margin + padding) + "px";
       }
     }
@@ -914,7 +913,7 @@ O$.PopupMenu = {
     }
     if (menuItem._arrowspan != null) {
       /* set margin for the arrow */
-      var arrowAreaWidth = O$.PopupMenu._getWidth(menuItem._arrowspan);
+      var arrowAreaWidth = O$.LazyPopupMenu._getWidth(menuItem._arrowspan);
       menuItem._caption.style.paddingRight = O$.calculateNumericCSSValue(menuItem._caption.style.paddingRight) + arrowAreaWidth + "px";
     }
   },
@@ -977,18 +976,18 @@ O$.PopupMenu = {
           var handler;
           eval("handler = function(event){" + menuItem._properties.action + "}");
           handler.call(menuItem, evt);
-          O$.PopupMenu._closeAllMenu(popupMenu);
+          O$.LazyPopupMenu._closeAllMenu(popupMenu);
         } else {
           if (menuItem._menuId) {
-            O$.PopupMenu._clearSubmenuTask(menuItem);
+            O$.LazyPopupMenu._clearSubmenuTask(menuItem);
             if (popupMenu._parentPopupMenu && popupMenu._parentPopupMenu._closeAllTask) {
               clearTimeout(popupMenu._parentPopupMenu._closeAllTask);
               popupMenu._parentPopupMenu._closeAllTask = null;
             }
-            O$.PopupMenu._showSubmenu(popupMenu, menuItem._anchor, submenuHorizontalOffset);
-            O$.PopupMenu._showFirstMenuItemonChild(menuItem, selectDisabledItems);
+            O$.LazyPopupMenu._showSubmenu(popupMenu, menuItem._anchor, submenuHorizontalOffset);
+            O$.LazyPopupMenu._showFirstMenuItemonChild(menuItem, selectDisabledItems);
           } else {
-            O$.PopupMenu._closeAllMenu(popupMenu);
+            O$.LazyPopupMenu._closeAllMenu(popupMenu);
           }
           O$.stopEvent(evt); //to prevent set focus for the popupMenu
         }
@@ -1005,7 +1004,7 @@ O$.PopupMenu = {
           // ensure hiding the menu _before_ invoking possible Ajax menu reload to avoid menu's visible flag to be
           // saved to the server and thus menu reloading in the visible state in this case
 
-          O$.PopupMenu._closeAllMenu(popupMenu);
+          O$.LazyPopupMenu._closeAllMenu(popupMenu);
           popupMenu.closed = true;
           clickHandler.call(menuItem._anchor, evt);
           popupMenu.closed = false;
@@ -1030,7 +1029,7 @@ O$.PopupMenu = {
         popupMenu._parentPopupMenu._closeAllTask = null;
       }
 
-      O$.PopupMenu._setHighlightMenuItem(popupMenu, menuItemElement, selectDisabledItems);
+      O$.LazyPopupMenu._setHighlightMenuItem(popupMenu, menuItemElement, selectDisabledItems);
 
       if (popupMenu._closeAllTask) {
         clearTimeout(popupMenu._closeAllTask);
@@ -1039,7 +1038,7 @@ O$.PopupMenu = {
       if (submenuShowDelay >= 0) {
         menuItem._openSubmenuTask = setTimeout(function () {
           if (menuItemElement._focused)
-            O$.PopupMenu._showSubmenu(popupMenu, menuItemElement, submenuHorizontalOffset);
+            O$.LazyPopupMenu._showSubmenu(popupMenu, menuItemElement, submenuHorizontalOffset);
         }, submenuShowDelay);
       }
     });
@@ -1049,7 +1048,7 @@ O$.PopupMenu = {
       if (menuItem._disabled && !selectDisabledItems) return;
       menuItemElement._focused = null;
 
-      O$.PopupMenu._unselectMenuItem(menuItemElement.parentNode);
+      O$.LazyPopupMenu._unselectMenuItem(menuItemElement.parentNode);
 
       if (popupMenu._closeAllTask) {
         clearTimeout(popupMenu._closeAllTask);

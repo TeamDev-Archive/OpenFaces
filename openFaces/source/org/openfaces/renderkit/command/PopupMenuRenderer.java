@@ -198,7 +198,7 @@ public class PopupMenuRenderer extends RendererBase {
         PopupMenu rootPopupMenu = getRootPopupMenu(popupMenu);
         String event = Rendering.getEventWithOnPrefix(context, popupMenu, "o:popupMenu");
         ScriptBuilder initScript = new ScriptBuilder();
-        initScript.initScript(context, popupMenu, "O$.PopupMenu._init",
+        initScript.initScript(context, popupMenu, "O$.LazyPopupMenu._init",
                 Rendering.getRolloverClass(context, popupMenu),
                 forId,
                 event,

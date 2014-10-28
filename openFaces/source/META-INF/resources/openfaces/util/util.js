@@ -5785,7 +5785,7 @@ if (!window.O$) {
         O$.invokeWhenVisible(element, func)
       }, 100);
     }
-  }
+  };
   O$._disabledClassLink = null;
   O$.Link = {
     _init:function (id, disabled, disabledStyle) {
@@ -5829,11 +5829,7 @@ if (!window.O$) {
     while (parent != document && parent != null) {
       parent = parent.parentNode;
     }
-    if (parent == document) {
-      return true;
-    } else {
-      return false;
-    }
+    return parent == document;
   };
 
   O$._getPopupVisionStateStorage = function () {
