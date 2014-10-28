@@ -34,7 +34,9 @@ import javax.el.MethodExpression;
 import javax.el.MethodNotFoundException;
 import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
+import javax.faces.component.ContextCallback;
 import javax.faces.component.NamingContainer;
+import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.component.UIForm;
@@ -524,13 +526,26 @@ public class PartialViewContext extends PartialViewContextWrapper {
     private static void processAjaxExecutePhase(FacesContext context) {
         UIViewRoot viewRoot = context.getViewRoot();
         Map<String, String> requestParams = context.getExternalContext().getRequestParameterMap();
-
-        if (isHandledByComponent(requestParams)) {
-            return;
-        }
         String actionComponentId = requestParams.get(PARAM_ACTION_COMPONENT);
-
         ELContext elContext = context.getELContext();
+
+        //Getting of EL expression from server:
+        boolean componentFound;
+        componentFound = invokeActionOfComponent(context, actionComponentId);
+        if (!componentFound && actionComponentId.indexOf(OUIObjectIterator.OBJECT_ID_SEPARATOR) >= 0){
+            String mainComponentId = actionComponentId
+                    .substring(0, actionComponentId.indexOf(OUIObjectIterator.OBJECT_ID_SEPARATOR));
+            componentFound = invokeActionOfComponent(context, mainComponentId);
+        }
+
+        //Getting of EL expression from client:
+        String action = requestParams.get(PARAM_ACTION);
+        if (!componentFound && action != null){
+            MethodExpression methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
+                    elContext, "#{" + action + "}", String.class, new Class[]{});
+            methodBinding.invoke(elContext, null);
+        }
+
         UIComponent component = null;
         List<Runnable> restoreDataPointerRunnables = new ArrayList<Runnable>();
         if (actionComponentId != null)
@@ -538,15 +553,8 @@ public class PartialViewContext extends PartialViewContextWrapper {
                     restoreDataPointerRunnables);
         if (component == null)
             component = viewRoot;
-
         String listener = requestParams.get(PARAM_ACTION_LISTENER);
-        String action = requestParams.get(PARAM_ACTION);
         Object result = null;
-        if (action != null) {
-            MethodExpression methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
-                    elContext, "#{" + action + "}", String.class, new Class[]{});
-            methodBinding.invoke(elContext, null);
-        }
         if (listener != null) {
             AjaxActionEvent event = new AjaxActionEvent(component, new Behavior() {
                 public void broadcast(BehaviorEvent event) {
@@ -1045,5 +1053,24 @@ public class PartialViewContext extends PartialViewContextWrapper {
         public static Map<String, Object> getContext(){
             return CONTEXT.get();
         }
+    }
+
+    private static boolean invokeActionOfComponent(FacesContext context, String actionComponentId) {
+        UIViewRoot viewRoot = context.getViewRoot();
+        boolean found;
+        try {
+            found = viewRoot.invokeOnComponent(context, actionComponentId, new ContextCallback() {
+                public void invokeContextCallback(FacesContext context, UIComponent target) {
+                    MethodExpression actionExpression = null;
+                    if (target != null && target instanceof UICommand){
+                        actionExpression = ((UICommand)target).getActionExpression();
+                        actionExpression.invoke(context.getELContext(), null);
+                    }
+                }
+            });
+        } catch (FacesException e) {
+            found = false;
+        }
+        return found;
     }
 }
