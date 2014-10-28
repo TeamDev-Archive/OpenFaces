@@ -75,6 +75,7 @@ O$.Popup = {
         if (style.display == "none")
           this.style.display = this._originalStyleDisplay;
         O$.Popup._notifyVisibilityChangeListeners(this);
+        popup.hidden = false;
       },
 
       hide: function() {
@@ -94,6 +95,7 @@ O$.Popup = {
           this.style.display = "none";
         }
         O$.Popup._notifyVisibilityChangeListeners(this);
+        popup.hidden = true;
       },
 
       isVisible: function() {
@@ -114,7 +116,7 @@ O$.Popup = {
         newParent.appendChild(this);
       }
     });
-
+    popup.hidden = true;
     // there can't be inline pop-ups so we're assuming the regular display value for popups to be the "block" one
     popup._originalStyleDisplay = "block";//O$.getElementStyle(this, "display");//this.style.display;
 

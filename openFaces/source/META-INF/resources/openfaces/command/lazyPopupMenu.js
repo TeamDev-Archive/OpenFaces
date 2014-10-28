@@ -32,6 +32,7 @@ O$.LazyPopupMenu = {
       },
 
       hide:function () {
+        finishInitialization();
         O$.removeIETransparencyControl(popupMenu);
         this.closeChildMenus();
         if (O$.LazyPopupMenu._getStyleProperty(this, "visibility") != "hidden" &&
@@ -114,8 +115,8 @@ O$.LazyPopupMenu = {
           popupMenu.showForEvent(event);
           return false;
         }
-
-
+        popupMenu.showForEvent(event);
+        return false;
       };
     } catch (e) {
 
