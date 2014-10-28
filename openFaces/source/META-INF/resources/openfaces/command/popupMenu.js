@@ -186,6 +186,7 @@ O$.PopupMenu = {
 
     var initialized = false;
     function finishInitialization() {
+      console.log(popupMenu.id)
       if (initialized) return;
       initialized = true;
       if (!O$.isElementPresentInDocument(popupMenu)) {
@@ -286,6 +287,8 @@ O$.PopupMenu = {
           O$.PopupMenu._addMouseOverOutEvents(menuItem, selectDisabledItems, submenuHorizontalOffset, submenuShowDelay, submenuHideDelay);
         }
       }
+      popupMenu.style.top = "3px";
+      popupMenu.style.left = "3px";
     }
 
   },

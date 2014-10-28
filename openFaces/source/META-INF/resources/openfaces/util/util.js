@@ -199,7 +199,7 @@ if (!window.O$) {
         var x2 = O$.minDefined(this.getMaxX(), rect.getMaxX());
         var y1 = O$.maxDefined(this.getMinY(), rect.getMinY());
         var y2 = O$.minDefined(this.getMaxY(), rect.getMaxY());
-        if ((x2 < x1) || (y2 < y1)){
+        if ((x2 < x1) || (y2 < y1)) {
           x2 = x1;
           y2 = y1;
         }
@@ -1984,7 +1984,7 @@ if (!window.O$) {
       });
     });
   };
-  O$.getScrollBarWidth = function(){
+  O$.getScrollBarWidth = function () {
     var inner = document.createElement('p');
     inner.style.width = "100%";
     inner.style.height = "200px";
@@ -1997,18 +1997,18 @@ if (!window.O$) {
     outer.style.width = "200px";
     outer.style.height = "150px";
     outer.style.overflow = "hidden";
-    outer.appendChild (inner);
+    outer.appendChild(inner);
 
-    document.body.appendChild (outer);
+    document.body.appendChild(outer);
     var w1 = inner.offsetWidth;
     outer.style.overflow = 'scroll';
     var w2 = inner.offsetWidth;
     if (w1 == w2) w2 = outer.clientWidth;
 
-    document.body.removeChild (outer);
+    document.body.removeChild(outer);
 
     return (w1 - w2);
-  } ;
+  };
   O$.saveScrollPositionIfNeeded = function () {
     // needed for saving scroll position between ajax request under Mozilla Firefox
     var isMozilla = O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/;
@@ -3066,8 +3066,8 @@ if (!window.O$) {
 
         if (!pageScrollRect.intersects(containerRect)) {
           // if rectangle not intersect - we put focus to the mid of container
-          this._focusControl.style.top =  evt.screenY+"px";
-          this._focusControl.style.left = evt.screenX +"px";
+          this._focusControl.style.top = evt.screenY + "px";
+          this._focusControl.style.left = evt.screenX + "px";
         } else {
           // if rectangles intersects - we put focus to the mid of intersection
           pageScrollRect.intersectWith(containerRect);
@@ -4029,11 +4029,11 @@ if (!window.O$) {
   };
 
   // ----------------- ABSOLUTE POSITIONING / METRICS UTILITIES ---------------------------------------------------
-  O$.getXElementPosInAnotherComponent = function(element1,element2){
-     return O$.getElementPos(element1).x -O$.getElementPos(element2).x
+  O$.getXElementPosInAnotherComponent = function (element1, element2) {
+    return O$.getElementPos(element1).x - O$.getElementPos(element2).x
   };
-  O$.getYElementPosInAnotherComponent = function(element1,element2){
-    return O$.getElementPos(element1).y -O$.getElementPos(element2).y
+  O$.getYElementPosInAnotherComponent = function (element1, element2) {
+    return O$.getElementPos(element1).y - O$.getElementPos(element2).y
   };
 
   O$.getDefaultAbsolutePositionParent = function () {
@@ -4278,7 +4278,7 @@ if (!window.O$) {
         top = O$.maxDefined(top, containerRect.getMinY());
         bottom = O$.minDefined(bottom, containerRect.getMaxY());
       }
-      if (containerRect){
+      if (containerRect) {
         break;
       }
       element = container;
@@ -5785,10 +5785,11 @@ if (!window.O$) {
         O$.invokeWhenVisible(element, func)
       }, 100);
     }
-  }
+  };
   O$._disabledClassLink = null;
   O$.Link = {
     _init:function (id, disabled, disabledStyle) {
+      O$._disabledClassLink = disabledStyle;
       var link = O$.initComponent(id, null, {
         _disabled:false,
 
@@ -5819,11 +5820,7 @@ if (!window.O$) {
         originalEventHandlers[eventName] = link[eventName];
 
       });
-
-      O$.addLoadEvent(function () {
-        link.setDisabled(disabled)
-      });
-
+      link.setDisabled(disabled)
     }
   };
 
@@ -5832,11 +5829,7 @@ if (!window.O$) {
     while (parent != document && parent != null) {
       parent = parent.parentNode;
     }
-    if (parent == document) {
-      return true;
-    } else {
-      return false;
-    }
+    return parent == document;
   };
 
   O$._getPopupVisionStateStorage = function () {

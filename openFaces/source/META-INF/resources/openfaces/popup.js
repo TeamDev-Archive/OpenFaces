@@ -75,6 +75,7 @@ O$.Popup = {
         if (style.display == "none")
           this.style.display = this._originalStyleDisplay;
         O$.Popup._notifyVisibilityChangeListeners(this);
+        popup.hidden = false;
       },
 
       hide: function() {
@@ -94,6 +95,7 @@ O$.Popup = {
           this.style.display = "none";
         }
         O$.Popup._notifyVisibilityChangeListeners(this);
+        popup.hidden = true;
       },
 
       isVisible: function() {
@@ -114,7 +116,7 @@ O$.Popup = {
         newParent.appendChild(this);
       }
     });
-
+    popup.hidden = true;
     // there can't be inline pop-ups so we're assuming the regular display value for popups to be the "block" one
     popup._originalStyleDisplay = "block";//O$.getElementStyle(this, "display");//this.style.display;
 
@@ -208,7 +210,7 @@ document._addClickListener(function(e) {
 
   O$._popupsOnPage.forEach(function(popupId) {
     var popup = O$(popupId) || O$(popupId + O$.Popup.PULLED_OUT_ID_SUFFIX);
-    if ((!popup) || (popup == {}) || !(popup.hide))
+    if ((!popup) || (popup == {}) || !(popup.hide) || !popup.hidden)
       return; // popup can be removed from page with A4J
     var clickedOnChild = O$.isChild(popup, clickedElement);
     if (popupId == clickedElementId || clickedOnChild || clickedElementId == popup._dependedFieldId)

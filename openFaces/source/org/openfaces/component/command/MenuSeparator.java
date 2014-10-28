@@ -11,15 +11,19 @@
  */
 package org.openfaces.component.command;
 
+import org.openfaces.org.json.JSONException;
+import org.openfaces.org.json.JSONObject;
+import org.openfaces.util.ConvertibleToJSON;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
+import java.util.Map;
 
 /**
  * @author Vladimir Kurganov
  */
-public class MenuSeparator extends UIOutput {
+public class MenuSeparator extends UIOutput implements ConvertibleToJSON {
 
     public static final String COMPONENT_TYPE = "org.openfaces.MenuSeparator";
     public static final String COMPONENT_FAMILY = "org.openfaces.MenuSeparator";
@@ -91,4 +95,16 @@ public class MenuSeparator extends UIOutput {
         indentClass = (String) values[i];
     }
 
+    public JSONObject toJSONObject(Map params) throws JSONException {
+        JSONObject obj = new JSONObject();
+
+        obj.put("separator", true);
+        obj.put("styleClass", getStyleClass());
+        obj.put("style", getStyle());
+        obj.put("indentStyle", getIndentStyle());
+        obj.put("indentClass", getIndentClass());
+        obj.put("id", getId());
+
+        return obj;
+    }
 }

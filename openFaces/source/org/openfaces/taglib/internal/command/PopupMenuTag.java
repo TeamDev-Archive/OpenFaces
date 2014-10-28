@@ -72,6 +72,7 @@ public class PopupMenuTag extends AbstractComponentTag {
 
         setStringProperty(uiComponent, "onshow");
         setStringProperty(uiComponent, "onhide");
+        setBooleanProperty(uiComponent, "lazy");
 
     }
 

@@ -21,6 +21,8 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Vladimir Kurganov
@@ -71,10 +73,21 @@ public class PopupMenu extends OUIComponentBase implements OUIClientAction, Unex
     private String itemSubmenuIconClass;
     private String indentStyle;
     private String indentClass;
+    private boolean lazy;
 
     /* properties that are not inherited */
     private String onshow;
     private String onhide;
+    /*Field which contains predefined from code menuItems*/
+    private List<MenuItem> preloadedItems = new ArrayList<MenuItem>();
+
+    public List<MenuItem> getPreloadedItems() {
+        return preloadedItems;
+    }
+
+    public void setPreloadedItems(List<MenuItem> preloadedItems) {
+        this.preloadedItems = preloadedItems;
+    }
 
     @Override
     public String getStyle() {
@@ -102,6 +115,13 @@ public class PopupMenu extends OUIComponentBase implements OUIClientAction, Unex
         String result = ValueBindings.get(this, "rolloverClass", rolloverClass);
         if (result == null && getPopupMenuParent() != null) result = getPopupMenuParent().rolloverClass;
         return result == null ? ValueBindings.get(this, "rolloverClass", rolloverClass) : result;
+    }
+    public boolean isLazy() {
+        return ValueBindings.get(this, "lazy", lazy, false);
+    }
+
+    public void setLazy(boolean lazy) {
+        this.lazy = lazy;
     }
 
     public String getFamily() {
@@ -523,7 +543,8 @@ public class PopupMenu extends OUIComponentBase implements OUIClientAction, Unex
                 itemSubmenuIconClass,
 
                 onshow,
-                onhide
+                onhide,
+                lazy
         };
     }
 
@@ -570,5 +591,6 @@ public class PopupMenu extends OUIComponentBase implements OUIClientAction, Unex
 
         onshow = (String) values[i++];
         onhide = (String) values[i++];
+        lazy = (Boolean) values[i++];
     }
 }
