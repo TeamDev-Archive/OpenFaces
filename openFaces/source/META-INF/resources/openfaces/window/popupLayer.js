@@ -262,7 +262,7 @@ O$.PopupLayer = {
           popup._firstInternalAnchor._focusControlElement = true;
           popup.insertBefore(popup._firstInternalAnchor, popup.firstChild);
           popup._firstInternalAnchor.onfocus = function() {
-            var focusable = O$.getLastFocusableControl(popup);
+            var focusable = O$.getFirstFocusableControl(popup);
             if (focusable) {
               try {
                 focusable.focus();
@@ -272,7 +272,7 @@ O$.PopupLayer = {
             } else
               this.blur();
           };
-          // We need delay if we want to avoid scrolling if we change some x,y imediatly after showing popup window.
+          // We need delay if we want to avoid scrolling if we change some x,y immediately after showing popup window.
           if (!focusAfterDelay){
             popup._firstInternalAnchor.focus();
           }else{
@@ -281,7 +281,7 @@ O$.PopupLayer = {
           popup._lastInternalAnchor = O$.createHiddenFocusElement(popup.id + O$.PopupLayer.LAST_INTERNAL_ANCHOR_SUFFIX);
           popup._lastInternalAnchor._focusControlElement = true;
           popup._lastInternalAnchor.onfocus = function() {
-            var focusable = O$.getFirstFocusableControl(popup);
+            var focusable = O$.getLastFocusableControl(popup);
             if (focusable) {
               try {
                 focusable.focus();
