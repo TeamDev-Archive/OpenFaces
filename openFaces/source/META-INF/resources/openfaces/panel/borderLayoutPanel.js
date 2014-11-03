@@ -28,7 +28,7 @@ O$._initBorderLayoutPanel = function (borderLayoutPanelId) {
     borderLayoutPanel._newStyle.applyTo(borderLayoutPanel.style);
     if (!borderLayoutPanel._waitForRefresh) {
       borderLayoutPanel._waitForRefresh = true;
-      setTimeout(O$._refreshLaterIfInvisible, 0, borderLayoutPanel);
+      setTimeout(O$._refreshLaterIfInvisible, 0, borderLayoutPanel, false);
     }
   });
 
@@ -111,7 +111,7 @@ O$._initBorderLayoutPanel_content = function (borderLayoutPanelId, rolloverClass
       borderLayoutPanel.refresh();
     }, 1);
   O$._applyEventsObjectToElement(events, borderLayoutPanel);
-  setTimeout(O$._refreshLaterIfInvisible, 1000, borderLayoutPanel);
+  setTimeout(O$._refreshLaterIfInvisible, 1000, borderLayoutPanel, true);
 };
 
 //--------------------------------------  private functions
@@ -502,7 +502,7 @@ O$._truncateMode_untruncateSidePanel = function (sidePanel, freeSpace, useDouble
   return freeSpace;
 };
 
-O$._refreshLaterIfInvisible = function (borderLayoutPanel) {
+O$._refreshLaterIfInvisible = function (borderLayoutPanel, restoreInitSize) {
 
   var hasHiddenParent = false;
   var currentElement = borderLayoutPanel;
@@ -511,11 +511,13 @@ O$._refreshLaterIfInvisible = function (borderLayoutPanel) {
   hasHiddenParent = !O$.isVisibleRecursive(currentElement);
 
   if (hasHiddenParent == true) {
-    setTimeout(O$._refreshLaterIfInvisible, 200, borderLayoutPanel);
+    setTimeout(O$._refreshLaterIfInvisible, 200, borderLayoutPanel, restoreInitSize);
   } else {
-    for (var index = 0; index < borderLayoutPanel.sidePanels.length; index++) {
-      if (!borderLayoutPanel.sidePanels[index]._collapsible) {
-        O$._restoreInitSize(borderLayoutPanel.sidePanels[index]);
+    if (restoreInitSize) {
+      for (var index = 0; index < borderLayoutPanel.sidePanels.length; index++) {
+        if (!borderLayoutPanel.sidePanels[index]._collapsible) {
+          O$._restoreInitSize(borderLayoutPanel.sidePanels[index]);
+        }
       }
     }
     borderLayoutPanel.refresh();
