@@ -513,6 +513,11 @@ O$._refreshLaterIfInvisible = function (borderLayoutPanel) {
   if (hasHiddenParent == true) {
     setTimeout(O$._refreshLaterIfInvisible, 200, borderLayoutPanel);
   } else {
+    for (var index = 0; index < borderLayoutPanel.sidePanels.length; index++) {
+      if (!borderLayoutPanel.sidePanels[index]._collapsible) {
+        O$._restoreInitSize(borderLayoutPanel.sidePanels[index]);
+      }
+    }
     borderLayoutPanel.refresh();
     borderLayoutPanel._waitForRefresh = false;
   }

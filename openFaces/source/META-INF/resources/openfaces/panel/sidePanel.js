@@ -98,7 +98,8 @@ O$._initSidePanel = function (sidePanelId, alignment, size, minSize, maxSize, co
     _size:size,
     _minSize:minSize,
     _maxSize:maxSize,
-    _isRecalculatingSplitterInBorder:isRecalculatingSplitterInBorder
+    _isRecalculatingSplitterInBorder:isRecalculatingSplitterInBorder,
+    _initSize: size
   });
   sidePanel._panel._isCoupled = true;
 
@@ -157,7 +158,6 @@ O$._initSidePanel_style = function (sidePanel, rolloverClass, splitterRolloverCl
   if (sidePanel._maxSize == null) {
     sidePanel._maxSize = "100%";
   }
-  O$._correctSizeOnMinMax(sidePanel);
 
   //sidePanel
   //todo calculate sidePanel._newStyle.width and sidePanel._newStyle.height via panel.style.width and panel.style.height
@@ -580,8 +580,11 @@ O$._cacheSidePanelSizeVariables = function (sidePanel) {
   if (caption) {
     caption._fullHeight = O$._calculateOffsetHeight(caption, false) + caption._storedSizeProperties.marginsHeight;
   }
+};
+
+O$._restoreInitSize = function (sidePanel){
+  sidePanel._size = sidePanel._initSize;
 }
-;
 
 //--------------------  splitter tools  ------------------------
 
