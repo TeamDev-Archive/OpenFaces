@@ -186,7 +186,6 @@ O$.PopupMenu = {
 
     var initialized = false;
     function finishInitialization() {
-      console.log(popupMenu.id)
       if (initialized) return;
       initialized = true;
       if (!O$.isElementPresentInDocument(popupMenu)) {

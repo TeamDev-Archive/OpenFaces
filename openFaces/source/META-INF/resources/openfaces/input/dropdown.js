@@ -494,7 +494,6 @@ O$.DropDown = {
             dropDown.oldY = O$.getElementPos(dropDown).y;
             dropDown.oldYInComponent = O$.getYElementPosInAnotherComponent(dropDown, container);
             contentHeight = container.clientHeight - dropDownOffset - O$.getScrollBarWidth();
-            console.log(O$.getScrollBarWidth());
             contentHeight = contentHeight < 21 ? 20 : contentHeight;
           } else {
             contentHeight = innerTable.offsetHeight;
