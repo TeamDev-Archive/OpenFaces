@@ -5122,7 +5122,10 @@ if (!window.O$) {
       return false;
 
     var parentNode = element.parentNode;
-    if (!parentNode || parentNode == document)
+    if (!parentNode){
+      return false;
+    }
+    if (parentNode == document)
       return true;
 
     return O$.isVisibleRecursive(parentNode);
