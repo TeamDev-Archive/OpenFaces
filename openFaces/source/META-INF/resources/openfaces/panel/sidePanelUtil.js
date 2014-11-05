@@ -563,3 +563,17 @@ O$._setupRolloverClass = function(element, rolloverClass) {
     O$.setStyleMappings(element, {_rolloverStyle: mouseInside ? rolloverClass : null});
   });
 };
+
+O$.OnSplitterDrag = function(sidePanelId, borderLayoutPanelId){
+  var sidePanel = O$(sidePanelId);
+  var borderLayoutPanel = O$(borderLayoutPanelId);
+  if (sidePanel._forBorderLayoutPanel.onsplitterdrag)
+    sidePanel._forBorderLayoutPanel.onsplitterdrag(sidePanel);
+  if (sidePanel._forBorderLayoutPanel._truncateMode) {
+    sidePanel._forBorderLayoutPanel._truncateMode = false;
+  } else {
+    O$._setCorrectedSidePanelNewSize(sidePanel, borderLayoutPanel); // compare to free space into borderLayoutPanel
+  }
+  O$._recalculateBorderLayoutPanel(borderLayoutPanel);
+  O$._repaintBorderLayoutPanel(borderLayoutPanel);
+}
