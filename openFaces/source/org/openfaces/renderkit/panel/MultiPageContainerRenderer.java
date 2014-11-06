@@ -68,6 +68,8 @@ public abstract class MultiPageContainerRenderer extends BaseTabSetRenderer impl
         writer.writeAttribute("cellspacing", "0", null);
         writer.writeAttribute("cellpadding", "0", null);
         String clientId = container.getClientId(context);
+        writer.writeAttribute("multiPageContainerId", clientId, "multiPageContainerId");
+        writer.writeAttribute("absolutePageIndex", absolutePageIndex, "absolutePageIndex");
         writer.writeAttribute("id", clientId + PANE_SUFFIX + absolutePageIndex, null);
         if (!initiallyVisible) {
             writer.writeAttribute("style", "display: none;", null);

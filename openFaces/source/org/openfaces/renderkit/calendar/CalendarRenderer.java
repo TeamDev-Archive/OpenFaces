@@ -461,9 +461,6 @@ public class CalendarRenderer extends RendererBase {
             renderDayNameCell(context, calendar, dayNames[idx]);
         }
         writer.endElement("tr");
-        if (!isAuxiliaryTagsRenderedInFooter(calendar)) {
-            encodeAuxiliaryTags(context, calendar);
-        }
 
         writer.endElement("tbody");
     }
