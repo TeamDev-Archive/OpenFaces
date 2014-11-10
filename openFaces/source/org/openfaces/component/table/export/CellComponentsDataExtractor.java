@@ -14,7 +14,9 @@ package org.openfaces.component.table.export;
 
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -60,6 +62,17 @@ public class CellComponentsDataExtractor implements CellDataExtractor {
         }
         if (extractionFilter.checkOnUnextractable(component)) {
             return new LinkedList<Object>();
+        }
+        boolean isThisComponentHaveStyle = false;
+        Class c = component.getClass();
+        Method[] methods = c.getMethods();
+        for (Method method : methods) {
+            if(method.getName().equals("getStyle")){
+                isThisComponentHaveStyle = true;
+            }
+        }
+        if(isThisComponentHaveStyle){
+
         }
         for (ComponentDataExtractor componentExtractor : componentExtractors) {
             if (componentExtractor.isApplicableFor(component)) {
