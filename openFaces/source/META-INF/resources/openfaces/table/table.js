@@ -4706,6 +4706,9 @@ O$.ColumnMenu = {
     var columnMenu = O$(columnMenuId);
 
     function menuFixer() {
+      if (!columnMenu.menuItemsInited){
+        columnMenu.deferredMenuItemsInit();
+      }
       O$.ColumnMenu._checkSortMenuItems(columnMenuId, tableId, columnId);
       O$.ColumnMenu._checkGroupingMenuItems(columnMenuId, tableId, columnId);
       var column = table._getColumn(columnId);
@@ -4786,14 +4789,17 @@ O$.ColumnMenu = {
 
 
     var columnMenu = O$.initComponent(columnMenuId, null, {
-      _sortAscMenuItem:O$(sortAscMenuId),
-      _sortDescMenuItem:O$(sortDescMenuId),
-      _hideMenuItem:O$(hideMenuId),
-      _groupByColumnMenuItem:O$(groupByColumnMenuId),
-      _removeFromGroupingMenuItem:O$(removeFromGroupingMenuId),
-      _cancelGroupingMenuItem:O$(cancelGroupingMenuId)
-    });
 
+    });
+    columnMenu.deferredMenuItemsInit = function(){
+      columnMenu.menuItemsInited = true;
+      columnMenu._sortAscMenuItem = O$(sortAscMenuId);
+      columnMenu._sortDescMenuItem = O$(sortDescMenuId);
+      columnMenu._hideMenuItem = O$(hideMenuId);
+      columnMenu._groupByColumnMenuItem = O$(groupByColumnMenuId);
+      columnMenu._removeFromGroupingMenuItem = O$(removeFromGroupingMenuId);
+      columnMenu._cancelGroupingMenuItem = O$(cancelGroupingMenuId);
+    }
     var columnMenuButton = O$(columnMenuButtonId);
     var columnMenuButtonTable = function () {
       function safeAppend(parent, child) {
@@ -4902,15 +4908,17 @@ O$.ColumnMenu = {
     var menu = O$(menuId);
     var table = O$(tableId);
     var idx = 0;
-    menu._items.forEach(function (menuItem) {
-      var colIndex = idx++;
-      menuItem._anchor.onclick = function () {
-        O$.ColumnMenu._toggleColumnVisibility(table, columnIds[colIndex]);
-      };
-      O$.addUnloadHandler(menuItem._anchor, function () {
-        menuItem._anchor.onclick = null;
+    menu._deferredInitializers.push(function(){
+      menu._items.forEach(function(menuItem) {
+        var colIndex = idx++;
+        menuItem._anchor.onclick = function() {
+          O$.ColumnMenu._toggleColumnVisibility(table, columnIds[colIndex]);
+        };
+        O$.addUnloadHandler(menuItem._anchor, function () {
+          menuItem._anchor.onclick = null;
+        });
       });
-    });
+    })
   },
 
   _toggleColumnVisibility:function (table, columnId) {

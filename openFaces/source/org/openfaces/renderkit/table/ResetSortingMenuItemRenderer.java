@@ -21,12 +21,7 @@ import java.io.IOException;
 public class ResetSortingMenuItemRenderer extends ColumnMenuItemRenderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-        MenuItem menuItem = (MenuItem) component;
-        if (menuItem.getValue() == null)
-            menuItem.setValue("Reset sorting");
-        menuItem.setOnclick(new ScriptBuilder().functionCall("O$.ColumnMenu._resetSorting",
-                getTable("<o:resetSortingMenuItem>", menuItem)).toString());
-        super.encodeBegin(context, component);
+        throw new RuntimeException("ColumnMenuItemRenderer doesn't must be called by itself");
 
     }
 }

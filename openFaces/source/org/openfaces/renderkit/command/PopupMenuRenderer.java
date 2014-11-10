@@ -50,8 +50,10 @@ public class PopupMenuRenderer extends RendererBase {
     private static final String DEFAULT_DISABLED_ITEM = "o_menu_list_item_disabled";
 
     public static final String ATTR_DEFAULT_INDENT_CLASS = "_defaultIndentClass";
+
     private static final String MENU_ITEM_CONTENT_SUFFIX = "::content";
     private static final String MENU_ITEM_CONTROL_SUFFIX = "::control";
+
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered()) return;
@@ -81,32 +83,10 @@ public class PopupMenuRenderer extends RendererBase {
         writer.endElement("ul");
 
         Styles.renderStyleClasses(facesContext, popupMenu);
-        if(popupMenu.isLazy()){
-           renderLazyInitJS(facesContext, popupMenu);
-        } else{
-            renderInitJS(facesContext, popupMenu);
-        }
 
+        renderInitJS(facesContext, popupMenu);
     }
 
-    private JSONArray getMenuItemParameters(PopupMenu popupMenu) {
-        JSONArray menuItemParameters = new JSONArray();
-        List<UIComponent> components = popupMenu.getChildren();
-        for (UIComponent component : components) {
-            if (component instanceof MenuItem) {
-                MenuItem menuItem = (MenuItem) component;
-                Map parameters = (Map) menuItem.getAttributes().get(MenuItemRenderer.MENU_ITEMS_PARAMETERS_KEY);
-                if (parameters == null) {
-                    parameters = new HashMap();
-                }
-                JSONObject obj = new JSONObject(parameters);
-                menuItemParameters.put(obj);
-            } else if (component instanceof MenuSeparator) {
-                menuItemParameters.put(new JSONObject());
-            }
-        }
-        return menuItemParameters;
-    }
 
     private void renderInitJS(FacesContext context, PopupMenu popupMenu) throws IOException {
         String forId = OUIClientActionHelper.getClientActionInvoker(context, popupMenu);
@@ -156,70 +136,6 @@ public class PopupMenuRenderer extends RendererBase {
                 popupMenu.getSelectedDisabledSubmenuImageUrl(),
 
                 isRootMenu,
-                getMenuItemParameters(popupMenu),
-                popupMenu.getSubmenuHorizontalOffset(),
-
-                rootPopupMenu.getSubmenuShowDelay(),
-                rootPopupMenu.getSubmenuHideDelay(),
-                rootPopupMenu.isSelectDisabledItems(),
-
-                eventsObj);
-
-        Styles.renderStyleClasses(context, popupMenu);
-
-        Rendering.renderInitScript(context, initScript,
-                Resources.utilJsURL(context),
-                Resources.internalURL(context, "command/popupMenu.js"),
-                Resources.internalURL(context, "popup.js"));
-    }
-    private void renderLazyInitJS(FacesContext context, PopupMenu popupMenu) throws IOException {
-        String forId = OUIClientActionHelper.getClientActionInvoker(context, popupMenu);
-
-        String indentClass = Styles.getCSSClass(context, popupMenu, popupMenu.getIndentStyle(), StyleGroup.regularStyleGroup(), popupMenu.getIndentClass(),
-                getDefaultIndentClass(popupMenu));
-        String defaultItemClass = Styles.getCSSClass(context, popupMenu, popupMenu.getItemStyle(), StyleGroup.regularStyleGroup(), popupMenu.getItemClass(),
-                DEFAULT_ITEM_CLASS);
-        String defaultSelectedClass = Styles.getCSSClass(context, popupMenu, popupMenu.getSelectedItemStyle(), StyleGroup.selectedStyleGroup(), popupMenu.getSelectedItemClass(),
-                DEFAULT_SELECTED_ITEM_CLASS);
-        String defaultContentClass = Styles.getCSSClass(context, popupMenu, popupMenu.getItemContentStyle(), StyleGroup.regularStyleGroup(), popupMenu.getItemContentClass(),
-                DEFAULT_CONTENT_ITEM_CLASS);
-        String defaultDisabledClass = Styles.getCSSClass(context, popupMenu, popupMenu.getDisabledItemStyle(), StyleGroup.disabledStyleGroup(1), popupMenu.getDisabledItemClass(),
-                DEFAULT_DISABLED_ITEM);
-
-        String submenuImageUrl = Resources.getURL(context, popupMenu.getSubmenuImageUrl(), "command/submenuImage.gif");
-        String disabledSubmenuImageUrl = Resources.getURL(context, popupMenu.getDisabledSubmenuImageUrl(), "command/disabledSubmenuImage.gif");
-        String selectedSubmenuImageUrl = Resources.getURL(context, popupMenu.getSelectedSubmenuImageUrl(), "command/submenuImage.gif");
-
-        JSONObject eventsObj = new JSONObject();
-        Rendering.addJsonParam(eventsObj, "onhide", popupMenu.getOnhide());
-        Rendering.addJsonParam(eventsObj, "onshow", popupMenu.getOnshow());
-
-        boolean isRootMenu = !(popupMenu.getParent() instanceof MenuItem);
-        PopupMenu rootPopupMenu = getRootPopupMenu(popupMenu);
-        String event = Rendering.getEventWithOnPrefix(context, popupMenu, "o:popupMenu");
-        ScriptBuilder initScript = new ScriptBuilder();
-        initScript.initScript(context, popupMenu, "O$.LazyPopupMenu._init",
-                Rendering.getRolloverClass(context, popupMenu),
-                forId,
-                event,
-                popupMenu.isIndentVisible(),
-                indentClass,
-                defaultItemClass,
-                defaultSelectedClass,
-                defaultContentClass,
-                defaultDisabledClass,
-
-                popupMenu.getItemIconUrl(),
-                popupMenu.getDisabledItemIconUrl(),
-                popupMenu.getSelectedItemIconUrl(),
-                popupMenu.getSelectedDisabledItemIconUrl(),
-
-                submenuImageUrl,
-                disabledSubmenuImageUrl,
-                selectedSubmenuImageUrl,
-                popupMenu.getSelectedDisabledSubmenuImageUrl(),
-
-                isRootMenu,
                 popupMenu.getSubmenuHorizontalOffset(),
 
                 rootPopupMenu.getSubmenuShowDelay(),
@@ -234,7 +150,7 @@ public class PopupMenuRenderer extends RendererBase {
 
         Rendering.renderInitScript(context, initScript,
                 Resources.utilJsURL(context),
-                Resources.internalURL(context, "command/lazyPopupMenu.js"),
+                Resources.internalURL(context, "command/popupMenu.js"),
                 Resources.internalURL(context, "command/menuItemConstructor.js"),
                 Resources.internalURL(context, "popup.js"));
     }
@@ -259,16 +175,7 @@ public class PopupMenuRenderer extends RendererBase {
 
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        PopupMenu popupMenu = (PopupMenu) component;
-        if(popupMenu.isLazy()) return;
-        if (!component.isRendered())
-            return;
 
-        List<UIComponent> components = component.getChildren();
-        for (UIComponent child : components) {
-            if (child instanceof MenuItem || child instanceof MenuSeparator)
-                child.encodeAll(context);
-        }
     }
 
 
@@ -327,8 +234,7 @@ public class PopupMenuRenderer extends RendererBase {
                                 addCommand = true;
                             }
                         }
-                        JSONObject menuItem;
-                        menuItem = ((ConvertibleToJSON)child).toJSONObject(params);
+                        JSONObject menuItem = ((ConvertibleToJSON)child).toJSONObject(params);
                         if (addCommand)
                             menuItem.put("addCommand",true);
                         menuItems.put(menuItem);

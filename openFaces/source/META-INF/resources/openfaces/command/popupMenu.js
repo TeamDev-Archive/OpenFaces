@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 3.0
- * Copyright (C) 2007-2012, TeamDev Ltd.
+ * Copyright (C) 2007-2014, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -13,39 +13,15 @@
 // ================================== END OF PUBLIC API METHODS
 
 O$.PopupMenu = {
-  _init: function(popupMenuId,
-                  rolloverClass,
-                  forId,
-                  forEventName,
-                  indentVisible,
-                  indentClass,
-                  defaultItemClass,
-                  defaultSelectedClass,
-                  defaultContentClass,
-                  defaultDisabledClass,
-
-                  itemIconUrl,
-                  disabledItemIconUrl,
-                  selectedItemIconUrl,
-                  selectedDisabledItemIconUrl,
-
-                  submenuImageUrl,
-                  disabledSubmenuImageUrl,
-                  selectedSubmenuImageUrl,
-                  selectedDisabledSubmenuImageUrl,
-
-                  isRootMenu,
-                  itemsProperties,
-                  submenuHorizontalOffset,
-                  submenuShowDelay,
-                  submenuHideDelay,
-                  selectDisabledItems,
-                  events) {
+  _init:function (popupMenuId, rolloverClass, forId, forEventName, indentVisible, indentClass, defaultItemClass, defaultSelectedClass, defaultContentClass, defaultDisabledClass, itemIconUrl, disabledItemIconUrl, selectedItemIconUrl, selectedDisabledItemIconUrl, submenuImageUrl, disabledSubmenuImageUrl, selectedSubmenuImageUrl, selectedDisabledSubmenuImageUrl, isRootMenu, submenuHorizontalOffset, submenuShowDelay, submenuHideDelay, selectDisabledItems, events, menuItemsList, defaultMenuItemsParams) {
     O$.Popup._init(popupMenuId, false);
-    var popupMenu = O$.initComponent(popupMenuId, {rollover: rolloverClass}, {
-      show: function() {
+    O$.MenuItemConsctructor.defaultMenuItemsParams = defaultMenuItemsParams;
+
+    var popupMenu = O$.initComponent(popupMenuId, {rollover:rolloverClass}, {
+      show:function () {
+        if (popupMenu.closed) return;
         finishInitialization();
-        setTimeout(function() {
+        setTimeout(function () {
           O$.addIETransparencyControl(popupMenu);
         }, 1);
         this.style.visibility = "visible";
@@ -55,12 +31,12 @@ O$.PopupMenu = {
           this.onshow();
       },
 
-      hide: function() {
+      hide:function () {
         finishInitialization();
         O$.removeIETransparencyControl(popupMenu);
         this.closeChildMenus();
         if (O$.PopupMenu._getStyleProperty(this, "visibility") != "hidden" &&
-            O$.PopupMenu._getStyleProperty(this, "display") != "none") {
+                O$.PopupMenu._getStyleProperty(this, "display") != "none") {
           this.style.visibility = "hidden";
           this.style.display = "none";
 
@@ -73,11 +49,11 @@ O$.PopupMenu = {
         }
       },
 
-      showAtXY: function (x, y /*, relativeToContainer*/ ) {
+      showAtXY:function (x, y /*, relativeToContainer*/) {
         finishInitialization();
         var relativeToContainer = arguments[2];
         if (relativeToContainer !== undefined) {
-          var containerPos = relativeToContainer !== null ? O$.getElementPos(relativeToContainer) : {x: 0, y: 0};
+          var containerPos = relativeToContainer !== null ? O$.getElementPos(relativeToContainer) : {x:0, y:0};
           var absoluteX = x + containerPos.x;
           var absoluteY = y + containerPos.y;
           var popupContainer = popupMenu.offsetParent;
@@ -90,7 +66,7 @@ O$.PopupMenu = {
         this.show();
       },
 
-      showForEvent: function (event) {
+      showForEvent:function (event) {
         finishInitialization();
         var pos = O$.getEventPoint(event);
         finishInitialization();
@@ -99,8 +75,25 @@ O$.PopupMenu = {
         O$.alignPopupByPoint(this, pos.x, pos.y);
         this.show();
       },
+      setAllMenuItemsDisabled:function (disable) {
+        if (popupMenu._items) {
+          popupMenu._items.forEach(function (it) {
+            it.setDisabled(disable);
+          });
+        } else {
+          popupMenu._allItemsDisabled = disable;
+        }
+      },
 
-      closeChildMenus: function () {
+      disableAllMenuItems:function () {
+        popupMenu.setAllMenuItemsDisabled(true)
+      },
+
+      enableAllMenuItems:function () {
+        popupMenu.setAllMenuItemsDisabled(false)
+      },
+
+      closeChildMenus:function () {
         if (!!popupMenu._openedChildMenu) {
           popupMenu._openedChildMenu.closeChildMenus();
           popupMenu._openedChildMenu.updateCoordinates = null;
@@ -108,13 +101,29 @@ O$.PopupMenu = {
           popupMenu._openedChildMenu = null;
         }
       },
-      _isRoot: function() {
+      _isRoot:function () {
         return !!isRootMenu;
       }
     });
+    try {
+      var forElement = O$(forId);
+      if (!forElement)
+        forElement = popupMenu.parentNode;
+      forElement.oncontextmenu = function (event) {
+        if (!popupMenu.initialized) {
+          finishInitialization();
+          popupMenu.showForEvent(event);
+          return false;
+        }
+        popupMenu.showForEvent(event);
+        return false;
+      };
+    } catch (e) {
 
+    }
+    popupMenu.initialized = false;
     if ((O$.isQuirksMode() && O$.isExplorer()) || (O$.isExplorer6() && O$.isStrictMode())) {
-      O$.setStyleMappings(popupMenu, {ieQuirksFix: "o_popup_menu_iequirks"});
+      O$.setStyleMappings(popupMenu, {ieQuirksFix:"o_popup_menu_iequirks"});
     }
 
     O$.assignEvents(popupMenu, events, true);
@@ -126,68 +135,75 @@ O$.PopupMenu = {
       O$._popupsOnPage.pop(popupMenuId);
     }
 
-    var childNodes = popupMenu.childNodes;
-    var items = popupMenu._items = [];
+    popupMenu._deferredInitializers = [];
+    function finishInitialization() {
+      if (popupMenu.initialized) return;
+      popupMenu.initialized = true;
 
-    // Create object tree for easy access to the PopupMenu and menuItems
-    for (var i = 0; i < childNodes.length; i++) {
-      var menuItem = childNodes[i];
-      items.push(menuItem);
+      var childNodes = O$.MenuItemConsctructor.renderMenuItems(popupMenu, menuItemsList);
+      var items = popupMenu._items = [];
 
-      O$.extend(menuItem, {
-        _isSeparator: function() {
-          return !!this._separator;
-        },
+      // Create object tree for easy access to the PopupMenu and menuItems
+      for (var i = 0; i < childNodes.length; i++) {
+        var menuItem = childNodes[i];
+        items.push(menuItem);
 
-        _popupMenu: popupMenu,
-        _properties: itemsProperties[i],
-
-        getDisabled: function() {
-          return this._properties.disabled;
-        },
-
-        setDisabled: function(disabled) {
-          if (this._properties.disabled == disabled) return;
-          this._properties.disabled = disabled;
-          this._disabled = disabled;
-          O$.PopupMenu.setMenuItemEnabled(this.id, !disabled, selectDisabledItems);
-        }
-      });
-
-      var anchor = O$(menuItem.id + "::commandLink");
-      if (anchor) {
         O$.extend(menuItem, {
-          _anchor: anchor,
-          _index: i,
-          _icon: O$(menuItem.id + "::image"),
-          _caption: O$(menuItem.id + "::caption"),
-          _iconspan: O$(menuItem.id + "::imagespan"),
+          _isSeparator:function () {
+            return !!this._separator;
+          },
 
-          _arrow: O$(menuItem.id + "::arrow"),
-          _arrowspan: O$(menuItem.id + "::arrowspan"),
+          _popupMenu:popupMenu,
 
-          _imagefakespan: O$(menuItem.id + "::imagefakespan"),
-          _arrowfakespan: O$(menuItem.id + "::arrowfakespan"),
+          getDisabled:function () {
+            return this._properties.disabled;
+          },
 
-          _separator: null
+          setDisabled:function (disabled) {
+            if (!this._properties) return;
+            if (this._properties.disabled == disabled) return;
+            this._properties.disabled = disabled;
+            this._disabled = disabled;
+            O$.PopupMenu.setMenuItemEnabled(this.id, !disabled, selectDisabledItems);
+          }
         });
 
-        menuItem._anchor._menuItem = menuItem;
-        anchor._defaultItemClass = defaultItemClass;
-        anchor._defaultDisabledClass = defaultDisabledClass;
+        var anchor = O$(menuItem.id + "::commandLink");
+        if (anchor) {
+          O$.extend(menuItem, {
+            _anchor:anchor,
+            _index:i,
+            _icon:O$(menuItem.id + "::image"),
+            _caption:O$(menuItem.id + "::caption"),
+            _iconspan:O$(menuItem.id + "::imagespan"),
 
-        if (defaultContentClass)
-          O$.appendClassNames(menuItem._caption, [defaultContentClass]);
-      } else {
-        menuItem._separator = O$(menuItem.id + "::separator");
+            _arrow:O$(menuItem.id + "::arrow"),
+            _arrowspan:O$(menuItem.id + "::arrowspan"),
+
+            _imagefakespan:O$(menuItem.id + "::imagefakespan"),
+            _arrowfakespan:O$(menuItem.id + "::arrowfakespan"),
+
+            _separator:null
+          });
+
+          menuItem._anchor._menuItem = menuItem;
+          anchor._defaultItemClass = defaultItemClass;
+          anchor._defaultDisabledClass = defaultDisabledClass;
+
+          if (defaultContentClass)
+            O$.appendClassNames(menuItem._caption, [defaultContentClass]);
+        } else {
+          menuItem._separator = O$(menuItem.id + "::separator");
+        }
+
       }
 
-    }
+      if (popupMenu._deferredInitializers && popupMenu._deferredInitializers.length > 0) {
+        popupMenu._deferredInitializers.forEach(function (initializer) {
+          initializer();
+        });
+      }
 
-    var initialized = false;
-    function finishInitialization() {
-      if (initialized) return;
-      initialized = true;
       if (!O$.isElementPresentInDocument(popupMenu)) {
         // can be the case if a PopupMenu was unloaded earlier than the postponed initialization occurred
         return;
@@ -205,7 +221,7 @@ O$.PopupMenu = {
 
         if (!menuItem._isSeparator()) {
           O$.setStyleMappings(menuItem._anchor, {
-            defaultClass:  menuItem._anchor._defaultItemClass
+            defaultClass:menuItem._anchor._defaultItemClass
           });
 
           menuItem._disabled = menuItem._properties.disabled;
@@ -275,8 +291,8 @@ O$.PopupMenu = {
       for (i = 0; i < popupMenu._items.length; i++) {
         menuItem = popupMenu._items[i];
         if (!menuItem._separator) {
-          menuItem.selectedDisabledClass = O$.combineClassNames([itemsProperties[i].selectedClass, defaultSelectedClass]);
-          menuItem.selectedClass = O$.combineClassNames([itemsProperties[i].selectedClass, defaultSelectedClass]);
+          menuItem.selectedDisabledClass = O$.combineClassNames([menuItem.selectedClass, defaultSelectedClass]);
+          menuItem.selectedClass = O$.combineClassNames([menuItem.selectedClass, defaultSelectedClass]);
 
           O$.PopupMenu.setMenuItemEnabled(menuItem.id, !menuItem._properties.disabled, selectDisabledItems);
 
@@ -286,13 +302,19 @@ O$.PopupMenu = {
           O$.PopupMenu._addMouseOverOutEvents(menuItem, selectDisabledItems, submenuHorizontalOffset, submenuShowDelay, submenuHideDelay);
         }
       }
-      popupMenu.style.top = "3px";
-      popupMenu.style.left = "3px";
+      if (popupMenu._allItemsDisabled != undefined) {
+        popupMenu.setAllMenuItemsDisabled(popupMenu._allItemsDisabled);
+      }
+     /* popupMenu.style.top = "3px";
+      popupMenu.style.left = "3px";*/
+
     }
+
+    popupMenu.defaultDisabledClass = defaultDisabledClass;
 
   },
 
-  setMenuItemEnabled: function(menuItemId, enabled, selectDisabledItems) {
+  setMenuItemEnabled:function (menuItemId, enabled, selectDisabledItems) {
     if (!menuItemId)
       throw "O$.PopupMenu.setMenuItemEnabled: MenuItem's clientId must be passed as a parameter";
     var menuItem = O$(menuItemId);
@@ -301,7 +323,7 @@ O$.PopupMenu = {
     if (menuItem._isSeparator())
       throw "O$.PopupMenu.setMenuItemEnabled: MenuItem must not be separator";
 
-    O$.setHiddenField(menuItem, menuItemId+ "::disabled", !enabled);
+    O$.setHiddenField(menuItem, menuItemId + "::disabled", !enabled);
 
     menuItem._disabled = !enabled;
 
@@ -314,7 +336,8 @@ O$.PopupMenu = {
     /* Update icons and styles if enabled flag has been changed */
     if (enabled) {
       O$.setStyleMappings(menuItem._anchor, {
-        disabled: null
+
+        disabled:null
       });
       if (menuItem._icon) {
         if (menuItem._icon.imageSrc) {
@@ -329,7 +352,7 @@ O$.PopupMenu = {
     } else {
       var disabledClass = O$.combineClassNames([menuItem._properties.disabledClass, menuItem._anchor._defaultDisabledClass]);
       O$.setStyleMappings(menuItem._anchor, {
-        disabled: disabledClass
+        disabled:disabledClass
       });
       if (menuItem._icon) {
         if (menuItem._icon.disabledImgSrc) {
@@ -356,33 +379,33 @@ O$.PopupMenu = {
     /*When user adds the border on rollover then menuItems jumps on mouseover*/
     /*we need to compensate rollover border with padding*/
     menuItem._diffTop = O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(rolloverStyle, "borderTopWidth")) -
-                        O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(style, "borderTopWidth"));
+            O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(style, "borderTopWidth"));
 
     menuItem._diffBottom = O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(rolloverStyle, "borderBottomWidth")) -
-                           O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(style, "borderBottomWidth"));
+            O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(style, "borderBottomWidth"));
 
     menuItem._diffLeft = O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(rolloverStyle, "borderLeftWidth")) -
-                         O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(style, "borderLeftWidth"));
+            O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(style, "borderLeftWidth"));
 
     menuItem._diffRight = O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(rolloverStyle, "borderRightWidth")) -
-                          O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(style, "borderRightWidth"));
+            O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(style, "borderRightWidth"));
 
     O$.PopupMenu._addPaddingToMenuItem(menuItem);
   },
 
-  _getCssProperty: function(styleClass, propertyName) {
+  _getCssProperty:function (styleClass, propertyName) {
     var value = O$.getStyleClassProperty(styleClass, propertyName);
     if (!value) return "";
     return value;
   },
 
-  _getStyleProperty: function(element, propertyName) {
+  _getStyleProperty:function (element, propertyName) {
     var value = O$.getElementStyle(element, propertyName);
     if (value == "auto") return "0px";
     return value;
   },
 
-  _setHighlightMenuItem: function(popupMenu, anchor, selectDisabledItems) {
+  _setHighlightMenuItem:function (popupMenu, anchor, selectDisabledItems) {
     var menuItem = anchor.parentNode;
     if (menuItem._popupMenu._selectedIndex != menuItem._index) {
       O$.PopupMenu._clearSelection(popupMenu);
@@ -405,7 +428,7 @@ O$.PopupMenu = {
 
       if (!menuItem._disabled) {
         O$.setStyleMappings(anchor, {
-          select: menuItem.selectedClass
+          select:menuItem.selectedClass
         });
         if (menuItem._icon && menuItem._icon.imageSelectedSrc)
           menuItem._icon.src = menuItem._icon.imageSelectedSrc;
@@ -413,7 +436,7 @@ O$.PopupMenu = {
       } else {
         if (selectDisabledItems) {
           O$.setStyleMappings(anchor, {
-            select:  menuItem.selectedDisabledClass
+            select:menuItem.selectedDisabledClass
           });
           if (menuItem._icon && menuItem._icon.disabledImgSelectedSrc)
             menuItem._icon.src = menuItem._icon.disabledImgSelectedSrc;
@@ -428,7 +451,7 @@ O$.PopupMenu = {
       }
       O$.PopupMenu._substractPaddingFromMenuItem(menuItem);
       if (menuItem._popupMenu._openedChildMenu != null &&
-          menuItem._popupMenu._openedChildMenu == O$(menuItem._menuId)) {
+              menuItem._popupMenu._openedChildMenu == O$(menuItem._menuId)) {
         var childMenu = menuItem._popupMenu._openedChildMenu;
         if (childMenu.updateCoordinates) {
           childMenu.updateCoordinates = null;
@@ -439,14 +462,14 @@ O$.PopupMenu = {
     }
   },
 
-  _unselectMenuItem: function(menuItem) {
+  _unselectMenuItem:function (menuItem) {
     if (menuItem._popupMenu._selectedIndex != null &&
-        menuItem._popupMenu._selectedIndex == menuItem._index) {
+            menuItem._popupMenu._selectedIndex == menuItem._index) {
       if (!menuItem._isSeparator()) {
         menuItem._popupMenu._selectedIndex = null;
 
         O$.setStyleMappings(menuItem._anchor, {
-          select:  null
+          select:null
         });
 
         if (menuItem._arrow) {
@@ -468,7 +491,7 @@ O$.PopupMenu = {
 
         /* avoid jumping submenu if border changes*/
         if (menuItem._popupMenu._openedChildMenu != null &&
-            menuItem._popupMenu._openedChildMenu == O$(menuItem._menuId)) {
+                menuItem._popupMenu._openedChildMenu == O$(menuItem._menuId)) {
           var childMenu = menuItem._popupMenu._openedChildMenu;
           childMenu.updateCoordinates = true;
           childMenu.style.left = (O$.calculateNumericCSSValue(childMenu.style.left) + menuItem._diffLeft) + "px";
@@ -478,14 +501,15 @@ O$.PopupMenu = {
     }
   },
 
-  _clearSelection: function(popupMenu) {
+  _clearSelection:function (popupMenu) {
     var children = popupMenu.childNodes;
     for (var i = 0; i < children.length; i++) {
-      O$.PopupMenu._unselectMenuItem(children[i]);
+      if (children._popupMenu)
+        O$.PopupMenu._unselectMenuItem(children[i]);
     }
   },
 
-  _setSelectedMenuItem: function(popupMenu, inc, selectDisabledItems) {
+  _setSelectedMenuItem:function (popupMenu, inc, selectDisabledItems) {
     popupMenu.focus();
     var index = popupMenu._selectedIndex;
 
@@ -513,7 +537,7 @@ O$.PopupMenu = {
     }
   },
 
-  _showSubmenu: function(popupMenu, itemAnchor, submenuHorizontalOffset) {
+  _showSubmenu:function (popupMenu, itemAnchor, submenuHorizontalOffset) {
     var menuItem = itemAnchor.parentNode;
     if (popupMenu._closeAllTask) {
       clearTimeout(popupMenu._closeAllTask);
@@ -526,6 +550,7 @@ O$.PopupMenu = {
     if (!itemAnchor._menuId)
       return;
     var childPopupMenu = O$(itemAnchor._menuId);
+    itemAnchor.appendChild(childPopupMenu.parentNode.removeChild(childPopupMenu));
     if (childPopupMenu.isVisible()) return;
     if (popupMenu._openedChildMenu != childPopupMenu) {
       popupMenu.closeChildMenus();
@@ -552,9 +577,9 @@ O$.PopupMenu = {
       childPopupMenu.focus();
     }
     popupMenu._enter = false;
-},
+  },
 
-  _showFirstMenuItemonChild: function(menuItem, selectDisabledItems) {
+  _showFirstMenuItemonChild:function (menuItem, selectDisabledItems) {
     if (!!menuItem._menuId && !menuItem._disabled) {
       var childPopupMenu = O$(menuItem._menuId);
       var childNodes = childPopupMenu.childNodes;
@@ -567,10 +592,10 @@ O$.PopupMenu = {
     }
   },
 
-  _closeAllMenu: function(popupMenu) {
+  _closeAllMenu:function (popupMenu) {
     popupMenu.closeChildMenus();
     while (popupMenu) {
-      popupMenu._items.forEach(function(menuItem) {
+      popupMenu._items.forEach(function (menuItem) {
         O$.PopupMenu._clearSubmenuTask(menuItem);
       });
       popupMenu.hide();
@@ -578,19 +603,19 @@ O$.PopupMenu = {
     }
   },
 
-  _initIEWidthWorkaround: function(popupMenu) {
+  _initIEWidthWorkaround:function (popupMenu) {
     if (O$.isExplorer() && popupMenu._menuItemsAligned == null) {
       popupMenu._menuItemsAligned = true;
       var maxWidthItem = 0;
       var width;
-      popupMenu._items.forEach(function(menuItem) {
+      popupMenu._items.forEach(function (menuItem) {
         if (!menuItem._isSeparator()) {
           width = menuItem._anchor.offsetWidth;
         }
         if (width > maxWidthItem)
           maxWidthItem = width;
       });
-      popupMenu._items.forEach(function(menuItem) {
+      popupMenu._items.forEach(function (menuItem) {
         var paddingLeft, paddingRight;
         if (menuItem._isSeparator()) {
           var separator = menuItem._separator;
@@ -600,8 +625,8 @@ O$.PopupMenu = {
             paddingLeft = paddingRight = 0;
           }
           var width = maxWidthItem - O$.getNumericElementStyle(menuItem._separator, "margin-right") -
-                      (O$.getNumericElementStyle(menuItem, "margin-left") +
-                       O$.getNumericElementStyle(menuItem._separator, "margin-left")) - paddingLeft - paddingRight;
+                  (O$.getNumericElementStyle(menuItem, "margin-left") +
+                          O$.getNumericElementStyle(menuItem._separator, "margin-left")) - paddingLeft - paddingRight;
 
           separator.style.width = width + " px";
         } else {
@@ -620,7 +645,7 @@ O$.PopupMenu = {
 
   },
 
-  _substractPaddingFromMenuItem: function(menuItem) {
+  _substractPaddingFromMenuItem:function (menuItem) {
     function substractPaddings(element, paddings, diffs) {
       var len = paddings.length;
       if (diffs.length != len) throw "paddings and diffs arrays should be of the same length";
@@ -637,6 +662,7 @@ O$.PopupMenu = {
         element.style[paddingName] = padding;
       }
     }
+
     substractPaddings(menuItem._anchor,
             ["paddingTop", "paddingBottom", "paddingLeft", "paddingRight"],
             [menuItem._diffTop, menuItem._diffBottom, menuItem._diffLeft, menuItem._diffRight]);
@@ -660,7 +686,7 @@ O$.PopupMenu = {
     }
   },
 
-  _addPaddingToMenuItem: function(menuItem) {
+  _addPaddingToMenuItem:function (menuItem) {
     function addPaddings(element, paddings, diffs) {
       var len = paddings.length;
       if (diffs.length != len) throw "paddings and diffs arrays should be of the same length";
@@ -689,8 +715,8 @@ O$.PopupMenu = {
       var iconSpanStyle = menuItem._iconspan.style;
       if (O$.isExplorer() && O$.isStrictMode()) {
         iconSpanStyle.paddingLeft = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "padding-left") + menuItem._diffLeft -
-                                                                 O$.getNumericElementStyle(menuItem._anchor, "border-left-width", true) -
-                                                                 O$.getNumericElementStyle(menuItem._anchor, "border-right-width", true)) + "px";
+                O$.getNumericElementStyle(menuItem._anchor, "border-left-width", true) -
+                O$.getNumericElementStyle(menuItem._anchor, "border-right-width", true)) + "px";
       }
       else {
         iconSpanStyle.paddingLeft = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "padding-left") + menuItem._diffLeft) + "px";
@@ -706,8 +732,8 @@ O$.PopupMenu = {
       var arrowSpanStyle = menuItem._arrowspan.style;
       if (O$.isExplorer() && O$.isStrictMode()) {
         arrowSpanStyle.paddingRight = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "padding-right") + menuItem._diffRight -
-                                                                   O$.getNumericElementStyle(menuItem._anchor, "border-left-width", true) -
-                                                                   O$.getNumericElementStyle(menuItem._anchor, "border-right-width", true)) + "px";
+                O$.getNumericElementStyle(menuItem._anchor, "border-left-width", true) -
+                O$.getNumericElementStyle(menuItem._anchor, "border-right-width", true)) + "px";
       }
       else {
         arrowSpanStyle.paddingRight = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "padding-right") + menuItem._diffRight) + "px";
@@ -717,13 +743,13 @@ O$.PopupMenu = {
     }
   },
 
-  _getWidth: function(element) {
+  _getWidth:function (element) {
     return O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(element, "width")) +
-           O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(element, "padding-right")) +
-           O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(element, "padding-left"));
+            O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(element, "padding-right")) +
+            O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(element, "padding-left"));
   },
 
-  _setAdditionalIEStylesForMenuItem: function(menuItem) {
+  _setAdditionalIEStylesForMenuItem:function (menuItem) {
     if (O$.isExplorer() && O$.isQuirksMode()) {
       if (menuItem._caption != null) {
         menuItem._caption.style.height = "100%";
@@ -736,9 +762,9 @@ O$.PopupMenu = {
       }
     }
     if (O$.isExplorer() && O$.isStrictMode()) {
-      var height = O$.getNumericElementStyle(menuItem._anchor, "height") ;
+      var height = O$.getNumericElementStyle(menuItem._anchor, "height");
       height += O$.getNumericElementStyle(menuItem._anchor, "border-top-width") +
-                O$.getNumericElementStyle(menuItem._anchor, "border-bottom-width");
+              O$.getNumericElementStyle(menuItem._anchor, "border-bottom-width");
       if (menuItem._iconspan != null)
         menuItem._iconspan.style.height = height + "px";
       if (menuItem._arrowspan != null)
@@ -746,13 +772,13 @@ O$.PopupMenu = {
     }
   },
 
-  _getNonNegative: function(value) {
+  _getNonNegative:function (value) {
     if (value < 0) return 0;
     return value;
   },
 
   /*When user defines padding for the PopupMenu we need to transform padding to margin of the menuItems*/
-  _handlePaddings: function(popupMenu) {
+  _handlePaddings:function (popupMenu) {
     var paddingBottom = O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(popupMenu, "padding-bottom"));
     var paddingTop = O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(popupMenu, "padding-top"));
     var paddingRight = O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(popupMenu, "padding-right"));
@@ -770,7 +796,7 @@ O$.PopupMenu = {
     }
   },
 
-  _updateMenuItemBackground: function(menuItem) {
+  _updateMenuItemBackground:function (menuItem) {
     var listItemStyle = menuItem.style;
     var popupMenu = menuItem._popupMenu;
     listItemStyle.backgroundColor = O$.getElementStyle(popupMenu, "background-color");
@@ -781,7 +807,7 @@ O$.PopupMenu = {
     listItemStyle.backgroundRepeat = O$.getElementStyle(popupMenu, "background-repeat");
   },
 
-  _updatePopupMenuBackground: function(popupMenu, indentClass) {
+  _updatePopupMenuBackground:function (popupMenu, indentClass) {
     var popupTagStyle = popupMenu.style;
     popupTagStyle.backgroundColor = O$.PopupMenu._getCssProperty(indentClass, "background-color");
     popupTagStyle.backgroundAttachment = O$.PopupMenu._getCssProperty(indentClass, "background-attachment");
@@ -791,9 +817,7 @@ O$.PopupMenu = {
     popupTagStyle.backgroundRepeat = O$.PopupMenu._getCssProperty(indentClass, "background-repeat");
   },
 
-  _setStylesForIndentArea: function(
-          menuItem, indentVisible, indentClass, defaultIconItemUrl, defaultSelectedIconItemUrl,
-          defaultDisabledIconItemUrl, defaultSelectedDisabledIconItemUrl) {
+  _setStylesForIndentArea:function (menuItem, indentVisible, indentClass, defaultIconItemUrl, defaultSelectedIconItemUrl, defaultDisabledIconItemUrl, defaultSelectedDisabledIconItemUrl) {
     if (indentVisible) {
       var indentWidth = O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(indentClass, "width"));
       var indentAlign = O$.PopupMenu._getCssProperty(indentClass, "text-align");
@@ -847,11 +871,10 @@ O$.PopupMenu = {
     }
   },
 
-  _setStyleForSubmenuArea: function(
-          menuItem, submenuImageUrl, selectedSubmenuImageUrl, disabledSubmenuImageUrl, selectedDisabledSubmenuImageUrl) {
-    if (menuItem._properties.menuId) {
-      menuItem._menuId = menuItem._properties.menuId;
-      menuItem._anchor._menuId = menuItem._properties.menuId;
+  _setStyleForSubmenuArea:function (menuItem, submenuImageUrl, selectedSubmenuImageUrl, disabledSubmenuImageUrl, selectedDisabledSubmenuImageUrl) {
+    if (menuItem.menuId) {
+      menuItem._menuId = menuItem.menuId;
+      menuItem._anchor._menuId = menuItem.menuId;
 
       var childPopupMenu = O$(menuItem._menuId);
       childPopupMenu._parentPopupMenu = menuItem._popupMenu;
@@ -895,7 +918,7 @@ O$.PopupMenu = {
     }
   },
 
-  _addHandlersToOpenMenu: function(popupMenu, forId, forEventName) {
+  _addHandlersToOpenMenu:function (popupMenu, forId, forEventName) {
     var forElement = O$(forId);
     if (!forElement)
       forElement = popupMenu.parentNode;
@@ -910,7 +933,7 @@ O$.PopupMenu = {
 
     if (eventName == "contextmenu") {
       if (O$.isOpera() && !O$.isOpera10_5AndLater()) {
-        O$.addEventHandler(forElement, "mouseup", function(evt) {
+        O$.addEventHandler(forElement, "mouseup", function (evt) {
           if (!O$.isChild(popupMenu, evt.target ? evt.target : evt.srcElement)) {
             if (O$.isCtrlPressed(evt) && evt.button != 2) {
               popupMenu.showForEvent(evt);
@@ -920,7 +943,7 @@ O$.PopupMenu = {
         });
       } else {
         O$.disableNativeContextMenuFor(forElement);
-        O$.addEventHandler(forElement, eventName, function(evt) {
+        O$.addEventHandler(forElement, eventName, function (evt) {
           if (!O$.isChild(popupMenu, evt.target ? evt.target : evt.srcElement)) {
             if (!O$.isShiftPressed(evt)) {
               if (!forElement._isDisabledContextMenu)
@@ -935,7 +958,7 @@ O$.PopupMenu = {
       }
     } else {
       // if not context menu
-      O$.addEventHandler(forElement, eventName, function(evt) {
+      O$.addEventHandler(forElement, eventName, function (evt) {
         if (!O$.isChild(popupMenu, evt.target ? evt.target : evt.srcElement)) {
           popupMenu.showForEvent(evt);
           popupMenu.focus();
@@ -944,10 +967,10 @@ O$.PopupMenu = {
     }
   },
 
-  _addMenuItemClickHandler: function(menuItem, submenuHorizontalOffset, selectDisabledItems) {
+  _addMenuItemClickHandler:function (menuItem, submenuHorizontalOffset, selectDisabledItems) {
     var popupMenu = menuItem._popupMenu;
     if (!menuItem._properties.disabled) {
-      menuItem._click = function(evt) {
+      menuItem._click = function (evt) {
         if (this.getDisabled()) return;
         if (menuItem._properties.action) {
           var handler;
@@ -972,16 +995,19 @@ O$.PopupMenu = {
       };
 
       O$.initUnloadableComponent(menuItem._anchor);
-      O$.addEventHandler(menuItem._anchor, "click", function(evt) {
+      O$.addEventHandler(menuItem._anchor, "click", function (evt) {
         menuItem._click(evt);
       });
       var clickHandler = menuItem._anchor.onclick;
       if (clickHandler) {
-        menuItem._anchor.onclick = function(evt) {
+        menuItem._anchor.onclick = function (evt) {
           // ensure hiding the menu _before_ invoking possible Ajax menu reload to avoid menu's visible flag to be
           // saved to the server and thus menu reloading in the visible state in this case
+
           O$.PopupMenu._closeAllMenu(popupMenu);
+          popupMenu.closed = true;
           clickHandler.call(menuItem._anchor, evt);
+          popupMenu.closed = false;
         }
         O$.addUnloadHandler(menuItem._anchor, function () {
           menuItem._anchor.onclick = null;
@@ -990,11 +1016,11 @@ O$.PopupMenu = {
     }
   },
 
-  _addMouseOverOutEvents: function(menuItem, selectDisabledItems, submenuHorizontalOffset, submenuShowDelay, submenuHideDelay) {
+  _addMouseOverOutEvents:function (menuItem, selectDisabledItems, submenuHorizontalOffset, submenuShowDelay, submenuHideDelay) {
     var popupMenu = menuItem._popupMenu;
     var menuItemElement = menuItem._anchor;
 
-    O$.addMouseOverListener(menuItemElement, function() {
+    O$.addMouseOverListener(menuItemElement, function () {
       var menuItem = menuItemElement.parentNode;
       if (menuItem._disabled && !selectDisabledItems) return;
 
@@ -1010,14 +1036,14 @@ O$.PopupMenu = {
         popupMenu._closeAllTask = null;
       }
       if (submenuShowDelay >= 0) {
-        menuItem._openSubmenuTask = setTimeout(function() {
+        menuItem._openSubmenuTask = setTimeout(function () {
           if (menuItemElement._focused)
             O$.PopupMenu._showSubmenu(popupMenu, menuItemElement, submenuHorizontalOffset);
         }, submenuShowDelay);
       }
     });
 
-    O$.addMouseOutListener(menuItemElement, function() {
+    O$.addMouseOutListener(menuItemElement, function () {
       var menuItem = menuItemElement.parentNode;
       if (menuItem._disabled && !selectDisabledItems) return;
       menuItemElement._focused = null;
@@ -1030,7 +1056,7 @@ O$.PopupMenu = {
       }
 
       if (submenuHideDelay >= 0)
-        popupMenu._closeAllTask = setTimeout(function() {
+        popupMenu._closeAllTask = setTimeout(function () {
           if (!popupMenu.isVisible()) return;
           popupMenu.closeChildMenus();
           popupMenu.focus();
@@ -1040,7 +1066,7 @@ O$.PopupMenu = {
 
   },
 
-  _clearSubmenuTask:function(menuItem) {
+  _clearSubmenuTask:function (menuItem) {
     if (menuItem._openSubmenuTask) {
       clearTimeout(menuItem._openSubmenuTask);
       menuItem._openSubmenuTask = null;
