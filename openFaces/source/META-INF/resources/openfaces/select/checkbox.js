@@ -165,7 +165,6 @@ O$.Checkbox = {
 
       O$.extend(checkbox, {
         setDisabled:function (flag) {
-          O$.setHiddenField(this, checkboxId + "::disabled", flag);
           this.disabled = flag;
           updateStyles(this);
         },

@@ -16,6 +16,7 @@ import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
@@ -67,11 +68,21 @@ public class CellComponentsDataExtractor implements CellDataExtractor {
         Class c = component.getClass();
         Method[] methods = c.getMethods();
         for (Method method : methods) {
-            if(method.getName().equals("getStyle")){
+            if (method.getName().equals("getStyle")) {
                 isThisComponentHaveStyle = true;
             }
         }
-        if(isThisComponentHaveStyle){
+        if (isThisComponentHaveStyle) {
+            try {
+                Method method = c.getMethod("getStyle");
+                String d = (String) method.invoke(component);
+                d = d.toLowerCase();
+                if ((d.contains("visibility:hidden")) || (d.contains("display:none"))  || (d.contains("visibility: hidden"))  || (d.contains("display: none"))) {
+                    return new LinkedList<Object>();
+                }
+            } catch (Exception e) {
+
+            }
 
         }
         for (ComponentDataExtractor componentExtractor : componentExtractors) {
