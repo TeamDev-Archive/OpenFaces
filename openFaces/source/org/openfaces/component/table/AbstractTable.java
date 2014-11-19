@@ -606,7 +606,9 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                                 "of their appearance, but an instance of " + s.getClass() + " was found; table's clientId = " + getClientId(getFacesContext()));*/
             BaseColumn colById = findColumnById(allColumns, columnId);
             if (colById == null)
-                throw new IllegalStateException("columnsOrder collection contains an id that doesn't point to an existing column: " + columnId + "; table's clientId = " + getClientId(getFacesContext()));
+                continue;
+           //     throw new IllegalStateException("columnsOrder collection contains an id that doesn't point to an existing column: " + columnId + "; table's clientId = " + getClientId(getFacesContext()));
+
             if (colById.isRendered())
                 result.add(colById);
         }
