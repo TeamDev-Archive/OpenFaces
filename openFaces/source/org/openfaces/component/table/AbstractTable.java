@@ -465,7 +465,6 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
 
-
     public void setHeader(UIComponent component) {
         getFacets().put(FACET_HEADER, component);
     }
@@ -574,7 +573,12 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         }
         return cachedRenderedColumns;
     }
-    public  void clearRenderedColumnCache(){
+
+    public List<BaseColumn> getFixRenderedColumns() {
+        return Collections.unmodifiableList(calculateRenderedColumnsFix());
+    }
+
+    public void clearRenderedColumnCache() {
         cachedRenderedColumns = null;
     }
 
@@ -604,6 +608,34 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             if (colById == null)
                 throw new IllegalStateException("columnsOrder collection contains an id that doesn't point to an existing column: " + columnId + "; table's clientId = " + getClientId(getFacesContext()));
             if (colById.isRendered())
+                result.add(colById);
+        }
+        return result;
+    }
+
+    private List<BaseColumn> calculateRenderedColumnsFix() {
+        Iterable<String> columnsOrder = getColumnsOrder();
+        if (columnsOrder == null) {
+            List<BaseColumn> allColumns = getAllColumns();
+            List<BaseColumn> renderedColumns = new ArrayList<BaseColumn>(allColumns.size());
+            for (BaseColumn column : allColumns) {
+                if (column.isRendered())
+                    renderedColumns.add(column);
+            }
+            return renderedColumns;
+        }
+        List<BaseColumn> allColumns = getAllColumns();
+        List<BaseColumn> result = new ArrayList<BaseColumn>();
+        for (String columnId : columnsOrder) {
+            if (columnId == null)
+                throw new IllegalStateException(
+                        "columnsOrder collection shouldn't contain null entries; table's clientId = " + getClientId(getFacesContext()));
+            /*if (!(s instanceof String))
+                throw new IllegalStateException(
+                        "columnsOrder collection should only contain String instances which specify id's of columns in order " +
+                                "of their appearance, but an instance of " + s.getClass() + " was found; table's clientId = " + getClientId(getFacesContext()));*/
+            BaseColumn colById = findColumnById(allColumns, columnId);
+                colById.setRendered(true);
                 result.add(colById);
         }
         return result;
@@ -2404,9 +2436,9 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         this.unDisplayedSelectionAllowed = unDisplayedSelectionAllowed;
     }
 
-    private String createFileName(TableDataFormatter formatter){
+    private String createFileName(TableDataFormatter formatter) {
         String fileName = getId();
-        if (fileName == null){
+        if (fileName == null) {
             fileName = "tableData";
         }
         return fileName + "." + formatter.getDefaultFileExtension();

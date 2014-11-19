@@ -117,7 +117,7 @@ public class ColumnResizingRenderer extends RendererBase {
         }
         List<BaseColumn> columns = table.getRenderedColumns();
         Iterable<String> submittedColumnsOrder = null;
-        if (columns.size() != widthsArray.length()){
+        if (columns.size() != widthsArray.length()) {
             String columnOrderFieldName = getColumnOrderFieldName(context, table);
             String colOrder = (String) requestParams.get(columnOrderFieldName);
             if (colOrder != null) {
@@ -125,9 +125,17 @@ public class ColumnResizingRenderer extends RendererBase {
                 submittedColumnsOrder = Arrays.asList(colOrder.split(","));
                 if (submittedColumnsOrder != null) {
                     table.setColumnsOrder(submittedColumnsOrder);
+                    columns = table.getRenderedColumns();
+                    if (columns.size() != widthsArray.length()) {
+                        columns = table.getFixRenderedColumns();
+                    } else {
+                        columns = table.getRenderedColumns();
+                    }
+                } else {
+                    columns = table.getRenderedColumns();
                 }
             }
-            columns = table.getRenderedColumns();
+
         }
         if (columns.size() != widthsArray.length())
             throw new IllegalStateException("columns.size() != widthsArray.length(): " + columns.size() + " != " + widthsArray.length());
