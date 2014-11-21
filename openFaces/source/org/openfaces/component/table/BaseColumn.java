@@ -945,4 +945,20 @@ public class BaseColumn extends UIColumn {
             return valueConverter;
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BaseColumn that = (BaseColumn) o;
+
+        return !(this.getId() != null ? !this.getId().equals(that.getId()) : that.getId() != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getId() != null ? this.getId().hashCode() : 0;
+    }
 }

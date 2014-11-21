@@ -150,6 +150,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private String columnIdVar;
     private String columnIndexVar;
     private Iterable<String> columnsOrder;
+    private Iterable<String> hiddenColumns;
 
     private String sortedAscendingImageUrl;
     private String sortedDescendingImageUrl;
@@ -229,7 +230,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 noDataMessageAllowed, columnIndexVar, columnIdVar, saveAttachedState(context, columnsOrder),
                 sortedAscendingImageUrl, sortedDescendingImageUrl, cachedClientId,
                 autoFilterDelay, deferBodyLoading, totalRowCount, implicitFacetsCreated, unsortedStateAllowed,
-                keepSelectionVisible, onbeforeajaxreload, onafterajaxreload, unDisplayedSelectionAllowed};
+                keepSelectionVisible, onbeforeajaxreload, onafterajaxreload, unDisplayedSelectionAllowed,saveAttachedState(context,hiddenColumns)};
     }
 
     @Override
@@ -326,7 +327,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         onafterajaxreload = (String) state[i++];
 
         unDisplayedSelectionAllowed = (Boolean) state[i++];
-
+        hiddenColumns = (Iterable<String>) restoreAttachedState(context, state[i++]);
         beforeUpdateValuesPhase = true;
         incomingSortingRules = null;
     }
@@ -594,6 +595,19 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             }
             return renderedColumns;
         }
+        boolean haveHidden = false;
+        Iterable<String> hideColumns = getHiddenColumns();
+        if(hideColumns != null){
+            haveHidden = true;
+            List<BaseColumn> allColumns = getAllColumns();
+            for (String columnId : hideColumns) {
+                BaseColumn colById = findColumnById(allColumns, columnId);
+                if (colById == null) continue;
+                colById.setRendered(false);
+            }
+
+        }
+
         List<BaseColumn> allColumns = getAllColumns();
         List<BaseColumn> result = new ArrayList<BaseColumn>();
         for (String columnId : columnsOrder) {
@@ -612,6 +626,13 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             if (colById.isRendered())
                 result.add(colById);
         }
+
+            for (BaseColumn column : allColumns) {
+                if (column.isRendered() && !result.contains(column))
+                    result.add(column);
+            }
+
+
         return result;
     }
 
@@ -713,7 +734,14 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return ValueBindings.get(this, "columnsOrder", columnsOrder, Iterable.class);
     }
 
-    public void setColumnsOrder(Iterable<String> columnsOrder) {
+    public void setColumnsOrder(Iterable<String> hiddenColumns) {
+        this.hiddenColumns = hiddenColumns;
+    }
+    public Iterable<String> getHiddenColumns() {
+        return ValueBindings.get(this, "hiddenColumn", hiddenColumns, Iterable.class);
+    }
+
+    public void setHiddenColumns(Iterable<String> columnsOrder) {
         this.columnsOrder = columnsOrder;
     }
 
