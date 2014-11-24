@@ -230,7 +230,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 noDataMessageAllowed, columnIndexVar, columnIdVar, saveAttachedState(context, columnsOrder),
                 sortedAscendingImageUrl, sortedDescendingImageUrl, cachedClientId,
                 autoFilterDelay, deferBodyLoading, totalRowCount, implicitFacetsCreated, unsortedStateAllowed,
-                keepSelectionVisible, onbeforeajaxreload, onafterajaxreload, unDisplayedSelectionAllowed,saveAttachedState(context,hiddenColumns)};
+                keepSelectionVisible, onbeforeajaxreload, onafterajaxreload, unDisplayedSelectionAllowed, saveAttachedState(context, hiddenColumns)};
     }
 
     @Override
@@ -595,10 +595,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             }
             return renderedColumns;
         }
-        boolean haveHidden = false;
         Iterable<String> hideColumns = getHiddenColumns();
         if(hideColumns != null){
-            haveHidden = true;
             List<BaseColumn> allColumns = getAllColumns();
             for (String columnId : hideColumns) {
                 BaseColumn colById = findColumnById(allColumns, columnId);
@@ -621,7 +619,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             BaseColumn colById = findColumnById(allColumns, columnId);
             if (colById == null)
                 continue;
-           //     throw new IllegalStateException("columnsOrder collection contains an id that doesn't point to an existing column: " + columnId + "; table's clientId = " + getClientId(getFacesContext()));
+            //     throw new IllegalStateException("columnsOrder collection contains an id that doesn't point to an existing column: " + columnId + "; table's clientId = " + getClientId(getFacesContext()));
 
             if (colById.isRendered())
                 result.add(colById);
@@ -658,8 +656,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                         "columnsOrder collection should only contain String instances which specify id's of columns in order " +
                                 "of their appearance, but an instance of " + s.getClass() + " was found; table's clientId = " + getClientId(getFacesContext()));*/
             BaseColumn colById = findColumnById(allColumns, columnId);
-                colById.setRendered(true);
-                result.add(colById);
+            colById.setRendered(true);
+            result.add(colById);
         }
         return result;
     }
@@ -734,14 +732,15 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return ValueBindings.get(this, "columnsOrder", columnsOrder, Iterable.class);
     }
 
-    public void setColumnsOrder(Iterable<String> hiddenColumns) {
+    public void setHiddenColumns(Iterable<String> hiddenColumns) {
         this.hiddenColumns = hiddenColumns;
     }
+
     public Iterable<String> getHiddenColumns() {
         return ValueBindings.get(this, "hiddenColumn", hiddenColumns, Iterable.class);
     }
 
-    public void setHiddenColumns(Iterable<String> columnsOrder) {
+    public void setColumnsOrder(Iterable<String> columnsOrder) {
         this.columnsOrder = columnsOrder;
     }
 
@@ -1367,13 +1366,33 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
         Iterable<String> submittedColumnsOrder = (Iterable<String>) getAttributes().get("submittedColumnsOrder");
         if (submittedColumnsOrder != null) {
+            setColumnsOrder(null);
+            List<BaseColumn> allColumns = getAllColumns();
+            List<String> allColumnsIds = new ArrayList<String>(allColumns.size());
+
+            for (BaseColumn column : allColumns) {
+                allColumnsIds.add(column.getId());
+            }
+            Iterable<String> hiddenColumns = new ArrayList<String>(allColumns.size());
+            for (String columnId : submittedColumnsOrder) {
+                allColumnsIds.remove(columnId);
+                BaseColumn colById = findColumnById(allColumns, columnId);
+                colById.setRendered(true);
+            }
+
+            hiddenColumns = allColumnsIds;
+            setHiddenColumns(hiddenColumns);
+
             getAttributes().remove("submittedColumnsOrder");
             setColumnsOrder(submittedColumnsOrder);
+
             if (columnsOrder != null && ValueBindings.set(this, "columnsOrder", columnsOrder)) {
                 columnsOrder = null;
             }
         }
     }
+
+
 
     protected void processModelUpdates(FacesContext context) {
         beforeUpdateValuesPhase = false;
