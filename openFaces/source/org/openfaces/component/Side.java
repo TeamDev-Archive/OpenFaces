@@ -16,7 +16,8 @@ package org.openfaces.component;
  */
 public enum Side {
     LEFT("left"),
-    RIGHT("right");
+    RIGHT("right"),
+    JUSTIFIED("justified");
 
     private final String align;
 
