@@ -32,6 +32,10 @@
             location="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
   <property name="funcTestsFrameworkManifest.file" location="${funcTestsFramework-target.dir}/manifest.mf"/>
 
+  <property name="webDriverFuncTests.dir" location="webDriverFuncTests"/>
+  <property name="webDriverFuncTests-source.dir" location="${webDriverFuncTests.dir}/source"/>
+  <property name="webDriverFuncTests-target.dir" location="${webDriverFuncTests.dir}/target"/>
+
   <target name="init">
     <tstamp/>
   </target>
@@ -206,6 +210,51 @@
     <property name="context.path" value="/TestAppFacelets_3x"/>
     <property name="demoContext.path" value="/LiveDemoFacelets_3x"/>
     <antcall target="run-func-tests"/>
+  </target>
+
+  <target name="build-webdriver-test" depends="build">
+    <delete dir="${webDriverFuncTests-target.dir}/classes"/>
+    <mkdir dir="${webDriverFuncTests-target.dir}/classes"/>
+    <javac source="1.7" srcdir="${webDriverFuncTests-source.dir}" fork="true"
+           destdir="${webDriverFuncTests-target.dir}/classes">
+      <classpath>
+        <pathelement path="${openfaces-jar.file}"/>
+        <pathelement path="testLib/junit.jar"/>
+        <pathelement path="lib/selenium/selenium-java-2.44.0.jar"/>
+        <pathelement path="lib/selenium/selenium-server-standalone-2.44.0.jar"/>
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="run-webdriver-test" depends="build-webdriver-test">
+    <delete dir="${webDriverFuncTests-target.dir}/report"/>
+    <mkdir dir="${webDriverFuncTests-target.dir}/report"/>
+    <mkdir dir="${webDriverFuncTests-target.dir}/report/xml"/>
+    <junit printsummary="yes" haltonfailure="yes">
+      <classpath>
+        <pathelement path="${openfaces-jar.file}"/>
+        <pathelement path="${webDriverFuncTests-target.dir}/classes"/>
+        <pathelement path="testLib/junit.jar"/>
+        <pathelement path="lib/selenium/selenium-java-2.44.0.jar"/>
+        <pathelement path="lib/selenium/selenium-server-standalone-2.44.0.jar"/>
+      </classpath>
+
+      <formatter type="xml"/>
+      <formatter usefile="false" type="plain"/>
+      <!--<test name="org.openfaces.test.KickOffTest" todir="${webDriverFuncTests-target.dir}/report/xml"/>-->
+      <batchtest todir="${webDriverFuncTests-target.dir}/report/xml">
+      <formatter type="xml" />
+      <fileset dir="${webDriverFuncTests-source.dir}">
+      <include name="**/*Test.java"/>
+      </fileset>
+      </batchtest>
+    </junit>
+    <junitreport todir="${webDriverFuncTests-target.dir}/report">
+      <fileset dir="${webDriverFuncTests-target.dir}/report/xml">
+        <include name="TEST*.xml"/>
+      </fileset>
+      <report format="frames" todir="${webDriverFuncTests-target.dir}/report/html"/>
+    </junitreport>
   </target>
 
 </project>
