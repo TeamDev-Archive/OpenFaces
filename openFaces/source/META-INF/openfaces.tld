@@ -419,6 +419,19 @@
       <!-- @el only -->
     </attribute>
     <attribute>
+      <description>The order of columns in the DataTable component. This attribute should be bound to a list
+        containing column IDs for each column in the order you want them to be displayed. If the "columnsOrder"
+        attribute is not specified, all the columns are rendered in the order they are defined.
+      </description>
+      <name>hiddenColumns</name>
+      <deferred-value>
+        <type>java.util.List</type>
+      </deferred-value>
+      <!-- @bindingType java.util.List -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
       <description>A flag that indicates whether or not to enable the keyboard support for pagination.</description>
       <name>paginationKeyboardSupport</name>
       <deferred-value>

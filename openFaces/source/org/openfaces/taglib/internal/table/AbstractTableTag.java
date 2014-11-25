@@ -126,5 +126,6 @@ public abstract class AbstractTableTag extends AbstractComponentTag {
         setStringProperty(component, "onafterajaxreload");
 
         setBooleanProperty(component, "unDisplayedSelectionAllowed");
+        setLiteralCollectionProperty(component, "hiddenColumns");
     }
 }
