@@ -67,14 +67,16 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
         String clientId = sidePanel.getClientId(context);
         writer.startElement("div", sidePanel);
         writer.writeAttribute("id", clientId, null);
-        writer.writeAttribute("class", "o_sidepanel_container o_sidepanel_container_" + sidePanel.getAlignment().toString(), null);
+        SidePanelAlignment sidePanelAlignment = sidePanel.getAlignment();
+        String sidePanelAlignmentStr = sidePanelAlignment.toString();
+        writer.writeAttribute("class", "o_sidepanel_container o_sidepanel_container_" + sidePanelAlignmentStr, null);
 
         //splitter
         writer.startElement("div", sidePanel);
         writer.writeAttribute("id", clientId + SPLITTER_SUFFIX, null);
         String splitterDefaultClass = Styles.getCSSClass(context,
                 sidePanel, sidePanel.getSplitterStyle(),
-                "o_sidepanel_splitter o_sidepanel_splitter_" + sidePanel.getAlignment().toString(), sidePanel.getSplitterClass()
+                "o_sidepanel_splitter o_sidepanel_splitter_" + sidePanelAlignmentStr, sidePanel.getSplitterClass()
         );
         writer.writeAttribute("class", splitterDefaultClass, null);
         writer.endElement("div");
@@ -82,7 +84,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
         //panel
         writer.startElement("div", sidePanel);
         writer.writeAttribute("id", clientId + PANEL_SUFFIX, null);
-        if (sidePanel.getAlignment().equals(SidePanelAlignment.TOP) || sidePanel.getAlignment().equals(SidePanelAlignment.BOTTOM)){
+        if (sidePanelAlignment.equals(SidePanelAlignment.TOP) || sidePanelAlignment.equals(SidePanelAlignment.BOTTOM)){
             writer.writeAttribute("style", "height:"+ sidePanel.getSize(),null);
         }else{
             writer.writeAttribute("style", "width:"+ sidePanel.getSize(),null);
@@ -91,7 +93,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
         Rendering.writeStandardEvents(writer, sidePanel);
         String panelDefaultClass = Styles.getCSSClass(context,
                 sidePanel, sidePanel.getStyle(),
-                "o_sidepanel_panel o_sidepanel_panel_" + sidePanel.getAlignment().toString(), sidePanel.getStyleClass()
+                "o_sidepanel_panel o_sidepanel_panel_" + sidePanelAlignmentStr, sidePanel.getStyleClass()
         );
         writer.writeAttribute("class", panelDefaultClass, null);
         UIComponent captionFacet = sidePanel.getCaptionFacet();

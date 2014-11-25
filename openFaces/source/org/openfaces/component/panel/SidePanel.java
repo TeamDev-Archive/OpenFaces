@@ -132,7 +132,7 @@ public class SidePanel extends AbstractPanelWithCaption {
     }
 
     public boolean getCollapsed() {
-        return ValueBindings.get(this, "collapsed", collapsed, false);
+        return ValueBindings.get(this, "collapsed", null, false);
     }
 
     public void setCollapsed(boolean collapsed) {

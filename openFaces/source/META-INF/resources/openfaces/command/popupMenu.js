@@ -32,6 +32,7 @@ O$.PopupMenu = {
       },
 
       hide:function () {
+        if (!popupMenu.initialized) return;
         finishInitialization();
         O$.removeIETransparencyControl(popupMenu);
         this.closeChildMenus();

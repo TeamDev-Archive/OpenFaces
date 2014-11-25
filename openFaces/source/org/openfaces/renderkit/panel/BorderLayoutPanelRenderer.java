@@ -45,9 +45,10 @@ public class BorderLayoutPanelRenderer extends RendererBase {
         String clientId = borderLayoutPanel.getClientId(context);
         writer.startElement("div", borderLayoutPanel);
         writer.writeAttribute("id", clientId, null);
-        writeAttribute(writer, "style", borderLayoutPanel.getStyle());
+        String borderStyle = borderLayoutPanel.getStyle();
+        writeAttribute(writer, "style", borderStyle);
         String classStr = Styles.getCSSClass(context,
-                borderLayoutPanel, borderLayoutPanel.getStyle(),
+                borderLayoutPanel, borderStyle,
                 "o_borderlayoutpanel_container", borderLayoutPanel.getStyleClass()
         );
         writer.writeAttribute("class", classStr, null);

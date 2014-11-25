@@ -264,22 +264,6 @@ O$.Table = {
                 + table.header._sectionTable.clientHeight + 25 + "px";
       }
     }
-    if ((table.parentElement.className.indexOf("FixWidthPercent") != -1)) {
-      var oldValue = table.style.width;
-      table.style.width = "10px";
-    /*  table.style.height = "10px";*/
-      var saveDifference = table.parentElement.parentElement.parentElement.parentElement.clientHeight;
-      table.parentElement.style.width = table.parentElement.parentElement.parentElement.clientWidth + "px";
-    /*  table.style.height = table.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.clientHeight -
-              table.parentElement.parentElement.parentElement.parentElement.clientHeight + "px";*/
-      table.style.width = oldValue;
-
-      window.onresize = function () {
-        table.parentElement.style.width = table.parentElement.parentElement.parentElement.clientWidth + "px";
-        table.style.height = table.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.clientHeight -
-                saveDifference + "px";
-      }
-    }
     if (table._alignRowHeights) {
       O$.invokeFunctionAfterDelay(table._alignRowHeights, 0);
     }
@@ -3366,6 +3350,9 @@ O$.Table = {
 
     });
 
+    if (table._alignRowHeights) {
+      O$.invokeFunctionAfterDelay(table._alignRowHeights, 0);
+    }
   },
 
   // -------------------------- COLUMN REORDERING SUPPORT
@@ -3906,6 +3893,10 @@ O$.Table = {
         return column.columnId == columnId;
       })[0];
     };
+
+    if (table._alignRowHeights) {
+      O$.invokeFunctionAfterDelay(table._alignRowHeights, 0);
+    }
   },
 
 

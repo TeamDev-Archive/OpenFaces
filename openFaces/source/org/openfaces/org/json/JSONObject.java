@@ -1110,64 +1110,79 @@ public class JSONObject {
      * right places. A backslash will be inserted within </, allowing JSON
      * text to be delivered in HTML. In JSON text, a string cannot contain a
      * control character or an unescaped quote or backslash.
-     * @param string A String
+     * @param str A String
      * @return  A String correctly formatted for insertion in a JSON text.
      */
-    public static String quote(String string) {
-        if (string == null || string.length() == 0) {
+    public static String quote(String str) {
+        if (str == null || str.length() == 0) {
             return "\"\"";
         }
+        Integer hex;
+        int hexLen;
+        char[] charHexArray;
+
 
         char b;
-        char c = 0;
         int i;
-        int len = string.length();
-        StringBuffer sb = new StringBuffer(len + 4);
-        String t;
-
-        sb.append('"');
+        int len = str.length();
+        char[] charArray = str.toCharArray();
+        char buf[] = new char[len << 4];
+        int count = 0;
+        char chr = 0;
+        buf[count++] = '"';
         for (i = 0; i < len; i += 1) {
-            b = c;
-            c = string.charAt(i);
-            switch (c) {
-            case '\\':
-            case '"':
-                sb.append('\\');
-                sb.append(c);
-                break;
-            case '/':
-                if (b == '<') {
-                    sb.append('\\');
-                }
-                sb.append(c);
-                break;
-            case '\b':
-                sb.append("\\b");
-                break;
-            case '\t':
-                sb.append("\\t");
-                break;
-            case '\n':
-                sb.append("\\n");
-                break;
-            case '\f':
-                sb.append("\\f");
-                break;
-            case '\r':
-                sb.append("\\r");
-                break;
-            default:
-                if (c < ' ' || (c >= '\u0080' && c < '\u00a0') ||
-                               (c >= '\u2000' && c < '\u2100')) {
-                    t = "000" + Integer.toHexString(c);
-                    sb.append("\\u" + t.substring(t.length() - 4));
-                } else {
-                    sb.append(c);
-                }
+            b = chr;
+            chr = charArray[i];
+            switch (chr) {
+                case '\\':
+                case '"':
+                    buf[count++] = '\\';
+                    buf[count++] = chr;
+                    break;
+                case '/':
+                    if (b == '<') {
+                        buf[count++] = '\\';
+                    }
+                    buf[count++] = chr;
+                    break;
+                case '\b':
+                    buf[count++] = '\\';
+                    buf[count++] = 'b';
+                    break;
+                case '\t':
+                    buf[count++] = '\\';
+                    buf[count++] = 't';
+                    break;
+
+                case '\n':
+                    buf[count++] = '\\';
+                    buf[count++] = 'n';
+                    break;
+                case '\f':
+                    buf[count++] = '\\';
+                    buf[count++] = 'f';
+                    break;
+                case '\r':
+                    buf[count++] = '\\';
+                    buf[count++] = 'r';
+                    break;
+                default:
+                    if (chr < ' ' || (chr >= '\u0080' && chr < '\u00a0') ||
+                            (chr >= '\u2000' && chr < '\u2100')) {
+                        String t = "000" + Integer.toHexString(chr);
+                        charHexArray = t.substring(t.length() - 4).toCharArray();
+                        buf[count++] = '\\';
+                        buf[count++] = 'u';
+                        for (int j = 0; j < 4; j++) {
+                            buf[count++] = charHexArray[j];
+                        }
+                    } else {
+                        buf[count++] = chr;
+                    }
             }
         }
-        sb.append('"');
-        return sb.toString();
+        buf[count++] = '"';
+        return new String(buf, 0, count);
     }
 
     /**

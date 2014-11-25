@@ -548,7 +548,10 @@ O$.DropDown = {
     var popup = dropDown._popup;
     if (dropDown._listAlignment == "right" || calendar) { // align by the right edge
       O$.alignPopupByElement(popup, dropDown, O$.RIGHT, O$.BELOW);
-    } else { // bind drop list to the left border
+    } else if (dropDown._listAlignment == "justified") { // bind drop list to the left border
+      popup.style.width = dropDown.clientWidth + "px";
+      O$.alignPopupByElement(popup, dropDown, O$.RIGHT, O$.BELOW);
+    } else {
       O$.alignPopupByElement(popup, dropDown, O$.LEFT, O$.BELOW);
     }
   }
