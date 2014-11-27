@@ -13,6 +13,10 @@
 package org.openfaces.test;
 
 import com.thoughtworks.selenium.SeleneseTestCase;
+import org.openfaces.test.componentInspector.Element;
+import org.openfaces.test.componentInspector.FoldingPanelInspector;
+import org.openfaces.test.componentInspector.TabbedPaneInspector;
+import org.openqa.selenium.WebDriver;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,7 +25,7 @@ import java.util.Properties;
 /**
  * Author: Andrew.Palval@teamdev.com
  */
-public abstract class WebDriverSeleniumTestCase extends SeleneseTestCase {
+public abstract class WebDriverSeleniumTestCase  {
 
     static {
 //        Properties properties = new Properties();
@@ -33,5 +37,18 @@ public abstract class WebDriverSeleniumTestCase extends SeleneseTestCase {
 //        }
 //        String startUrl = properties.getProperty("org.openfaces.funcTests.startUrl");
 
+    }
+     protected static WebDriver driver;
+
+    protected FoldingPanelInspector foldingPanel(String id) {
+        return new FoldingPanelInspector(id);
+    }
+
+    protected Element element(String id) {
+        return new Element(id);
+    }
+
+    protected TabbedPaneInspector tabbedPane(String id) {
+        return new TabbedPaneInspector(id);
     }
 }

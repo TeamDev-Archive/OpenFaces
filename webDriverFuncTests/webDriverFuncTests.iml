@@ -9,6 +9,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="selenium-webDriver" level="project" />
+    <orderEntry type="library" name="selenide" level="project" />
   </component>
 </module>
 
