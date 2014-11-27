@@ -222,6 +222,7 @@
         <pathelement path="testLib/junit.jar"/>
         <pathelement path="lib/selenium/selenium-java-2.44.0.jar"/>
         <pathelement path="lib/selenium/selenium-server-standalone-2.44.0.jar"/>
+        <pathelement path="lib/selenium/selenide-2.14.jar"/>
       </classpath>
     </javac>
   </target>

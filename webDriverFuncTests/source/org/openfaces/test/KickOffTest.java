@@ -43,7 +43,7 @@ public class KickOffTest extends WebDriverSeleniumTestCase {
 
     @Test
     public void testAvailability() {
-        WebDriver driver = new FirefoxDriver();
+        driver = new FirefoxDriver();
         driver.get("http://localhost:8080/overview/homepage.jsf");
     }
 }

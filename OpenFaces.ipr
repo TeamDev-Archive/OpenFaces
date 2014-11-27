@@ -1390,6 +1390,13 @@
         <root url="jar://$PROJECT_DIR$/libsrc/richfaces-core-api-4.0.0.Final-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="selenide">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/selenium/selenide-2.14.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
     <library name="selenium-java-client-driver">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-java-2.14.0.jar!/" />
