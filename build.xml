@@ -212,7 +212,7 @@
     <antcall target="run-func-tests"/>
   </target>
 
-  <target name="build-webdriver-test" depends="build">
+  <target name="build-webdriver-test">
     <delete dir="${webDriverFuncTests-target.dir}/classes"/>
     <mkdir dir="${webDriverFuncTests-target.dir}/classes"/>
     <javac source="1.7" srcdir="${webDriverFuncTests-source.dir}" fork="true"
@@ -243,10 +243,10 @@
       <formatter usefile="false" type="plain"/>
       <!--<test name="org.openfaces.test.KickOffTest" todir="${webDriverFuncTests-target.dir}/report/xml"/>-->
       <batchtest todir="${webDriverFuncTests-target.dir}/report/xml">
-      <formatter type="xml" />
-      <fileset dir="${webDriverFuncTests-source.dir}">
-      <include name="**/*Test.java"/>
-      </fileset>
+        <formatter type="xml"/>
+        <fileset dir="${webDriverFuncTests-source.dir}">
+          <include name="**/*Test.java"/>
+        </fileset>
       </batchtest>
     </junit>
     <junitreport todir="${webDriverFuncTests-target.dir}/report">
@@ -255,6 +255,83 @@
       </fileset>
       <report format="frames" todir="${webDriverFuncTests-target.dir}/report/html"/>
     </junitreport>
+  </target>
+
+
+  <!--Have to change this to your local Tomcat installation-->
+  <property name="tomcat.home" value="D:\tomcat7"/>
+
+  <target name="server-start">
+    <java classname="org.apache.catalina.startup.Bootstrap" fork="true" spawn="true">
+      <classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar"/>
+      <jvmarg value="-Dcatalina.home=${tomcat.home}"/>
+    </java>
+  </target>
+
+  <target name="server-stop">
+    <java classname="org.apache.catalina.startup.Bootstrap" fork="true">
+      <classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar"/>
+      <jvmarg value="-Dcatalina.home=${tomcat.home}"/>
+      <arg line="stop"/>
+    </java>
+  </target>
+
+
+  <taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask">
+    <classpath>
+      <pathelement location="${tomcat.home}/lib/catalina-ant.jar"/>
+      <pathelement location="${tomcat.home}/lib/tomcat-coyote.jar"/>
+      <pathelement location="${tomcat.home}/lib/tomcat-util.jar"/>
+    </classpath>
+  </taskdef>
+
+  <taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask">
+    <classpath>
+      <pathelement location="${tomcat.home}/lib/catalina-ant.jar"/>
+    </classpath>
+  </taskdef>
+
+
+  <property name="build-directory" value="liveDemo/facelets/target"/>
+  <property name="war-file-name" value="openfaces-demo-facelets.war"/>
+
+  <!--It deploys using "hot deploy". Anyway, it does not work as expected. So, commit it, I'd better copy war and start Tomcat.-->
+  <!--<target name="undeploy" description="undeploy from tomcat">-->
+    <!--<undeploy-->
+            <!--failonerror="no"-->
+            <!--url="${tomcat-manager-url}"-->
+            <!--path="/${project-name}"-->
+            <!--/>-->
+  <!--</target>-->
+
+  <!--<target name="deploy" description="deploy to tomcat">-->
+    <!--<echo>deploying from client</echo>-->
+    <!--<deploy-->
+            <!--username="${tomcat-manager-login}"-->
+            <!--password="${tomcat-manager-password}"-->
+            <!--url="${tomcat-manager-url}"-->
+            <!--path="/${project-name}"-->
+            <!--war="file:${build-directory}/${war-file-name}"-->
+            <!-->-->
+    <!--</deploy>-->
+  <!--</target>-->
+
+  <target name="deploy-demo-facelets" description="deploy Live Demo Facelets to tomcat">
+    <echo>Copy live demo facelets on Tomcat</echo>
+    <delete file="${tomcat.home}/webapps/${war-file-name}"/>
+    <copy todir="${tomcat.home}/webapps/" file="${build-directory}/${war-file-name}">
+    </copy>
+  </target>
+
+
+  <target name="run-demo-facelets-tests" depends="build">
+    <ant target="server-stop"/>
+    <sleep seconds="10"/>
+    <ant target="deploy-demo-facelets"/>
+    <ant target="server-start"/>
+    <sleep seconds="30"/>
+    <ant target="run-webdriver-test"/>
+    <ant target="server-stop"/>
   </target>
 
 </project>
