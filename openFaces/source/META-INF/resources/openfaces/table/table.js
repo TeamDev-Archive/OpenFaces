@@ -267,6 +267,8 @@ O$.Table = {
     if (table._alignRowHeights) {
       O$.invokeFunctionAfterDelay(table._alignRowHeights, 0);
     }
+
+    O$._invokeComponentAjaxReloadEnd(tableId);
   },
 
   _initApiFunctions:function (table) {
