@@ -3347,12 +3347,11 @@ O$.Table = {
         }
       };
 
-
+      if (table._alignRowHeights) {
+        O$.invokeFunctionAfterDelay(table._alignRowHeights, 0);
+      }
     });
 
-    if (table._alignRowHeights) {
-      O$.invokeFunctionAfterDelay(table._alignRowHeights, 0);
-    }
   },
 
   // -------------------------- COLUMN REORDERING SUPPORT
