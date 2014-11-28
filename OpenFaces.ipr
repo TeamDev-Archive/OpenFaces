@@ -687,13 +687,14 @@
         <inspection_tool class="PackageWithTooFewClasses" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="limit" value="3" />
         </inspection_tool>
-        <inspection_tool class="ParametersPerConstructor" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ParametersPerConstructor" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="m_limit" value="5" />
+        </inspection_tool>
         <inspection_tool class="ParametersPerMethod" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="m_limit" value="5" />
         </inspection_tool>
         <inspection_tool class="ProtectedInnerClass" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignoreEnums" value="false" />
-          <option name="ignoreInterfaces" value="false" />
         </inspection_tool>
         <inspection_tool class="PublicField" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignoreEnums" value="false" />
@@ -703,7 +704,10 @@
         </inspection_tool>
         <inspection_tool class="PublicStaticArrayField" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="PublicStaticCollectionField" enabled="true" level="WARNING" enabled_by_default="true" />
-        <inspection_tool class="RawUseOfParameterizedType" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="RawUseOfParameterizedType" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreObjectConstruction" value="true" />
+          <option name="ignoreTypeCasts" value="false" />
+        </inspection_tool>
         <inspection_tool class="RedundantFieldInitialization" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="RedundantImplements" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignoreSerializable" value="false" />
@@ -772,9 +776,6 @@
         <inspection_tool class="UtilityClassWithPublicConstructor" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="UtilityClassWithoutPrivateConstructor" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignoreClassesWithOnlyMain" value="false" />
-          <option name="ignorableAnnotations">
-            <value />
-          </option>
         </inspection_tool>
         <inspection_tool class="ZeroLengthArrayInitialization" enabled="true" level="WARNING" enabled_by_default="true" />
       </profile>
@@ -1190,12 +1191,13 @@
       <module fileurl="file://$PROJECT_DIR$/testApp/core/TestAppCore.iml" filepath="$PROJECT_DIR$/testApp/core/TestAppCore.iml" group="TestApp" />
       <module fileurl="file://$PROJECT_DIR$/testApp/facelets/TestAppFacelets.iml" filepath="$PROJECT_DIR$/testApp/facelets/TestAppFacelets.iml" group="TestApp" />
       <module fileurl="file://$PROJECT_DIR$/testApp/jsp/TestAppJsp.iml" filepath="$PROJECT_DIR$/testApp/jsp/TestAppJsp.iml" group="TestApp" />
+      <module fileurl="file://$PROJECT_DIR$/webDriverFuncTests/webDriverFuncTests.iml" filepath="$PROJECT_DIR$/webDriverFuncTests/webDriverFuncTests.iml" group="LiveDemo" />
     </modules>
   </component>
   <component name="ProjectResources">
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK" />
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
   </component>
@@ -1388,6 +1390,13 @@
         <root url="jar://$PROJECT_DIR$/libsrc/richfaces-core-api-4.0.0.Final-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="selenide">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/selenium/selenide-2.14.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
     <library name="selenium-java-client-driver">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-java-2.14.0.jar!/" />
@@ -1401,6 +1410,16 @@
       </CLASSES>
       <JAVADOC />
       <SOURCES />
+    </library>
+    <library name="selenium-webDriver">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/selenium/selenium-java-2.44.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/selenium/selenium-server-standalone-2.44.0.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/lib/selenium/src/selenium-java-2.44.0-srcs.jar!/" />
+      </SOURCES>
     </library>
     <library name="SeleniumInspector">
       <CLASSES>
