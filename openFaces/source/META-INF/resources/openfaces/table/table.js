@@ -4703,7 +4703,6 @@ O$.ColumnMenu = {
       }
       O$.ColumnMenu._checkSortMenuItems(columnMenuId, tableId, columnId);
       O$.ColumnMenu._checkGroupingMenuItems(columnMenuId, tableId, columnId);
-      var column = table._getColumn(columnId);
 
       if (!hidingEnabled) {
         var hideMenuItem = columnMenu._hideMenuItem;
