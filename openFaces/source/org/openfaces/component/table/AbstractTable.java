@@ -737,7 +737,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public Iterable<String> getHiddenColumns() {
-        return ValueBindings.get(this, "hiddenColumn", hiddenColumns, Iterable.class);
+        return ValueBindings.get(this, "hiddenColumns", hiddenColumns, Iterable.class);
     }
 
     public void setColumnsOrder(Iterable<String> columnsOrder) {
