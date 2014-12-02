@@ -105,7 +105,12 @@ O$.DropDown = {
     O$.addEventHandler(field, "focus", dropDown._focusHandler);
     O$.initUnloadableComponent(field);
 
-    dropDown._onblur = dropDown.onblur;
+    dropDown._onblur = function(){
+      dropDown.closeUp();
+      if (dropDown.onblur)
+        dropDown.onblur();
+    }
+
     O$.addEventHandler(field, "blur", function () {
       waitingForFocusReacquiring = true;
       setTimeout(function () {
@@ -116,9 +121,7 @@ O$.DropDown = {
         dropDown._containerClass = O$.DropDown._removeOfClassName(dropDown._containerClass, dropDown._focusedClass);
         dropDown._rolloverContainerClass = O$.DropDown._removeOfClassName(dropDown._rolloverContainerClass, dropDown._focusedClass);
 
-        if (dropDown._onblur) {
-          dropDown._onblur();
-        }
+        dropDown._onblur();
 
         if (dropDown._promptText) {
           if ((dropDown._field.value.length == 0)) {

@@ -110,15 +110,17 @@ O$.PopupMenu = {
       var forElement = O$(forId);
       if (!forElement)
         forElement = popupMenu.parentNode;
-      forElement.oncontextmenu = function (event) {
-        if (!popupMenu.initialized) {
-          finishInitialization();
+      if (isRootMenu){
+        forElement.oncontextmenu = function (event) {
+          if (!popupMenu.initialized) {
+            finishInitialization();
+            popupMenu.showForEvent(event);
+            return false;
+          }
           popupMenu.showForEvent(event);
           return false;
-        }
-        popupMenu.showForEvent(event);
-        return false;
-      };
+        };
+      }
     } catch (e) {
 
     }
