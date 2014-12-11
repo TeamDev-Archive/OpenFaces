@@ -608,6 +608,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
         List<BaseColumn> allColumns = getAllColumns();
         List<BaseColumn> result = new ArrayList<BaseColumn>();
+        List<String> resultIds = new ArrayList<String>();
         for (String columnId : columnsOrder) {
             if (columnId == null)
                 throw new IllegalStateException(
@@ -621,16 +622,22 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 continue;
             //     throw new IllegalStateException("columnsOrder collection contains an id that doesn't point to an existing column: " + columnId + "; table's clientId = " + getClientId(getFacesContext()));
 
-            if (colById.isRendered())
+            if (colById.isRendered()){
                 result.add(colById);
-        }
+                resultIds.add(columnId);
+            }
 
+        }
         for (BaseColumn column : allColumns) {
-            if (column.isRendered() && !result.contains(column))
+            if (column.isRendered() && !result.contains(column)) {
                 result.add(column);
+                resultIds.add(column.getId());
+            }
+
+
 
         }
-        ValueBindings.set(this, "columnsOrder", result);
+        ValueBindings.set(this, "columnsOrder", resultIds);
         ValueBindings.set(this, "hiddenColumns", hideColumns);
 
         return result;
