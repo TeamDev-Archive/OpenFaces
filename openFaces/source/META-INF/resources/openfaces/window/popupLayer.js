@@ -210,6 +210,12 @@ O$.PopupLayer = {
         }
         O$.addIETransparencyControl(popup);
         if (popup._blockingLayer) {
+          if (O$.PopupLayer._modalPopupsStack.length > 0) {
+            var parentModalPopup = O$.PopupLayer._modalPopupsStack[O$.PopupLayer._modalPopupsStack.length - 1];
+            if (parentModalPopup.id == popup.id){
+              parentModalPopup.hide();
+            }
+          }
           var body = document.getElementsByTagName("body")[0];
           var firstExternalAnchor = null;
           var firstExternalAnchorOld = O$(popup.id + O$.PopupLayer.FIRST_EXTERNAL_ANCHOR_SUFFIX);
