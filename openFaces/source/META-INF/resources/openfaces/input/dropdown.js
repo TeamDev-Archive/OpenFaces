@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 3.0
- * Copyright (C) 2007-2012, TeamDev Ltd.
+ * Copyright (C) 2007-2014, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -105,11 +105,7 @@ O$.DropDown = {
     O$.addEventHandler(field, "focus", dropDown._focusHandler);
     O$.initUnloadableComponent(field);
 
-    dropDown._onblur = function(){
-      dropDown.closeUp();
-      if (dropDown.onblur)
-        dropDown.onblur();
-    }
+    dropDown._onblur = dropDown.onblur;
 
     O$.addEventHandler(field, "blur", function () {
       waitingForFocusReacquiring = true;
@@ -121,7 +117,9 @@ O$.DropDown = {
         dropDown._containerClass = O$.DropDown._removeOfClassName(dropDown._containerClass, dropDown._focusedClass);
         dropDown._rolloverContainerClass = O$.DropDown._removeOfClassName(dropDown._rolloverContainerClass, dropDown._focusedClass);
 
-        dropDown._onblur();
+        if (dropDown._onblur){
+          dropDown._onblur();
+        }
 
         if (dropDown._promptText) {
           if ((dropDown._field.value.length == 0)) {
@@ -273,9 +271,13 @@ O$.DropDown = {
     if (button)
       button.className = dropDown._buttonClass;
 
-    O$.addLoadEvent(function () {
+    if (O$.isExplorer8AndOlder()){
+      O$.addLoadEvent(function () {
+        dropDown.setDisabled(disabled);
+      });
+    } else {
       dropDown.setDisabled(disabled);
-    });
+    }
 
     dropDown._rolloverButtonClass = dropDown._buttonClass + O$.DropDown._getClassName(rolloverButtonClass);
     dropDown._pressedButtonClass = dropDown._rolloverButtonClass + O$.DropDown._getClassName(pressedButtonClass);
