@@ -49,6 +49,8 @@ O$.Popup = {
         var style = O$.getElementStyle(this, ["display"]);
         if (style.display == "none")
           this.style.display = this._originalStyleDisplay;
+        if(this.isVisible())
+          this.hidden = false;
       },
 
       showAtXY: function(x, y) {
@@ -210,7 +212,7 @@ document._addClickListener(function(e) {
 
   O$._popupsOnPage.forEach(function(popupId) {
     var popup = O$(popupId) || O$(popupId + O$.Popup.PULLED_OUT_ID_SUFFIX);
-    if ((!popup) || (popup == {}) || !(popup.hide) || !popup.hidden)
+    if ((!popup) || (popup == {}) || !(popup.hide) || popup.hidden)
       return; // popup can be removed from page with A4J
     var clickedOnChild = O$.isChild(popup, clickedElement);
     if (popupId == clickedElementId || clickedOnChild || clickedElementId == popup._dependedFieldId)
