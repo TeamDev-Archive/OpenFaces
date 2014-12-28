@@ -466,7 +466,9 @@ window.OpenFaces.Ajax = {
         var atLeastOnePortionProcessed = false;
         var xml = data.responseXML;
         if (!xml) {
-          alert("Error while performing Ajax request: No xml response received -- check server logs.");
+          if (!O$.isPageUnloaded){
+            alert("Error while performing Ajax request: No xml response received -- check server logs.");
+          }
           return;
         }
         var rootTags = xml.getElementsByTagName("partial-response");
