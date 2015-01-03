@@ -1858,19 +1858,24 @@ if (!window.O$) {
       var oldOnunload = window.onunload;
       if (typeof window.onunload != "function") {
         window.onunload = function () {
+          O$.isPageUnloaded = true;
           invokeOnUnloadHandlersFunction();
         };
       } else {
         window.onunload = function () {
+          O$.isPageUnloaded = true;
           oldOnunload();
           invokeOnUnloadHandlersFunction();
         };
       }
     }
 
-    O$._onUnloadEvents.push(func);
+    if (typeof func == "function") {
+      O$._onUnloadEvents.push(func);
+    }
   };
 
+  O$.addUnloadEvent();
 
   O$.isLoadedFullPage = function () {
     return O$._documentLoaded;

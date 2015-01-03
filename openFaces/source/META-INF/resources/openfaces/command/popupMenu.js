@@ -26,6 +26,7 @@ O$.PopupMenu = {
         }, 1);
         this.style.visibility = "visible";
         this.style.display = "block";
+        this.hidden = false;
         O$.PopupMenu._initIEWidthWorkaround(this);
         if (this.onshow)
           this.onshow();

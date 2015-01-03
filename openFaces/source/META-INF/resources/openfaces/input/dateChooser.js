@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 3.0
- * Copyright (C) 2007-2012, TeamDev Ltd.
+ * Copyright (C) 2007-2014, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -76,10 +76,16 @@ O$.DateChooser = {
         var str = dc._field.value;
         var start = dc._field.selectionStart;
         var end = dc._field.selectionEnd;
+        var strStart = str.substring(0, start);
+        var strEnd = str.substring(end);
+        var enteredStr = strStart + ch + strEnd;
+        str = strStart + ch;
 
-        str = str.substring(0, start) + ch + str.substring(end);
 
-        if (!O$.DateChooser._isValidDigitDate(str, dc._delimiter, dc._dateFormat)){
+        if (!O$.DateChooser._isValidDigitDate(enteredStr, dc._delimiter, dc._dateFormat)){
+          return false;
+        }
+        if (ch == dc._delimiter && (strStart.indexOf(dc._delimiter, strStart.length - dc._delimiter.length) !== -1)){
           return false;
         }
 
@@ -88,13 +94,14 @@ O$.DateChooser = {
         var digit = new RegExp("\\d", "g");
 
         if (dateFormat.charAt(0) != 'y'){
-          if ((!str.match(allDelimiters) || (str.match(allDelimiters).length < 2))
+          if ((!enteredStr.match(allDelimiters) || (enteredStr.match(allDelimiters).length < 2))
               && (str.substring(str.length - 2).match(digit) && str.substring(str.length - 2).match(digit).length == 2)){
             str += dc._delimiter;
             focusPosition += dc._delimiter.length;
           }
         }
 
+        str = str + strEnd;
         dc._field.value = str;
         dc._field.setSelectionRange(focusPosition, focusPosition);
 

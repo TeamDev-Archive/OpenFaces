@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 3.0
- * Copyright (C) 2007-2012, TeamDev Ltd.
+ * Copyright (C) 2007-2014, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -24,6 +24,7 @@ import org.openfaces.util.Rendering;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.component.behavior.ClientBehaviorContext;
@@ -173,12 +174,8 @@ public class AjaxInitializer {
             }
 
             MethodExpression action = !(command instanceof Ajax) ? command.getActionExpression() : null;
-            if (action != null) {
-                String actionExpressionString = action.getExpressionString();
-                validateExpressionString(actionExpressionString);
-                result.put("_action", actionExpressionString.substring(
-                        EXPRESSION_PREFIX.length(), actionExpressionString.length() - EXPRESSION_SUFFIX.length()));
-                result.put("actionComponent", command.getClientId(context));
+            if (action != null){
+                addActionParameters(context, command, action, result, command);
             }
 
             UIComponent source = command;
@@ -252,6 +249,70 @@ public class AjaxInitializer {
 
     protected Object getAjaxComponentParam(FacesContext context, OUICommand command) {
         return command.getClientId(context);
+    }
+
+
+    private void addActionParameters(FacesContext context, OUICommand command, MethodExpression action,
+                                     JSONObject result, UIComponent actionScope) throws JSONException {
+        String linkOnComposite = "cc";
+        String actionString = getActionString(action);
+        String beanName = actionString.split("\\.")[0];
+
+        if (beanName.equals(linkOnComposite)){
+            if (!isBeanExist(context, linkOnComposite)){
+                MethodExpression parentAction = getActionFromCompositeParent(actionScope, actionString);
+                if (parentAction != null) {
+                    actionScope = UIComponent.getCompositeComponentParent(actionScope);
+                    addActionParameters(context, command, parentAction, result, actionScope);
+                } else {
+                    //NOP
+                }
+            } else {
+                String summary = "Bad bean name";
+                String detail = "\'cc\' name is reserved by JSF for composite components, "
+                                + "therefore using \'cc\' for bean name can broke such components.";
+                context.addMessage(command.getClientId(),
+                                   new FacesMessage(FacesMessage.SEVERITY_WARN, summary, detail));
+
+                result.put("_action", actionString);
+                result.put("actionComponent", command.getClientId(context));
+            }
+
+        } else {
+            result.put("_action", actionString);
+            result.put("actionComponent", command.getClientId(context));
+        }
+    }
+
+    private String getActionString(MethodExpression action) {
+        String actionExpression = action.getExpressionString();
+        validateExpressionString(actionExpression);
+        return actionExpression.substring(
+                EXPRESSION_PREFIX.length(), actionExpression.length() - EXPRESSION_SUFFIX.length());
+    }
+
+
+    private boolean isBeanExist(FacesContext context, String beanName) {
+        Map<String, Object> applicationMap = context.getExternalContext().getApplicationMap();
+        Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        Map<String, Object> viewMap = context.getViewRoot().getViewMap();
+
+        return applicationMap.get(beanName) != null
+            || sessionMap.get(beanName) != null
+            || requestMap.get(beanName) != null
+            || viewMap.get(beanName) != null;
+    }
+
+
+    private MethodExpression getActionFromCompositeParent(UIComponent currentScope, String actionString) {
+        int startIndexOfActionKey = actionString.lastIndexOf(".") + 1;
+        String actionKey = actionString.substring(startIndexOfActionKey);
+        UIComponent compositeParent = UIComponent.getCompositeComponentParent(currentScope);
+        if (compositeParent != null) {
+            return (MethodExpression) compositeParent.getAttributes().get(actionKey);
+        }
+        return null;
     }
 
 }
