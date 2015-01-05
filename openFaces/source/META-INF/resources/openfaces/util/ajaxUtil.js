@@ -466,8 +466,8 @@ window.OpenFaces.Ajax = {
         var atLeastOnePortionProcessed = false;
         var xml = data.responseXML;
         if (!xml) {
-          if (!O$.isPageUnloaded){
-            alert("Error while performing Ajax request: No xml response received -- check server logs.");
+          if (!O$._isPageUnloading){
+            console.error("Error while performing Ajax request: No xml response received -- check server logs.");
           }
           return;
         }

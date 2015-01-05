@@ -1875,7 +1875,38 @@ if (!window.O$) {
     }
   };
 
-  O$.addUnloadEvent();
+  O$.addBeforeUnloadEvent = function (func) {
+    var invokeOnBeforeUnloadFunctions = function () {
+      for (var i = 0, count = O$._onBeforeUnloadEvents.length; i < count; i++) {
+        var onBeforeUnloadHandler = O$._onBeforeUnloadEvents[i];
+        onBeforeUnloadHandler();
+      }
+    };
+
+    if (!O$._onBeforeUnloadEvents) {
+      O$._onBeforeUnloadEvents = [];
+
+      var oldOnBeforeUnload = window.onbeforeunload;
+      if (typeof window.onbeforeunload != "function") {
+        window.onbeforeunload = function () {
+          O$._isPageUnloading = true;
+          invokeOnBeforeUnloadFunctions();
+        };
+      } else {
+        window.onbeforeunload = function () {
+          O$._isPageUnloading = true;
+          oldOnBeforeUnload();
+          invokeOnBeforeUnloadFunctions();
+        };
+      }
+    }
+
+    if (typeof func == "function") {
+      O$._onBeforeUnloadEvents.push(func);
+    }
+  };
+
+  O$.addBeforeUnloadEvent();
 
   O$.isLoadedFullPage = function () {
     return O$._documentLoaded;
