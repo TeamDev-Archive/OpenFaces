@@ -583,7 +583,6 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         cachedRenderedColumns = null;
     }
 
-
     private List<BaseColumn> calculateRenderedColumns() {
         Iterable<String> columnsOrder = getColumnsOrder();
         if (columnsOrder == null) {
@@ -629,18 +628,24 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
         }
         for (BaseColumn column : allColumns) {
-            if (column.isRendered() && !result.contains(column)) {
+            if (column.isRendered() && !result.contains(column) && isNeededToBeRendered(column)) {
                 result.add(column);
                 resultIds.add(column.getId());
             }
-
-
-
         }
+
         ValueBindings.set(this, "columnsOrder", resultIds);
         ValueBindings.set(this, "hiddenColumns", hideColumns);
 
         return result;
+    }
+
+    /*
+    * This method can be overridden by subclasses to determine
+    * extra condition if column is need to be rendered.
+    */
+    protected boolean isNeededToBeRendered(BaseColumn column){
+        return true;
     }
 
     private List<BaseColumn> calculateRenderedColumnsFix() {

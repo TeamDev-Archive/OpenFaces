@@ -20,6 +20,7 @@ import org.openfaces.component.table.export.UICommandDataExtractor;
 import org.openfaces.component.table.export.UIInstructionsDataExtractor;
 import org.openfaces.component.table.export.ValueHolderDataExtractor;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -64,13 +65,12 @@ public class TableDataExtractor {
      * itself.
      */
     public TableData extract(AbstractTable table) {
+        List<BaseColumn> columns;
         if (table instanceof DataTable) {
-            RowGrouping rowGrouping = ((DataTable) table).getRowGrouping();
-            if (rowGrouping != null && rowGrouping.getGroupingRules().size() > 0)
-                throw new IllegalStateException("Table data extraction functionality is not supported on grouped " +
-                        "DataTable components");
+            columns = ((DataTable)table).getGroupedAndRenderedColumns();
+        } else {
+            columns = table.getRenderedColumns();
         }
-        List<BaseColumn> columns = table.getRenderedColumns();
 
         List<String> columnDatas = new ArrayList<String>();
         for (BaseColumn column : columns) {
@@ -82,24 +82,30 @@ public class TableDataExtractor {
         List<TableRowData> tableRowDatas = new ArrayList<TableRowData>();
 
         for (Object rowData : rowDatas) {
-            Object prevVarValue = requestMap.put(table.getVar(), rowData);
-            List<Object> cellDatas = new ArrayList<Object>();
+            if (rowData instanceof GroupHeader)
+                continue;
 
-            for (BaseColumn column : columns) {
-                Object cellValue = null;
-                for (CellDataExtractor cellExtractor : cellDataExtractors) {
-                    if (cellExtractor.isApplicableFor(rowData, column)) {
-                        cellValue = cellExtractor.getData(rowData, column);
-                        break;
-                    }
-                }
-                cellDatas.add(cellValue);
-            }
+            Object prevVarValue = requestMap.put(table.getVar(), rowData);
+            List<Object> cellDatas = calculateCellDatas(rowData, columns);
             tableRowDatas.add(new TableRowData(rowData, cellDatas));
             requestMap.put(table.getVar(), prevVarValue);
         }
         return new TableData(columnDatas, tableRowDatas);
     }
 
+    private List<Object> calculateCellDatas(Object rowData, List<BaseColumn> columns){
+        List<Object> cellDatas = new ArrayList<Object>();
+        for (BaseColumn column : columns) {
+            Object cellValue = null;
+            for (CellDataExtractor cellExtractor : cellDataExtractors) {
+                if (cellExtractor.isApplicableFor(rowData, column)) {
+                    cellValue = cellExtractor.getData(rowData, column);
+                    break;
+                }
+            }
+            cellDatas.add(cellValue);
+        }
+        return cellDatas;
+    }
 
 }
