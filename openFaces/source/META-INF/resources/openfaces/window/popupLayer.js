@@ -201,6 +201,7 @@ O$.PopupLayer = {
 
       show: function (focusAfterDelay) { // todo: this partially duplicates popup.show declared in popup.js, merge as much functionality in popupLayer.js and popup.js as possible
         if (popup.isVisible()) return;
+        popup.hidden = false;
         popup.style.display = "block";
         if (autosizing == "on") {
           popup._resizeToContent();
