@@ -600,7 +600,6 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             for (String columnId : hideColumns) {
                 BaseColumn colById = findColumnById(allColumns, columnId);
                 if (colById == null) continue;
-                colById.setRendered(false);
             }
 
         }
