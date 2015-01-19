@@ -109,14 +109,23 @@ public class TableUtil {
         for (UIComponent child : children) {
             if (child instanceof BaseColumn && !(child instanceof ColumnGroup)) {
                 Components.generateIdIfNotSpecified(child);
-                columns.add((BaseColumn) child);
+                if (child.isRendered())
+                    columns.add((BaseColumn) child);
             } else if (child instanceof Columns) {
                 Columns tableColumns = (Columns) child;
                 List<DynamicColumn> dynamicColumns = tableColumns.toColumnList(context);
+                for (DynamicColumn dynamicColumn : dynamicColumns) {
+                    if (dynamicColumn.isRendered())
+                        columns.add(dynamicColumn);
+                }
                 columns.addAll(dynamicColumns);
             } else if (child instanceof ColumnGroup) {
                 ColumnGroup tcg = (ColumnGroup) child;
-                columns.addAll(getColumnsFromList(context, tcg.getChildren()));
+                List<BaseColumn> colGroup = getColumnsFromList(context, tcg.getChildren());
+                for (BaseColumn baseColumn : colGroup) {
+                    if (baseColumn.isRendered())
+                        columns.add(baseColumn);
+                }
             }
         }
         return columns;
