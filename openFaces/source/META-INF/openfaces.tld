@@ -1316,6 +1316,16 @@
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>A flag that indicates whether or not to use standart isRendered behaviour.</description>
+      <name>customRendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>The value that can serve as a convenience substitution for specifying &amp;lt;h:outputText&gt; in the
         column's &quot;header&quot; facet, or serve for identifying the column name in such components as &amp;lt;o:comopsitefilter&gt;
         or &amp;lt;o:columnVisibilityMenu&gt;.

@@ -45,6 +45,8 @@ public abstract class BaseColumnTag extends AbstractComponentTag {
         setStringProperty(component, "bodyStyle");
         setStringProperty(component, "bodyClass");
 
+        setBooleanProperty(component, "customRendered");
+
         setStringProperty(component, "headerOnclick");
         setStringProperty(component, "headerOndblclick");
         setStringProperty(component, "headerOnmousedown");

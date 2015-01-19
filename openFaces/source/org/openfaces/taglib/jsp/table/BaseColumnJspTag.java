@@ -177,4 +177,8 @@ public abstract class BaseColumnJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("footerOnmouseup", footerOnmouseup);
     }
 
+    public void setCustomRendered(ValueExpression customRendered) {
+        getDelegate().setPropertyValue("customRendered", customRendered);
+    }
+
 }

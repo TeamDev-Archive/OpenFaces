@@ -70,6 +70,8 @@ public class BaseColumn extends UIColumn {
     private String footerStyle;
     private String footerClass;
 
+    private boolean customRendered;
+
     private String onclick;
     private String ondblclick;
     private String onmousedown;
@@ -114,7 +116,7 @@ public class BaseColumn extends UIColumn {
                 headerOnmousemove, headerOnmouseout, headerOnmouseup, bodyOnclick, bodyOndblclick,
                 bodyOnmousedown, bodyOnmouseover, bodyOnmousemove, bodyOnmouseout, bodyOnmouseup,
                 footerOnclick, footerOndblclick, footerOnmousedown, footerOnmouseover, footerOnmousemove,
-                footerOnmouseout, footerOnmouseup};
+                footerOnmouseout, footerOnmouseup, customRendered};
     }
 
     @Override
@@ -169,6 +171,7 @@ public class BaseColumn extends UIColumn {
         footerOnmousemove = (String) state[i++];
         footerOnmouseout = (String) state[i++];
         footerOnmouseup = (String) state[i++];
+        customRendered = (Boolean) state[i++];
     }
 
     public String getHeaderValue() {
@@ -554,6 +557,14 @@ public class BaseColumn extends UIColumn {
 
     public void setFooterOnmouseup(String onmouseup) {
         footerOnmouseup = onmouseup;
+    }
+
+    public boolean getCustomRendered(){
+        return ValueBindings.get(this, "customRendered", customRendered, false);
+    }
+
+    public void setCustomRendered(boolean customRendered){
+        this.customRendered = customRendered;
     }
 
     public AbstractTable getTable() {
@@ -944,6 +955,14 @@ public class BaseColumn extends UIColumn {
         public Converter getValueConverter() {
             return valueConverter;
         }
+    }
+
+    @Override
+    public boolean isRendered(){
+        if (getCustomRendered()){
+            return ValueBindings.get(this, "rendered", null, false);
+        }
+        return super.isRendered();
     }
 
     @Override
