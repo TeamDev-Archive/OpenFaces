@@ -960,7 +960,7 @@ public class BaseColumn extends UIColumn {
     @Override
     public boolean isRendered(){
         if (getCustomRendered()){
-            return ValueBindings.get(this, "rendered", null, false);
+            return ValueBindings.get(this, "rendered", null, true);
         }
         return super.isRendered();
     }
