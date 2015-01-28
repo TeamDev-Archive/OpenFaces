@@ -118,7 +118,6 @@ public class TableUtil {
                     if (dynamicColumn.isRendered())
                         columns.add(dynamicColumn);
                 }
-                columns.addAll(dynamicColumns);
             } else if (child instanceof ColumnGroup) {
                 ColumnGroup tcg = (ColumnGroup) child;
                 List<BaseColumn> colGroup = getColumnsFromList(context, tcg.getChildren());
