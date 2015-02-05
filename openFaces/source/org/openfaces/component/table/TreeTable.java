@@ -80,6 +80,8 @@ public class TreeTable extends AbstractTable {
     private int deepestLevel;
     private Boolean rowValuesForFilteringNeeded;
 
+    private int maxNodeLevel = 0;
+
     public TreeTable() {
         setRendererType("org.openfaces.TreeTableRenderer");
     }
@@ -813,6 +815,23 @@ public class TreeTable extends AbstractTable {
         }
         NodeInfoForRow nodeInfo = nodeInfoForRows.get(rowIndex);
         return nodeInfo.getNodeLevel();
+    }
+
+    @Override
+    public int getMaxNodeLevel() {
+        return maxNodeLevel;
+    }
+
+    @Override
+    public void updateMaxNodeLevel(){
+        if (nodeInfoForRows == null) {
+            return;
+        }
+        maxNodeLevel = 0;
+        for (NodeInfoForRow nodeInfo: nodeInfoForRows){
+            if (maxNodeLevel < nodeInfo.getNodeLevel())
+                maxNodeLevel = nodeInfo.getNodeLevel();
+        }
     }
 
     public TreePath getNodePath() {

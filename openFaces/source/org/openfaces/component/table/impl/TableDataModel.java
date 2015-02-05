@@ -243,6 +243,20 @@ public class TableDataModel extends DataModel implements DataModelListener, Stat
         return rowInfo != null ? rowInfo.getLevel() : 0;
     }
 
+    public int getMaxNodeLevel(){
+        if (extractedRows != null) {
+            int maxNodeLevel = 0;
+            for (RowInfo rowInfo: extractedRows) {
+                if (maxNodeLevel < rowInfo.getLevel())
+                    maxNodeLevel = rowInfo.getLevel();
+                if (maxNodeLevel > rowInfo.getLevel())
+                    break;
+            }
+            return maxNodeLevel;
+        }
+        return 0;
+    }
+
     public RowInfo getRowInfo() {
         if (extractedRows != null) {
             boolean rowIndexInRange = extractedRowIndex >= 0 && extractedRowIndex < extractedRows.size();

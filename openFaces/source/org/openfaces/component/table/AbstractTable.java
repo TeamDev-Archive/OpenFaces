@@ -2115,6 +2115,13 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return 0;
     }
 
+    public int getMaxNodeLevel(){
+        return 0;
+    }
+
+    /*This method is only for internal use.*/
+    public abstract void updateMaxNodeLevel();
+
     public boolean getNodeHasChildren() {
         return false;
     }

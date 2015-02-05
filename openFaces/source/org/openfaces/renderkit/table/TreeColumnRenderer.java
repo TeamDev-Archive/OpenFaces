@@ -24,6 +24,7 @@ import org.openfaces.util.Resources;
 import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
@@ -34,6 +35,7 @@ import java.io.IOException;
 public class TreeColumnRenderer extends ColumnRenderer {
     private static final String DEFAULT_INDENT_CLASS = "o_treetable_indent";
     private static final String DEFAULT_EXPANSION_TOGGLE_CELL_CLASS = "o_treetable_expansion_toggle_cell";
+    private static final String ALIGN_CONTENT_BY_LEFT_BORDER = "org.openfaces.alignContentByLeftBorder";
 
     @Override
     public boolean getRendersChildren() {
@@ -50,7 +52,15 @@ public class TreeColumnRenderer extends ColumnRenderer {
             return;
         }
 
+        ExternalContext externalContext = context.getExternalContext();
+        boolean isAlignedByLeftBorder = false;
+        String paramValue = externalContext.getInitParameter(ALIGN_CONTENT_BY_LEFT_BORDER);
+        if  (paramValue != null && table instanceof DataTable){
+            isAlignedByLeftBorder = Boolean.valueOf(paramValue);
+        }
+
         int level = table.getNodeLevel();
+        int maxLevel = table.getMaxNodeLevel();
 
         String indentStyle = null;
         String levelIndent = treeColumn.getLevelIndent();
@@ -64,57 +74,61 @@ public class TreeColumnRenderer extends ColumnRenderer {
         writer.writeAttribute("cellpadding", "0", null);
         writer.writeAttribute("class", "o_cellWrapper", null);
         writer.startElement("tr", treeColumn);
-        writer.startElement("td", treeColumn);
-        for (int i = 0; i < level; i++) {
-            writer.writeAttribute("class", indentClass, null);
+
+        if (!isAlignedByLeftBorder || level != maxLevel){
+            writer.startElement("td", treeColumn);
+            for (int i = 0; i < level; i++) {
+                writer.writeAttribute("class", indentClass, null);
+                if (Environment.isOpera() && indentStyle != null)
+                    writer.writeAttribute("style", indentStyle, null);
+                writer.startElement("div", treeColumn);
+                writer.writeAttribute("class", indentClass, null);
+                if ((Environment.isOpera() || Environment.isMozilla()) && indentStyle != null)
+                    writer.writeAttribute("style", indentStyle, null);
+                writer.endElement("div");
+
+                writer.endElement("td");
+                writer.startElement("td", treeColumn);
+            }
+
+            boolean showTreeStructure = false;
+            String treeStructureStyle = showTreeStructure // TODO: why it is always false?
+                    ? "background: url('" + Resources.internalURL(context, "table/treeStructureSolid.png") +
+                    "') no-repeat left center;"
+                    : null;
+
             if (Environment.isOpera() && indentStyle != null)
-                writer.writeAttribute("style", indentStyle, null);
+                writer.writeAttribute("style", indentStyle + (treeStructureStyle != null ? treeStructureStyle : ""), null);
+            else if (treeStructureStyle != null) {
+                writer.writeAttribute("style", treeStructureStyle, null);
+            }
+
+
+            boolean nodeHasChildren = table.getNodeHasChildren();
+            if (nodeHasChildren) {
+                String expansionToggleCellClass = Styles.getCSSClass(
+                        context, table, treeColumn.getExpansionToggleCellStyle(),
+                        DEFAULT_EXPANSION_TOGGLE_CELL_CLASS, treeColumn.getExpansionToggleCellClass());
+                expansionToggleCellClass = Styles.mergeClassNames(expansionToggleCellClass, indentClass);
+                writer.writeAttribute("class", Styles.mergeClassNames(expansionToggleCellClass, indentClass), null);
+            } else
+                writer.writeAttribute("class", indentClass, null);
+
             writer.startElement("div", treeColumn);
-            writer.writeAttribute("class", indentClass, null);
             if ((Environment.isOpera() || Environment.isMozilla()) && indentStyle != null)
                 writer.writeAttribute("style", indentStyle, null);
+
+            if (nodeHasChildren) {
+                Components.generateIdIfNotSpecified(treeColumn);
+                ExpansionToggle expansionToggle = treeColumn.getExpansionToggle();
+                expansionToggle.encodeAll(context);
+            } else
+                writer.writeAttribute("class", indentClass, null);
+
             writer.endElement("div");
-
             writer.endElement("td");
-            writer.startElement("td", treeColumn);
         }
 
-        boolean showTreeStructure = false;
-        String treeStructureStyle = showTreeStructure // TODO: why it is always false?
-                ? "background: url('" + Resources.internalURL(context, "table/treeStructureSolid.png") +
-                "') no-repeat left center;"
-                : null;
-
-        if (Environment.isOpera() && indentStyle != null)
-            writer.writeAttribute("style", indentStyle + (treeStructureStyle != null ? treeStructureStyle : ""), null);
-        else if (treeStructureStyle != null) {
-            writer.writeAttribute("style", treeStructureStyle, null);
-        }
-
-
-        boolean nodeHasChildren = table.getNodeHasChildren();
-        if (nodeHasChildren) {
-            String expansionToggleCellClass = Styles.getCSSClass(
-                    context, table, treeColumn.getExpansionToggleCellStyle(),
-                    DEFAULT_EXPANSION_TOGGLE_CELL_CLASS, treeColumn.getExpansionToggleCellClass());
-            expansionToggleCellClass = Styles.mergeClassNames(expansionToggleCellClass, indentClass);
-            writer.writeAttribute("class", Styles.mergeClassNames(expansionToggleCellClass, indentClass), null);
-        } else
-            writer.writeAttribute("class", indentClass, null);
-
-        writer.startElement("div", treeColumn);
-        if ((Environment.isOpera() || Environment.isMozilla()) && indentStyle != null)
-            writer.writeAttribute("style", indentStyle, null);
-
-        if (nodeHasChildren) {
-            Components.generateIdIfNotSpecified(treeColumn);
-            ExpansionToggle expansionToggle = treeColumn.getExpansionToggle();
-            expansionToggle.encodeAll(context);
-        } else
-            writer.writeAttribute("class", indentClass, null);
-
-        writer.endElement("div");
-        writer.endElement("td");
         writer.startElement("td", treeColumn);
 
         super.encodeChildren(context, component);

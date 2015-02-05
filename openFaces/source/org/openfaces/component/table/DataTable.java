@@ -56,6 +56,8 @@ public class DataTable extends AbstractTable {
     private PaginationOnSorting paginationOnSorting;
     private Boolean customDataProviding;
 
+    private int maxNodeLevel = 0;
+
     public DataTable() {
         setRendererType("org.openfaces.DataTableRenderer");
     }
@@ -453,6 +455,17 @@ public class DataTable extends AbstractTable {
     public int getNodeLevel() {
         TableDataModel model = getModel();
         return model.getNodeLevel();
+    }
+
+    @Override
+    public int getMaxNodeLevel() {
+        return maxNodeLevel;
+    }
+
+    @Override
+    public void updateMaxNodeLevel(){
+        TableDataModel model = getModel();
+        maxNodeLevel = model.getMaxNodeLevel();
     }
 
     @Override

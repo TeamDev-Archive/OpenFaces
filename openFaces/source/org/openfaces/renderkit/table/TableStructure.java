@@ -196,6 +196,7 @@ public class TableStructure extends TableElement {
 
     public void render(FacesContext context, HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
         AbstractTable table = (AbstractTable) component;
+        table.updateMaxNodeLevel();
         table.setRowIndex(-1);
         boolean skipExternalFacets = isDirectTableRenderingRequest(context, table);
         UIComponent aboveFacet = table.getAbove();
