@@ -196,6 +196,13 @@
     <param-value>true</param-value>
   </context-param>
 
+  <context-param>
+    <description>This flag indicates whether to align content left for
+      grouped DataTable by columns. The default is "false".</description>
+    <param-name>org.openfaces.alignContentByLeftBorder</param-name>
+    <param-value>false</param-value>
+  </context-param>
+
   <filter>
     <filter-name>ResourceFilter</filter-name>
     <filter-class>org.openfaces.util.ResourceFilter</filter-class>
