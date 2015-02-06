@@ -330,4 +330,8 @@ public abstract class AbstractTableJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("unDisplayedSelectionAllowed", unDisplayedSelectionAllowed);
     }
 
+    public void setRowMinHeight(ValueExpression rowMinHeight) {
+        getDelegate().setPropertyValue("rowMinHeight", rowMinHeight);
+    }
+
 }

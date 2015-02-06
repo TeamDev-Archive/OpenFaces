@@ -156,9 +156,10 @@ O$.Table = {
     });
   },
 
-  _init:function (tableId, initParams, useAjax, rolloverClass, apiInitializationFunctionName, deferredBodyLoading) {
+  _init:function (tableId, initParams, useAjax, rolloverClass, apiInitializationFunctionName, deferredBodyLoading, rowMinHeight) {
     var table = O$.initComponent(tableId, {rollover:rolloverClass}, {
       _useAjax:useAjax,
+      _rowMinHeight: rowMinHeight,
 
       getCurrentColumn:function () {
         return this._showingMenuForColumn ? table._getColumn(this._showingMenuForColumn) : null;
@@ -198,6 +199,9 @@ O$.Table = {
 
     try {
       O$.Tables._init(table, initParams);
+      if (table._alignRowHeights) {
+        table._alignRowHeights();
+      }
     } finally {
       table.style.visibility = "visible";
       // can't just exclude the "o_initially_invisible" from table.className because of IE issue (JSFC-2337)
@@ -263,9 +267,6 @@ O$.Table = {
         table.style.height = table.body._centerScrollingArea._table.clientHeight
                 + table.header._sectionTable.clientHeight + 25 + "px";
       }
-    }
-    if (table._alignRowHeights) {
-      O$.invokeFunctionAfterDelay(table._alignRowHeights, 0);
     }
 
     O$._invokeComponentAjaxReloadEnd(tableId);
@@ -3169,7 +3170,7 @@ O$.Table = {
             O$.repaintAreaForOpera(table);
             table._fixFF3ColResizingIssue();
             if (table._params.scrolling)
-              O$.invokeFunctionAfterDelay(table._alignRowHeights, 500);
+              O$.invokeFunctionAfterDelay(table._alignRowHeights, 10);
           },
           setTop:function (top) {
             this.style.top = top + "px";
@@ -3350,6 +3351,7 @@ O$.Table = {
       };
 
       if (table._alignRowHeights) {
+        //table._alignRowHeights();
         O$.invokeFunctionAfterDelay(table._alignRowHeights, 0);
       }
     });

@@ -132,6 +132,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private String sortableHeaderRolloverStyle;
     private String sortableHeaderRolloverClass;
 
+    private String rowMinHeight;
+
     private String horizontalGridLines;
     private String verticalGridLines;
     private String commonHeaderSeparator;
@@ -230,7 +232,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 noDataMessageAllowed, columnIndexVar, columnIdVar, saveAttachedState(context, columnsOrder),
                 sortedAscendingImageUrl, sortedDescendingImageUrl, cachedClientId,
                 autoFilterDelay, deferBodyLoading, totalRowCount, implicitFacetsCreated, unsortedStateAllowed,
-                keepSelectionVisible, onbeforeajaxreload, onafterajaxreload, unDisplayedSelectionAllowed, saveAttachedState(context, hiddenColumns)};
+                keepSelectionVisible, onbeforeajaxreload, onafterajaxreload, unDisplayedSelectionAllowed, saveAttachedState(context, hiddenColumns), rowMinHeight};
     }
 
     @Override
@@ -328,6 +330,9 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
         unDisplayedSelectionAllowed = (Boolean) state[i++];
         hiddenColumns = (Iterable<String>) restoreAttachedState(context, state[i++]);
+
+        rowMinHeight = (String) state[i++];
+
         beforeUpdateValuesPhase = true;
         incomingSortingRules = null;
     }
@@ -1018,6 +1023,14 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     public void setApplyDefaultStyle(boolean applyDefaultStyle) {
         this.applyDefaultStyle = applyDefaultStyle;
+    }
+
+    public String getRowMinHeight() {
+        return ValueBindings.get(this, "rowMinHeight", rowMinHeight);
+    }
+
+    public void setRowMinHeight(String rowMinHeight) {
+        this.rowMinHeight = rowMinHeight;
     }
 
     public boolean getUseAjax() {

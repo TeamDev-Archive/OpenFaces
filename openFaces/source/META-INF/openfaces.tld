@@ -144,6 +144,17 @@
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>It can be specified to set minimal height for rows. It works only for DataTable
+        that has both horizontal scroll bar and fixed columns.</description>
+      <name>rowMinHeight</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>The number of pixels in the DataTable border. The value Integer.MIN_VALUE means
         there is no border rendered.
       </description>
@@ -1315,7 +1326,7 @@
       <!-- @default true -->
       <!-- @el true -->
     </attribute>
-    <attribute>
+      <attribute>
       <description>A flag that indicates whether or not to use standart isRendered behaviour.</description>
       <name>customRendered</name>
       <deferred-value>

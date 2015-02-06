@@ -74,6 +74,8 @@ public abstract class AbstractTableTag extends AbstractComponentTag {
         setStringProperty(component, "sortableHeaderRolloverStyle");
         setStringProperty(component, "sortableHeaderRolloverClass");
 
+        setStringProperty(component, "rowMinHeight");
+
         setLineStyleProperty(component, "horizontalGridLines");
         setLineStyleProperty(component, "verticalGridLines");
         setLineStyleProperty(component, "commonHeaderSeparator");

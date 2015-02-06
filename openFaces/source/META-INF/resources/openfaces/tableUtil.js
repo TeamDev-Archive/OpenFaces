@@ -2606,6 +2606,7 @@ O$.Tables = {
     synchronizeAreaScrolling();
 
     table._alignRowHeights = function () {
+      var __minHeight = table._rowMinHeight ? parseInt(table._rowMinHeight) : 0;
       if (!table._leftArea && !table._rightArea)
         return;
       O$.Tables._fixChromeCrashWithEmptyTR(table);
@@ -2620,12 +2621,13 @@ O$.Tables = {
           if (!artificialRow) return;
           var rowNodes = [row._leftRowNode, row._rowNode, row._rightRowNode];
 
-          function setRowHeight(rowNode, height) {
+          function setRowHeight(rowNode, height, trim) {
             row.__height = height;
-            rowNode.style.height = height + "px";
-            if (assignCellHeights && !height) {
+            height = height + "px";
+            rowNode.style.height = height;
+            if (assignCellHeights && trim) {
               for (var i = 0, count = rowNode.cells.length; i < count; i++) {
-                rowNode.cells[i].style.height = "0";
+                rowNode.cells[i].style.height = height;
               }
             }
           }
@@ -2634,14 +2636,18 @@ O$.Tables = {
           rowNodes.forEach(function (rowNode) {
             if (!rowNode) return;
             if (!(O$.isExplorer() && O$.isQuirksMode()))
-              setRowHeight(rowNode, 0);
+              if (section == table.body){
+                setRowHeight(rowNode, __minHeight, true);
+              } else {
+                setRowHeight(rowNode, 0, true);
+              }
             var rowHeight = rowNode.offsetHeight;
             if (rowHeight > height)
               height = rowHeight;
           });
           rowNodes.forEach(function (rowNode) {
             if (!rowNode) return;
-            setRowHeight(rowNode, height);
+            setRowHeight(rowNode, height, true);
           });
           areaHeight += height;
         });

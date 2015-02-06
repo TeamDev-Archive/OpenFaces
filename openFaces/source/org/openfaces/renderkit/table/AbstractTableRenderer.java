@@ -366,7 +366,8 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
                 Styles.getCSSClass(context, table, table.getRolloverStyle(),
                         StyleGroup.rolloverStyleGroup(), table.getRolloverClass()),
                 getInitJsAPIFunctionName(),
-                table.getDeferBodyLoading());
+                table.getDeferBodyLoading(),
+                table.getRowMinHeight());
     }
 
     protected String getInitJsAPIFunctionName() {
