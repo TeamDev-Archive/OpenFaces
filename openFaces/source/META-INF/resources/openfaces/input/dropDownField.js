@@ -1001,13 +1001,13 @@ O$.DropDownField = {
         }, 1);
       }
       var result = field._handleKeyDown(e);
-      // IE doesn't react on arrows in onKeyPress
-      if (!O$.isExplorer())
-        return result;
       var evt = O$.getEvent(e);
       var keyCode = evt.keyCode;
-      if (keyCode == 8 || keyCode == 46) // Tab or Del
-        field.onkeypress(e);
+      var ctrlKey = evt.ctrlKey||evt.metaKey // Mac support
+
+      if (ctrlKey && keyCode == 86 || keyCode == 8 || keyCode == 46) // ctrl+v, backspace, delete
+        return field.onkeypress(e);
+
       return result;
     };
 
