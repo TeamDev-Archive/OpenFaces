@@ -1,33 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AntConfiguration">
-    <defaultAnt bundledAnt="true" />
     <buildFile url="file://$PROJECT_DIR$/build.xml">
       <additionalClassPath>
         <entry path="file://$PROJECT_DIR$/tools/ant-libs/jakarta-oro-2.0.8.zip" />
         <entry path="file://$PROJECT_DIR$/tools/ant-libs/commons-net-1.4.1.zip" />
       </additionalClassPath>
-      <antReference projectDefault="true" />
-      <customJdkName value="" />
-      <maximumHeapSize value="128" />
       <maximumStackSize value="32" />
-      <properties />
     </buildFile>
     <buildFile url="file://$PROJECT_DIR$/openFaces/build.xml">
-      <additionalClassPath />
-      <antReference projectDefault="true" />
-      <customJdkName value="" />
-      <maximumHeapSize value="128" />
       <maximumStackSize value="32" />
-      <properties />
     </buildFile>
     <buildFile url="file://$PROJECT_DIR$/openFacesInspectors/build.xml">
-      <additionalClassPath />
-      <antReference projectDefault="true" />
-      <customJdkName value="" />
-      <maximumHeapSize value="128" />
       <maximumStackSize value="32" />
-      <properties />
     </buildFile>
   </component>
   <component name="ArtifactManager">
@@ -84,6 +69,7 @@
             <element id="library" level="project" name="JSF Implementation - Mojarra 1.2" />
           </element>
         </element>
+        <element id="artifact" artifact-name="OpenFaces:jar" />
       </root>
     </artifact>
     <artifact type="exploded-war" name="TestAppJsp:TestAppJsp exploded">
@@ -397,7 +383,11 @@
       <entry name="?*.sql" />
       <entry name="?*.dll" />
     </wildcardResourcePatterns>
-    <annotationProcessing enabled="false" useClasspath="true" />
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="false">
+        <processorPath useClasspath="true" />
+      </profile>
+    </annotationProcessing>
   </component>
   <component name="CopyrightManager" default="OpenFaces">
     <copyright>
@@ -1003,9 +993,6 @@
         <XML>
           <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
         </XML>
-        <ADDITIONAL_INDENT_OPTIONS fileType="haml">
-          <option name="INDENT_SIZE" value="2" />
-        </ADDITIONAL_INDENT_OPTIONS>
         <codeStyleSettings language="GSP">
           <indentOptions>
             <option name="INDENT_SIZE" value="2" />
@@ -1368,27 +1355,6 @@
       <SOURCES>
         <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-2.1.0.FINAL-src.zip!/JBossPortletBridge-2.1.0.FINAL-src/portletbridge-api/src/main/java" />
         <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-2.1.0.FINAL-src.zip!/JBossPortletBridge-2.1.0.FINAL-src/portletbridge-impl/src/main/java" />
-      </SOURCES>
-    </library>
-    <library name="JBoss Seam 2.0">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-el.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-seam-ui-2.0.0.GA.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-seam-2.0.0.GA.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/test/integration/src" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/main" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/remoting" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/ioc" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/gen" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/ui/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/mail" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/test/unit" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/pdf" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/ui/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/debug" />
       </SOURCES>
     </library>
     <library name="JBoss Seam 2.1">
