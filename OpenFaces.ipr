@@ -69,6 +69,7 @@
             <element id="library" level="project" name="JSF Implementation - Mojarra 1.2" />
           </element>
         </element>
+        <element id="artifact" artifact-name="OpenFaces:jar" />
       </root>
     </artifact>
     <artifact type="exploded-war" name="TestAppJsp:TestAppJsp exploded">
@@ -1330,27 +1331,6 @@
       <SOURCES>
         <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-2.1.0.FINAL-src.zip!/JBossPortletBridge-2.1.0.FINAL-src/portletbridge-api/src/main/java" />
         <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-2.1.0.FINAL-src.zip!/JBossPortletBridge-2.1.0.FINAL-src/portletbridge-impl/src/main/java" />
-      </SOURCES>
-    </library>
-    <library name="JBoss Seam 2.0">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-el.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-seam-ui-2.0.0.GA.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/jboss-seam/jboss-seam-2.0.0.GA.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/test/integration/src" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/main" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/remoting" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/ioc" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/gen" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/ui/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/mail" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/test/unit" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/pdf" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/ui/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/jboss-seam-2.0.0.GA-src.zip!/debug" />
       </SOURCES>
     </library>
     <library name="JBoss Seam 2.1">

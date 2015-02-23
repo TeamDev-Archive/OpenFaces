@@ -3,6 +3,7 @@
   <buildnumber file="build.number"/>
   <property file="ofversion.properties"/>
 
+  <property name="lib.dir" location="../lib/"/>
   <property name="src.dir" location="source"/>
   <property name="target.dir" location="target"/>
   <property name="classes.dir" location="${target.dir}/classes"/>

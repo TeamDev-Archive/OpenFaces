@@ -4,7 +4,7 @@
 
   <buildnumber file="build.number"/>
   <property file="ofversion.properties"/>
-  <property name="of-version" value="${ofversion}.${build.number}"/>
+  <property name="of-version" value="${ofversion}.40"/>
 
   <property name="build.compiler" value="javac1.5"/>
 
@@ -89,7 +89,8 @@
 
   <target name="compile-func-test-framework" description="Compile framework required for functional testing">
     <mkdir dir="${funcTestsFramework-target.dir}"/>
-    <javac srcdir="${funcTestsFramework-source.dir}" destdir="${funcTestsFramework-target.dir}" debug="true"
+    <javac srcdir="${funcTestsFramework-source.dir}" destdir="${funcTestsFramework-target.dir}"
+           debug="true" includeantruntime="false"
            source="1.5" target="1.5">
       <classpath>
         <pathelement path="lib/seleniuminspector/selenium-java-2.14.0.jar"/>
@@ -109,10 +110,14 @@
     <copy file="lib/seleniuminspector/selenium-java-2.14.0.jar" todir="${funcTestsFramework-distrib.dir}"/>
   </target>
 
-  <target name="compile-func-tests" depends="compile-func-test-framework" description="Compile functional tests">
+  <target name="-fail-if-no-openfaces-jar" unless="openfaces-jar.file">
+    <fail>"openfaces-jar.file" property must be specified</fail>
+  </target>
+
+  <target name="compile-func-tests" depends="-fail-if-no-openfaces-jar, compile-func-test-framework" description="Compile functional tests">
     <delete dir="${funcTests-target.dir}/classes"/>
     <mkdir dir="${funcTests-target.dir}/classes"/>
-    <javac srcdir="${funcTests-source.dir}" destdir="${funcTests-target.dir}/classes" debug="true" encoding="UTF-8">
+    <javac includeantruntime="false" srcdir="${funcTests-source.dir}" destdir="${funcTests-target.dir}/classes" debug="true" encoding="UTF-8">
       <classpath>
         <pathelement path="${openfaces-jar.file}"/>
         <pathelement path="${openfaces-inspectors-jar.file}"/>
