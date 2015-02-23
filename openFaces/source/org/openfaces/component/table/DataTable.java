@@ -621,19 +621,25 @@ public class DataTable extends AbstractTable {
     @Override
     protected boolean isNeededToBeRendered(BaseColumn column){
         String id = column.getId();
-        List<GroupingRule> groupingRules = getRowGrouping().getGroupingRules();
-        for (GroupingRule groupingRule: groupingRules){
-            if (groupingRule.getColumnId().equals(id))
-                return false;
+        RowGrouping rowGrouping = getRowGrouping();
+        if (rowGrouping != null){
+            List<GroupingRule> groupingRules = rowGrouping.getGroupingRules();
+            for (GroupingRule groupingRule: groupingRules){
+                if (groupingRule.getColumnId().equals(id))
+                    return false;
+            }
         }
         return true;
     }
 
     public List<BaseColumn> getGroupedAndRenderedColumns(){
         List<BaseColumn> result = new ArrayList<BaseColumn>();
-        List<GroupingRule> groupingRules = getRowGrouping().getGroupingRules();
-        for (GroupingRule groupingRule: groupingRules){
-            result.add(getColumnById(groupingRule.getColumnId()));
+        RowGrouping rowGrouping = getRowGrouping();
+        if (rowGrouping != null){
+            List<GroupingRule> groupingRules = rowGrouping.getGroupingRules();
+            for (GroupingRule groupingRule: groupingRules){
+                result.add(getColumnById(groupingRule.getColumnId()));
+            }
         }
         result.addAll(getRenderedColumns());
         return result;
