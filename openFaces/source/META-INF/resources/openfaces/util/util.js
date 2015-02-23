@@ -2785,11 +2785,14 @@ if (!window.O$) {
               : null;
 
       if (containmentRect) {
-        var prntPos = O$.getElementPos(containingBlock);
+        var minLeft = containmentRect.x;
+        var minTop = containmentRect.y;
+        if (containingBlock) {
+          var prntPos = O$.getElementPos(containingBlock);
+          minLeft -= prntPos.x;
+          minTop -= prntPos.y;
+        }
         var draggableSize = O$.getElementSize(draggable);
-
-        var minLeft = containmentRect.x - prntPos.x;
-        var minTop = containmentRect.y - prntPos.y;
         var maxLeft = minLeft + containmentRect.width - draggableSize.width - 1;
         var maxTop = minTop + containmentRect.height - draggableSize.height - 1;
 
