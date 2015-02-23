@@ -148,6 +148,7 @@ O$.PopupLayer = {
         if (!this._autosizingAllowed())
           return;
 
+        var _scrollTop = popup._content.scrollTop;
         var area = this._getAutosizingArea();
         var autosizingMargins = this._getAutosizingMargins();
 
@@ -193,6 +194,9 @@ O$.PopupLayer = {
         if (newWidth < minSize.width) newWidth = minSize.width;
         if (newHeight < minSize.height) newHeight = minSize.height;
         this._setSize(newWidth, newHeight);
+        if (_scrollTop && popup._content){
+          popup._content.scrollTop = _scrollTop;
+        }
       },
 
       _autosizingAllowed: function() {
@@ -571,6 +575,7 @@ O$.PopupLayer = {
         throw e;
       }
 
+    //TODO: rewrite logic for behaviour of autosizing.
     if (autosizing == "on") {
       var intervalId = setInterval(function() {
         if (!O$.isElementPresentInDocument(popup)) {
