@@ -599,15 +599,6 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             }
             return renderedColumns;
         }
-        Iterable<String> hideColumns = getHiddenColumns();
-        if (hideColumns != null) {
-            List<BaseColumn> allColumns = getAllColumns();
-            for (String columnId : hideColumns) {
-                BaseColumn colById = findColumnById(allColumns, columnId);
-                if (colById == null) continue;
-            }
-
-        }
 
         List<BaseColumn> allColumns = getAllColumns();
         List<BaseColumn> result = new ArrayList<BaseColumn>();
@@ -631,8 +622,12 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             }
 
         }
+
+        Iterable<String> hideColumns = getHiddenColumns();
         for (BaseColumn column : allColumns) {
             if (column.isRendered() && !result.contains(column) && isNeededToBeRendered(column)) {
+                if (hideColumns != null && containsColumnById(hideColumns, column.getId()))
+                    continue;
                 result.add(column);
                 resultIds.add(column.getId());
             }
@@ -693,6 +688,19 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             }
         }
         return colById;
+    }
+
+    /**
+     * This method is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
+    public boolean containsColumnById(Iterable<String> columnsId, String columnId) {
+        for (String currentColumnId: columnsId) {
+            if (columnId.equals(currentColumnId)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected void createImplicitColumnFacets(boolean forDynamicColumns) {
