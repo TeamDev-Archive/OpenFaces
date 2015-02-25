@@ -99,6 +99,11 @@ public class TableStructure extends TableElement {
             }
         }
 
+        //Next behaviour was added to predict errors related to the situation when all rendered columns are fixed.
+        if (countScrollableColumns() == 0){
+            resetFixedColumns();
+        }
+
         header = new TableHeader(this);
         body = new TableBody(this);
         footer = new TableFooter(this);
@@ -162,6 +167,10 @@ public class TableStructure extends TableElement {
 
     public void setRightFixedCols(int rightFixedCols) {
         this.rightFixedCols = rightFixedCols;
+    }
+
+    public int countScrollableColumns(){
+        return columns.size() - leftFixedCols - rightFixedCols;
     }
 
     /**
@@ -806,4 +815,8 @@ public class TableStructure extends TableElement {
                 (table != null && table.getSubHeaderRowSeparator() != null);
     }
 
+    private void resetFixedColumns(){
+        leftFixedCols = 0;
+        rightFixedCols = 0;
+    }
 }
