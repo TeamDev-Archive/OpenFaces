@@ -15,6 +15,7 @@ import org.openfaces.component.ComponentConfigurator;
 import org.openfaces.component.OUIClientActionHelper;
 import org.openfaces.component.OUICommand;
 import org.openfaces.component.OUIObjectIterator;
+import org.openfaces.component.table.AbstractTableSelection;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
@@ -178,7 +179,13 @@ public class AjaxInitializer {
                 addActionParameters(context, command, action, result, command);
             }
 
-            UIComponent source = command;
+            UIComponent source = null;
+            if (command instanceof AbstractTableSelection) {
+                source = command.getParent();
+            }
+            else {
+                source = command;
+            }
             if (source instanceof Ajax) {
                 source = source.getParent();
                 if (source instanceof ComponentConfigurator)
