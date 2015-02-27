@@ -251,7 +251,9 @@ public abstract class TableHeaderOrFooter extends TableSection {
                 if (cell == null)
                     continue;
                 rowCells.add(cell);
-                if (cell.getContent() != null)
+                if (isHeader)
+                    atLeastOneComponentInThisRow = true;
+                else if (cell.getContent() != null)
                     atLeastOneComponentInThisRow = true;
                 colIndex += cell.getColSpan() - 1;
             }
