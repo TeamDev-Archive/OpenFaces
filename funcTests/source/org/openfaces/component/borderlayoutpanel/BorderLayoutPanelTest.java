@@ -24,7 +24,6 @@ import org.seleniuminspector.openfaces.SidePanelInspector;
  */
 public class BorderLayoutPanelTest extends OpenFacesTestCase {
     @Test
-    @Ignore
     public void testRendering() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
 
@@ -93,6 +92,7 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
 
     @Test
     @Ignore
+    //FIXME: (Yurin) - Need investigate logic.
     public void testSidePanelSplitterDragging() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
 
@@ -101,24 +101,24 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
         sidePanel01.splitter().dragAndDrop(+300, 0);
         sidePanel01.assertExpressionEquals("offsetWidth", 350);
         sidePanel01.splitter().dragAndDrop(+125, 0);
-        sidePanel01.assertExpressionEquals("offsetWidth", 450);
+        sidePanel01.assertExpressionEquals("offsetWidth", 475);
         sidePanel01.splitter().dragAndDrop(+125, 0);
-        sidePanel01.assertExpressionEquals("offsetWidth", 450);
+        sidePanel01.assertExpressionEquals("offsetWidth", 600);
         sidePanel01.splitter().dragAndDrop(-5, 0);
-        sidePanel01.assertExpressionEquals("offsetWidth", 445);
-        sidePanel01.splitter().dragAndDrop(-1000, 0);
-        sidePanel01.assertExpressionEquals("offsetWidth", 7);
+        sidePanel01.assertExpressionEquals("offsetWidth", 593);
+        sidePanel01.splitter().dragAndDrop(-100, 0);
+        sidePanel01.assertExpressionEquals("offsetWidth", 493);
         sidePanel01.splitter().dragAndDrop(+43, 0);
-        sidePanel01.assertExpressionEquals("offsetWidth", 50);
+        sidePanel01.assertExpressionEquals("offsetWidth", 536);
         sidePanel01.splitter().mouseDown();
         sidePanel01.splitter().mouseUp();
         sidePanel01.assertExpressionEquals("offsetWidth", 7);
         sidePanel01.splitter().mouseDown();
         sidePanel01.splitter().mouseUp();
-        sidePanel01.assertExpressionEquals("offsetWidth", 50);
+        sidePanel01.assertExpressionEquals("offsetWidth", 536);
 
         SidePanelInspector sidePanel04 = sidePanel("formID:sidePanel04");
-        sidePanel04.assertExpressionEquals("offsetWidth", 50);
+        sidePanel04.assertExpressionEquals("offsetWidth", 0);
         sidePanel04.splitter().dragAndDrop(-300, 0);
         sidePanel04.assertExpressionEquals("offsetWidth", 350);
         sidePanel04.splitter().dragAndDrop(-125, 0);
@@ -182,7 +182,6 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
     }
 
     @Test
-    @Ignore
     public void testEvents() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
         SidePanelInspector sidePanel = sidePanel("formID:sidePanel01");
@@ -196,6 +195,7 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
 
     @Test
     @Ignore
+    //FIXME: (Yurin) - Need investigate logic.
     public void testContentResizeOnSplitterDrag() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
         BorderLayoutPanelInspector borderLayoutPanel00 = borderLayoutPanel("formID:borderLayoutPanel00");
@@ -209,14 +209,14 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
         sidePanel01.splitter().dragAndDrop(+125, 0);
         borderLayoutPanel00.content().assertExpressionEquals("offsetWidth", 0);
         sidePanel01.splitter().dragAndDrop(-5, 0);
-        borderLayoutPanel00.content().assertExpressionEquals("offsetWidth", 5);
-        sidePanel01.splitter().dragAndDrop(-1000, 0);
-        borderLayoutPanel00.content().assertExpressionEquals("offsetWidth", 443);
+        borderLayoutPanel00.content().assertExpressionEquals("offsetWidth", 0);
+        sidePanel01.splitter().dragAndDrop(-100, 0);
+        borderLayoutPanel00.content().assertExpressionEquals("offsetWidth", 100);
         sidePanel01.splitter().dragAndDrop(+43, 0);
-        borderLayoutPanel00.content().assertExpressionEquals("offsetWidth", 400);
+        borderLayoutPanel00.content().assertExpressionEquals("offsetWidth", 57);
         sidePanel01.splitter().mouseDown();
         sidePanel01.splitter().mouseUp();
-        borderLayoutPanel00.content().assertExpressionEquals("offsetWidth", 443);
+        borderLayoutPanel00.content().assertExpressionEquals("offsetWidth", 586);
         sidePanel01.splitter().mouseDown();
         sidePanel01.splitter().mouseUp();
         borderLayoutPanel00.content().assertExpressionEquals("offsetWidth", 400);
@@ -284,7 +284,6 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
     }
 
     @Test
-    @Ignore
     public void testContentResizeOnParentResize() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
         ElementInspector content1 = borderLayoutPanel("formID:borderLayoutPanel21").content();
@@ -333,6 +332,7 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
 
     @Test
     @Ignore
+    //FIXME: (Yurin) - Need investigate logic.
     public void testTruncatedMode() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
         ElementInspector sidePanel30Splitter = sidePanel("formID:sidePanel30").splitter();
@@ -461,10 +461,10 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
         sidePanel31Splitter.dragAndDrop(0, 43);
         sidePanel1.assertExpressionEquals("offsetHeight", 50);
         sidePanel2.assertExpressionEquals("offsetHeight", 30);
-        sidePanel3.assertExpressionEquals("offsetHeight", 7);
-        sidePanel4.assertExpressionEquals("offsetHeight", 50);
+        sidePanel3.assertExpressionEquals("offsetHeight", 13);
+        sidePanel4.assertExpressionEquals("offsetHeight", 44);
         sidePanel31Splitter.dragAndDrop(0, 43);
-        sidePanel1.assertExpressionEquals("offsetHeight", 50);
+        sidePanel1.assertExpressionEquals("offsetHeight", 17);
         sidePanel2.assertExpressionEquals("offsetHeight", 30);
         sidePanel3.assertExpressionEquals("offsetHeight", 7);
         sidePanel4.assertExpressionEquals("offsetHeight", 7);
@@ -551,8 +551,6 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
     }
 
     @Test
-    @Ignore
-    // todo: investigate why this test fails on build server (but works locally)
     public void testBoxLayoutModel() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
 

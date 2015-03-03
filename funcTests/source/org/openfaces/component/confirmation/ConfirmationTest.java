@@ -26,8 +26,6 @@ import org.seleniuminspector.openfaces.PopupLayerInspector;
  */
 public class ConfirmationTest extends OpenFacesTestCase {
 
-    //todo: uncomment when JSFC-3627 is fixed
-    @Ignore
     @Test
     public void _testConfirmationReRenderThroughA4J() throws InterruptedException {
         testAppFunctionalPage("/components/confirmation/confirmation_a4j.jsf");
@@ -72,6 +70,7 @@ public class ConfirmationTest extends OpenFacesTestCase {
             selenium.click("formID:button1");
             String newSource = selenium.getHtmlSource();
             confirmation.okButton().click();
+            assertTrue(element("formID:confirmed_a4j_Popup").isVisible());
             confirmedPopup.assertVisible(true);
             selenium.click("formID:closer_a4j");
             assertTrue(!newSource.equals(oldSource));
@@ -151,8 +150,6 @@ public class ConfirmationTest extends OpenFacesTestCase {
         confirmation.okButton().click();
     }
 
-    //todo: uncomment this test if JSFC-2683 is fixed
-    @Ignore
     @Test
     public void _testInputTextInside() {
         testAppFunctionalPage("/components/confirmation/confirmationContentWithArbitraryComponents.jsf");
@@ -160,26 +157,42 @@ public class ConfirmationTest extends OpenFacesTestCase {
         selenium.click("form:withInputTextInside");
         selenium.isVisible("form:confirm_withInputTextInside");
         //try to type in caption
-        assertEquals("Caption input", selenium.getText("form:captionInputID"));
-        selenium.type("form:captionInputID", "Test ");
-        assertEquals("Test Caption input", selenium.getText("form:captionInputID"));
+        String captionInputIdValue = selenium.getValue("form:captionInputID");
+        assertEquals("Caption input", captionInputIdValue);
+        selenium.type("form:captionInputID", "Test " + captionInputIdValue);
+        assertEquals("Test Caption input", selenium.getValue("form:captionInputID"));
 
         //try to type in icon
-        assertEquals("Icon input", selenium.getText("form:iconInputID"));
-        selenium.type("form:iconInputID", "Test ");
-        assertEquals("Test Icon input", selenium.getText("form:iconInputID"));
+        String iconInputIDValue = selenium.getValue("form:iconInputID");
+        assertEquals("Icon input", iconInputIDValue);
+        selenium.type("form:iconInputID", "Test " + iconInputIDValue);
+        assertEquals("Test Icon input", selenium.getValue("form:iconInputID"));
 
         //try to type in message
-        assertEquals("Message input", selenium.getText("form:messageInputID"));
-        selenium.type("form:messageInputID", "Test ");
-        assertEquals("Test Message input", selenium.getText("form:messageInputID"));
+        String messageInputIdValue = selenium.getValue("form:messageInputID");
+        assertEquals("Message input", messageInputIdValue);
+        selenium.type("form:messageInputID", "Test " + messageInputIdValue);
+        assertEquals("Test Message input", selenium.getValue("form:messageInputID"));
 
         //try to type in details
-        assertEquals("Details input", selenium.getText("form:detailsInputID"));
-        selenium.type("form:detailsInputID", "Test ");
-        assertEquals("Test Details input", selenium.getText("form:detailsInputID"));
+        String detailsInputIDValue = selenium.getValue("form:detailsInputID");
+        assertEquals("Details input", detailsInputIDValue);
+        selenium.type("form:detailsInputID", "Test " + detailsInputIDValue);
+        assertEquals("Test Details input", selenium.getValue("form:detailsInputID"));
+    }
+
+    @Test
+    @Ignore
+    //TODO:(Yurin) need investigate why alert is not found from WebDriver. Manual testing is OK.
+    public void _testInputTextAlert(){
+        testAppFunctionalPage("/components/confirmation/confirmationContentWithArbitraryComponents.jsf");
+        Selenium selenium = getSelenium();
+        selenium.click("form:withInputTextInside");
+        selenium.isVisible("form:confirm_withInputTextInside");
 
         selenium.click("form:confirm_withInputTextInside::yes_button");
+        sleep(100);
+        assertTrue(selenium.isAlertPresent());
         assertTrue(isAlertPresent());
         assertEquals("Done", getAlert());
         acceptAlert();
@@ -211,8 +224,6 @@ public class ConfirmationTest extends OpenFacesTestCase {
         getSelenium().isTextPresent("Confirmation with image");
     }
 
-    //todo: uncomment when JSFC-3627 is fixed
-    @Ignore
     @Test
     public void _testConfirmationClientSideEvents() {
         testAppFunctionalPage("/components/confirmation/confirmation.jsf");
