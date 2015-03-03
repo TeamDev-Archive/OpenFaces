@@ -1,5 +1,6 @@
 <project name="OpenFaces Project Build Script" default="build" basedir=".">
 
+  <property environment="env"/>
   <property name="components.dir" location="openFaces"/>
 
   <buildnumber file="build.number"/>
@@ -175,6 +176,7 @@
         <pathelement path="testLib/jai/mlibwrapper_jai.jar"/>
         <pathelement path="testLib/jai/jai_core.jar"/>
         <pathelement path="testLib/jai/jai_codec.jar"/>
+        <pathelement refid="catalina.classpath"/>
       </classpath>
       <formatter type="xml"/>
       <formatter usefile="false" type="plain"/>
@@ -214,4 +216,107 @@
 
   </target>
 
+  <!--Deployment section-->
+  <target name="if-has-tomcat">
+    <condition property="has.tomcat">
+      <available file="${env.CATALINA_HOME}"/>
+    </condition>
+  </target>
+
+  <target name="check-if-deployed" depends="if-has-tomcat" if="has.tomcat">
+    <property name="compile.debug" value="true" />
+    <property file="deployment.properties"/>
+    <property name="tomcat.home" value="${env.CATALINA_HOME}"/>
+    <property name="build.home" value="${basedir}"/>
+    <property name="project.lib" value="${basedir}/lib" />
+
+    <condition property="is.webapp.deployed">
+      <http url="${tomcat.server.host}:${tomcat.server.port}/"/>
+    </condition>
+
+    <path id="catalina.classpath">
+      <fileset dir="${tomcat.home}/bin">
+        <include name="*.jar"/>
+      </fileset>
+      <pathelement location="${tomcat.home}/lib"/>
+      <fileset dir="${tomcat.home}/lib">
+        <include name="*.jar"/>
+      </fileset>
+    </path>
+
+    <taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" classpathref="catalina.classpath" />
+    <taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask" classpathref="catalina.classpath" />
+    <taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask" classpathref="catalina.classpath" />
+    <taskdef name="start" classname="org.apache.catalina.ant.StartTask" classpathref="catalina.classpath" />
+    <taskdef name="stop" classname="org.apache.catalina.ant.StopTask" classpathref="catalina.classpath" />
+    <taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask" classpathref="catalina.classpath" />
+    <taskdef name="list" classname="org.apache.catalina.ant.ListTask" classpathref="catalina.classpath" />
+  </target>
+
+  <target name="is-tomcat-running" depends="if-has-tomcat">
+    <condition property="is.tomcat.running">
+      <http url="http://localhost:8080"/>
+    </condition>
+  </target>
+
+  <target name="stop-tomcat-remote" depends="is-tomcat-running">
+    <echo message="Stop server ${tomcat.manager.url}"/>
+
+    <stop url="${tomcat.manager.url}"
+              username="${tomcat.server.login}"
+              password="${tomcat.server.pwd}"
+              path="/${ant.project.name}"/>
+  </target>
+
+  <target name="start-tomcat-remote" depends="is-tomcat-running" unless="is.tomcat.running">
+    <echo message="Stop server ${tomcat.manager.url}"/>
+
+    <start url="${tomcat.manager.url}"
+          username="${tomcat.server.login}"
+          password="${tomcat.server.pwd}"
+          path="/${ant.project.name}"/>
+  </target>
+
+  <target name="reload-tomcat-remote" depends="stop-tomcat-remote, start-tomcat-remote">
+    <echo message="Reload server"/>
+    <antcall target="stop-tomcat-remote"/>
+    <sleep seconds="30"/>
+    <antcall target="start-tomcat-remote"/>
+  </target>
+
+  <target name="deploy-tomcat" depends="compile-func-tests, undeploy-tomcat" if="has.tomcat"
+          description="Install application to Servlet Container">
+    <echo message="Installing Application to tomcat server"/>
+
+    <deploy url="${tomcat.manager.url}"
+            username="${tomcat.server.login}"
+            password="${tomcat.server.pwd}"
+            path="/${ant.project.name}"
+            war="${test-app-facelets.dir}/target/test-app-facelets.war"/>
+  </target>
+
+  <target name="undeploy-tomcat" if="has.tomcat"
+          description="Install application to Servlet Container">
+    <echo message="Removing Application from tomcat server"/>
+
+    <undeploy url="${tomcat.manager.url}"
+              username="${tomcat.server.login}"
+              password="${tomcat.server.pwd}"
+              path="/${ant.project.name}"/>
+  </target>
+
+  <!--<target name="deploy.to.server" description="Install application to Tomcat Server">-->
+  <!--<property name="port" value="${tomcat.server.port}"/>-->
+  <!--<property name="username" value="${tomcat.server.login}"/>-->
+  <!--<property name="password" value="${tomcat.server.pwd}"/>-->
+  <!--<property name="url" value="${tomcat.manager.url}"/>-->
+  <!--<property name="path" value="compile.classpath"/>-->
+
+  <!--<echo message="Deploying application to ${url}" />-->
+
+  <!--<antcall target="undeploy-tomcat"/>-->
+  <!--<sleep seconds="10" />-->
+  <!--<antcall target="deploy-tomcat"/>-->
+  <!--</target>-->
+  <!--End Deployment section-->
 </project>
