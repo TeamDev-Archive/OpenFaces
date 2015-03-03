@@ -10,7 +10,7 @@
 <head>
   <title>Client Side API</title>
 
-  <script src="../funcTestsUtil.js" type="text/javascript"></script>
+  <script src="../../funcTestsUtil.js" type="text/javascript"></script>
   <script type="text/javascript">
     function fillInvalidData() {
       var formName = "testForm:";

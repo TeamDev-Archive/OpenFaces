@@ -9,7 +9,7 @@
 <html>
 <head>
   <title>DateChooser in FoldingPanel</title>
-  <script src="../funcTestsUtil.js" type="text/javascript"></script>
+  <script src="../../funcTestsUtil.js" type="text/javascript"></script>
 
   <style type="text/css">
     .container {

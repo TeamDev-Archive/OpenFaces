@@ -9,7 +9,7 @@
 <html>
 <head>
   <title>Check different FoldingPanel loading modes</title>
-  <script src="../funcTestsUtil.js" type="text/javascript"></script>
+  <script src="../../funcTestsUtil.js" type="text/javascript"></script>
 
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 </head>

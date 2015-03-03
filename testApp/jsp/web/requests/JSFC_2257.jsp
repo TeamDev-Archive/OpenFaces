@@ -8,7 +8,7 @@
 
 <html>
 <head><title>JSFC-2257 Validation doesn't work with text area</title></head>
-<script src="../funcTestsUtil.js" type="text/javascript"></script>
+<script src="../../funcTestsUtil.js" type="text/javascript"></script>
 
 <body>
 <f:view>
