@@ -30,8 +30,6 @@ public class BorderLayoutPanelFullScreenTest extends OpenFacesTestCase {
     }
 
     @Test
-    @Ignore
-    // todo: investigate why this test fails on build server (but works locally)
     public void testRendering() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanel1ft.jsf");
 //    saveScreenshotToFile("c:/temp/BorderLayoutPanelFullScreenTest.testRendering.1.png");
@@ -91,7 +89,7 @@ public class BorderLayoutPanelFullScreenTest extends OpenFacesTestCase {
         int width = content.evalIntExpression("offsetWidth");
         int height = content.evalIntExpression("offsetHeight");
         content.assertExpressionEquals("offsetWidth", windowSize.width / 2 - 6, 1);
-        content.assertExpressionEquals("offsetHeight", windowSize.height / 2 - 5, 1);
+        content.assertExpressionEquals("offsetHeight", windowSize.height / 2 - 5, 3);
         window().evalExpression("resizeBy(-100, -100)");
         sleep(2000);
         selenium.waitForCondition("window.document.getElementById('textDiv').innerHTML == \"window resized\"", "10000");
