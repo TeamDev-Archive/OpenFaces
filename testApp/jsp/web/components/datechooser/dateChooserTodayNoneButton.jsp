@@ -9,7 +9,7 @@
 <html>
 <head>
   <title>Check functionality of 'Today' and 'None' buttons</title>
-  <script src="../funcTestsUtil.js" type="text/javascript"></script>
+  <script src="../../funcTestsUtil.js" type="text/javascript"></script>
 
   <script type="text/javascript">
     function printTodayStyle(dateChooserID, outputDiv) {

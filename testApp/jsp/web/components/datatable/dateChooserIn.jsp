@@ -9,7 +9,7 @@
 <html>
 <head>
   <title>DateChooser Inside DataTable</title>
-  <script src="../funcTestsUtil.js" type="text/javascript"></script>
+  <script src="../../funcTestsUtil.js" type="text/javascript"></script>
 
   <style type="text/css">
     .container {

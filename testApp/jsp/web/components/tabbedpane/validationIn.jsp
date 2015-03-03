@@ -8,7 +8,7 @@
 
 <html>
 <head>
-  <script src="../funcTestsUtil.js" type="text/javascript"></script>
+  <script src="../../funcTestsUtil.js" type="text/javascript"></script>
   <title>Validation in TabbedPane</title>
 </head>
 

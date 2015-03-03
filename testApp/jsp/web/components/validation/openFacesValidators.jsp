@@ -9,7 +9,7 @@
 <html>
 <head>
   <title>Testing OpenFaces validators</title>
-  <script src="../funcTestsUtil.js" type="text/javascript"></script>
+  <script src="../../funcTestsUtil.js" type="text/javascript"></script>
   <script type="text/javascript">
     function fillInvalidData(formName) {
       var field = O$(formName + "equal1");
