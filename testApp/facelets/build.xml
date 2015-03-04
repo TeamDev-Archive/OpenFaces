@@ -1,6 +1,8 @@
 <project name="OpenFaces Test Application -- Facelets Version" default="build" basedir=".">
 
   <!-- *** Resources *** -->
+  <property file="../../ofversion.properties"/>
+  <property name="of-version" value="${ofversion}.40"/>
 
   <property name="lib.dir" location="../../lib"/>
   <property name="apache.lib.dir" location="../../lib/apache"/>
@@ -20,6 +22,8 @@
   <property name="resources.target.dir" location="${target.dir}/resources"/>
   <property name="target-war.file" location="${target.dir}/test-app-facelets.war"/>
   <property name="classes.dir" location="${target.dir}/classes"/>
+  <property name="target-lib.dir" location="${target.dir}/lib"/>
+  <property name="openfaces-jar.file" location="../../target/lib/openfaces-${of-version}.jar"/>
 
   <fileset id="basic-libraries" dir="${lib.dir}">
     <include name="jstl-1.1.0.jar"/>
@@ -75,7 +79,7 @@
 
   <!-- *** Public Targets ** -->
 
-  <target name="build" depends="-fail-if-no-openfaces-jar,-build-war-mojarra12"
+  <target name="build" depends="-fail-if-no-openfaces-jar,build-war"
           description="generate the distribution"/>
 
   <target name="init">
@@ -106,7 +110,7 @@
 
 
   <target name="deploy" depends="build" description="deploy war" if="deploy.dir">
-    <copy file="${target-war.file}" todir="${deploy.dir}"/>
+    <copy file="${target-war.file}" todir="${target.dir}"/>
   </target>
 
   <target name="clean" description="clean up">
@@ -115,7 +119,7 @@
 
   <!-- *** Utility Targets *** -->
 
-  <target name="-build-war-mojarra12" depends="compile,copy-resources,prepare-resources">
+  <target name="build-war" depends="compile,copy-resources,prepare-resources">
     <property name="webxml" value="web.xml"/>
     <war destfile="${target-war.file}" basedir="${resources.target.dir}" webxml="${web-inf.dir}/${webxml}">
       <lib file="${openfaces-jar.file}"/>
@@ -138,7 +142,7 @@
 
    <target name="-compile" depends="clean,init" if="openfaces-jar.file">
     <mkdir dir="${classes.dir}"/>
-    <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" source="1.5" target="1.5" encoding="UTF-8">
+    <javac srcdir="${src.dir}" includeantruntime="false" destdir="${classes.dir}" debug="true" source="1.5" target="1.5" encoding="UTF-8">
       <classpath>
         <fileset dir="${lib.dir}">
           <include name="jsp-api-2.1.jar"/>
