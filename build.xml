@@ -158,11 +158,7 @@
   </target>
 
   <target name="run-func-tests" depends="compile-func-tests" description="Run functional tests">
-    <antcall target="reload-tomcat-remote" />
     <antcall target="deploy-tomcat"/>
-
-    <echo message="30 seconds delay before deploy"/>
-    <sleep seconds="30"/>
 
     <mkdir dir="${funcTests-target-reports.dir}"/>
 
@@ -219,8 +215,6 @@
     </copy>
 
     <fail if="junit_test_failed" message="FUNCTIONAL TEST(S) FAILED"/>
-    <antcall target="reload-tomcat-remote"/>
-    <antcall target="stop-tomcat-remote"/>
   </target>
 
   <target name="run-func-tests-jsp" description="Run functional tests in JSP-based JSF 1.2 environment">
