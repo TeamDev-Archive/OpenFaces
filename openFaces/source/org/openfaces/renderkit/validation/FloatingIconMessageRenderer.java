@@ -111,44 +111,44 @@ public class FloatingIconMessageRenderer extends BaseMessageRenderer {
                         fim.isShowDetail(),
                         isDefaultPresentation(fim))).semicolon();
 
+        //serverValidationScript have to be added not only for the case of message presence.
+        //It have to be added for the case of message absence too.
+        //It is necessary to reset error-icon after succeeded server validation.
+        //Such behaviour is important for ClientValidationMode.OFF.
         ScriptBuilder serverValidationScript = new ScriptBuilder();
+        ScriptBuilder messageScript = new ScriptBuilder();
         if (message != null) {
-            serverValidationScript.onLoadScript(new ScriptBuilder().append(
-                    ClientValidatorUtil.getScriptAddMessageById(message, forComponentClientId)).
-
-                    newInstance("O$._FloatingIconMessageRenderer",
-                            fim,
-                            forComponentClientId,
-                            getImageUrl(fim),
-                            getOffsetTop(fim),
-                            getOffsetLeft(fim),
-                            css,
-                            events,
-                            fim.isNoImage(),
-                            fim.isShowSummary(),
-                            fim.isShowDetail(),
-                            isDefaultPresentation(fim)).append(".update();\n"));
+            messageScript = messageScript.append(ClientValidatorUtil.getScriptAddMessageById(message, forComponentClientId));
         }
+        serverValidationScript.onLoadScript(new ScriptBuilder().append(messageScript).
+
+                newInstance("O$._FloatingIconMessageRenderer",
+                        fim,
+                        forComponentClientId,
+                        getImageUrl(fim),
+                        getOffsetTop(fim),
+                        getOffsetLeft(fim),
+                        css,
+                        events,
+                        fim.isNoImage(),
+                        fim.isShowSummary(),
+                        fim.isShowDetail(),
+                        isDefaultPresentation(fim)).append(".update();\n"));
 
         if (pageDefinedMessage) {
             if (clientValidation) {
                 resultScript = new ScriptBuilder(clientValidationScript);
             }
-            if (message != null) {
-                resultScript.append(serverValidationScript);
-            }
+            resultScript.append(serverValidationScript);
         } else {
             if (clientValidation && useDefaultClientPresentation) {
                 resultScript = new ScriptBuilder(clientValidationScript);
             }
             if (useDefaultServerPresentation) {
-                if (message != null) {
-                    resultScript.append(serverValidationScript);
-                } else {
-                    if (clientValidation) {
-                        resultScript = new ScriptBuilder(clientValidationScript);
-                    }
+                if (clientValidation) {
+                    resultScript = new ScriptBuilder(clientValidationScript);
                 }
+                resultScript.append(serverValidationScript);
             }
         }
         return resultScript;
