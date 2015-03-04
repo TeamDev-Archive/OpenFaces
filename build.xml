@@ -1,4 +1,4 @@
-<project name="OpenFaces Project Build Script" default="build" basedir=".">
+<project name="Openfaces" default="build" basedir=".">
 
   <property environment="env"/>
   <property name="components.dir" location="openFaces"/>
@@ -252,14 +252,6 @@
       <http url="${tomcat.server.host}:${tomcat.server.port}/"/>
     </condition>
     <echo message="Check Servlet is already deployed: ${is.webapp.deployed}, by ${tomcat.server.host}:${tomcat.server.port}/"/>
-
-    <taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" classpathref="catalina.classpath" />
-    <taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask" classpathref="catalina.classpath" />
-    <taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask" classpathref="catalina.classpath" />
-    <taskdef name="start" classname="org.apache.catalina.ant.StartTask" classpathref="catalina.classpath" />
-    <taskdef name="stop" classname="org.apache.catalina.ant.StopTask" classpathref="catalina.classpath" />
-    <taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask" classpathref="catalina.classpath" />
-    <taskdef name="list" classname="org.apache.catalina.ant.ListTask" classpathref="catalina.classpath" />
   </target>
 
   <target name="is-tomcat-running" depends="if-has-tomcat">
@@ -272,27 +264,52 @@
     <echo message="Tomcat is running: ${if.tomcat.running}"/>
   </target>
 
+  <taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" classpathref="catalina.classpath" />
+  <taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask" classpathref="catalina.classpath" />
+  <taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask" classpathref="catalina.classpath" />
+  <taskdef name="start" classname="org.apache.catalina.ant.StartTask" classpathref="catalina.classpath" />
+  <taskdef name="stop" classname="org.apache.catalina.ant.StopTask" classpathref="catalina.classpath" />
+  <taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask" classpathref="catalina.classpath" />
+  <taskdef name="list" classname="org.apache.catalina.ant.ListTask" classpathref="catalina.classpath" />
+
   <target name="stop-tomcat-remote" depends="is-tomcat-running" if="if.tomcat.running">
     <echo message="Stop server ${tomcat.manager.url}"/>
 
-    <stop url="${tomcat.manager.url}"
-              username="${tomcat.server.login}"
-              password="${tomcat.server.pwd}"
-              path="${tomcat.base.url}"/>
+    <java classname="org.apache.catalina.startup.Bootstrap" fork="true">
+      <classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar" />
+      <jvmarg value="-Dcatalina.home=${tomcat.home}"/>
+      <arg line="stop"/>
+    </java>
+
+    <!--<stop url="${tomcat.manager.url}"-->
+              <!--username="${tomcat.server.login}"-->
+              <!--password="${tomcat.server.pwd}"-->
+              <!--path="${tomcat.base.url}"-->
+              <!--failonerror="false"/>-->
   </target>
 
   <target name="start-tomcat-remote" depends="is-tomcat-running" unless="if.tomcat.running">
     <echo message="Stop server ${tomcat.manager.url}"/>
 
-    <echo message="${tomcat.manager.url} ${tomcat.server.login} ${tomcat.server.pwd} ${tomcat.base.url}"/>
-    <start url="${tomcat.manager.url}"
-          username="${tomcat.server.login}"
-          password="${tomcat.server.pwd}"
-          path="${tomcat.base.url}"
-          />
+    <echo message="${tomcat.manager.url} ${tomcat.manager.username} ${tomcat.manager.password} ${ant.project.name}"/>
+
+    <java classname="org.apache.catalina.startup.Bootstrap" fork="true">
+      <classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar" />
+      <jvmarg value="-Dcatalina.home=${tomcat.home}"/>
+      <!--If you are getting any OutOfMemoryError, remove the comments
+      and enable jvm argument of the following line-->
+      <!--jvmarg value="-XX:MaxPermSize=256m"/-->
+    </java>
+
+    <!--<start url="${tomcat.manager.url}"-->
+          <!--username="${tomcat.manager.username}"-->
+          <!--password="${tomcat.manager.password}"-->
+          <!--failonerror="false"-->
+          <!--path="${tomcat.base.url}"-->
+          <!--/>-->
   </target>
 
-  <target name="reload-tomcat-remote" depends="stop-tomcat-remote, start-tomcat-remote">
+  <target name="reload-tomcat-remote">
     <echo message="Reload server"/>
     <antcall target="stop-tomcat-remote"/>
 
@@ -310,6 +327,7 @@
             username="${tomcat.manager.username}"
             password="${tomcat.manager.password}"
             path="${tomcat.base.url}"
+            failonerror="false"
             war="${test-app-facelets.dir}/target/test-app-facelets.war"/>
   </target>
 
@@ -318,23 +336,9 @@
     <echo message="Removing Application from tomcat server"/>
 
     <undeploy url="${tomcat.manager.url}"
-              username="${tomcat.server.login}"
-              password="${tomcat.server.pwd}"
-              path="${tomcat.base.url}"/>
+              username="${tomcat.manager.username}"
+              password="${tomcat.manager.password}"
+              path="${tomcat.base.url}"
+              failonerror="false"/>
   </target>
-
-  <!--<target name="deploy.to.server" description="Install application to Tomcat Server">-->
-  <!--<property name="port" value="${tomcat.server.port}"/>-->
-  <!--<property name="username" value="${tomcat.server.login}"/>-->
-  <!--<property name="password" value="${tomcat.server.pwd}"/>-->
-  <!--<property name="url" value="${tomcat.manager.url}"/>-->
-  <!--<property name="path" value="compile.classpath"/>-->
-
-  <!--<echo message="Deploying application to ${url}" />-->
-
-  <!--<antcall target="undeploy-tomcat"/>-->
-  <!--<sleep seconds="10" />-->
-  <!--<antcall target="deploy-tomcat"/>-->
-  <!--</target>-->
-  <!--End Deployment section-->
 </project>
