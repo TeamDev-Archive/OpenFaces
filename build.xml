@@ -36,7 +36,7 @@
 
   <property name="compile.debug" value="true" />
   <property file="deployment.properties"/>
-  <property name="tomcat.home" value="${env.CATALINA_HOME}"/>
+  <property name="tomcat.home" value="${catalina.home}"/>
   <property name="build.home" value="${basedir}"/>
   <property name="project.lib" value="${basedir}/lib" />
 
@@ -236,9 +236,9 @@
   <!--Deployment section-->
   <target name="if-has-tomcat">
     <condition property="has.tomcat">
-      <available file="${env.CATALINA_HOME}"/>
+      <available file="${tomcat.home}"/>
     </condition>
-    <echo message="Tomcat path: ${env.CATALINA_HOME}; Check Tomcat exists: ${has.tomcat}"/>
+    <echo message="Tomcat path: ${tomcat.home}; Check Tomcat exists: ${has.tomcat}"/>
   </target>
 
   <target name="check-if-deployed" depends="if-has-tomcat" if="has.tomcat">
