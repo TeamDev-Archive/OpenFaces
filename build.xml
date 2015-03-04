@@ -34,6 +34,22 @@
             location="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
   <property name="funcTestsFrameworkManifest.file" location="${funcTestsFramework-target.dir}/manifest.mf"/>
 
+  <property name="compile.debug" value="true" />
+  <property file="deployment.properties"/>
+  <property name="tomcat.home" value="${env.CATALINA_HOME}"/>
+  <property name="build.home" value="${basedir}"/>
+  <property name="project.lib" value="${basedir}/lib" />
+
+  <path id="catalina.classpath">
+    <fileset dir="${tomcat.home}/bin">
+      <include name="*.jar"/>
+    </fileset>
+    <pathelement location="${tomcat.home}/lib"/>
+    <fileset dir="${tomcat.home}/lib">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
   <target name="init">
     <tstamp/>
   </target>
@@ -142,6 +158,11 @@
   </target>
 
   <target name="run-func-tests" depends="compile-func-tests" description="Run functional tests">
+    <antcall target="reload-tomcat-remote" />
+    <antcall target="deploy-tomcat"/>
+
+    <echo message="30 seconds delay before deploy"/>
+    <sleep seconds="30"/>
 
     <mkdir dir="${funcTests-target-reports.dir}"/>
 
@@ -176,7 +197,7 @@
         <pathelement path="testLib/jai/mlibwrapper_jai.jar"/>
         <pathelement path="testLib/jai/jai_core.jar"/>
         <pathelement path="testLib/jai/jai_codec.jar"/>
-        <pathelement refid="catalina.classpath"/>
+        <path refid="catalina.classpath"/>
       </classpath>
       <formatter type="xml"/>
       <formatter usefile="false" type="plain"/>
@@ -198,6 +219,8 @@
     </copy>
 
     <fail if="junit_test_failed" message="FUNCTIONAL TEST(S) FAILED"/>
+    <antcall target="reload-tomcat-remote"/>
+    <antcall target="stop-tomcat-remote"/>
   </target>
 
   <target name="run-func-tests-jsp" description="Run functional tests in JSP-based JSF 1.2 environment">
@@ -221,28 +244,14 @@
     <condition property="has.tomcat">
       <available file="${env.CATALINA_HOME}"/>
     </condition>
+    <echo message="Tomcat path: ${env.CATALINA_HOME}; Check Tomcat exists: ${has.tomcat}"/>
   </target>
 
   <target name="check-if-deployed" depends="if-has-tomcat" if="has.tomcat">
-    <property name="compile.debug" value="true" />
-    <property file="deployment.properties"/>
-    <property name="tomcat.home" value="${env.CATALINA_HOME}"/>
-    <property name="build.home" value="${basedir}"/>
-    <property name="project.lib" value="${basedir}/lib" />
-
     <condition property="is.webapp.deployed">
       <http url="${tomcat.server.host}:${tomcat.server.port}/"/>
     </condition>
-
-    <path id="catalina.classpath">
-      <fileset dir="${tomcat.home}/bin">
-        <include name="*.jar"/>
-      </fileset>
-      <pathelement location="${tomcat.home}/lib"/>
-      <fileset dir="${tomcat.home}/lib">
-        <include name="*.jar"/>
-      </fileset>
-    </path>
+    <echo message="Check Servlet is already deployed: ${is.webapp.deployed}, by ${tomcat.server.host}:${tomcat.server.port}/"/>
 
     <taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" classpathref="catalina.classpath" />
     <taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask" classpathref="catalina.classpath" />
@@ -254,33 +263,42 @@
   </target>
 
   <target name="is-tomcat-running" depends="if-has-tomcat">
-    <condition property="is.tomcat.running">
+    <echo message="Checking if tomcat already running:"/>
+
+    <condition property="if.tomcat.running">
       <http url="http://localhost:8080"/>
     </condition>
+
+    <echo message="Tomcat is running: ${if.tomcat.running}"/>
   </target>
 
-  <target name="stop-tomcat-remote" depends="is-tomcat-running">
+  <target name="stop-tomcat-remote" depends="is-tomcat-running" if="if.tomcat.running">
     <echo message="Stop server ${tomcat.manager.url}"/>
 
     <stop url="${tomcat.manager.url}"
               username="${tomcat.server.login}"
               password="${tomcat.server.pwd}"
-              path="/${ant.project.name}"/>
+              path="${tomcat.base.url}"/>
   </target>
 
-  <target name="start-tomcat-remote" depends="is-tomcat-running" unless="is.tomcat.running">
+  <target name="start-tomcat-remote" depends="is-tomcat-running" unless="if.tomcat.running">
     <echo message="Stop server ${tomcat.manager.url}"/>
 
+    <echo message="${tomcat.manager.url} ${tomcat.server.login} ${tomcat.server.pwd} ${tomcat.base.url}"/>
     <start url="${tomcat.manager.url}"
           username="${tomcat.server.login}"
           password="${tomcat.server.pwd}"
-          path="/${ant.project.name}"/>
+          path="${tomcat.base.url}"
+          />
   </target>
 
   <target name="reload-tomcat-remote" depends="stop-tomcat-remote, start-tomcat-remote">
     <echo message="Reload server"/>
     <antcall target="stop-tomcat-remote"/>
+
+    <echo message="30 seconds delay before restart server"/>
     <sleep seconds="30"/>
+
     <antcall target="start-tomcat-remote"/>
   </target>
 
@@ -289,9 +307,9 @@
     <echo message="Installing Application to tomcat server"/>
 
     <deploy url="${tomcat.manager.url}"
-            username="${tomcat.server.login}"
-            password="${tomcat.server.pwd}"
-            path="/${ant.project.name}"
+            username="${tomcat.manager.username}"
+            password="${tomcat.manager.password}"
+            path="${tomcat.base.url}"
             war="${test-app-facelets.dir}/target/test-app-facelets.war"/>
   </target>
 
@@ -302,7 +320,7 @@
     <undeploy url="${tomcat.manager.url}"
               username="${tomcat.server.login}"
               password="${tomcat.server.pwd}"
-              path="/${ant.project.name}"/>
+              path="${tomcat.base.url}"/>
   </target>
 
   <!--<target name="deploy.to.server" description="Install application to Tomcat Server">-->
