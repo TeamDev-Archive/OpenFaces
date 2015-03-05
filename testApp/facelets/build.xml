@@ -19,8 +19,9 @@
   <property name="resources.dir" location="web"/>
   <property name="resources-core.dir" location="../core/web"/>
   <property name="target.dir" location="target"/>
+  <property name="target.war.dir" location="../../target/war"/>
   <property name="resources.target.dir" location="${target.dir}/resources"/>
-  <property name="target-war.file" location="${target.dir}/test-app-facelets.war"/>
+  <property name="target-war.file" location="${target.war.dir}/test-app-facelets.war"/>
   <property name="classes.dir" location="${target.dir}/classes"/>
   <property name="target-lib.dir" location="${target.dir}/lib"/>
   <property name="openfaces-jar.file" location="../../target/lib/openfaces-${of-version}.jar"/>
@@ -86,8 +87,7 @@
     <tstamp/>
   </target>
 
-  <target name="compile" depends="-fail-if-no-openfaces-jar,-compile" description="compile the source">
-  </target>
+  <target name="compile" depends="-fail-if-no-openfaces-jar,-compile" description="compile the source"/>
 
   <target name="copy-resources">
     <copy todir="${classes.dir}">
@@ -115,11 +115,14 @@
 
   <target name="clean" description="clean up">
     <delete dir="${target.dir}"/>
+    <delete dir="${target.war.dir}"/>
   </target>
 
   <!-- *** Utility Targets *** -->
 
   <target name="build-war" depends="compile,copy-resources,prepare-resources">
+    <delete dir="${target.war.dir}"/>
+    <mkdir dir="${target.war.dir}"/>
     <property name="webxml" value="web.xml"/>
     <war destfile="${target-war.file}" basedir="${resources.target.dir}" webxml="${web-inf.dir}/${webxml}">
       <lib file="${openfaces-jar.file}"/>

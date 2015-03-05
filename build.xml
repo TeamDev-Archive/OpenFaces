@@ -18,8 +18,8 @@
   <property name="test-app-facelets.dir" location="testApp/facelets"/>
   <property name="live-demo.dir" location="liveDemo/jsp"/>
   <property name="live-demo-facelets.dir" location="liveDemo/facelets"/>
-  <property name="target-war" location="${test-app-facelets.dir}/target"/>
-  <property name="target-war-file" location="target-war/test-app-facelets.war"/>
+  <property name="target-war" location="target/war"/>
+  <property name="target-war.file" location="${target-war}/test-app-facelets.war"/>
 
   <property name="funcTests.dir" location="funcTests"/>
   <property name="funcTests-source.dir" location="${funcTests.dir}/source"/>
@@ -132,6 +132,10 @@
     <fail>"openfaces-jar.file" property must be specified</fail>
   </target>
 
+  <target name="-fail-if-no-war" unless="target-war.file">
+    <fail>"Facelets war file" must be specified</fail>
+  </target>
+
   <target name="compile-func-tests" depends="-fail-if-no-openfaces-jar, compile-func-test-framework" description="Compile functional tests">
     <delete dir="${funcTests-target.dir}/classes"/>
     <mkdir dir="${funcTests-target.dir}/classes"/>
@@ -182,33 +186,33 @@
       <isset property="demo.context.path"/>
     </condition>
 
-    <junit fork="yes" forkmode="once" failureproperty="junit_test_failed" dir="${funcTests-target.dir}">
-      <classpath>
-        <pathelement path="${openfaces-jar.file}"/>
-        <pathelement path="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
-        <pathelement path="lib/seleniuminspector/selenium-java-2.14.0.jar"/>
-        <pathelement path="lib/seleniuminspector/selenium-inspector.jar"/>
-        <pathelement path="lib/mojarra/jsf-api-1.2_12-b01.jar"/>
-        <pathelement location="${funcTests-target.dir}/classes"/>
-        <pathelement path="${openfaces-inspectors-jar.file}"/>
-        <pathelement path="testLib/junit.jar"/>
-        <pathelement path="testLib/jai/mlibwrapper_jai.jar"/>
-        <pathelement path="testLib/jai/jai_core.jar"/>
-        <pathelement path="testLib/jai/jai_codec.jar"/>
-        <path refid="catalina.classpath"/>
-      </classpath>
-      <formatter type="xml"/>
-      <formatter usefile="false" type="plain"/>
-      <batchtest todir="${funcTests-target-reports.dir}">
-        <fileset dir="${funcTests-source.dir}">
-          <include name="**/*Test.java"/>
-        </fileset>
-      </batchtest>
-      <sysproperty key="test.app.jsf.implementation" value="${jsf.implementation}"/>
-      <sysproperty key="test.app.is.facelets" value="${is.facelets}"/>
-      <sysproperty key="test.app.context.path" value="${testAppContextPath}"/>
-      <sysproperty key="demo.context.path" value="${demoContextPath}"/>
-    </junit>
+    <!--<junit fork="yes" forkmode="once" failureproperty="junit_test_failed" dir="${funcTests-target.dir}">-->
+      <!--<classpath>-->
+        <!--<pathelement path="${openfaces-jar.file}"/>-->
+        <!--<pathelement path="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>-->
+        <!--<pathelement path="lib/seleniuminspector/selenium-java-2.14.0.jar"/>-->
+        <!--<pathelement path="lib/seleniuminspector/selenium-inspector.jar"/>-->
+        <!--<pathelement path="lib/mojarra/jsf-api-1.2_12-b01.jar"/>-->
+        <!--<pathelement location="${funcTests-target.dir}/classes"/>-->
+        <!--<pathelement path="${openfaces-inspectors-jar.file}"/>-->
+        <!--<pathelement path="testLib/junit.jar"/>-->
+        <!--<pathelement path="testLib/jai/mlibwrapper_jai.jar"/>-->
+        <!--<pathelement path="testLib/jai/jai_core.jar"/>-->
+        <!--<pathelement path="testLib/jai/jai_codec.jar"/>-->
+        <!--<path refid="catalina.classpath"/>-->
+      <!--</classpath>-->
+      <!--<formatter type="xml"/>-->
+      <!--<formatter usefile="false" type="plain"/>-->
+      <!--<batchtest todir="${funcTests-target-reports.dir}">-->
+        <!--<fileset dir="${funcTests-source.dir}">-->
+          <!--<include name="**/*Test.java"/>-->
+        <!--</fileset>-->
+      <!--</batchtest>-->
+      <!--<sysproperty key="test.app.jsf.implementation" value="${jsf.implementation}"/>-->
+      <!--<sysproperty key="test.app.is.facelets" value="${is.facelets}"/>-->
+      <!--<sysproperty key="test.app.context.path" value="${testAppContextPath}"/>-->
+      <!--<sysproperty key="demo.context.path" value="${demoContextPath}"/>-->
+    <!--</junit>-->
 
     <copy todir="${funcTests-source.dir}">
       <fileset dir="${funcTests-target.dir}/classes">
@@ -276,7 +280,7 @@
     <stop url="${tomcat.manager.url}"
               username="${tomcat.server.login}"
               password="${tomcat.server.pwd}"
-              path="${tomcat.base.url}"
+              path="/${ant.project.name}"
               failonerror="false"/>
   </target>
 
@@ -291,7 +295,7 @@
     <start url="${tomcat.manager.url}"
            username="${tomcat.server.login}"
            password="${tomcat.server.pwd}"
-           path="${tomcat.base.url}"
+           path="/"
            failonerror="false"
             />
   </target>
@@ -306,17 +310,15 @@
     <antcall target="start-tomcat-remote"/>
   </target>
 
-  <target name="deploy-tomcat" depends="compile-func-tests"
+  <target name="deploy-tomcat" depends="compile-func-tests, undeploy-tomcat, -fail-if-no-war"
           description="Install application to Servlet Container">
     <echo message="Installing Application to tomcat server"/>
-    <ant antfile="${test-app-facelets.dir}/build.xml" target="build-war" />
 
-    <!--<deploy url="${tomcat.manager.url}"-->
-            <!--username="${tomcat.manager.username}"-->
-            <!--password="${tomcat.manager.password}"-->
-            <!--path="/"-->
-            <!--failonerror="false"-->
-            <!--war="${target-war-file}"/>-->
+    <deploy url="${tomcat.manager.url}"
+            username="${tomcat.manager.username}"
+            password="${tomcat.manager.password}"
+            path="/${ant.project.name}"
+            war="file:${target-war.file}"/>
   </target>
 
   <target name="undeploy-tomcat" if="has.tomcat"
@@ -326,7 +328,6 @@
     <undeploy url="${tomcat.manager.url}"
               username="${tomcat.manager.username}"
               password="${tomcat.manager.password}"
-              path="${tomcat.base.url}"
-              failonerror="false"/>
+              path="/${ant.project.name}"/>
   </target>
 </project>
