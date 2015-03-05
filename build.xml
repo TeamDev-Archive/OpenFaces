@@ -186,33 +186,33 @@
       <isset property="demo.context.path"/>
     </condition>
 
-    <!--<junit fork="yes" forkmode="once" failureproperty="junit_test_failed" dir="${funcTests-target.dir}">-->
-      <!--<classpath>-->
-        <!--<pathelement path="${openfaces-jar.file}"/>-->
-        <!--<pathelement path="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>-->
-        <!--<pathelement path="lib/seleniuminspector/selenium-java-2.14.0.jar"/>-->
-        <!--<pathelement path="lib/seleniuminspector/selenium-inspector.jar"/>-->
-        <!--<pathelement path="lib/mojarra/jsf-api-1.2_12-b01.jar"/>-->
-        <!--<pathelement location="${funcTests-target.dir}/classes"/>-->
-        <!--<pathelement path="${openfaces-inspectors-jar.file}"/>-->
-        <!--<pathelement path="testLib/junit.jar"/>-->
-        <!--<pathelement path="testLib/jai/mlibwrapper_jai.jar"/>-->
-        <!--<pathelement path="testLib/jai/jai_core.jar"/>-->
-        <!--<pathelement path="testLib/jai/jai_codec.jar"/>-->
-        <!--<path refid="catalina.classpath"/>-->
-      <!--</classpath>-->
-      <!--<formatter type="xml"/>-->
-      <!--<formatter usefile="false" type="plain"/>-->
-      <!--<batchtest todir="${funcTests-target-reports.dir}">-->
-        <!--<fileset dir="${funcTests-source.dir}">-->
-          <!--<include name="**/*Test.java"/>-->
-        <!--</fileset>-->
-      <!--</batchtest>-->
-      <!--<sysproperty key="test.app.jsf.implementation" value="${jsf.implementation}"/>-->
-      <!--<sysproperty key="test.app.is.facelets" value="${is.facelets}"/>-->
-      <!--<sysproperty key="test.app.context.path" value="${testAppContextPath}"/>-->
-      <!--<sysproperty key="demo.context.path" value="${demoContextPath}"/>-->
-    <!--</junit>-->
+    <junit fork="yes" forkmode="once" failureproperty="junit_test_failed" dir="${funcTests-target.dir}">
+      <classpath>
+        <pathelement path="${openfaces-jar.file}"/>
+        <pathelement path="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
+        <pathelement path="lib/seleniuminspector/selenium-java-2.14.0.jar"/>
+        <pathelement path="lib/seleniuminspector/selenium-inspector.jar"/>
+        <pathelement path="lib/mojarra/jsf-api-1.2_12-b01.jar"/>
+        <pathelement location="${funcTests-target.dir}/classes"/>
+        <pathelement path="${openfaces-inspectors-jar.file}"/>
+        <pathelement path="testLib/junit.jar"/>
+        <pathelement path="testLib/jai/mlibwrapper_jai.jar"/>
+        <pathelement path="testLib/jai/jai_core.jar"/>
+        <pathelement path="testLib/jai/jai_codec.jar"/>
+        <path refid="catalina.classpath"/>
+      </classpath>
+      <formatter type="xml"/>
+      <formatter usefile="false" type="plain"/>
+      <batchtest todir="${funcTests-target-reports.dir}">
+        <fileset dir="${funcTests-source.dir}">
+          <include name="**/*Test.java"/>
+        </fileset>
+      </batchtest>
+      <sysproperty key="test.app.jsf.implementation" value="${jsf.implementation}"/>
+      <sysproperty key="test.app.is.facelets" value="${is.facelets}"/>
+      <sysproperty key="test.app.context.path" value="${testAppContextPath}"/>
+      <sysproperty key="demo.context.path" value="${demoContextPath}"/>
+    </junit>
 
     <copy todir="${funcTests-source.dir}">
       <fileset dir="${funcTests-target.dir}/classes">
@@ -295,7 +295,7 @@
     <start url="${tomcat.manager.url}"
            username="${tomcat.server.login}"
            password="${tomcat.server.pwd}"
-           path="/"
+           path="/${ant.project.name}"
            failonerror="false"
             />
   </target>
