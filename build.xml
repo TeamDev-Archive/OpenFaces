@@ -19,7 +19,7 @@
   <property name="live-demo.dir" location="liveDemo/jsp"/>
   <property name="live-demo-facelets.dir" location="liveDemo/facelets"/>
   <property name="target-war" location="target/war"/>
-  <property name="target-war.file" location="${target-war}/TestAppFacelets.war"/>
+  <property name="target-war.file" location="${target-war}/ROOT.war"/>
 
   <property name="funcTests.dir" location="funcTests"/>
   <property name="funcTests-source.dir" location="${funcTests.dir}/source"/>
