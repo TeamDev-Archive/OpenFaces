@@ -37,7 +37,7 @@
 
   <property name="compile.debug" value="true" />
   <property file="deployment.properties"/>
-  <property name="tomcat.home" value="${env.CATALINA_HOME}"/>
+  <property name="tomcat.home" value="${catalina.home}"/>
   <property name="build.home" value="${basedir}"/>
   <property name="project.lib" value="${basedir}/lib" />
 
