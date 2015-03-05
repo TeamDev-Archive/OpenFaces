@@ -37,7 +37,7 @@
 
   <property name="compile.debug" value="true" />
   <property file="deployment.properties"/>
-  <property name="tomcat.home" value="${tomcat.base.home}"/>
+  <property name="tomcat.home" value="${env.CATALINA_HOME}"/>
   <property name="build.home" value="${basedir}"/>
   <property name="project.lib" value="${basedir}/lib" />
 
@@ -170,8 +170,9 @@
     <parallel>
       <antcall target="start-tomcat-remote"/>
 
-      <echo message="Run Functional tests" />
       <sleep seconds="30"/>
+
+      <echo message="Run Functional tests" />
       <antcall target="run-tests" />
     </parallel>
   </target>
@@ -271,14 +272,6 @@
     </condition>
   </target>
 
-  <taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" classpathref="catalina.classpath" />
-  <taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask" classpathref="catalina.classpath" />
-  <taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask" classpathref="catalina.classpath" />
-  <taskdef name="start" classname="org.apache.catalina.ant.StartTask" classpathref="catalina.classpath" />
-  <taskdef name="stop" classname="org.apache.catalina.ant.StopTask" classpathref="catalina.classpath" />
-  <taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask" classpathref="catalina.classpath" />
-  <taskdef name="list" classname="org.apache.catalina.ant.ListTask" classpathref="catalina.classpath" />
-
   <target name="stop-tomcat-remote" depends="is-tomcat-running" if="if.tomcat.running">
     <echo message="Stop server ${tomcat.manager.url}"/>
 
@@ -312,7 +305,7 @@
           description="Install application to Servlet Container">
     <echo message="Installing Application to tomcat server"/>
 
-    <copy file="${target-war.file}" todir="${tomcat.base.deployment}"/>
+    <copy file="${target-war.file}" todir="${tomcat.home}/webapps"/>
   </target>
 
   <target name="undeploy-tomcat" if="has.tomcat"
