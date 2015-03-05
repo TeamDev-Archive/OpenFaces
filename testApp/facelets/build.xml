@@ -21,7 +21,7 @@
   <property name="target.dir" location="target"/>
   <property name="target.war.dir" location="../../target/war"/>
   <property name="resources.target.dir" location="${target.dir}/resources"/>
-  <property name="target-war.file" location="${target.war.dir}/test-app-facelets.war"/>
+  <property name="target-war.file" location="${target.war.dir}/TestAppFacelets.war"/>
   <property name="classes.dir" location="${target.dir}/classes"/>
   <property name="target-lib.dir" location="${target.dir}/lib"/>
   <property name="openfaces-jar.file" location="../../target/lib/openfaces-${of-version}.jar"/>

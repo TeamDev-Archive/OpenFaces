@@ -19,7 +19,7 @@
   <property name="live-demo.dir" location="liveDemo/jsp"/>
   <property name="live-demo-facelets.dir" location="liveDemo/facelets"/>
   <property name="target-war" location="target/war"/>
-  <property name="target-war.file" location="${target-war}/test-app-facelets.war"/>
+  <property name="target-war.file" location="${target-war}/TestAppFacelets.war"/>
 
   <property name="funcTests.dir" location="funcTests"/>
   <property name="funcTests-source.dir" location="${funcTests.dir}/source"/>
@@ -37,7 +37,7 @@
 
   <property name="compile.debug" value="true" />
   <property file="deployment.properties"/>
-  <property name="tomcat.home" value="${catalina.home}"/>
+  <property name="tomcat.home" value="${tomcat.base.home}"/>
   <property name="build.home" value="${basedir}"/>
   <property name="project.lib" value="${basedir}/lib" />
 
@@ -163,9 +163,20 @@
   </target>
 
   <target name="run-func-tests" depends="compile-func-tests" description="Run functional tests">
-    <antcall target="reload-tomcat-remote"/>
+    <antcall target="stop-tomcat-remote"/>
     <antcall target="deploy-tomcat"/>
+    <sleep seconds="30"/>
 
+    <parallel>
+      <antcall target="start-tomcat-remote"/>
+
+      <echo message="Run Functional tests" />
+      <sleep seconds="30"/>
+      <antcall target="run-tests" />
+    </parallel>
+  </target>
+
+  <target name="run-tests">
     <mkdir dir="${funcTests-target-reports.dir}"/>
 
     <condition property="testAppContextPath" value="${context.path}">
@@ -256,7 +267,7 @@
 
   <target name="is-tomcat-running" depends="if-has-tomcat">
     <condition property="if.tomcat.running">
-      <http url="http://localhost:8080"/>
+      <socket server="${tomcat.server.host}" port="${tomcat.server.port}" />
     </condition>
   </target>
 
@@ -271,33 +282,20 @@
   <target name="stop-tomcat-remote" depends="is-tomcat-running" if="if.tomcat.running">
     <echo message="Stop server ${tomcat.manager.url}"/>
 
-    <!--<java classname="org.apache.catalina.startup.Bootstrap" fork="true">-->
-      <!--<classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar" />-->
-      <!--<jvmarg value="-Dcatalina.home=${tomcat.home}"/>-->
-      <!--<arg line="stop"/>-->
-    <!--</java>-->
-
-    <stop url="${tomcat.manager.url}"
-              username="${tomcat.server.login}"
-              password="${tomcat.server.pwd}"
-              path="/${ant.project.name}"
-              failonerror="false"/>
+    <java classname="org.apache.catalina.startup.Bootstrap" fork="true">
+      <classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar" />
+      <jvmarg value="-Dcatalina.home=${tomcat.home}"/>
+      <arg line="stop"/>
+    </java>
   </target>
 
-  <target name="start-tomcat-remote" depends="is-tomcat-running" unless="if.tomcat.running">
+  <target name="start-tomcat-remote">
     <echo message="Tomcat home: ${tomcat.manager.url}"/>
 
-    <!--<java classname="org.apache.catalina.startup.Bootstrap" fork="true">-->
-      <!--<classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar" />-->
-      <!--<jvmarg value="-Dcatalina.home=${tomcat.home}"/>-->
-    <!--</java>-->
-
-    <start url="${tomcat.manager.url}"
-           username="${tomcat.server.login}"
-           password="${tomcat.server.pwd}"
-           path="/${ant.project.name}"
-           failonerror="false"
-            />
+    <java classname="org.apache.catalina.startup.Bootstrap" fork="true">
+      <classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar" />
+      <jvmarg value="-Dcatalina.home=${tomcat.home}"/>
+    </java>
   </target>
 
   <target name="reload-tomcat-remote">
@@ -314,20 +312,13 @@
           description="Install application to Servlet Container">
     <echo message="Installing Application to tomcat server"/>
 
-    <deploy url="${tomcat.manager.url}"
-            username="${tomcat.manager.username}"
-            password="${tomcat.manager.password}"
-            path="/${ant.project.name}"
-            war="file:${target-war.file}"/>
+    <copy file="${target-war.file}" todir="${tomcat.base.deployment}"/>
   </target>
 
   <target name="undeploy-tomcat" if="has.tomcat"
           description="Install application to Servlet Container">
     <echo message="Removing Application from tomcat server"/>
 
-    <undeploy url="${tomcat.manager.url}"
-              username="${tomcat.manager.username}"
-              password="${tomcat.manager.password}"
-              path="/${ant.project.name}"/>
+    <delete file="${target-war.file}"/>
   </target>
 </project>
