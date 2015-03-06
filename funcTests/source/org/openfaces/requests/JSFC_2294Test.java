@@ -12,6 +12,7 @@
 package org.openfaces.requests;
 
 import com.thoughtworks.selenium.Selenium;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.openfaces.TreeTableInspector;
@@ -23,6 +24,7 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 public class JSFC_2294Test extends OpenFacesTestCase {
 
     @Test
+    @Ignore
     public void testThereIsNoJSErrorOnAjaxTreeTableReloading() {
         Selenium selenium = getSelenium();
         liveDemoPage("/treetable/TreeTable_selectionAndKeyboard.jsf");
