@@ -173,6 +173,7 @@
 
       <sequential>
         <echo message="Run Functional tests" />
+        <sleep seconds="30"/>
         <antcall target="run-tests" />
 
         <antcall target="stop-tomcat-remote"/>
