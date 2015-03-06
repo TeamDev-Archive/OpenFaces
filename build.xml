@@ -1,5 +1,6 @@
 <project name="Openfaces" default="build" basedir=".">
 
+  <property file="deployment.properties"/>
   <property environment="env"/>
   <property name="components.dir" location="openFaces"/>
 
@@ -19,6 +20,7 @@
   <property name="live-demo.dir" location="liveDemo/jsp"/>
   <property name="live-demo-facelets.dir" location="liveDemo/facelets"/>
   <property name="target-war" location="target/war"/>
+  <property name="war-file-name" location="ROOT.war"/>
   <property name="target-war.file" location="${target-war}/ROOT.war"/>
 
   <property name="funcTests.dir" location="funcTests"/>
@@ -36,7 +38,6 @@
   <property name="funcTestsFrameworkManifest.file" location="${funcTestsFramework-target.dir}/manifest.mf"/>
 
   <property name="compile.debug" value="true" />
-  <property file="deployment.properties"/>
   <property name="tomcat.home" value="${catalina.home}"/>
   <property name="build.home" value="${basedir}"/>
   <property name="project.lib" value="${basedir}/lib" />
@@ -170,10 +171,13 @@
     <parallel>
       <antcall target="start-tomcat-remote"/>
 
-      <sleep seconds="30"/>
+      <sequential>
+        <echo message="Run Functional tests" />
+        <antcall target="run-tests" />
 
-      <echo message="Run Functional tests" />
-      <antcall target="run-tests" />
+        <antcall target="stop-tomcat-remote"/>
+        <antcall target="undeploy-tomcat"/>
+      </sequential>
     </parallel>
   </target>
 
@@ -254,7 +258,7 @@
   <!--Deployment section-->
   <target name="if-has-tomcat">
     <condition property="has.tomcat">
-      <available file="${tomcat.home}"/>
+      <available resource="${tomcat.home}"/>
     </condition>
     <echo message="Tomcat path: ${tomcat.home}; Check Tomcat exists: ${has.tomcat}"/>
   </target>
@@ -272,7 +276,7 @@
     </condition>
   </target>
 
-  <target name="stop-tomcat-remote" depends="is-tomcat-running" if="if.tomcat.running">
+  <target name="stop-tomcat-remote">
     <echo message="Stop server ${tomcat.manager.url}"/>
 
     <java classname="org.apache.catalina.startup.Bootstrap" fork="true">
@@ -282,7 +286,7 @@
     </java>
   </target>
 
-  <target name="start-tomcat-remote">
+  <target name="start-tomcat-remote" depends="is-tomcat-running" unless="if.tomcat.running">
     <echo message="Tomcat home: ${tomcat.manager.url}"/>
 
     <java classname="org.apache.catalina.startup.Bootstrap" fork="true">
@@ -291,27 +295,20 @@
     </java>
   </target>
 
-  <target name="reload-tomcat-remote">
-    <echo message="Reload server"/>
-    <antcall target="stop-tomcat-remote"/>
-
-    <echo message="30 seconds delay before restart server"/>
-    <sleep seconds="30"/>
-
-    <antcall target="start-tomcat-remote"/>
-  </target>
-
   <target name="deploy-tomcat" depends="compile-func-tests, undeploy-tomcat, -fail-if-no-war"
           description="Install application to Servlet Container">
     <echo message="Installing Application to tomcat server"/>
+    <echo message="${war-file-name}"/>
+
+    <echo message="Copy file: [${target-war.file}] to dir:[${tomcat.home}/webapps]"/>
 
     <copy file="${target-war.file}" todir="${tomcat.home}/webapps"/>
   </target>
 
-  <target name="undeploy-tomcat" if="has.tomcat"
+  <target name="undeploy-tomcat"
           description="Install application to Servlet Container">
-    <echo message="Removing Application from tomcat server"/>
+    <echo message="Removing Application from tomcat server: ${tomcat.home}\webapps\ROOT.war"/>
 
-    <delete file="${target-war.file}"/>
+    <delete file="${tomcat.home}\webapps\ROOT.war"/>
   </target>
 </project>
