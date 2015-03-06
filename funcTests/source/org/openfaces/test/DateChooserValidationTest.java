@@ -62,8 +62,9 @@ public class DateChooserValidationTest extends OpenFacesTestCase {
         assertConversionErrorOccured(true);
     }
 
-     @Test
+    @Test
     @Ignore
+    //TODO: (Max Yurin) Need investigate
     public void testChangeLocaleFromBinding() {
         Selenium selenium = getSelenium();
         liveDemoPage("/datechooser/DateChooser.jsf");
