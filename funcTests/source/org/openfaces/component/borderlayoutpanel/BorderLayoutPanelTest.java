@@ -91,7 +91,6 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
     }
 
     @Test
-    @Ignore
     //FIXME: (Yurin) - Need investigate logic.
     public void testSidePanelSplitterDragging() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
@@ -194,7 +193,6 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
     }
 
     @Test
-    @Ignore
     //FIXME: (Yurin) - Need investigate logic.
     public void testContentResizeOnSplitterDrag() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
@@ -331,7 +329,6 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
     }
 
     @Test
-    @Ignore
     //FIXME: (Yurin) - Need investigate logic.
     public void testTruncatedMode() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
