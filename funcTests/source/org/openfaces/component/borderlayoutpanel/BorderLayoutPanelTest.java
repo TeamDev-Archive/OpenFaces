@@ -91,7 +91,7 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
         contentDiv.assertElementExists();
     }
 
-     @Test
+    @Test
     @Ignore
     //FIXME: (Yurin) - Need investigate logic.
     public void testSidePanelSplitterDragging() {
@@ -195,7 +195,7 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
         contentText.assertExpressionEquals("innerHTML", "offsetWidth = 300 offsetHeight = 200");
     }
 
-     @Test
+    @Test
     @Ignore
     //FIXME: (Yurin) - Need investigate logic.
     public void testContentResizeOnSplitterDrag() {
@@ -333,7 +333,7 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
         content2.assertExpressionEquals("offsetHeight", 300);
     }
 
-     @Test
+    @Test
     @Ignore
     //FIXME: (Yurin) - Need investigate logic.
     public void testTruncatedMode() {
