@@ -24,6 +24,11 @@ public class DropDownFieldTest extends BaseDropDownTestCase {
     }
 
     @Test
+    public void testPasteValue() {
+        checkExpandedListOnPasteValue("/components/dropdown/dropDownBaseFunctionality.jsf");
+    }
+
+    @Test
     public void testListCorrectness() {
         checkListCorrectness("/components/dropdown/dropDownBaseFunctionality.jsf", true);
     }
