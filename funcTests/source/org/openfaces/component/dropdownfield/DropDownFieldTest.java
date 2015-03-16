@@ -23,7 +23,12 @@ public class DropDownFieldTest extends BaseDropDownTestCase {
         checkReRenderingThroughA4J("/components/dropdown/dropDown_a4j.jsf");
     }
 
-     @Test
+    @Test
+    public void testPasteValue() {
+        checkExpandedListOnPasteValue("/components/dropdown/dropDownBaseFunctionality.jsf");
+    }
+
+    @Test
     public void testListCorrectness() {
         checkListCorrectness("/components/dropdown/dropDownBaseFunctionality.jsf", true);
     }
