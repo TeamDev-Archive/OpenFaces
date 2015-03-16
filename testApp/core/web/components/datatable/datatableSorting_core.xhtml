@@ -21,6 +21,10 @@
                        useAjax="true"
                        value="#{TestEventsBean.tableTestCollection}"
                        verticalGridLines="1px solid gray">
+              <o:multipleRowSelection/>
+              <o:selectionColumn id="selectionColumn" sortable="true"/>
+              <o:checkboxColumn id="checkboxColumn" sortable="true"/>
+
             <o:column id="col_first" style="padding: 10px 10px 10px 10px;" sortingExpression="#{sortable.thirdColumn}">
               <f:facet name="header">
                 <h:outputText value="first column header" id="sortableDataTable_firstHeader"/>
@@ -39,9 +43,6 @@
                 <h:outputText value="second column footer" id="sortableDataTable_secondFooter"/>
               </f:facet>
             </o:column>
-            <o:multipleRowSelection/>
-            <o:selectionColumn id="selectionColumn" sortable="true"/>
-            <o:checkboxColumn id="checkboxColumn" sortable="true"/>
           </o:dataTable>
         </td>
         <td class="container">
@@ -50,6 +51,11 @@
                        useAjax="false"
                        value="#{TestEventsBean.tableTestCollection}"
                        verticalGridLines="1px solid gray">
+
+              <o:multipleRowSelection />
+              <o:selectionColumn id="selectionColumn" sortable="true"/>
+              <o:checkboxColumn id="checkboxColumn" sortable="true"/>
+
             <o:column id="col_first" style="padding: 10px 10px 10px 10px;" sortingExpression="#{sortable.thirdColumn}">
               <f:facet name="header">
                 <h:outputText value="first column header" id="sortableDataTable1_firstHeader"/>
@@ -70,8 +76,7 @@
             </o:column>
           </o:dataTable>
         </td>
-
-      </tr>
+        </tr>
     </table>
   
 </div>
