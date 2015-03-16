@@ -12,6 +12,7 @@
 package org.openfaces.component.dropdownfield;
 
 import com.thoughtworks.selenium.Selenium;
+import org.openfaces.component.input.DropDownField;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.openqa.selenium.By;
@@ -109,15 +110,17 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
 
     protected void checkExpandedListOnPasteValue(String pageUrl){
         testAppFunctionalPage(pageUrl);
+        DropDownFieldInspector textAlign = dropDownField("formID:textAlign");
 
-        InputInspector field = dropDownField("formID:first").field();
+        InputInspector field = dropDownField("formID:textAlign").field();
         WebElement field_ = getDriver().findElement(By.xpath(field.getXPath()));
-        field_.sendKeys("Red");
+        field_.sendKeys("Left");
+        textAlign.field().assertValue("Left");
+
         field.keyPress(Keys.CONTROL);
         field.keyPress(86);
 
-        DropDownFieldInspector first = dropDownField("formID:first");
-        first.popup().assertVisible(true);
+        textAlign.popup().assertVisible(true);
     }
 
     protected void checkValueSelectionFromList(String pageUrl, boolean isDropDown) {

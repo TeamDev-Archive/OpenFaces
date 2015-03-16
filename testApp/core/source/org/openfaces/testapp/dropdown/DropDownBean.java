@@ -42,6 +42,7 @@ public class DropDownBean {
     private String value = "\u041c\u0430\u0442\u0440\u0438\u0446\u0430 ... \u0442\u0435\u0431\u044f";
     private String testSelectedValue;
     private String testSelectedValue2;
+    private String testSelectedValue3;
     private List<String> plants = new ArrayList<String>();
 
     private Color selectedBGColor = new Color("AliceBlue", 240, 248, 255, "#F0F8FF");
@@ -221,6 +222,14 @@ public class DropDownBean {
 
     public void setTestSelectedValue2(String testSelectedValue2) {
         this.testSelectedValue2 = testSelectedValue2;
+    }
+
+    public String getTestSelectedValue3() {
+        return testSelectedValue3;
+    }
+
+    public void setTestSelectedValue3(String testSelectedValue3) {
+        this.testSelectedValue3 = testSelectedValue3;
     }
 
     private class ColorConverter implements Converter, Serializable {
