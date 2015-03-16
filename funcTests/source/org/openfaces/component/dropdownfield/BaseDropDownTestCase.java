@@ -25,6 +25,7 @@ import org.seleniuminspector.openfaces.DropDownPopupInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 
 import java.awt.event.KeyEvent;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -104,6 +105,19 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         else
             second.field().keyDown(KeyEvent.VK_DOWN);
         second.popup().assertItemTexts(referenceCollection);
+    }
+
+    protected void checkExpandedListOnPasteValue(String pageUrl){
+        testAppFunctionalPage(pageUrl);
+
+        InputInspector field = dropDownField("formID:first").field();
+        WebElement field_ = getDriver().findElement(By.xpath(field.getXPath()));
+        field_.sendKeys("Red");
+        field.keyPress(Keys.CONTROL);
+        field.keyPress(86);
+
+        DropDownFieldInspector first = dropDownField("formID:first");
+        first.popup().assertVisible(true);
     }
 
     protected void checkValueSelectionFromList(String pageUrl, boolean isDropDown) {
