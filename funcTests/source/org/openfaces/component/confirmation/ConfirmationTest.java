@@ -52,6 +52,7 @@ public class ConfirmationTest extends OpenFacesTestCase {
     }
 
     //todo: uncomment when JSFC-3627 is fixed
+    @Ignore
     @Test
     public void _testConfirmationInvocationThroughA4JControl() {
         testAppFunctionalPage("/components/confirmation/confirmation_a4j.jsf");
