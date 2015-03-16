@@ -311,6 +311,12 @@ O$.TreeTable = {
             table._updateRowTreeStructure();
           }, 1);
         }
+      },
+
+      _setAllBodyRowsExpanded: function (expanded){
+        table.body._getRows().forEach(function(row){
+          row._setExpanded(expanded)
+        });
       }
 
     });
