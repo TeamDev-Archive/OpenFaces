@@ -80,7 +80,7 @@
 
   <!-- *** Public Targets ** -->
 
-  <target name="build" depends="-fail-if-no-openfaces-jar,build-war"
+  <target name="build" depends="-fail-if-no-openfaces-jar, build-war"
           description="generate the distribution"/>
 
   <target name="init">
@@ -107,11 +107,6 @@
              value="${ofversion}"/>
   </target>
 
-
-
-  <target name="deploy" depends="build" description="deploy war" if="deploy.dir">
-    <copy file="${target-war.file}" todir="${target.dir}"/>
-  </target>
 
   <target name="clean" description="clean up">
     <delete dir="${target.dir}"/>

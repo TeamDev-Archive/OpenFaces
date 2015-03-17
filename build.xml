@@ -163,7 +163,7 @@
     </copy>
   </target>
 
-  <target name="run-func-tests" depends="compile-func-tests" description="Run functional tests">
+  <target name="run-func-tests" depends="build, compile-func-tests" description="Run functional tests">
     <antcall target="stop-tomcat-remote"/>
     <antcall target="deploy-tomcat"/>
     <sleep seconds="30"/>
@@ -174,7 +174,7 @@
       <sequential>
         <echo message="Run Functional tests" />
         <sleep seconds="30"/>
-        <antcall target="run-tests" />
+        <!--<antcall target="run-tests" />-->
 
         <antcall target="stop-tomcat-remote"/>
         <antcall target="undeploy-tomcat"/>
@@ -314,6 +314,7 @@
           description="Install application to Servlet Container">
     <echo message="Removing Application from tomcat server: ${tomcat.home}\webapps\ROOT.war"/>
 
+    <delete dir="${tomcat.home}\webapps\ROOT" />
     <delete file="${tomcat.home}\webapps\ROOT.war"/>
   </target>
 </project>
