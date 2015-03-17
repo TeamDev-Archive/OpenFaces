@@ -115,10 +115,6 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         InputInspector field = dropDownField("formID:textAlign").field();
         textAlign.field().type("Left");
         textAlign.field().assertValue("Left");
-
-        WebElement field_ = getDriver().findElement(By.xpath(field.getXPath()));
-        field_.sendKeys(Keys.CONTROL + "V");
-
         textAlign.popup().assertVisible(true);
     }
 
