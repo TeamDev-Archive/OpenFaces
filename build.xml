@@ -237,7 +237,11 @@
       </fileset>
     </copy>
 
-    <fail if="junit_test_failed" message="FUNCTIONAL TEST(S) FAILED"/>
+    <antcall target="print-error-message"/>
+  </target>
+
+  <target name="print-error-message" if="junit_test_failed">
+    <echo message="FUNCTIONAL TEST(S) FAILED"/>
   </target>
 
   <target name="run-func-tests-jsp" description="Run functional tests in JSP-based JSF 1.2 environment">
