@@ -277,22 +277,6 @@
     </java>
   </target>
 
-
-  <taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask">
-    <classpath>
-      <pathelement location="${tomcat.home}/lib/catalina-ant.jar"/>
-      <pathelement location="${tomcat.home}/lib/tomcat-coyote.jar"/>
-      <pathelement location="${tomcat.home}/lib/tomcat-util.jar"/>
-    </classpath>
-  </taskdef>
-
-  <taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask">
-    <classpath>
-      <pathelement location="${tomcat.home}/lib/catalina-ant.jar"/>
-    </classpath>
-  </taskdef>
-
-
   <property name="build-directory" value="liveDemo/facelets/target"/>
   <property name="war-file-name" value="openfaces-demo-facelets.war"/>
 
