@@ -704,7 +704,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     protected void createImplicitColumnFacets(boolean forDynamicColumns) {
-        List<BaseColumn> allColumns = getAllColumns();
+        List<BaseColumn> allColumns = calculateAllColumns();
         for (BaseColumn column : allColumns) {
             boolean thisIsADynamicColumn = column instanceof DynamicColumn;
             if (forDynamicColumns == thisIsADynamicColumn)
