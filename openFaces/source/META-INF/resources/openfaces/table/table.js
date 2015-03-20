@@ -2017,6 +2017,9 @@ O$.Table = {
             }
           });
         }
+        document.addEventListener('mouseup', function(e){
+          table._isDragSelectionEnabled = false;
+        });
       }
       selectedItems = function removeCellsIfColumnIsHidden(cells) {
         var validatedCells = [];
