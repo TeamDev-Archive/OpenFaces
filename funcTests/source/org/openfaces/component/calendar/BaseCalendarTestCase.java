@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.calendar;
 
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.CalendarInspector;
 
@@ -23,7 +23,7 @@ import java.util.Locale;
 /**
  * @author Darya Shumilina
  */
-public abstract class BaseCalendarTestCase extends OpenFacesTestCase {
+public abstract class BaseCalendarTestCase extends BaseSeleniumTest {
 
     protected static final String TODAY_NONE_DISABLED = "color: rgb(128, 128, 128); cursor: default";
     protected static final String TODAY_NONE_ENABLED = "color: rgb(0, 0, 0); cursor: pointer";

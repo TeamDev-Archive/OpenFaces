@@ -14,13 +14,13 @@ package org.openfaces.requests;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 
 /**
  * @author Darya Shumilina
  */
-public class JSFC_1727Test extends OpenFacesTestCase {
+public class JSFC_1727Test extends BaseSeleniumTest {
 
     // JSFC-1927 Non modal popup hides after submit
      @Test

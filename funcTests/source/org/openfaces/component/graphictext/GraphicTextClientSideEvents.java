@@ -13,13 +13,13 @@ package org.openfaces.component.graphictext;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 
 /**
  * @author Darya Shumilina
  */
-public class GraphicTextClientSideEvents extends OpenFacesTestCase {
+public class GraphicTextClientSideEvents extends BaseSeleniumTest {
      @Test
     public void testClientSideEvents() {
         Selenium selenium = getSelenium();

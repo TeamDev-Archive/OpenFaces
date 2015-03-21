@@ -12,7 +12,7 @@
 package org.openfaces.component.borderlayoutpanel;
 
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.openfaces.SidePanelInspector;
 import org.seleniuminspector.ServerLoadingMode;
 import org.seleniuminspector.ElementInspector;
@@ -21,7 +21,7 @@ import org.seleniuminspector.LoadingMode;
 /**
  * @author Alexey Tarasyuk
  */
-public class SidePanelTest extends OpenFacesTestCase {
+public class SidePanelTest extends BaseSeleniumTest {
      @Test
     public void testRendering() {
         testAppFunctionalPage("/components/borderlayoutpanel/sidePanelft.jsf");

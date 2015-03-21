@@ -14,7 +14,8 @@ package org.openfaces.requests;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.openfaces.TreeTableInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 
@@ -22,7 +23,7 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
  * @author Pavel Kaplin
  */
 
-public class JSFC_2294Test extends OpenFacesTestCase {
+public class JSFC_2294Test extends BaseSeleniumTest {
 
      @Test
     @Ignore

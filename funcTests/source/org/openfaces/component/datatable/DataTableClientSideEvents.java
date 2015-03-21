@@ -13,7 +13,7 @@ package org.openfaces.component.datatable;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.html.TableCellInspector;
 import org.seleniuminspector.html.TableInspector;
@@ -23,7 +23,7 @@ import java.awt.event.KeyEvent;
 /**
  * @author Darya Shumilina
  */
-public class DataTableClientSideEvents extends OpenFacesTestCase {
+public class DataTableClientSideEvents extends BaseSeleniumTest {
 
     /*test for checking client-side events for the entire DataTable*/
      @Test

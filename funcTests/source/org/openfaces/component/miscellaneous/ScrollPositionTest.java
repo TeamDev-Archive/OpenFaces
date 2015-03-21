@@ -14,13 +14,14 @@ package org.openfaces.component.miscellaneous;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 
 /**
  * @author Darya Shumilina
  */
-public class ScrollPositionTest extends OpenFacesTestCase {
+public class ScrollPositionTest extends BaseSeleniumTest {
 
      @Test
     public void testScrollPositionByPageLoading() {

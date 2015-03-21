@@ -13,7 +13,7 @@ package org.openfaces.component.dropdownfield;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.openfaces.DropDownFieldInspector;
 
 import java.awt.event.KeyEvent;
@@ -21,7 +21,7 @@ import java.awt.event.KeyEvent;
 /**
  * @author Darya Shumilina
  */
-public class DropDownClientSideEvents extends OpenFacesTestCase {
+public class DropDownClientSideEvents extends BaseSeleniumTest {
      @Test
     public void testDropDownEvents() {
         Selenium selenium = getSelenium();

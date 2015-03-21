@@ -14,7 +14,7 @@ package org.openfaces.component.tabbedpane;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.openqa.selenium.By;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.*;
@@ -22,7 +22,7 @@ import org.seleniuminspector.openfaces.*;
 /**
  * @author Darya Shumilina
  */
-public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
+public class AjaxTabbedPaneIncludeOFComponentsTest extends BaseSeleniumTest {
      @Test
     public void testCalendarInside() {
         testAppFunctionalPage("/components/tabbedpane/calendarIn.jsf");

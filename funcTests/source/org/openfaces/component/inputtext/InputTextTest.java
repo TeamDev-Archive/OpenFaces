@@ -15,7 +15,7 @@ package org.openfaces.component.inputtext;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.InputTextInspector;
@@ -25,7 +25,7 @@ import java.awt.event.KeyEvent;
 /**
  * @author Vladimir Kurganov
  */
-public class InputTextTest extends OpenFacesTestCase {
+public class InputTextTest extends BaseSeleniumTest {
     @Test
     public void testTypedValue() {
         testAppFunctionalPage("/components/inputtext/inputTextFieldBaseFunctionality.jsf");

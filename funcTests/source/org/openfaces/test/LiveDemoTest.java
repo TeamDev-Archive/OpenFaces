@@ -25,7 +25,7 @@ import org.seleniuminspector.openfaces.TabSetInspector;
 /**
  * @author Darya Shumilina
  */
-public class LiveDemoTest extends OpenFacesTestCase {
+public class LiveDemoTest extends BaseSeleniumTest {
 
     @Test
     public void testAvailability() {
@@ -72,10 +72,6 @@ public class LiveDemoTest extends OpenFacesTestCase {
 
         assertDemoPageAvailable("/validators/Validators_standard.jsf", "Validation \u2014 OpenFaces Demo");
         assertDemoPageAvailable("/validators/Validators_custom.jsf", "Validation \u2014 OpenFaces Demo");
-    }
-
-    private void assertDemoPageAvailable(String pageUrl, String expectedPageTitle) {
-        assertPageAvailable(LIVE_DEMO_URL_PREFIX + pageUrl, expectedPageTitle);
     }
 
     // see JSFC-1840 TabSet with locales can switch own value but doesn't switch locale in DateChoosers if validation triggered

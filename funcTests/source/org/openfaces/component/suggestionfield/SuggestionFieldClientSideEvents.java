@@ -13,7 +13,7 @@ package org.openfaces.component.suggestionfield;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.openqa.selenium.By;
 import org.seleniuminspector.ElementInspector;
 
@@ -22,7 +22,7 @@ import java.awt.event.KeyEvent;
 /**
  * @author Darya Shumilina
  */
-public class SuggestionFieldClientSideEvents extends OpenFacesTestCase {
+public class SuggestionFieldClientSideEvents extends BaseSeleniumTest {
      @Test
     public void testSuggestionFieldClientSideEvents() {
         Selenium selenium = getSelenium();

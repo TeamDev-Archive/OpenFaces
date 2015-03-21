@@ -10,7 +10,7 @@
   <property name="classes.dir" location="${target.dir}/classes"/>
   <property name="openfaces-inspectors-jar.file" location="${distrib.dir}/openfaces-inspectors.jar"/>
   <property name="openfaces-inspectors-source-jar.file" location="${distrib.dir}/openfaces-inspectors-sources.jar"/>
-  <property name="patched-selenium-server.file" location="${distrib.dir}/patched-selenium-server-standalone-2.14.0.jar"/>
+  <property name="patched-selenium-server.file" location="${distrib.dir}/patched-selenium-server-standalone-2.34.0.jar"/>
   <property name="manifest.file" location="${target.dir}/manifest.mf"/>
   <property name="lib.dir" location="../lib"/>
   <property name="temp.dir" location="temp"/>
@@ -26,8 +26,8 @@
     <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" source="1.5" target="1.5">
       <classpath>
         <fileset dir="${lib.dir}">
-          <include name="../lib/seleniuminspector/selenium-java-2.14.0.jar "/>
-          <include name="../lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
+          <include name="../lib/seleniuminspector/selenium-java-2.34.0.jar "/>
+          <include name="../lib/seleniuminspector/selenium-server-standalone-2.34.0.jar"/>
           <include name="seleniuminspector/selenium-inspector.jar"/>
         </fileset>
         <fileset file="../testLib/junit.jar"/>
@@ -107,8 +107,8 @@
                  protected="true">
             <classpath>
                 <fileset dir="${lib.dir}">
-                    <include name="selenium-java-2.14.0.jar "/>
-                    <include name="selenium-server-standalone-2.14.0.jar"/>
+                    <include name="selenium-java-2.34.0.jar "/>
+                    <include name="selenium-server-standalone-2.34.0.jar"/>
                     <include name="junit.jar"/>
                 </fileset>
             </classpath>

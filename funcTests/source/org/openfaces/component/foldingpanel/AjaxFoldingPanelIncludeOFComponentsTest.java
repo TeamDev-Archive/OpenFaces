@@ -13,7 +13,7 @@ package org.openfaces.component.foldingpanel;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.DataTableInspector;
 import org.seleniuminspector.openfaces.DateChooserInspector;
@@ -26,7 +26,7 @@ import org.seleniuminspector.openfaces.TwoListSelectionInspector;
 /**
  * @author Darya Shumilina
  */
-public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
+public class AjaxFoldingPanelIncludeOFComponentsTest extends BaseSeleniumTest {
     @Ignore
     @Test
     public void testCalendarInside() {

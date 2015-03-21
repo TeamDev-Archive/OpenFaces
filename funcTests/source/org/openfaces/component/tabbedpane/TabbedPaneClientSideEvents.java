@@ -14,13 +14,13 @@ package org.openfaces.component.tabbedpane;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 
 /**
  * @author Darya Shumilina
  */
-public class TabbedPaneClientSideEvents extends OpenFacesTestCase {
+public class TabbedPaneClientSideEvents extends BaseSeleniumTest {
 
     //todo: uncomment when the JSFC-3629 is fixed
     @Ignore

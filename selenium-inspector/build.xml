@@ -1,0 +1,42 @@
+<project name="OpenFaces Selenium Inspector Build Script" default="build" basedir=".">
+
+  <buildnumber file="build.number"/>
+
+  <property name="src.dir" location="source"/>
+  <property name="lib.dir" location="../lib"/>
+  <property name="testLib.dir" location="../testLib"/>
+  <property name="target.dir" location="../target/selenium-inspector"/>
+  <property name="selenium-inspector-jar.file" location="${target.dir}/selenium-inspector.jar"/>
+  <property name="classes.dir" location="${target.dir}/classes"/>
+  <property name="manifest.file" location="${target.dir}/manifest.mf"/>
+
+  <target name="init">
+    <tstamp/>
+  </target>
+
+  <target name="clean" description="Clean up">
+    <delete dir="${target.dir}" />
+  </target>
+
+  <target name="compile" depends="init" description="Compile the source code">
+    <mkdir dir="${classes.dir}"/>
+    <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false" debug="true">
+      <classpath>
+        <fileset dir="${lib.dir}/seleniuminspector">
+          <include name="selenium-java-2.34.0.jar"/>
+          <include name="selenium-server-standalone-2.34.0.jar"/>
+        </fileset>
+        <fileset dir="${testLib.dir}/">
+          <include name="junit.jar"/>
+        </fileset>
+      </classpath>
+    </javac>
+    <jar jarfile="${selenium-inspector-jar.file}" basedir="${classes.dir}"/>
+  </target>
+
+  <target name="build" depends="clean, compile" description="Generate the distribution"/>
+
+  <target name="-delete-classes-dir" unless="retain.classes.dir">
+    <delete dir="${target.dir}/classes"/>
+  </target>
+</project>

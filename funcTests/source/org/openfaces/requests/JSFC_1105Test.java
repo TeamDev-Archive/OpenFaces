@@ -13,12 +13,12 @@ package org.openfaces.requests;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 
 /**
  * @author Darya Shumilina
  */
-public class JSFC_1105Test extends OpenFacesTestCase {
+public class JSFC_1105Test extends BaseSeleniumTest {
 
     // JSFC-1105 Client-side validation does'n work for RegExpValidator with "[-\+]?[0-9]*\.?[0-9]*" pattern
      @Test

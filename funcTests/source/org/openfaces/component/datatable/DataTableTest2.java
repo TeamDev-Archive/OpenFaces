@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.datatable;
 
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.junit.Test;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 import org.seleniuminspector.openfaces.TabSetInspector;
@@ -24,7 +24,7 @@ import org.seleniuminspector.ElementInspector;
 /**
  * @author Dmitry Pikhulya
  */
-public class DataTableTest2 extends OpenFacesTestCase {
+public class DataTableTest2 extends BaseSeleniumTest {
 
      @Test
     public void testFilteringSearchField() {
