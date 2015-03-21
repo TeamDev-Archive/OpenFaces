@@ -14,7 +14,7 @@ package org.openfaces.component.confirmation;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -24,7 +24,7 @@ import org.seleniuminspector.openfaces.PopupLayerInspector;
 /**
  * @author Darya Shumilina
  */
-public class ConfirmationTest extends OpenFacesTestCase {
+public class ConfirmationTest extends BaseSeleniumTest {
 
     //todo: uncomment when JSFC-3627 is fixed
     @Ignore

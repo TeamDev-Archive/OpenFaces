@@ -13,12 +13,13 @@ package org.openfaces.component.tabset;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
+import org.openfaces.test.BaseSeleniumTest;
 
 /**
  * @author Darya Shumilina
  */
-public class TabSetClientSideEvents extends OpenFacesTestCase {
+public class TabSetClientSideEvents extends BaseSeleniumTest {
      @Test
     public void testTabSetClientSideEvents() {
         Selenium selenium = getSelenium();

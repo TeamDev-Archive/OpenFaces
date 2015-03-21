@@ -12,7 +12,7 @@
 package org.openfaces.component.dropdownfield;
 
 import com.thoughtworks.selenium.Selenium;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * @author Darya Shumilina
  */
-public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
+public abstract class BaseDropDownTestCase extends BaseSeleniumTest {
 
     protected void checkReRenderingThroughA4J(String pageUrl) {
         testAppFunctionalPage(pageUrl);

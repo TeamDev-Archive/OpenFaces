@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @author Tatyana Matveyeva
  */
-public class ValidationTest extends OpenFacesTestCase {
+public class ValidationTest extends BaseSeleniumTest {
 
     @Test
     public void testServerDefaultPresentation() {

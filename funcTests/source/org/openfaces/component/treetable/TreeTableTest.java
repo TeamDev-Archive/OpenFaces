@@ -13,7 +13,7 @@ package org.openfaces.component.treetable;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * @author Darya Shumilina
  */
-public class TreeTableTest extends OpenFacesTestCase {
+public class TreeTableTest extends BaseSeleniumTest {
      @Test
      @Ignore
      public void testReRenderThroughA4J() {

@@ -14,7 +14,8 @@ package org.openfaces.component.sessionexpiration;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
+import org.openfaces.test.BaseSeleniumTest;
 import org.openqa.selenium.By;
 import org.seleniuminspector.openfaces.ConfirmationInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
@@ -22,7 +23,7 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 /**
  * @author Eugene Goncharov
  */
-public class SessionExpirationTest extends OpenFacesTestCase {
+public class SessionExpirationTest extends BaseSeleniumTest {
      @Test
      @Ignore
     public void testSessionExpiration() {

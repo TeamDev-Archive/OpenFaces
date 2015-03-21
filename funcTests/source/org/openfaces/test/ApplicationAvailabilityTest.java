@@ -17,7 +17,7 @@ import org.junit.Test;
 /**
  * @author Darya Shumilina
  */
-public class ApplicationAvailabilityTest extends OpenFacesTestCase {
+public class ApplicationAvailabilityTest extends BaseSeleniumTest {
 
      @Test
     public void testAvailability() {
@@ -103,10 +103,4 @@ public class ApplicationAvailabilityTest extends OpenFacesTestCase {
         assertTestPageAvailable("/components/graphictext/graphicText.jsf", "GraphicText Test");
         assertTestPageAvailable("/components/graphictext/graphicTextStyles.jsf", "Styled GraphicTexts");
     }
-
-    private void assertTestPageAvailable(String pageUrl, String expectedPageTitle) {
-        assertPageAvailable(TEST_APP_URL_PREFIX + pageUrl, expectedPageTitle);
-    }
-
-
 }

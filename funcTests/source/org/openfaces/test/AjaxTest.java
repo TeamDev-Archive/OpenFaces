@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * @author Tatyana Matveyeva
  */
-public class AjaxTest extends OpenFacesTestCase {
+public class AjaxTest extends BaseSeleniumTest {
 
     //All DataTable features, that use Ajax is Tested on the demo (DataTable_general.jsf)
      @Test

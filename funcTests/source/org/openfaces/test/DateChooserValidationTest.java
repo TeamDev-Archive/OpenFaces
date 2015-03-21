@@ -19,7 +19,7 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 /**
  * @author Pavel Kaplin
  */
-public class DateChooserValidationTest extends OpenFacesTestCase {
+public class DateChooserValidationTest extends BaseSeleniumTest {
 
     @Test
     public void testClientValidationOff() {

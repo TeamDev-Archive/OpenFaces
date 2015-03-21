@@ -13,7 +13,7 @@ package org.openfaces.component.borderlayoutpanel;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.BorderLayoutPanelInspector;
 import org.seleniuminspector.openfaces.SidePanelInspector;
@@ -22,7 +22,7 @@ import org.seleniuminspector.openfaces.SidePanelInspector;
  * @author Alexey Tarasyuk
  *         // todo: consider optimizing performance by combinbing several tests that involve various splitter draggings into one test
  */
-public class BorderLayoutPanelTest extends OpenFacesTestCase {
+public class BorderLayoutPanelTest extends BaseSeleniumTest {
      @Test
     @Ignore
     public void testRendering() {

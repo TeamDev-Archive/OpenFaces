@@ -19,7 +19,7 @@ import org.seleniuminspector.LoadingMode;
 /**
  * @author Eugene Goncharov
  */
-public class OpenFacesAjaxLoadingMode extends org.seleniuminspector.LoadingMode {
+public class OpenFacesAjaxLoadingMode extends LoadingMode {
     private static LoadingMode loadingMode = new OpenFacesAjaxLoadingMode();
 
     private OpenFacesAjaxLoadingMode(){}

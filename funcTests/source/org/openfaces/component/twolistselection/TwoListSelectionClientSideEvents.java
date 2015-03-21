@@ -13,13 +13,13 @@ package org.openfaces.component.twolistselection;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.openfaces.TwoListSelectionInspector;
 
 /**
  * @author Darya Shumilina
  */
-public class TwoListSelectionClientSideEvents extends OpenFacesTestCase {
+public class TwoListSelectionClientSideEvents extends BaseSeleniumTest {
      @Test
     public void testTLSClientSideEvents() {
 

@@ -12,7 +12,8 @@
 package org.openfaces.component.ajax;
 
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.InputTextInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
@@ -20,7 +21,7 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 /**
  * @author Ilya Musihin
  */
-public class AjaxTest extends OpenFacesTestCase {
+public class AjaxTest extends BaseSeleniumTest {
      //
      @Test
     public void testActionPhase() {

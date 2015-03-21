@@ -13,13 +13,13 @@ package org.openfaces.requests;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.openfaces.DataTableInspector;
 
 /**
  * @author Darya Shumilina
  */
-public class JSFC_2478Test extends OpenFacesTestCase {
+public class JSFC_2478Test extends BaseSeleniumTest {
      @Test
      @Ignore
     public void testJSFC_2478Fix() {

@@ -13,7 +13,7 @@ package org.openfaces.component.datechooser;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.openfaces.DateChooserInspector;
 
 import java.awt.event.KeyEvent;
@@ -21,7 +21,7 @@ import java.awt.event.KeyEvent;
 /**
  * @author Darya Shumilina
  */
-public class DateChooserClientSideEvents extends OpenFacesTestCase {
+public class DateChooserClientSideEvents extends BaseSeleniumTest {
      @Test
     public void testDateChooserEvents() {
         Selenium selenium = getSelenium();

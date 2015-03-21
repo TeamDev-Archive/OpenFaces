@@ -13,7 +13,7 @@ package org.openfaces.component.datatable;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.DataTableInspector;
 import org.seleniuminspector.openfaces.HintLabelInspector;
@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * @author Darya Shumilina
  */
-public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
+public class DataTableIncludeOFComponentsTest extends BaseSeleniumTest {
 
     /*
       public void testCalendarInsideDataTable() {
