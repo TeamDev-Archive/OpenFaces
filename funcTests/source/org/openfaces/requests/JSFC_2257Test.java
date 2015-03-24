@@ -12,7 +12,7 @@
 package org.openfaces.requests;
 
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.openqa.selenium.Keys;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.html.TextAreaInspector;
@@ -20,7 +20,7 @@ import org.seleniuminspector.html.TextAreaInspector;
 /**
  * @author Pavel Kaplin
  */
-public class JSFC_2257Test extends OpenFacesTestCase {
+public class JSFC_2257Test extends BaseSeleniumTest {
      @Test
     public void testTextAreaIsNotAffectedByOpenFacesValidation() throws Exception {
         testAppFunctionalPage("/requests/JSFC_2257.jsf");

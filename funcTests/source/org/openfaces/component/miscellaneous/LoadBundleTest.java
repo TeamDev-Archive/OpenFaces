@@ -13,7 +13,7 @@ package org.openfaces.component.miscellaneous;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.openfaces.DropDownFieldFilterInspector;
 import org.seleniuminspector.openfaces.DropDownFieldInspector;
 import org.seleniuminspector.openfaces.FoldingPanelInspector;
@@ -29,7 +29,7 @@ import java.awt.event.KeyEvent;
 /**
  * @author Darya Shumilina
  */
-public class LoadBundleTest extends OpenFacesTestCase {
+public class LoadBundleTest extends BaseSeleniumTest {
     private static final String TODAY_AR = "\u0645\u0648\u064A\u0644\u0627";
     private static final String TODAY_ES = "informaci\u00F3n";
     private static final String TODAY_JA = "\u4ECA\u65E5";

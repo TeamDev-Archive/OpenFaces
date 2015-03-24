@@ -12,7 +12,7 @@
 package org.openfaces.component.tabset;
 
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.html.TableCellInspector;
 import org.seleniuminspector.html.TableInspector;
@@ -22,7 +22,7 @@ import org.seleniuminspector.openfaces.TabSetInspector;
 /**
  * @author Darya Shumilina
  */
-public class TabSetTest extends OpenFacesTestCase {
+public class TabSetTest extends BaseSeleniumTest {
      @Test
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/tabset/tabSet_a4j.jsf");

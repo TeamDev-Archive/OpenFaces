@@ -13,12 +13,12 @@ package org.openfaces.requests;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 
 /**
  * @author Pavel Kaplin
  */
-public class JSFC_2321Test extends OpenFacesTestCase {
+public class JSFC_2321Test extends BaseSeleniumTest {
      @Test
     public void testGlobalMessagesAreShown() throws Exception {
         Selenium selenium = getSelenium();

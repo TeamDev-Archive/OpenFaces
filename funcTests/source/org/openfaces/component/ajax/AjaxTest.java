@@ -12,7 +12,7 @@
 package org.openfaces.component.ajax;
 
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.InputTextInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
@@ -20,7 +20,7 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 /**
  * @author Ilya Musihin
  */
-public class AjaxTest extends OpenFacesTestCase {
+public class AjaxTest extends BaseSeleniumTest {
      //
      @Test
     public void testActionPhase() {
@@ -32,16 +32,20 @@ public class AjaxTest extends OpenFacesTestCase {
         // check operation with <h:commandButton> -- a special implementation case
         element("form1:btn1").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         counter.assertText("1"); // check direct embedding
+
         element("form1:btn2").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         counter.assertText("2"); // check attaching with "for" attribute
+
         element("form1:btn3").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         counter.assertText("3"); // standalone invokation
 
         // check operation with <h:commandButton> -- a special implementation case
         element("form1:link1").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         counter.assertText("4"); // check direct embedding
+
         element("form1:link2").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         counter.assertText("5"); // check attaching with "for" attribute
+
         element("form1:link3").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         counter.assertText("6"); // standalone invokation
 
@@ -49,35 +53,47 @@ public class AjaxTest extends OpenFacesTestCase {
 
         InputTextInspector inputText = inputText("form1:input1");
         inputText.typeKeys("1");
-        sleep(100);
+         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
+        counter.assertText("7");
+
         inputText.typeKeys("2");
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
-        counter.assertText("7"); // check direct embedding
+        counter.assertText("8"); // check direct embedding
+
         inputText = inputText("form1:input2");
         inputText.typeKeys("1");
-        sleep(100);
+
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
+        counter.assertText("9");
+
         inputText.typeKeys("2");
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
-        counter.assertText("8"); // check attaching with "for" attribute
+        counter.assertText("10"); // check attaching with "for" attribute
+
         inputText = inputText("form1:input3");
         inputText.typeKeys("1");
-        sleep(100);
+         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
+        counter.assertText("11");
+
         inputText.typeKeys("2");
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
-        counter.assertText("9"); // standalone invokation
+        counter.assertText("12"); // standalone invokation
 
         // check operation with <h:graphicImage> -- a case for a typical JSF component without special implementation cases
         element("form1:image1").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
-        counter.assertText("10"); // check direct embedding
+        counter.assertText("13"); // check direct embedding
+
         element("form1:image2").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
-        counter.assertText("11"); // check attaching with "for" attribute
+        counter.assertText("14"); // check attaching with "for" attribute
+
         element("form1:image3").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
-        counter.assertText("12"); // standalone invokation
+        counter.assertText("15"); // standalone invokation
 
         // check operation with HTML tags
         element("div2").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
-        counter.assertText("13"); // check attaching with "for" attribute
+        counter.assertText("16"); // check attaching with "for" attribute
+
         element("div3").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
-        counter.assertText("14"); // standalone invokation
+        counter.assertText("17"); // standalone invokation
     }
 }

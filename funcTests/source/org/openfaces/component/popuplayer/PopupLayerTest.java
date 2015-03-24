@@ -13,7 +13,7 @@ package org.openfaces.component.popuplayer;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.html.InputInspector;
@@ -24,7 +24,7 @@ import java.awt.*;
 /**
  * @author Darya Shumilina
  */
-public class PopupLayerTest extends OpenFacesTestCase {
+public class PopupLayerTest extends BaseSeleniumTest {
      @Test
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/popuplayer/popupLayer_a4j.jsf");

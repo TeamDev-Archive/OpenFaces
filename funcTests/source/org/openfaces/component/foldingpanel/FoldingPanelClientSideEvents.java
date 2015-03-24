@@ -13,7 +13,7 @@ package org.openfaces.component.foldingpanel;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 
 import java.awt.event.KeyEvent;
@@ -21,7 +21,7 @@ import java.awt.event.KeyEvent;
 /**
  * @author Darya Shumilina
  */
-public class FoldingPanelClientSideEvents extends OpenFacesTestCase {
+public class FoldingPanelClientSideEvents extends BaseSeleniumTest {
      @Test
     public void testFoldingPanelClientSideEvents() {
         Selenium selenium = getSelenium();

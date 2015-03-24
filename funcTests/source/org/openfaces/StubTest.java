@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 3.0
- * Copyright (C) 2007-2014, TeamDev Ltd.
+ * Copyright (C) 2007-2015, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -10,16 +10,19 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.test.componentInspector;
+package org.openfaces;
+
+import org.junit.Test;
+import org.openfaces.test.BaseSeleniumTest;
 
 /**
- * Author: SergeyPensov@teamdev.com
+ * @author Max Yurin
  */
-public class TabbedPaneInspector extends Element {
-    public TabbedPaneInspector(String id) {
-        super(id);
-    }
-    public TabSetInspector tabSet() {
-        return new TabSetInspector(this.getId() + "--tabSet");
+public class StubTest extends BaseSeleniumTest {
+
+    @Test
+    public void testStub() throws Exception {
+//
+        openPage("/");
     }
 }

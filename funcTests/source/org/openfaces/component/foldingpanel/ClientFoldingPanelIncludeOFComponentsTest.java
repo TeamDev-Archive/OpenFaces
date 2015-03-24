@@ -14,7 +14,7 @@ package org.openfaces.component.foldingpanel;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.LoadingMode;
 import org.seleniuminspector.ServerLoadingMode;
@@ -23,7 +23,7 @@ import org.seleniuminspector.openfaces.*;
 /**
  * @author Darya Shumilina
  */
-public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
+public class ClientFoldingPanelIncludeOFComponentsTest extends BaseSeleniumTest {
     @Test
     public void testCalendarInside() {
         testAppFunctionalPage("/components/foldingpanel/calendarIn.jsf");
@@ -232,7 +232,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
 
     @Test
     public void testTabSetInside() {
-        if (IS_FACELETS)
+        if (isFacelets())
             return; // this for some odd reason fails only on the build server in the Facelets version of tests
         testAppFunctionalPage("/components/foldingpanel/tabSetIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, new LoadingMode() {

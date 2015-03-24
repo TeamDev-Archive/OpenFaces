@@ -14,7 +14,7 @@ package org.openfaces.component.datatable;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -42,7 +42,7 @@ import java.util.Random;
 /**
  * @author Darya Shumilina
  */
-public class DataTableTest extends OpenFacesTestCase {
+public class DataTableTest extends BaseSeleniumTest {
     private static final String NBSP_CHAR = "\u00a0";
 
     //todo: see JSFC-3080 issue

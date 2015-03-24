@@ -13,7 +13,7 @@ package org.openfaces.requests;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -21,7 +21,7 @@ import org.openqa.selenium.WebElement;
 /**
  * @author Pavel Kaplin
  */
-public class JSFC_2282Test extends OpenFacesTestCase {
+public class JSFC_2282Test extends BaseSeleniumTest {
 
     // modal layer in ie6 behaves incorrectly if there's no background color or image specified
      @Test

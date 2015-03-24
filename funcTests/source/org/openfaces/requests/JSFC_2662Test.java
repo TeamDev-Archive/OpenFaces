@@ -15,7 +15,7 @@ import com.thoughtworks.selenium.Selenium;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 
 import java.awt.event.KeyEvent;
@@ -23,7 +23,7 @@ import java.awt.event.KeyEvent;
 /**
  * @author Darya Shumilina
  */
-public class JSFC_2662Test extends OpenFacesTestCase {
+public class JSFC_2662Test extends BaseSeleniumTest {
 
     //todo: test is not completed; there is problem with 'end' key pressing in selenium
      @Test

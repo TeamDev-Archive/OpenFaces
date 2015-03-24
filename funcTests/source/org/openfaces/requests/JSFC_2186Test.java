@@ -12,7 +12,7 @@
 package org.openfaces.requests;
 
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.openfaces.TabbedPaneInspector;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.LoadingMode;
@@ -22,7 +22,7 @@ import org.seleniuminspector.LoadingMode;
  *         <p/>
  *         JSFC-2186 Floating Icon bleeds through to other panes when using the Tabbed Pane
  */
-public class JSFC_2186Test extends OpenFacesTestCase {
+public class JSFC_2186Test extends BaseSeleniumTest {
      @Test
     public void testFloatingIconMessageIsHidedWhenTargetElementIsInvisible() throws InterruptedException {
         testAppFunctionalPage("/requests/JSFC-2186.jsf");

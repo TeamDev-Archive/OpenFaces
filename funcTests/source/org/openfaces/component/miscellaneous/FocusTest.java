@@ -13,13 +13,13 @@ package org.openfaces.component.miscellaneous;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 
 /**
  * @author Darya Shumilina
  */
-public class FocusTest extends OpenFacesTestCase {
+public class FocusTest extends BaseSeleniumTest {
 
     private final static String FOCUSED = "FOCUSED";
 

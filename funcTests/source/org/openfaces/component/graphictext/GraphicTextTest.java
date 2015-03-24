@@ -12,12 +12,12 @@
 package org.openfaces.component.graphictext;
 
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 
 /**
  * @author Darya Shumilina
  */
-public class GraphicTextTest extends OpenFacesTestCase {
+public class GraphicTextTest extends BaseSeleniumTest {
 
     //todo: problems with image comparison are possible if the test server dpi doesn't equals to 96 when 'font-size' defined via 'pt'
      @Test

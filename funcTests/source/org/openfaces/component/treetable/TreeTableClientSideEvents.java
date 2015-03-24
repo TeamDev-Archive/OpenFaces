@@ -13,7 +13,7 @@ package org.openfaces.component.treetable;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.openfaces.TreeTableInspector;
 import org.seleniuminspector.ElementInspector;
 
@@ -22,7 +22,7 @@ import java.awt.event.KeyEvent;
 /**
  * @author Darya Shumilina
  */
-public class TreeTableClientSideEvents extends OpenFacesTestCase {
+public class TreeTableClientSideEvents extends BaseSeleniumTest {
 
     /*test entire TreeTable*/
     //TODO Dont't work warn

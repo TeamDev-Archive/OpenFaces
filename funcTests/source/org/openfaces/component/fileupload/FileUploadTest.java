@@ -13,14 +13,14 @@
 package org.openfaces.component.fileupload;
 
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 /**
  * @author Vladislav Lubenskiy
  */
-public class FileUploadTest  extends OpenFacesTestCase {
+public class FileUploadTest  extends BaseSeleniumTest {
     final static private String NORMAL_FILE_ADDRESS = "c:\\fileUploadTestResources\\normal_size.bmp";
     final static private String NORMAL_FILE_NAME = "normal_size.bmp";
     final static private String TOO_BIG_FILE = "c:\\fileUploadTestResources\\too_big_size.bmp";

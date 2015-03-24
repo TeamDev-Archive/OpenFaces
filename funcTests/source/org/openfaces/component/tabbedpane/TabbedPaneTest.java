@@ -14,7 +14,7 @@ package org.openfaces.component.tabbedpane;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.seleniuminspector.ClientLoadingMode;
 import org.seleniuminspector.ElementInspector;
@@ -28,7 +28,7 @@ import org.seleniuminspector.openfaces.TabbedPaneInspector;
 /**
  * @author Darya Shumilina
  */
-public class TabbedPaneTest extends OpenFacesTestCase {
+public class TabbedPaneTest extends BaseSeleniumTest {
      @Test
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/tabbedpane/tabbedPane_a4j.jsf");

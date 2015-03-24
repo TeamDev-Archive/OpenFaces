@@ -14,13 +14,13 @@ package org.openfaces.component.hintlabel;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.openfaces.HintLabelInspector;
 
 /**
  * @author Darya Shumilina
  */
-public class HintLabelClientSideEvents extends OpenFacesTestCase {
+public class HintLabelClientSideEvents extends BaseSeleniumTest {
      @Test
     public void testHintLabelClientSideEvents() {
         Selenium selenium = getSelenium();

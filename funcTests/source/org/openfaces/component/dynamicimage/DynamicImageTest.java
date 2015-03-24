@@ -14,13 +14,13 @@ package org.openfaces.component.dynamicimage;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 
 /**
  * @author Darya Shumilina
  */
-public class DynamicImageTest extends OpenFacesTestCase {
+public class DynamicImageTest extends BaseSeleniumTest {
      @Test
     public void testReRenderThroughA4J() {
         Selenium selenium = getSelenium();

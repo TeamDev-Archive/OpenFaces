@@ -13,13 +13,13 @@ package org.openfaces.component.chart;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 
 /**
  * @author Darya Shumilina
  */
-public class ChartTest extends OpenFacesTestCase {
+public class ChartTest extends BaseSeleniumTest {
 
      @Test
     public void testReRenderThroughA4J() {

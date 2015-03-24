@@ -14,7 +14,7 @@ package org.openfaces.component.borderlayoutpanel;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.LoadingMode;
 
@@ -23,7 +23,7 @@ import java.awt.*;
 /**
  * @author Alexey Tarasyuk
  */
-public class BorderLayoutPanelFullScreenTest extends OpenFacesTestCase {
+public class BorderLayoutPanelFullScreenTest extends BaseSeleniumTest {
 
     protected boolean getStartBrowserForEachTestMethod() {
         return true;

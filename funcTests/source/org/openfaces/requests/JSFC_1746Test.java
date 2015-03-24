@@ -13,12 +13,12 @@ package org.openfaces.requests;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 
 /**
  * @author Darya Shumilina
  */
-public class JSFC_1746Test extends OpenFacesTestCase {
+public class JSFC_1746Test extends BaseSeleniumTest {
 
     // JSFC-1746 Exception after "Clear selection" for Data Table
      @Test

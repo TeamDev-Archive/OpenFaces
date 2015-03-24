@@ -15,7 +15,7 @@ package org.openfaces.component.foreach;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.BaseSeleniumTest;
 import org.openqa.selenium.By;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.ForEachInspector;
@@ -26,7 +26,7 @@ import org.seleniuminspector.openfaces.SuggestionFieldInspector;
 /**
  * @author Alexey Tarasyuk
  */
-public class ForEachTest extends OpenFacesTestCase {
+public class ForEachTest extends BaseSeleniumTest {
 
     @Test
     public void testForEachWithoutItems() {
