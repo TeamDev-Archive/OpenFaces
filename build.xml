@@ -6,7 +6,7 @@
 
   <buildnumber file="build.number"/>
   <property file="ofversion.properties"/>
-  <property name="of-version" value="${ofversion}.40"/>
+  <property name="of-version" value="${ofversion}.${build.number}"/>
 
   <property name="build.compiler" value="javac1.5"/>
 
