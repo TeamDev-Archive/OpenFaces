@@ -1,8 +1,9 @@
 <project name="OpenFaces Library" default="build" basedir=".">
 
   <buildnumber file="build.number"/>
-  <property file="ofversion.properties"/>
+  <property file="../ofversion.properties"/>
 
+  <property name="lib.dir" location="../lib"/>
   <property name="src.dir" location="source"/>
   <property name="target.dir" location="target"/>
   <property name="classes.dir" location="${target.dir}/classes"/>
@@ -92,7 +93,6 @@
 
   <target name="-build-if-lib-not-set" unless="lib.dir"
           description="generate the distribution">
-    <property name="lib.dir" location="lib"/>
     <property name="el.lib.dir" location="${lib.dir}/el"/>
     <property name="jsf.ri.lib.dir" location="${lib.dir}/mojarra"/>
     <property name="portlets.lib.dir" location="${lib.dir}/portals"/>

@@ -1,5 +1,7 @@
 <project name="OpenFaces Project Build Script" default="build" basedir=".">
 
+  <property file="deployment.properties"/>
+  <property environment="env"/>
   <property name="components.dir" location="openFaces"/>
 
   <buildnumber file="build.number"/>
@@ -10,13 +12,16 @@
 
   <property name="target.dir" location="target"/>
   <property name="target-lib.dir" location="${target.dir}/lib"/>
-  <property name="openfaces-jar.file" location="${target-lib.dir}/openfaces-${of-version}.jar"/>
+  <property name="openfaces-jar.file" location="${target-lib.dir}/openfaces-3.1.EA1.4.jar"/>
+  <property name="openfaces-weblogic-jar.file" location="${target-lib.dir}/openfaces-${of-version}-weblogic-jsp.jar"/>
 
   <property name="test-app-jsp.dir" location="testApp/jsp"/>
-  <property name="test-app-facelets.dir" location="testApp/facelets"/>
+  <property name="TestAppFacelets.dir" location="testApp/facelets"/>
   <property name="live-demo.dir" location="liveDemo/jsp"/>
   <property name="live-demo-facelets.dir" location="liveDemo/facelets"/>
-
+  <property name="target-war" location="target/war"/>
+  <property name="war-file-name" location="TestAppFacelets.war"/>
+  <property name="target-war.file" location="${target-war}/TestAppFacelets.war"/>
 
   <property name="funcTests.dir" location="funcTests"/>
   <property name="funcTests-source.dir" location="${funcTests.dir}/source"/>
@@ -33,8 +38,21 @@
   <property name="funcTestsFrameworkManifest.file" location="${funcTestsFramework-target.dir}/manifest.mf"/>
 
   <property name="webDriverFuncTests.dir" location="webDriverFuncTests"/>
-  <property name="webDriverFuncTests-source.dir" location="${webDriverFuncTests.dir}/source"/>
-  <property name="webDriverFuncTests-target.dir" location="${webDriverFuncTests.dir}/target"/>
+
+  <property name="compile.debug" value="true" />
+  <property name="tomcat.home" value="${env.CATALINA_HOME}"/>
+  <property name="build.home" value="${basedir}"/>
+  <property name="project.lib" value="${basedir}/lib" />
+
+  <path id="catalina.classpath">
+    <fileset dir="${tomcat.home}/bin">
+      <include name="*.jar"/>
+    </fileset>
+    <pathelement location="${tomcat.home}/lib"/>
+    <fileset dir="${tomcat.home}/lib">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
 
   <target name="init">
     <tstamp/>
@@ -49,6 +67,7 @@
     <ant dir="${components.dir}" target="build" inheritall="false">
       <property name="build.compiler" value="javac1.5"/>
       <property name="target-jar.file" value="${openfaces-jar.file}"/>
+      <property name="target-weblogic-jar.file" value="${openfaces-weblogic-jar.file}"/>
       <property name="lib.dir" value="../lib"/>
       <property name="retain.classes.dir" value="true"/>
       <property file="ofversion.properties"/>
@@ -63,7 +82,7 @@
     <echo>Test Application (JSP-based version) built successfully.</echo>
 
     <echo>Building Test Application (Facelets-based version)...</echo>
-    <ant dir="${test-app-facelets.dir}" target="build" inheritall="false">
+    <ant dir="${TestAppFacelets.dir}" target="build" inheritall="false">
       <property name="openfaces-jar.file" value="${openfaces-jar.file}"/>
       <property name="ofversion" value="${ofversion}"/>
     </ant>
@@ -91,15 +110,16 @@
 
   <target name="compile-func-test-framework" description="Compile framework required for functional testing">
     <mkdir dir="${funcTestsFramework-target.dir}"/>
-    <javac srcdir="${funcTestsFramework-source.dir}" destdir="${funcTestsFramework-target.dir}" debug="true"
+    <javac srcdir="${funcTestsFramework-source.dir}" destdir="${funcTestsFramework-target.dir}"
+           debug="true" includeantruntime="false"
            source="1.5" target="1.5">
       <classpath>
+        <fileset file="${openfaces-jar.file}"/>
         <pathelement path="lib/seleniuminspector/selenium-java-2.14.0.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-inspector.jar"/>
         <pathelement path="lib/mojarra/javax.faces-2.1.11.jar"/>
         <pathelement path="testLib/junit.jar"/>
-        <fileset file="${openfaces-jar.file}"/>
       </classpath>
     </javac>
     <manifest file="${funcTestsFrameworkManifest.file}">
@@ -112,10 +132,18 @@
     <copy file="lib/seleniuminspector/selenium-java-2.14.0.jar" todir="${funcTestsFramework-distrib.dir}"/>
   </target>
 
-  <target name="compile-func-tests" depends="compile-func-test-framework" description="Compile functional tests">
+  <target name="-fail-if-no-openfaces-jar" unless="openfaces-jar.file">
+    <fail>"openfaces-jar.file" property must be specified</fail>
+  </target>
+
+  <target name="-fail-if-no-war" unless="target-war.file">
+    <fail>"Facelets war file" must be specified</fail>
+  </target>
+
+  <target name="compile-func-tests" depends="-fail-if-no-openfaces-jar, compile-func-test-framework" description="Compile functional tests">
     <delete dir="${funcTests-target.dir}/classes"/>
     <mkdir dir="${funcTests-target.dir}/classes"/>
-    <javac srcdir="${funcTests-source.dir}" destdir="${funcTests-target.dir}/classes" debug="true" encoding="UTF-8">
+    <javac includeantruntime="false" srcdir="${funcTests-source.dir}" destdir="${funcTests-target.dir}/classes" debug="true" encoding="UTF-8">
       <classpath>
         <pathelement path="${openfaces-jar.file}"/>
         <pathelement path="${openfaces-inspectors-jar.file}"/>
@@ -126,6 +154,7 @@
         <pathelement path="lib/seleniuminspector/selenium-java-2.14.0.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-inspector.jar"/>
+        <path refid="catalina.classpath"/>
       </classpath>
     </javac>
     <copy todir="${funcTests-target.dir}/classes">
@@ -138,8 +167,27 @@
     </copy>
   </target>
 
-  <target name="run-func-tests" depends="compile-func-tests" description="Run functional tests">
 
+  <target name="run-func-tests" depends="build">
+    <ant target="server-stop"/>
+    <antcall target="deploy-tomcat"/>
+    <sleep seconds="10"/>
+
+    <parallel>
+      <ant target="server-start"/>
+
+      <sequential>
+        <echo message="Run Functional tests" />
+        <sleep seconds="30"/>
+        <ant target="run-tests"/>
+
+        <ant target="server-stop"/>
+        <ant target="undeploy-tomcat"/>
+      </sequential>
+    </parallel>
+  </target>
+
+  <target name="run-tests">
     <mkdir dir="${funcTests-target-reports.dir}"/>
 
     <condition property="testAppContextPath" value="${context.path}">
@@ -193,7 +241,32 @@
       </fileset>
     </copy>
 
-    <fail if="junit_test_failed" message="FUNCTIONAL TEST(S) FAILED"/>
+    <antcall target="print-error-message"/>
+  </target>
+
+  <!--Deployment section-->
+  <target name="if-has-tomcat">
+    <condition property="has.tomcat">
+      <available resource="${tomcat.home}"/>
+    </condition>
+    <echo message="Tomcat path: ${tomcat.home}; Check Tomcat exists: ${has.tomcat}"/>
+  </target>
+
+  <target name="check-if-deployed" depends="if-has-tomcat" if="has.tomcat">
+    <condition property="is.webapp.deployed">
+      <http url="${tomcat.server.host}:${tomcat.server.port}/"/>
+    </condition>
+    <echo message="Check Servlet is already deployed: ${is.webapp.deployed}, by ${tomcat.server.host}:${tomcat.server.port}/"/>
+  </target>
+
+  <target name="is-tomcat-running" depends="if-has-tomcat">
+    <condition property="if.tomcat.running">
+      <socket server="${tomcat.server.host}" port="${tomcat.server.port}" />
+    </condition>
+  </target>
+
+  <target name="print-error-message" if="junit_test_failed">
+    <echo message="FUNCTIONAL TEST(S) FAILED"/>
   </target>
 
   <target name="run-func-tests-jsp" description="Run functional tests in JSP-based JSF 2.0 environment">
@@ -212,57 +285,10 @@
     <antcall target="run-func-tests"/>
   </target>
 
-  <target name="build-webdriver-test">
-    <delete dir="${webDriverFuncTests-target.dir}/classes"/>
-    <mkdir dir="${webDriverFuncTests-target.dir}/classes"/>
-    <javac source="1.7" srcdir="${webDriverFuncTests-source.dir}" fork="true"
-           destdir="${webDriverFuncTests-target.dir}/classes">
-      <classpath>
-        <pathelement path="${openfaces-jar.file}"/>
-        <pathelement path="testLib/junit.jar"/>
-        <pathelement path="lib/selenium/selenium-java-2.44.0.jar"/>
-        <pathelement path="lib/selenium/selenium-server-standalone-2.44.0.jar"/>
-        <pathelement path="lib/selenium/selenide-2.14.jar"/>
-      </classpath>
-    </javac>
-  </target>
-
-  <target name="run-webdriver-test" depends="build-webdriver-test">
-    <delete dir="${webDriverFuncTests-target.dir}/report"/>
-    <mkdir dir="${webDriverFuncTests-target.dir}/report"/>
-    <mkdir dir="${webDriverFuncTests-target.dir}/report/xml"/>
-    <junit printsummary="yes" haltonfailure="yes">
-      <classpath>
-        <pathelement path="${openfaces-jar.file}"/>
-        <pathelement path="${webDriverFuncTests-target.dir}/classes"/>
-        <pathelement path="testLib/junit.jar"/>
-        <pathelement path="lib/selenium/selenium-java-2.44.0.jar"/>
-        <pathelement path="lib/selenium/selenium-server-standalone-2.44.0.jar"/>
-      </classpath>
-
-      <formatter type="xml"/>
-      <formatter usefile="false" type="plain"/>
-      <!--<test name="org.openfaces.test.KickOffTest" todir="${webDriverFuncTests-target.dir}/report/xml"/>-->
-      <batchtest todir="${webDriverFuncTests-target.dir}/report/xml">
-        <formatter type="xml"/>
-        <fileset dir="${webDriverFuncTests-source.dir}">
-          <include name="**/*Test.java"/>
-        </fileset>
-      </batchtest>
-    </junit>
-    <junitreport todir="${webDriverFuncTests-target.dir}/report">
-      <fileset dir="${webDriverFuncTests-target.dir}/report/xml">
-        <include name="TEST*.xml"/>
-      </fileset>
-      <report format="frames" todir="${webDriverFuncTests-target.dir}/report/html"/>
-    </junitreport>
-  </target>
-
-
   <!--Have to change this to your local Tomcat installation-->
-  <property name="tomcat.home" value="D:\tomcat7"/>
+  <target name="server-start"  depends="is-tomcat-running" unless="if.tomcat.running">
+    <echo message="Stop server ${tomcat.manager.url}"/>
 
-  <target name="server-start">
     <java classname="org.apache.catalina.startup.Bootstrap" fork="true" spawn="true">
       <classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar"/>
       <jvmarg value="-Dcatalina.home=${tomcat.home}"/>
@@ -270,6 +296,8 @@
   </target>
 
   <target name="server-stop">
+    <echo message="Tomcat home: ${tomcat.manager.url}"/>
+
     <java classname="org.apache.catalina.startup.Bootstrap" fork="true">
       <classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar"/>
       <jvmarg value="-Dcatalina.home=${tomcat.home}"/>
@@ -277,45 +305,8 @@
     </java>
   </target>
 
-
-  <taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask">
-    <classpath>
-      <pathelement location="${tomcat.home}/lib/catalina-ant.jar"/>
-      <pathelement location="${tomcat.home}/lib/tomcat-coyote.jar"/>
-      <pathelement location="${tomcat.home}/lib/tomcat-util.jar"/>
-    </classpath>
-  </taskdef>
-
-  <taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask">
-    <classpath>
-      <pathelement location="${tomcat.home}/lib/catalina-ant.jar"/>
-    </classpath>
-  </taskdef>
-
-
   <property name="build-directory" value="liveDemo/facelets/target"/>
   <property name="war-file-name" value="openfaces-demo-facelets.war"/>
-
-  <!--It deploys using "hot deploy". Anyway, it does not work as expected. So, commit it, I'd better copy war and start Tomcat.-->
-  <!--<target name="undeploy" description="undeploy from tomcat">-->
-    <!--<undeploy-->
-            <!--failonerror="no"-->
-            <!--url="${tomcat-manager-url}"-->
-            <!--path="/${project-name}"-->
-            <!--/>-->
-  <!--</target>-->
-
-  <!--<target name="deploy" description="deploy to tomcat">-->
-    <!--<echo>deploying from client</echo>-->
-    <!--<deploy-->
-            <!--username="${tomcat-manager-login}"-->
-            <!--password="${tomcat-manager-password}"-->
-            <!--url="${tomcat-manager-url}"-->
-            <!--path="/${project-name}"-->
-            <!--war="file:${build-directory}/${war-file-name}"-->
-            <!-->-->
-    <!--</deploy>-->
-  <!--</target>-->
 
   <target name="deploy-demo-facelets" description="deploy Live Demo Facelets to tomcat">
     <echo>Copy live demo facelets on Tomcat</echo>
@@ -324,15 +315,22 @@
     </copy>
   </target>
 
+  <target name="deploy-tomcat" depends="compile-func-tests, undeploy-tomcat, -fail-if-no-war"
+          description="Install application to Servlet Container">
+    <echo message="Installing Application to tomcat server"/>
+    <echo message="${war-file-name}"/>
 
-  <target name="run-demo-facelets-tests" depends="build">
-    <ant target="server-stop"/>
-    <sleep seconds="10"/>
-    <ant target="deploy-demo-facelets"/>
-    <ant target="server-start"/>
-    <sleep seconds="30"/>
-    <ant target="run-webdriver-test"/>
-    <ant target="server-stop"/>
+    <echo message="Copy file: [${target-war.file}] to dir:[${tomcat.home}/webapps]"/>
+
+    <copy file="${target-war.file}" todir="${tomcat.home}/webapps"/>
+  </target>
+
+  <target name="undeploy-tomcat"
+          description="Install application to Servlet Container">
+    <echo message="Removing Application from tomcat server: ${tomcat.home}\webapps\TestAppFacelets.war"/>
+
+    <delete dir="${tomcat.home}\webapps\TestAppFacelets" />
+    <delete file="${tomcat.home}\webapps\TestAppFacelets.war"/>
   </target>
 
 </project>

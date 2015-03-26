@@ -1,33 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AntConfiguration">
-    <defaultAnt bundledAnt="true" />
     <buildFile url="file://$PROJECT_DIR$/build.xml">
       <additionalClassPath>
         <entry path="file://$PROJECT_DIR$/tools/ant-libs/jakarta-oro-2.0.8.zip" />
         <entry path="file://$PROJECT_DIR$/tools/ant-libs/commons-net-1.4.1.zip" />
       </additionalClassPath>
-      <antReference projectDefault="true" />
-      <customJdkName value="" />
-      <maximumHeapSize value="128" />
       <maximumStackSize value="32" />
-      <properties />
     </buildFile>
     <buildFile url="file://$PROJECT_DIR$/openFaces/build.xml">
-      <additionalClassPath />
-      <antReference projectDefault="true" />
-      <customJdkName value="" />
-      <maximumHeapSize value="128" />
       <maximumStackSize value="32" />
-      <properties />
     </buildFile>
     <buildFile url="file://$PROJECT_DIR$/openFacesInspectors/build.xml">
-      <additionalClassPath />
-      <antReference projectDefault="true" />
-      <customJdkName value="" />
-      <maximumHeapSize value="128" />
       <maximumStackSize value="32" />
-      <properties />
     </buildFile>
   </component>
   <component name="ArtifactManager">
@@ -1194,7 +1179,6 @@
       <module fileurl="file://$PROJECT_DIR$/testApp/core/TestAppCore.iml" filepath="$PROJECT_DIR$/testApp/core/TestAppCore.iml" group="TestApp" />
       <module fileurl="file://$PROJECT_DIR$/testApp/facelets/TestAppFacelets.iml" filepath="$PROJECT_DIR$/testApp/facelets/TestAppFacelets.iml" group="TestApp" />
       <module fileurl="file://$PROJECT_DIR$/testApp/jsp/TestAppJsp.iml" filepath="$PROJECT_DIR$/testApp/jsp/TestAppJsp.iml" group="TestApp" />
-      <module fileurl="file://$PROJECT_DIR$/webDriverFuncTests/webDriverFuncTests.iml" filepath="$PROJECT_DIR$/webDriverFuncTests/webDriverFuncTests.iml" group="LiveDemo" />
     </modules>
   </component>
   <component name="ProjectResources">

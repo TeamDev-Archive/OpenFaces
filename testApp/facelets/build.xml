@@ -17,9 +17,9 @@
   <property name="web-inf-core.dir" location="../core/web/WEB-INF"/>
   <property name="resources.dir" location="web"/>
   <property name="resources-core.dir" location="../core/web"/>
-  <property name="target.dir" location="target"/>
+  <property name="target.dir" location="../../target/war"/>
   <property name="resources.target.dir" location="${target.dir}/resources"/>
-  <property name="target-war.file" location="${target.dir}/test-app-facelets.war"/>
+  <property name="target-war.file" location="${target.dir}/TestAppFacelets.war"/>
   <property name="classes.dir" location="${target.dir}/classes"/>
 
   <fileset id="basic-libraries" dir="${lib.dir}">
