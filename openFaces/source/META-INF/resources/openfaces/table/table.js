@@ -156,7 +156,7 @@ O$.Table = {
     });
   },
 
-  _init:function (tableId, initParams, useAjax, rolloverClass, apiInitializationFunctionName, deferredBodyLoading, rowMinHeight) {
+  _init:function (tableId, initParams, useAjax, rolloverClass, apiInitializationFunctionName, deferredBodyLoading, rowMinHeight, focusable) {
     var table = O$.initComponent(tableId, {rollover:rolloverClass}, {
       _useAjax:useAjax,
       _rowMinHeight: rowMinHeight,
@@ -270,6 +270,13 @@ O$.Table = {
     }
 
     O$._invokeComponentAjaxReloadEnd(tableId);
+
+    //HiddenFocus is added to unfocusable table to resolve problem with scroll shifting after table rendering.
+    if (!focusable){
+      var tabIndex = -1;
+      var focusControl = O$.createHiddenFocusElement(tableId, tabIndex);
+      table.parentNode.insertBefore(focusControl, table);
+    }
   },
 
   _initApiFunctions:function (table) {

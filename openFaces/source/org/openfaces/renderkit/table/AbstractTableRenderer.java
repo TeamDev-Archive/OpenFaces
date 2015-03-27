@@ -359,6 +359,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             ScriptBuilder buf) throws IOException {
         TableStyles defaultStyles = TableStructure.getDefaultStyles(table);
         TableStructure tableStructure = TableStructure.getCurrentInstance(table);
+        boolean focusable = isKeyboardNavigationApplicable(table);
 
         buf.initScript(context, table, "O$.Table._init",
                 tableStructure.getInitParam(context, defaultStyles),
@@ -367,7 +368,8 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
                         StyleGroup.rolloverStyleGroup(), table.getRolloverClass()),
                 getInitJsAPIFunctionName(),
                 table.getDeferBodyLoading(),
-                table.getRowMinHeight());
+                table.getRowMinHeight(),
+                focusable);
     }
 
     protected String getInitJsAPIFunctionName() {
