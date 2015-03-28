@@ -528,7 +528,7 @@ O$.DropDown = {
           var missingWidth = contentWidth - popup.clientWidth;
           if (missingWidth > 0)
             popup.style.width = popup.offsetWidth + missingWidth + "px";
-          if (recalculateWidth)
+          if (recalculateWidth && popup.clientWidth != 0)
             innerTable.width = popup.clientWidth;
         } else {
           if (recalculateWidth) {

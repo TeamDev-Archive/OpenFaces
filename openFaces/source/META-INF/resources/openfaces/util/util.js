@@ -22,7 +22,7 @@ if (!window.O$) {
     var ie;
     if (O$.isExplorer) {
       ie = O$.isExplorer();
-      if (ie && !obj.customPropertiesForIE) {
+      if (ie && obj && !obj.customPropertiesForIE) {
         obj.customPropertiesForIE = [];
       }
     }
