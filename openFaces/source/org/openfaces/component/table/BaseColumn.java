@@ -559,7 +559,7 @@ public class BaseColumn extends UIColumn {
         footerOnmouseup = onmouseup;
     }
 
-    public boolean getCustomRendered(){
+    public boolean isCustomRendered(){
         return ValueBindings.get(this, "customRendered", customRendered, false);
     }
 
@@ -959,7 +959,7 @@ public class BaseColumn extends UIColumn {
 
     @Override
     public boolean isRendered(){
-        if (getCustomRendered()){
+        if (isCustomRendered()){
             return ValueBindings.get(this, "rendered", null, true);
         }
         return super.isRendered();

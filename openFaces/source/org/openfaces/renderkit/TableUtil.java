@@ -25,6 +25,7 @@ import org.openfaces.util.Components;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.Styles;
+import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
@@ -106,27 +107,46 @@ public class TableUtil {
 
     public static List<BaseColumn> getColumnsFromList(FacesContext context, List<UIComponent> children) {
         List<BaseColumn> columns = new ArrayList<BaseColumn>();
+        List<String> nonHiddenColumns = new ArrayList<String>();
         for (UIComponent child : children) {
             if (child instanceof BaseColumn && !(child instanceof ColumnGroup)) {
                 Components.generateIdIfNotSpecified(child);
-                if (child.isRendered())
-                    columns.add((BaseColumn) child);
+                if (child.isRendered()){
+                    BaseColumn column = (BaseColumn) child;
+                    columns.add(column);
+                    if (column.isCustomRendered())
+                        nonHiddenColumns.add(column.getId());
+                }
             } else if (child instanceof Columns) {
                 Columns tableColumns = (Columns) child;
                 List<DynamicColumn> dynamicColumns = tableColumns.toColumnList(context);
                 for (DynamicColumn dynamicColumn : dynamicColumns) {
-                    if (dynamicColumn.isRendered())
+                    if (dynamicColumn.isRendered()){
                         columns.add(dynamicColumn);
+                        if (dynamicColumn.isCustomRendered()){
+                            nonHiddenColumns.add(dynamicColumn.getId());
+                        }
+                    }
                 }
             } else if (child instanceof ColumnGroup) {
                 ColumnGroup tcg = (ColumnGroup) child;
                 List<BaseColumn> colGroup = getColumnsFromList(context, tcg.getChildren());
                 for (BaseColumn baseColumn : colGroup) {
-                    if (baseColumn.isRendered())
+                    if (baseColumn.isRendered()){
                         columns.add(baseColumn);
+                        if (baseColumn.isCustomRendered()){
+                            nonHiddenColumns.add(baseColumn.getId());
+                        }
+                    }
                 }
             }
         }
+        UIComponent child = children.get(0);
+        if (!nonHiddenColumns.isEmpty() && child != null && child.getParent() instanceof AbstractTable){
+            AbstractTable table = (AbstractTable)child.getParent();
+            updateHiddenColumns(nonHiddenColumns, table);
+        }
+
         return columns;
     }
 
@@ -175,4 +195,16 @@ public class TableUtil {
         return context.getExternalContext().getRequestMap().containsKey(KEY_FILTERING_TOGGLED);
     }
 
+    private static void updateHiddenColumns(List<String> nonHiddenColumns, AbstractTable table) {
+        List<String> updatedHiddenColumns = new ArrayList<String>();
+        Iterable<String> hiddenColumns = table.getHiddenColumns();
+        if (hiddenColumns != null){
+            for (String hiddenColumn: hiddenColumns){
+                if (!nonHiddenColumns.contains(hiddenColumn))
+                    updatedHiddenColumns.add(hiddenColumn);
+            }
+        }
+        table.setHiddenColumns(updatedHiddenColumns);
+        ValueBindings.set(table, "hiddenColumns", updatedHiddenColumns);
+    }
 }
