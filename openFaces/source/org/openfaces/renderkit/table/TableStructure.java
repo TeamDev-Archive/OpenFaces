@@ -582,7 +582,10 @@ public class TableStructure extends TableElement {
                 columnOrGroup.getOnmouseover(),
                 columnOrGroup.getOnmousemove(),
                 columnOrGroup.getOnmouseout(),
-                columnOrGroup.getOnmouseup());
+                columnOrGroup.getOnmouseup(),
+                columnOrGroup.getOnkeypress(),
+                columnOrGroup.getOnkeydown(),
+                columnOrGroup.getOnkeyup());
         boolean hasCellWrappers = columnOrGroup instanceof TreeColumn;
         if (hasCellWrappers)
             columnObj.put("hasCellWrappers", hasCellWrappers);
@@ -602,7 +605,10 @@ public class TableStructure extends TableElement {
                     columnOrGroup.getHeaderOnmouseover(),
                     columnOrGroup.getHeaderOnmousemove(),
                     columnOrGroup.getHeaderOnmouseout(),
-                    columnOrGroup.getHeaderOnmouseup());
+                    columnOrGroup.getHeaderOnmouseup(),
+                    columnOrGroup.getHeaderOnkeypress(),
+                    columnOrGroup.getHeaderOnkeydown(),
+                    columnOrGroup.getHeaderOnkeyup());
         }
         if (ordinaryColumn && tableHeader.hasSubHeader()) {
             CellCoordinates subHeaderCellCoordinates = tableHeader.findCell(columnOrGroup, CellKind.COL_SUBHEADER);
@@ -626,7 +632,10 @@ public class TableStructure extends TableElement {
                     columnOrGroup.getBodyOnmouseover(),
                     columnOrGroup.getBodyOnmousemove(),
                     columnOrGroup.getBodyOnmouseout(),
-                    columnOrGroup.getBodyOnmouseup());
+                    columnOrGroup.getBodyOnmouseup(),
+                    columnOrGroup.getBodyOnkeypress(),
+                    columnOrGroup.getBodyOnkeydown(),
+                    columnOrGroup.getBodyOnkeyup());
         }
         TableFooter tableFooter = getFooter();
         CellCoordinates footerCellCoordinates = tableFooter.findCell(columnOrGroup, CellKind.COL_HEADER);
@@ -642,7 +651,10 @@ public class TableStructure extends TableElement {
                     columnOrGroup.getFooterOnmouseover(),
                     columnOrGroup.getFooterOnmousemove(),
                     columnOrGroup.getFooterOnmouseout(),
-                    columnOrGroup.getFooterOnmouseup());
+                    columnOrGroup.getFooterOnmouseup(),
+                    columnOrGroup.getFooterOnkeypress(),
+                    columnOrGroup.getFooterOnkeydown(),
+                    columnOrGroup.getFooterOnkeyup());
         }
         if (!(columnOrGroup instanceof ColumnGroup))
             columnObj.put("menuAllowed", columnOrGroup.getMenuAllowed());
@@ -709,7 +721,10 @@ public class TableStructure extends TableElement {
                                          String onmouseover,
                                          String onmousemove,
                                          String onmouseout,
-                                         String onmouseup) throws JSONException {
+                                         String onmouseup,
+                                         String onkeypress,
+                                         String onkeydown,
+                                         String onkeyup) throws JSONException {
         appendHandlerEntry(columnObj, "onclick", onclick);
         appendHandlerEntry(columnObj, "ondblclick", ondblclick);
         appendHandlerEntry(columnObj, "onmousedown", onmosedown);
@@ -717,6 +732,9 @@ public class TableStructure extends TableElement {
         appendHandlerEntry(columnObj, "onmousemove", onmousemove);
         appendHandlerEntry(columnObj, "onmouseout", onmouseout);
         appendHandlerEntry(columnObj, "onmouseup", onmouseup);
+        appendHandlerEntry(columnObj, "onkeypress", onkeypress);
+        appendHandlerEntry(columnObj, "onkeydown", onkeydown);
+        appendHandlerEntry(columnObj, "onkeyup", onkeyup);
     }
 
     private String getFilterRowSeparator(TableStyles tableStyles) {

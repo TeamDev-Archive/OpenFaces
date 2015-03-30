@@ -152,6 +152,18 @@ public class ColumnsJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("headerOnmouseup", headerOnmouseup);
     }
 
+    public void setHeaderOnkeypress(ValueExpression headerOnkeypress) {
+        getDelegate().setPropertyValue("headerOnkeypress", headerOnkeypress);
+    }
+
+    public void setHeaderOnkeydown(ValueExpression headerOnkeydown) {
+        getDelegate().setPropertyValue("headerOnkeydown", headerOnkeydown);
+    }
+
+    public void setHeaderOnkeyup(ValueExpression headerOnkeyup) {
+        getDelegate().setPropertyValue("headerOnkeyup", headerOnkeyup);
+    }
+
     public void setBodyOnclick(ValueExpression bodyOnclick) {
         getDelegate().setPropertyValue("bodyOnclick", bodyOnclick);
     }
@@ -180,6 +192,18 @@ public class ColumnsJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("bodyOnmouseup", bodyOnmouseup);
     }
 
+    public void setBodyOnkeypress(ValueExpression bodyOnkeypress) {
+        getDelegate().setPropertyValue("bodyOnkeypress", bodyOnkeypress);
+    }
+
+    public void setBodyOnkeydown(ValueExpression bodyOnkeydown) {
+        getDelegate().setPropertyValue("bodyOnkeydown", bodyOnkeydown);
+    }
+
+    public void setBodyOnkeyup(ValueExpression bodyOnkeyup) {
+        getDelegate().setPropertyValue("bodyOnkeyup", bodyOnkeyup);
+    }
+
     public void setFooterOnclick(ValueExpression footerOnclick) {
         getDelegate().setPropertyValue("footerOnclick", footerOnclick);
     }
@@ -206,6 +230,18 @@ public class ColumnsJspTag extends AbstractComponentJspTag {
 
     public void setFooterOnmouseup(ValueExpression footerOnmouseup) {
         getDelegate().setPropertyValue("footerOnmouseup", footerOnmouseup);
+    }
+
+    public void setFooterOnkeypress(ValueExpression footerOnkeypress) {
+        getDelegate().setPropertyValue("footerOnkeypress", footerOnkeypress);
+    }
+
+    public void setFooterOnkeydown(ValueExpression footerOnkeydown) {
+        getDelegate().setPropertyValue("footerOnkeydown", footerOnkeydown);
+    }
+
+    public void setFooterOnkeyup(ValueExpression footerOnkeyup) {
+        getDelegate().setPropertyValue("footerOnkeyup", footerOnkeyup);
     }
 
     public void setIndexVar(ValueExpression indexVar) {

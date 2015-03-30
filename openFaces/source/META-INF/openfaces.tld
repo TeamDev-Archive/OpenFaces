@@ -1694,6 +1694,42 @@
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the column.
+      </description>
+      <name>onkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the column.
+      </description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the column.
+      </description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>JavaScript code that should be executed on the client when the user clicks
@@ -1779,6 +1815,42 @@
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the column's header.
+      </description>
+      <name>headerOnkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the column's header.
+      </description>
+      <name>headerOnkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the column's header.
+      </description>
+      <name>headerOnkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>JavaScript code that should be executed on the client when the user clicks
@@ -1854,6 +1926,42 @@
         body.
       </description>
       <name>bodyOnmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the column's body.
+      </description>
+      <name>bodyOnkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the column's body.
+      </description>
+      <name>bodyOnkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the column's body.
+      </description>
+      <name>bodyOnkeyup</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -1946,6 +2054,43 @@
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the column's footer.
+      </description>
+      <name>footerOnkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the column's footer.
+      </description>
+      <name>footerOnkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the column's footer.
+      </description>
+      <name>footerOnkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
     <attribute>
       <description>Specifies the optional converter that should be used to when displaying grouping values in each group
         header row. A converter is derived from the column&apos;s output component if this attribute is not specified
@@ -3663,6 +3808,42 @@
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the column.
+      </description>
+      <name>onkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the column.
+      </description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the column.
+      </description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>JavaScript code that should be executed on the client when the user clicks
@@ -3748,6 +3929,42 @@
         that uses a column data variable specified in the "var" attribute.
       </description>
       <name>headerOnmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the column's header.
+      </description>
+      <name>headerOnkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the column's header.
+      </description>
+      <name>headerOnkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the column's header.
+      </description>
+      <name>headerOnkeyup</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -3847,6 +4064,42 @@
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the column's body.
+      </description>
+      <name>bodyOnkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the column's body.
+      </description>
+      <name>bodyOnkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the column's body.
+      </description>
+      <name>bodyOnkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>JavaScript code that should be executed on the client when the user clicks
@@ -3939,6 +4192,43 @@
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the column's footer.
+      </description>
+      <name>footerOnkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the column's footer.
+      </description>
+      <name>footerOnkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the column's footer.
+      </description>
+      <name>footerOnkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
     <attribute>
       <description>The name of the request-scope variable under which the current column index is available when
         evaluating value binding expressions specified in this tag&apos;s attributes.
@@ -4205,6 +4495,42 @@
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the column group.
+      </description>
+      <name>onkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the column group.
+      </description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the column group.
+      </description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>JavaScript code that should be executed on the client when the user clicks
@@ -4283,6 +4609,42 @@
         over the column group's header.
       </description>
       <name>headerOnmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the column group's header.
+      </description>
+      <name>headerOnkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the column group's header.
+      </description>
+      <name>headerOnkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the column group's header.
+      </description>
+      <name>headerOnkeyup</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -4375,6 +4737,42 @@
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the column group's body.
+      </description>
+      <name>bodyOnkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the column group's body.
+      </description>
+      <name>bodyOnkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the column group's body.
+      </description>
+      <name>bodyOnkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>JavaScript code that should be executed on the client when the user clicks
@@ -4453,6 +4851,42 @@
         over the column group's footer.
       </description>
       <name>footerOnmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the column group's footer.
+      </description>
+      <name>footerOnkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the column group's footer.
+      </description>
+      <name>footerOnkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the column group's footer.
+      </description>
+      <name>footerOnkeyup</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -7258,6 +7692,42 @@
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the selection column.
+      </description>
+      <name>onkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the selection column.
+      </description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the selection column.
+      </description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>JavaScript code that should be executed on the client when the user clicks
@@ -7336,6 +7806,42 @@
         over the selection column's header.
       </description>
       <name>headerOnmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the selection column's header.
+      </description>
+      <name>headerOnkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the selection column's header.
+      </description>
+      <name>headerOnkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the selection column's header.
+      </description>
+      <name>headerOnkeyup</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -7428,6 +7934,42 @@
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the selection column's body.
+      </description>
+      <name>bodyOnkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the selection column's body.
+      </description>
+      <name>bodyOnkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the selection column's body.
+      </description>
+      <name>bodyOnkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>JavaScript code that should be executed on the client when the user clicks
@@ -7506,6 +8048,42 @@
         over the selection column's footer.
       </description>
       <name>footerOnmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the selection column's footer.
+      </description>
+      <name>footerOnkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the selection column's footer.
+      </description>
+      <name>footerOnkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the selection column's footer.
+      </description>
+      <name>footerOnkeyup</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -7884,6 +8462,42 @@
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the checkbox column.
+      </description>
+      <name>onkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the checkbox column.
+      </description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the checkbox column.
+      </description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>JavaScript code that should be executed on the client when the user clicks
@@ -7962,6 +8576,42 @@
         over the checkbox column's header.
       </description>
       <name>headerOnmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the checkbox column's header.
+      </description>
+      <name>headerOnkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the checkbox column's header.
+      </description>
+      <name>headerOnkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the checkbox column's header.
+      </description>
+      <name>headerOnkeyup</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -8054,6 +8704,42 @@
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the checkbox column's body.
+      </description>
+      <name>bodyOnkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the checkbox column's body.
+      </description>
+      <name>bodyOnkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the checkbox column's body.
+      </description>
+      <name>bodyOnkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>JavaScript code that should be executed on the client when the user clicks
@@ -8139,6 +8825,43 @@
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the checkbox column's footer.
+      </description>
+      <name>footerOnkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the checkbox column's footer.
+      </description>
+      <name>footerOnkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the checkbox column's footer.
+      </description>
+      <name>footerOnkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
     <attribute>
       <description>The value that can serve as a convenience substitution for specifying &amp;lt;h:outputText&gt; in the
         column's &quot;header&quot; facet, or serve for identifying the column name in such components as &amp;lt;o:comopsitefilter&gt;
@@ -10611,6 +11334,42 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the tree column.
+      </description>
+      <name>onkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the tree column.
+      </description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the tree column.
+      </description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>JavaScript code that should be executed on the client when the user clicks
@@ -10689,6 +11448,42 @@ means that only root nodes and their immediate children are preloaded -->
         over the tree column's header.
       </description>
       <name>headerOnmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the tree column's header.
+      </description>
+      <name>headerOnkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the tree column's header.
+      </description>
+      <name>headerOnkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the tree column's header.
+      </description>
+      <name>headerOnkeyup</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -10781,6 +11576,42 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the tree column's body.
+      </description>
+      <name>bodyOnkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the tree column's body.
+      </description>
+      <name>bodyOnkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the tree column's body.
+      </description>
+      <name>bodyOnkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>JavaScript code that should be executed on the client when the user clicks
@@ -10859,6 +11690,42 @@ means that only root nodes and their immediate children are preloaded -->
         over the tree column's footer.
       </description>
       <name>footerOnmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a
+        key over the tree column's footer.
+      </description>
+      <name>footerOnkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        presses a key over the tree column's footer.
+      </description>
+      <name>footerOnkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user
+        releases a key over the tree column's footer.
+      </description>
+      <name>footerOnkeyup</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>

@@ -54,6 +54,9 @@ public abstract class BaseColumnTag extends AbstractComponentTag {
         setStringProperty(component, "headerOnmousemove");
         setStringProperty(component, "headerOnmouseout");
         setStringProperty(component, "headerOnmouseup");
+        setStringProperty(component, "headerOnkeypress");
+        setStringProperty(component, "headerOnkeydown");
+        setStringProperty(component, "headerOnkeyup");
 
         setStringProperty(component, "bodyOnclick");
         setStringProperty(component, "bodyOndblclick");
@@ -62,6 +65,9 @@ public abstract class BaseColumnTag extends AbstractComponentTag {
         setStringProperty(component, "bodyOnmousemove");
         setStringProperty(component, "bodyOnmouseout");
         setStringProperty(component, "bodyOnmouseup");
+        setStringProperty(component, "bodyOnkeypress");
+        setStringProperty(component, "bodyOnkeydown");
+        setStringProperty(component, "bodyOnkeyup");
 
         setStringProperty(component, "footerOnclick");
         setStringProperty(component, "footerOndblclick");
@@ -70,5 +76,8 @@ public abstract class BaseColumnTag extends AbstractComponentTag {
         setStringProperty(component, "footerOnmousemove");
         setStringProperty(component, "footerOnmouseout");
         setStringProperty(component, "footerOnmouseup");
+        setStringProperty(component, "footerOnkeypress");
+        setStringProperty(component, "footerOnkeydown");
+        setStringProperty(component, "footerOnkeyup");
     }
 }

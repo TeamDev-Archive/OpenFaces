@@ -157,12 +157,14 @@ public class TableUtil {
                 "fixed", "menuAllowed",
                 "style", "styleClass", "headerStyle", "headerClass", "subHeaderStyle", "subHeaderClass",
                 "bodyStyle", "bodyClass", "footerStyle", "footerClass",
-                "onclick", "ondblclick", "onmousedown", "onmouseover", "onmousemove", "onmouseout", "onmouseup",
-                "headerOnclick", "headerOndblclick", "headerOnmousedown", "headerOnmouseover",
-                "headerOnmousemove", "headerOnmouseout", "headerOnmouseup", "bodyOnclick", "bodyOndblclick",
-                "bodyOnmousedown", "bodyOnmouseover", "bodyOnmousemove", "bodyOnmouseout", "bodyOnmouseup",
-                "footerOnclick", "footerOndblclick", "footerOnmousedown", "footerOnmouseover", "footerOnmousemove",
-                "footerOnmouseout", "footerOnmouseup"};
+                "onclick", "ondblclick", "onmousedown", "onmouseover", "onmousemove", "onmouseout",
+                "onmouseup", "onkeypress","onkeydown", "onkeyup", "headerOnclick", "headerOndblclick",
+                "headerOnmousedown","headerOnmouseover", "headerOnmousemove", "headerOnmouseout",
+                "headerOnmouseup", "headerOnkeypress", "headerOnkeydown", "headerOnkeyup", "bodyOnclick",
+                "bodyOndblclick", "bodyOnmousedown", "bodyOnmouseover", "bodyOnmousemove", "bodyOnmouseout",
+                "bodyOnmouseup", "bodyOnkeypress", "bodyOnkeydown", "bodyOnkeyup", "footerOnclick",
+                "footerOndblclick", "footerOnmousedown", "footerOnmouseover", "footerOnmousemove",
+                "footerOnmouseout", "footerOnmouseup", "footerOnkeypress", "footerOnkeydown", "footerOnkeyup"};
         for (String attrName : copiedAttributes) {
             ValueExpression expression = srcComponent.getValueExpression(attrName);
             if (expression != null)

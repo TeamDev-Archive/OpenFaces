@@ -79,6 +79,9 @@ public class BaseColumn extends UIColumn {
     private String onmousemove;
     private String onmouseout;
     private String onmouseup;
+    private String onkeypress;
+    private String onkeydown;
+    private String onkeyup;
 
     private String headerOnclick;
     private String headerOndblclick;
@@ -87,6 +90,9 @@ public class BaseColumn extends UIColumn {
     private String headerOnmousemove;
     private String headerOnmouseout;
     private String headerOnmouseup;
+    private String headerOnkeypress;
+    private String headerOnkeydown;
+    private String headerOnkeyup;
 
     private String bodyOnclick;
     private String bodyOndblclick;
@@ -95,6 +101,9 @@ public class BaseColumn extends UIColumn {
     private String bodyOnmousemove;
     private String bodyOnmouseout;
     private String bodyOnmouseup;
+    private String bodyOnkeypress;
+    private String bodyOnkeydown;
+    private String bodyOnkeyup;
 
     private String footerOnclick;
     private String footerOndblclick;
@@ -103,6 +112,9 @@ public class BaseColumn extends UIColumn {
     private String footerOnmousemove;
     private String footerOnmouseout;
     private String footerOnmouseup;
+    private String footerOnkeypress;
+    private String footerOnkeydown;
+    private String footerOnkeyup;
 
     @Override
     public Object saveState(FacesContext context) {
@@ -111,12 +123,14 @@ public class BaseColumn extends UIColumn {
                 headerValue, footerValue, align, valign, width, resizable, minResizingWidth, fixed, menuAllowed,
                 style, styleClass, headerStyle, headerClass,
                 subHeaderStyle, subHeaderClass, bodyStyle, bodyClass, footerStyle, footerClass,
-                onclick, ondblclick, onmousedown, onmouseover, onmousemove,
-                onmouseout, onmouseup, headerOnclick, headerOndblclick, headerOnmousedown, headerOnmouseover,
-                headerOnmousemove, headerOnmouseout, headerOnmouseup, bodyOnclick, bodyOndblclick,
-                bodyOnmousedown, bodyOnmouseover, bodyOnmousemove, bodyOnmouseout, bodyOnmouseup,
-                footerOnclick, footerOndblclick, footerOnmousedown, footerOnmouseover, footerOnmousemove,
-                footerOnmouseout, footerOnmouseup, customRendered};
+                onclick, ondblclick, onmousedown, onmouseover, onmousemove, onmouseout, onmouseup,
+                onkeypress, onkeydown, onkeyup, headerOnclick, headerOndblclick, headerOnmousedown,
+                headerOnmouseover,headerOnmousemove, headerOnmouseout, headerOnmouseup, headerOnkeypress,
+                headerOnkeydown, headerOnkeyup, bodyOnclick, bodyOndblclick, bodyOnmousedown,
+                bodyOnmouseover, bodyOnmousemove, bodyOnmouseout,bodyOnmouseup, bodyOnkeypress,
+                bodyOnkeydown, bodyOnkeyup, footerOnclick, footerOndblclick, footerOnmousedown,
+                footerOnmouseover, footerOnmousemove,footerOnmouseout, footerOnmouseup,
+                footerOnkeypress, footerOnkeydown, footerOnkeyup, customRendered};
     }
 
     @Override
@@ -150,6 +164,9 @@ public class BaseColumn extends UIColumn {
         onmousemove = (String) state[i++];
         onmouseout = (String) state[i++];
         onmouseup = (String) state[i++];
+        onkeypress = (String) state[i++];
+        onkeydown = (String) state[i++];
+        onkeyup = (String) state[i++];
         headerOnclick = (String) state[i++];
         headerOndblclick = (String) state[i++];
         headerOnmousedown = (String) state[i++];
@@ -157,6 +174,9 @@ public class BaseColumn extends UIColumn {
         headerOnmousemove = (String) state[i++];
         headerOnmouseout = (String) state[i++];
         headerOnmouseup = (String) state[i++];
+        headerOnkeypress = (String) state[i++];
+        headerOnkeydown = (String) state[i++];
+        headerOnkeyup = (String) state[i++];
         bodyOnclick = (String) state[i++];
         bodyOndblclick = (String) state[i++];
         bodyOnmousedown = (String) state[i++];
@@ -164,6 +184,9 @@ public class BaseColumn extends UIColumn {
         bodyOnmousemove = (String) state[i++];
         bodyOnmouseout = (String) state[i++];
         bodyOnmouseup = (String) state[i++];
+        bodyOnkeypress = (String) state[i++];
+        bodyOnkeydown = (String) state[i++];
+        bodyOnkeyup = (String) state[i++];
         footerOnclick = (String) state[i++];
         footerOndblclick = (String) state[i++];
         footerOnmousedown = (String) state[i++];
@@ -171,6 +194,9 @@ public class BaseColumn extends UIColumn {
         footerOnmousemove = (String) state[i++];
         footerOnmouseout = (String) state[i++];
         footerOnmouseup = (String) state[i++];
+        footerOnkeypress = (String) state[i++];
+        footerOnkeydown = (String) state[i++];
+        footerOnkeyup = (String) state[i++];
         customRendered = (Boolean) state[i++];
     }
 
@@ -388,6 +414,29 @@ public class BaseColumn extends UIColumn {
         this.onmouseup = onmouseup;
     }
 
+    public String getOnkeypress() {
+        return ValueBindings.get(this, "onkeypress", onkeypress);
+    }
+
+    public void setOnkeypress(String onkeypress) {
+        this.onkeypress = onkeypress;
+    }
+
+    public String getOnkeydown() {
+        return ValueBindings.get(this, "onkeydown", onkeydown);
+    }
+
+    public void setOnkeydown(String onkeydown) {
+        this.onkeydown = onkeydown;
+    }
+
+    public String getOnkeyup() {
+        return ValueBindings.get(this, "onkeyup", onkeyup);
+    }
+
+    public void setOnkeyup(String onkeyup) {
+        this.onkeyup = onkeyup;
+    }
 
     public String getHeaderOnclick() {
         return ValueBindings.get(this, "headerOnclick", headerOnclick);
@@ -445,6 +494,29 @@ public class BaseColumn extends UIColumn {
         headerOnmouseup = onmouseup;
     }
 
+    public String getHeaderOnkeypress() {
+        return ValueBindings.get(this, "headerOnkeypress", headerOnkeypress);
+    }
+
+    public void setHeaderOnkeypress(String headerOnkeypress) {
+        this.headerOnkeypress = headerOnkeypress;
+    }
+
+    public String getHeaderOnkeydown() {
+        return ValueBindings.get(this, "headerOnkeydown", headerOnkeydown);
+    }
+
+    public void setHeaderOnkeydown(String headerOnkeydown) {
+        this.headerOnkeydown = headerOnkeydown;
+    }
+
+    public String getHeaderOnkeyup() {
+        return ValueBindings.get(this, "headerOnkeyup", headerOnkeyup);
+    }
+
+    public void setHeaderOnkeyup(String headerOnkeyup) {
+        this.headerOnkeyup = headerOnkeyup;
+    }
 
     public String getBodyOnclick() {
         return ValueBindings.get(this, "bodyOnclick", bodyOnclick);
@@ -502,6 +574,29 @@ public class BaseColumn extends UIColumn {
         bodyOnmouseup = onmouseup;
     }
 
+    public String getBodyOnkeypress() {
+        return ValueBindings.get(this, "bodyOnkeypress", bodyOnkeypress);
+    }
+
+    public void setBodyOnkeypress(String bodyOnkeypress) {
+        this.bodyOnkeypress = bodyOnkeypress;
+    }
+
+    public String getBodyOnkeydown() {
+        return ValueBindings.get(this, "bodyOnkeydown", bodyOnkeydown);
+    }
+
+    public void setBodyOnkeydown(String bodyOnkeydown) {
+        this.bodyOnkeydown = bodyOnkeydown;
+    }
+
+    public String getBodyOnkeyup() {
+        return ValueBindings.get(this, "bodyOnkeyup", bodyOnkeyup);
+    }
+
+    public void setBodyOnkeyup(String bodyOnkeyup) {
+        this.bodyOnkeyup = bodyOnkeyup;
+    }
 
     public String getFooterOnclick() {
         return ValueBindings.get(this, "footerOnclick", footerOnclick);
@@ -557,6 +652,30 @@ public class BaseColumn extends UIColumn {
 
     public void setFooterOnmouseup(String onmouseup) {
         footerOnmouseup = onmouseup;
+    }
+
+    public String getFooterOnkeypress() {
+        return ValueBindings.get(this, "footerOnkeypress", footerOnkeypress);
+    }
+
+    public void setFooterOnkeypress(String footerOnkeypress) {
+        this.footerOnkeypress = footerOnkeypress;
+    }
+
+    public String getFooterOnkeydown() {
+        return ValueBindings.get(this, "footerOnkeydown", footerOnkeydown);
+    }
+
+    public void setFooterOnkeydown(String footerOnkeydown) {
+        this.footerOnkeydown = footerOnkeydown;
+    }
+
+    public String getFooterOnkeyup() {
+        return ValueBindings.get(this, "footerOnkeyup", footerOnkeyup);
+    }
+
+    public void setFooterOnkeyup(String footerOnkeyup) {
+        this.footerOnkeyup = footerOnkeyup;
     }
 
     public boolean isCustomRendered(){
