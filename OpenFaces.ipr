@@ -1295,13 +1295,6 @@
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="JUnit">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/testLib/junit.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
     <library name="LifeRay">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/lib/portals/liferay/portal-kernel.jar!/" />
@@ -1386,14 +1379,15 @@
     </library>
     <library name="selenium-java-client-driver">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-java-2.14.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/selenium/selenium-java-2.44.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
     <library name="selenium-server">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-server-standalone-2.14.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-inspector.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/selenium/selenium-server-standalone-2.44.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
@@ -1421,6 +1415,13 @@
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/lib/servlet-api.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/javax.servlet-3.0.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="testng">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/testLib/testng-6.8.21.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />

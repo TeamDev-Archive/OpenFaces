@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Unit tests">
+  <listeners>
+    <listener class-name="org.openfaces.util.OpenfacesTestListener"/>
+  </listeners>
+
+  <test name="tests">
+    <groups>
+      <run>
+        <include name="test"/>
+      </run>
+    </groups>
+
+    <packages>
+      <package name="org.openfaces.*"/>
+    </packages>
+  </test>
+</suite>

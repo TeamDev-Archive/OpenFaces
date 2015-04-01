@@ -5,6 +5,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/OpenFaces"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/SeleniumInspector"/>
 	<classpathentry kind="lib" path="/TestLibs/junit.jar"/>
-	<classpathentry kind="lib" path="/testLibs/selenium-java-2.14.0.jar "/>
+	<classpathentry kind="lib" path="/lib/selenium/selenium-java-2.44.0.jar "/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

@@ -23,8 +23,8 @@
     <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false" debug="true">
       <classpath>
         <fileset dir="${lib.dir}/seleniuminspector">
-          <include name="selenium-java-2.34.0.jar"/>
-          <include name="selenium-server-standalone-2.34.0.jar"/>
+          <include name="selenium-java-2.44.0.jar"/>
+          <include name="selenium-server-standalone-2.44.0.jar"/>
         </fileset>
         <fileset dir="${testLib.dir}/">
           <include name="junit.jar"/>

@@ -55,7 +55,7 @@
         <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/OpenFaces/OpenFaces">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Libs/apache/commons-lang-2.1.jar">
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Libs/apache/commons-lang-2.6.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="LiveDemoFacelets"/>

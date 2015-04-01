@@ -7,7 +7,7 @@
         <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Libs/apache/commons-fileupload-1.0.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Libs/apache/commons-lang-2.1.jar">
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Libs/apache/commons-lang-2.6.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Libs/tomahawk/tomahawk12-1.1.8.jar">

@@ -3,8 +3,8 @@
 	<classpathentry kind="src" path="source"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/OpenFaces"/>
-	<classpathentry kind="lib" path="/lib/seleniuminspector/selenium-java-2.14.0.jar"/>
-	<classpathentry kind="lib" path="/lib/seleniuminspector/selenium-server-2.14.0.jar"/>
+	<classpathentry kind="lib" path="/lib/selenium/selenium-java-2.44.0.jar"/>
+	<classpathentry kind="lib" path="/lib/selenium/selenium-server-2.44.0.jar"/>
 	<classpathentry kind="lib" path="/TestLibs/junit.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

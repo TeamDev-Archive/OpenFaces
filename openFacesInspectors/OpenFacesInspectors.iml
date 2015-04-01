@@ -10,12 +10,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="JUnit" level="project" />
     <orderEntry type="library" exported="" name="selenium-java-client-driver" level="project" />
     <orderEntry type="library" exported="" name="selenium-server" level="project" />
     <orderEntry type="module" module-name="OpenFaces" />
     <orderEntry type="library" exported="" name="SeleniumInspector" level="project" />
     <orderEntry type="library" name="JSF Implementation - Mojarra 2.0" level="project" />
+    <orderEntry type="library" exported="" name="testng" level="project" />
   </component>
 </module>
-

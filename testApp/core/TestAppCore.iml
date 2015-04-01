@@ -41,6 +41,6 @@
     <orderEntry type="library" exported="" name="PrimeFaces" level="project" />
     <orderEntry type="library" name="servlet-api" level="project" />
     <orderEntry type="library" name="hibernate" level="project" />
+    <orderEntry type="library" name="JBoss Seam 2.1" level="project" />
   </component>
 </module>
-
