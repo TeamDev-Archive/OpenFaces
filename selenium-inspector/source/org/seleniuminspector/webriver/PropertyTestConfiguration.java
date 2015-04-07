@@ -10,9 +10,7 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.util;
-
-import org.openfaces.test.BaseSeleniumTest;
+package org.seleniuminspector.webriver;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +20,8 @@ import java.util.Properties;
  * @author Max Yurin
  */
 public class PropertyTestConfiguration {
+    public static final String FUNC_TESTS_PROPERTIES_FILE = "/funcTests.properties";
+
     private static final String USE_GRID = "test.use.selenium.grid";
     private static final String GRID_URL = "test.selenium.grid.url";
 
@@ -29,6 +29,7 @@ public class PropertyTestConfiguration {
     private static final String DEFAULT_HOST = "org.openfaces.funcTests.host";
     private static final String DEFAULT_PORT = "org.openfaces.funcTests.port";
 
+    private static final String BASE_REPORT_FOLDER = "org.openfaces.funcTests.report.base.folder";
     private static final String FAIL_TESTS_FOLDER = "org.openfaces.funcTests.report.fail.tests.folder";
     private static final String COMPLETE_TESTS_FOLDER = "org.openfaces.funcTests.report.complete.tests.folder";
     private static final String DEFAULT_REPORT_LEVEL = "org.openfaces.funcTests.report.level";
@@ -60,9 +61,9 @@ public class PropertyTestConfiguration {
     private final String defaultBrowser;
     private final String implementation;
 
+    private final String baseReportFolder;
     private final String failTestsFolder;
     private final String completeTestsFolder;
-    private final BaseSeleniumTest.TestResultLevel defaultReportLevel;
 
     private final int customSeleniumPort;
     private final String firefoxPath;
@@ -78,8 +79,8 @@ public class PropertyTestConfiguration {
     private final boolean faceletsDefaultDemoApp;
     private String gridUrl;
 
-    public PropertyTestConfiguration(String fileName) {
-        InputStream resourceAsStream = this.getClass().getResourceAsStream(fileName);
+    public PropertyTestConfiguration() {
+        InputStream resourceAsStream = this.getClass().getResourceAsStream(FUNC_TESTS_PROPERTIES_FILE);
         Properties properties = new Properties();
 
         try {
@@ -101,9 +102,9 @@ public class PropertyTestConfiguration {
         defaultHost = properties.getProperty(DEFAULT_HOST);
         defaultPort = properties.getProperty(DEFAULT_PORT);
         customSeleniumPort = Integer.parseInt(properties.getProperty(CUSTOM_SELENIUM_PORT));
+        baseReportFolder = properties.getProperty(BASE_REPORT_FOLDER);
         failTestsFolder = properties.getProperty(FAIL_TESTS_FOLDER);
         completeTestsFolder = properties.getProperty(COMPLETE_TESTS_FOLDER);
-        defaultReportLevel = BaseSeleniumTest.TestResultLevel.getTestResult(properties.getProperty(DEFAULT_REPORT_LEVEL));
         testAppFaceletsURLPrefix = properties.getProperty(TEST_APP_FACELETS_URL_PREFIX);
         liveDemoFaceletsURLPrefix = properties.getProperty(LIVE_DEMO_FACELETS_URL_PREFIX);
         testAppJspURLPrefix = properties.getProperty(TEST_APP_JSP_URL_PREFIX);
@@ -160,16 +161,16 @@ public class PropertyTestConfiguration {
         return customSeleniumPort;
     }
 
+    public String getBaseReportFolder() {
+        return baseReportFolder;
+    }
+
     public String getFailTestsFolder() {
         return failTestsFolder;
     }
 
     public String getCompleteTestsFolder() {
         return completeTestsFolder;
-    }
-
-    public BaseSeleniumTest.TestResultLevel getDefaultReportLevel() {
-        return defaultReportLevel;
     }
 
     public String getTestAppFaceletsURLPrefix() {
