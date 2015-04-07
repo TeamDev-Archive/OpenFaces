@@ -15,6 +15,7 @@
   <property name="openfaces-jar.file" location="${target-lib.dir}/openfaces-3.1.EA1.4.jar"/>
   <property name="openfaces-weblogic-jar.file" location="${target-lib.dir}/openfaces-${of-version}-weblogic-jsp.jar"/>
 
+  <property name="func-tests.dir" location="funcTests" />
   <property name="test-app-jsp.dir" location="testApp/jsp"/>
   <property name="TestAppFacelets.dir" location="testApp/facelets"/>
   <property name="live-demo.dir" location="liveDemo/jsp"/>
@@ -23,21 +24,20 @@
   <property name="war-file-name" location="TestAppFacelets.war"/>
   <property name="target-war.file" location="${target-war}/TestAppFacelets.war"/>
 
-  <property name="funcTests.dir" location="funcTests"/>
-  <property name="funcTests-source.dir" location="${funcTests.dir}/source"/>
-  <property name="funcTests-target.dir" location="${funcTests.dir}/target"/>
-  <property name="funcTests-target-reports.dir" location="${funcTests-target.dir}/test-reports"/>
+  <property name="funcTests-source.dir" location="${func-tests.dir}/source"/>
+  <property name="funcTests-target.dir" location="${func-tests.dir}/target"/>
   <property name="funcTestsFramework.dir" location="openFacesInspectors"/>
   <property name="funcTestsFramework-source.dir" location="${funcTestsFramework.dir}/source"/>
   <property name="funcTestsFramework-target.dir" location="${funcTestsFramework.dir}/out"/>
   <property name="funcTestsFramework-distrib.dir" location="${funcTestsFramework.dir}/distribution"/>
   <property name="funcTestsFramework-temp.dir" location="${funcTestsFramework.dir}/temp"/>
   <property name="openfaces-inspectors-jar.file" location="${funcTestsFramework-distrib.dir}/openfaces-inspectors.jar"/>
+  <property name="selenium-inspector-jar.file" location="lib/seleniuminspector/selenium-inspector.jar" />
   <property name="patched-selenium-server.file" location="lib/selenium/selenium-server-standalone-2.44.0.jar"/>
   <property name="funcTest.lib.testng" location="testLib/testng-6.8.21.jar"/>
   <property name="funcTestsFrameworkManifest.file" location="${funcTestsFramework-target.dir}/manifest.mf"/>
 
-  <property name="webDriverFuncTests.dir" location="webDriverFuncTests"/>
+  <property name="webDriverfunc-tests.dir" location="webDriverFuncTests"/>
 
   <property name="compile.debug" value="true"/>
   <property name="tomcat.home" value="${env.CATALINA_HOME}"/>
@@ -58,7 +58,7 @@
     <tstamp/>
   </target>
 
-  <taskdef name="testng" classname="org.testng.TestNGAntTask" classpath="${funcTest.lib.testng}"/>
+  <taskdef name="testng" classname="org.testng.TestNGAntTask" classpath="testLib/testng-6.8.21.jar"/>
 
   <!-- *** Public Targets ** -->
 
@@ -118,10 +118,11 @@
       <classpath>
         <fileset file="${openfaces-jar.file}"/>
         <pathelement path="lib/selenium/selenium-java-2.44.0.jar"/>
-        <pathelement path="lib/selenium/selenium-server-standalone-2.44.0.jar"/>
-        <pathelement path="lib/seleniuminspector/selenium-inspector.jar"/>
+        <pathelement path="${patched-selenium-server.file}"/>
+        <pathelement path="${selenium-inspector-jar.file}"/>
         <pathelement path="lib/mojarra/javax.faces-2.1.11.jar"/>
         <pathelement path="testLib/testng-6.8.21.jar"/>
+        <pathelement path="lib/jcommander-1.7.jar"/>
       </classpath>
     </javac>
     <manifest file="${funcTestsFrameworkManifest.file}">
@@ -130,7 +131,7 @@
     </manifest>
     <mkdir dir="${funcTestsFramework-distrib.dir}"/>
     <jar jarfile="${openfaces-inspectors-jar.file}" basedir="${funcTestsFramework-target.dir}"/>
-    <copy file="lib/selenium/selenium-server-standalone-2.44.0.jar" todir="${funcTestsFramework-distrib.dir}"/>
+    <copy file="${patched-selenium-server.file}" todir="${funcTestsFramework-distrib.dir}"/>
     <copy file="lib/selenium/selenium-java-2.44.0.jar" todir="${funcTestsFramework-distrib.dir}"/>
   </target>
 
@@ -151,15 +152,19 @@
       <classpath>
         <pathelement path="${openfaces-jar.file}"/>
         <pathelement path="${openfaces-inspectors-jar.file}"/>
+        <pathelement path="${selenium-inspector-jar.file}" />
+        <pathelement path="lib/el/el-api-2.2.jar"/>
+        <pathelement path="lib/log4j-1.2.14.jar"/>
+        <!--<pathelement path="lib/openfaces-dependencies"/>-->
         <pathelement path="testLib/testng-6.8.21.jar"/>
         <pathelement path="testLib/jai/mlibwrapper_jai.jar"/>
-        <pathelement path="testLib/jai/jai_core.jar"/>
-        <pathelement path="testLib/jai/jai_codec.jar"/>
+        <!--<pathelement path="testLib/jai/jai_core.jar"/>-->
+        <!--<pathelement path="testLib/jai/jai_codec.jar"/>-->
         <pathelement path="lib/jcommander-1.7.jar"/>
+        <pathelement path="lib/google"/>
         <pathelement path="lib/apache/commons-lang-2.6.jar"/>
         <pathelement path="lib/selenium/selenium-java-2.44.0.jar"/>
-        <pathelement path="lib/selenium/selenium-server-standalone-2.44.0.jar"/>
-        <pathelement path="lib/seleniuminspector/selenium-inspector.jar"/>
+        <pathelement path="${patched-selenium-server.file}"/>
         <path refid="catalina.classpath"/>
       </classpath>
     </javac>
@@ -182,22 +187,20 @@
 
     <parallel>
       <ant target="server-start"/>
+      <!--<ant antfile="selenium-grid.xml" inheritall="false" />-->
 
       <sequential>
         <echo message="Run Functional tests"/>
         <sleep seconds="30"/>
         <ant target="run-tests"/>
 
+        <!--<ant antfile="selenium-grid.xml" target="stop.selenium.grid" inheritall="false"/>-->
         <ant target="server-stop"/>
-        <ant target="undeploy-tomcat"/>
       </sequential>
     </parallel>
   </target>
 
   <target name="run-tests">
-    <delete dir="${funcTests-target-reports.dir}"/>
-    <mkdir dir="${funcTests-target-reports.dir}"/>
-
     <condition property="testAppContextPath" value="${context.path}">
       <not>
         <isset property="test.app.context.path"/>
@@ -219,21 +222,26 @@
     <testng failureproperty="tests_failed" haltonfailure="false">
       <classpath>
         <pathelement path="${openfaces-jar.file}"/>
+        <pathelement path="lib/apache/commons-lang-2.6.jar"/>
+        <!--<pathelement path="lib/el/el-api-2.2.jar"/>-->
+        <!--<pathelement path="lib/log4j-1.2.14.jar"/>-->
+        <pathelement path="lib/google"/>
+        <pathelement path="lib/openfaces-dependencies"/>
+        <pathelement location="${funcTests-target.dir}/classes"/>
+        <pathelement path="${openfaces-inspectors-jar.file}"/>
         <pathelement path="lib/selenium/selenium-server-standalone-2.44.0.jar"/>
         <pathelement path="lib/selenium/selenium-java-2.44.0.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-inspector.jar"/>
-        <pathelement path="lib/mojarra/javax.faces-2.1.11.jar"/>
-        <pathelement location="${funcTests-target.dir}/classes"/>
-        <pathelement path="${openfaces-inspectors-jar.file}"/>
+        <!--<pathelement path="lib/mojarra/javax.faces-2.1.11.jar"/>-->
         <pathelement path="testLib/testng-6.8.21.jar"/>
-        <pathelement path="testLib/jai/mlibwrapper_jai.jar"/>
-        <pathelement path="testLib/jai/jai_core.jar"/>
-        <pathelement path="testLib/jai/jai_codec.jar"/>
+        <!--<pathelement path="testLib/jai/mlibwrapper_jai.jar"/>-->
+        <!--<pathelement path="testLib/jai/jai_core.jar"/>-->
+        <!--<pathelement path="testLib/jai/jai_codec.jar"/>-->
       </classpath>
 
       <classfileset dir="${funcTests-source.dir}" includes="**/*Test*.class"/>
 
-      <xmlfileset dir="${funcTests-target.dir}" includes="testng.xml"/>
+      <xmlfileset dir="${funcTests-target.dir}/classes" includes="testng.xml"/>
 
       <sysproperty key="test.app.jsf.implementation" value="${jsf.implementation}"/>
       <sysproperty key="test.app.is.facelets" value="${is.facelets}"/>
@@ -276,22 +284,6 @@
     <echo message="FUNCTIONAL TEST(S) FAILED"/>
   </target>
 
-  <target name="run-func-tests-jsp" description="Run functional tests in JSP-based JSF 2.0 environment">
-    <property name="jsf.implementation" value="SUN12"/>
-    <property name="is.facelets" value="false"/>
-    <property name="context.path" value="/TestAppJsp_3x"/>
-    <property name="demoContext.path" value="/LiveDemoJsp_3x"/>
-    <antcall target="run-func-tests"/>
-  </target>
-
-  <target name="run-func-tests-facelets" description="Run functional tests in Facelets-based JSF 2.0 environment">
-    <property name="jsf.implementation" value="SUN12"/>
-    <property name="is.facelets" value="true"/>
-    <property name="context.path" value="/TestAppFacelets_3x"/>
-    <property name="demoContext.path" value="/LiveDemoFacelets_3x"/>
-    <antcall target="run-func-tests"/>
-  </target>
-
   <!--Have to change this to your local Tomcat installation-->
   <target name="server-start" depends="is-tomcat-running" unless="if.tomcat.running">
     <echo message="Start server ${tomcat.home}"/>
@@ -315,13 +307,6 @@
   <property name="build-directory" value="liveDemo/facelets/target"/>
   <property name="war-file-name" value="openfaces-demo-facelets.war"/>
 
-  <target name="deploy-demo-facelets" description="deploy Live Demo Facelets to tomcat">
-    <echo>Copy live demo facelets on Tomcat</echo>
-    <delete file="${tomcat.home}/webapps/${war-file-name}"/>
-    <copy todir="${tomcat.home}/webapps/" file="${build-directory}/${war-file-name}">
-    </copy>
-  </target>
-
   <target name="deploy-tomcat" depends="compile-func-tests, undeploy-tomcat, -fail-if-no-war"
           description="Install application to Servlet Container">
     <echo message="Installing Application to tomcat server"/>
@@ -336,8 +321,7 @@
           description="Install application to Servlet Container">
     <echo message="Removing Application from tomcat server: ${tomcat.home}\webapps\TestAppFacelets.war"/>
 
-    <delete dir="${tomcat.home}\webapps\TestAppFacelets"/>
+    <delete  dir="${tomcat.home}\webapps\TestAppFacelets"/>
     <delete file="${tomcat.home}\webapps\TestAppFacelets.war"/>
   </target>
-
 </project>

@@ -1,19 +1,57 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="Unit tests">
+<suite name="Unit tests" verbose="8" thread-count="10">
   <listeners>
     <listener class-name="org.openfaces.util.OpenfacesTestListener"/>
   </listeners>
 
-  <test name="tests">
-    <groups>
-      <run>
-        <include name="test"/>
-      </run>
-    </groups>
-
+  <test name="Firefox">
+    <parameter name="browser" value="firefox"/>
+    <parameter name="version" value=""/>
+    <parameter name="platform" value="WINDOWS"/>
+    <!--<classes>-->
+      <!--<class name="org.openfaces.test.ApplicationAvailabilityTest"/>-->
+      <!--<class name="org.openfaces.test.AjaxTest"/>-->
+    <!--</classes>-->
     <packages>
-      <package name="org.openfaces.*"/>
+      <package name="org.openfaces.test"/>
+      <package name="org.openfaces.component">
+        <exclude name="org.openfaces.component.chart"/>
+      </package>
+      <!--<package name="org.openfaces.requests"/>-->
+    </packages>
+  </test>
+
+  <test name="Chrome">
+    <parameter name="browser" value="chrome"/>
+    <parameter name="version" value=""/>
+    <parameter name="platform" value="WINDOWS"/>
+    <!--<classes>-->
+      <!--<class name="org.openfaces.test.ApplicationAvailabilityTest"/>-->
+      <!--<class name="org.openfaces.test.AjaxTest"/>-->
+    <!--</classes>-->
+    <packages>
+      <package name="org.openfaces.test"/>
+      <package name="org.openfaces.component">
+        <exclude name="org.openfaces.component.chart"/>
+      </package>
+      <!--<package name="org.openfaces.requests"/>-->
+    </packages>
+  </test>
+
+  <test name="IExplorer">
+    <parameter name="browser" value="iexplorer"/>
+    <parameter name="version" value=""/>
+    <parameter name="platform" value="WINDOWS"/>
+    <!--<classes>-->
+      <!--<class name="org.openfaces.test.ApplicationAvailabilityTest"/>-->
+      <!--<class name="org.openfaces.test.AjaxTest"/>-->
+    <!--</classes>-->
+    <packages>
+      <package name="org.openfaces.test"/>
+      <!--<package name="org.openfaces.requests"/>-->
+      <package name="org.openfaces.component">
+        <exclude name="org.openfaces.component.chart"/>
+      </package>
     </packages>
   </test>
 </suite>

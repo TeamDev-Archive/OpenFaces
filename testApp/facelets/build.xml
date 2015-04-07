@@ -63,9 +63,7 @@
     <include name="primefaces-3.0.1.jar"/>
   </fileset>
 
-  <fileset id="google-libs" dir="${google.lib.dir}">
-    <include name="guava-r07.jar"/>
-  </fileset>
+  <fileset id="google-libs" dir="${google.lib.dir}"/>
 
   <fileset id="mojarra-2.0" dir="${jsf.lib.dir}">
     <include name="javax.faces-2.1.11.jar"/>
@@ -108,12 +106,6 @@
     </copy>
     <replace dir="${resources.target.dir}" includes="**/*.jsp, **/*.xhtml" token="__OpenFacesVersion__"
              value="${ofversion}"/>
-  </target>
-
-
-
-  <target name="deploy" depends="build" description="deploy war" if="deploy.dir">
-    <copy file="${target-war.file}" todir="${deploy.dir}"/>
   </target>
 
   <target name="clean" description="clean up">

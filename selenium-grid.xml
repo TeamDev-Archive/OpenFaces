@@ -1,0 +1,168 @@
+<project name="Selenium Grid Configuration" default="launch-hub" basedir=".">
+
+  <property file="deployment.properties"/>
+  <property environment="env"/>
+  <property name="components.dir" location="openFaces"/>
+  <property name="func-tests.dir" location="funcTests" />
+  <property name="func-tests-hub-logs" location="funcTests/logs"/>
+  <property name="func-tests-node-json.file" location="funcTests/source/win.json"/>
+  <property name="func-tests-hub-configuration-json.file" location="funcTests/source/hub_configuration.json"/>
+  <property name="patched-selenium-server.file" location="lib/selenium/selenium-server-standalone-2.44.0.jar"/>
+  <property name="patched-selenium-java.file" location="lib/selenium/selenium-java-2.44.0.jar"/>
+
+  <exec executable="hostname" osfamily="unix" failifexecutionfails="false" outputproperty="env.COMPUTERNAME"/>
+  <property name="env.HOSTNAME" value="${env.COMPUTERNAME}"/> <!-- Windows vs. Linux -->
+
+  <property file="${func-tests.dir}/source/${env.HOSTNAME}.properties" />
+  <property file="${func-tests.dir}/source/default.properties"/>
+
+  <target name="fetch-dependencies">
+
+    <echo message="Selenium server file: ${patched-selenium-server.file}"/>
+    <available file="${patched-selenium-server.file}" property="selenium.present"/>
+    <fail unless="selenium.present" message="Unable to locate ${patched-selenium-server.file}"/>
+  </target>
+
+  <target name="set-config">
+    <echo>os.name: ${os.name}</echo>
+    <condition property="node.configuration.file" value="${func-tests-node-json.file}">
+      <os name="Windows"/>
+    </condition>
+    <property name="node.configuration.file" value="${func-tests-node-json.file}"/>
+    <echo>node.configuration.file: ${node.configuration.file}</echo>
+  </target>
+
+  <target name="set-hosts">
+    <!-- if this is a production node set the production hub host -->
+    <condition property="hub.host" value="${production.hub.host}">
+      <isset property="isProduction"/>
+    </condition>
+
+    <!-- otherwise set to localhost (unless overridden) -->
+    <property name="hub.host" value="localhost"/>
+
+    <!-- if this is a production node that can't be addressed then use IP -->
+    <condition property="node.host" value="IP">
+      <and>
+        <isset property="isProduction"/>
+        <isset property="isNotAddressable"/>
+      </and>
+    </condition>
+
+    <!-- if the hub is running on localhost then so must the node be -->
+    <condition property="node.host" value="localhost">
+      <matches pattern="localhost" string="${hub.host}"/>
+    </condition>
+
+    <!-- otherwise set to the hostname -->
+    <property name="node.host" value="${env.HOSTNAME}"/>
+
+    <echo>hub.host: ${hub.host}</echo>
+    <echo>node.host: ${node.host}</echo>
+  </target>
+
+  <path id="selenium.classpath">
+    <pathelement path="${patched-selenium-server.file}"/>
+    <pathelement path="${patched-selenium-java.file}"/>
+    <pathelement path="${java.class.path}/"/>
+  </path>
+
+  <!-- debug target to show variables -->
+  <target name="debug">
+    <echoproperties/>
+  </target>
+
+  <target name="launch">
+    <parallel>
+      <antcall target="launch-hub"/>
+      <sleep seconds="1"/>
+
+      <sequential>
+        <antcall target="launch-node"/>
+      </sequential>
+    </parallel>
+  </target>
+
+  <target name="launch-hub"
+          description="Launch Selenium Hub"
+          depends="fetch-dependencies">
+    <java classname="org.openqa.grid.selenium.GridLauncher"
+          classpathref="selenium.classpath"
+          fork="true"
+          failonerror="true">
+      <arg value="-role"/>
+      <arg value="hub"/>
+    </java>
+  </target>
+
+  <target name="launch-hub-debug"
+          description="Launch Selenium Hub in debug mode"
+          depends="fetch-dependencies">
+    <java classname="org.openqa.grid.selenium.GridLauncher"
+          classpathref="selenium.classpath"
+          fork="true"
+          failonerror="true">
+      <arg value="-role"/>
+      <arg value="hub"/>
+      <arg value="-hubConfig"/>
+      <arg value="${func-tests-hub-configuration-json.file}"/>
+      <arg value="-debug"/>
+      <arg value="-log"/>
+      <arg value="hub.log"/>
+    </java>
+  </target>
+
+  <target name="launch-node"
+          description="Launch Selenium Node"
+          depends="fetch-dependencies, set-config, set-hosts">
+    <java classpathref="selenium.classpath"
+          classname="org.openqa.grid.selenium.GridLauncher"
+          fork="true"
+          failonerror="true">
+      <arg value="-role"/>
+      <arg value="webDriver"/>
+      <arg value="-hub"/>
+      <arg value="http://localhost:4444/grid/register"/>
+      <arg value="-host"/>
+      <arg value="localhost"/>
+      <arg value="-nodeConfig"/>
+      <arg value="${node.configuration.file}"/>
+    </java>
+  </target>
+
+  <target name="launch-node-debug"
+          description="Launch Selenium Node in debug mode"
+          depends="fetch-dependencies, set-config, set-hosts">
+    <java classpathref="selenium.classpath"
+          classname="org.openqa.grid.selenium.GridLauncher"
+          fork="true"
+          failonerror="true">
+      <arg value="-role"/>
+      <arg value="node"/>
+      <arg value="-id"/>
+      <arg value="${env.HOSTNAME}"/>
+      <arg value="-hub"/>
+      <arg value="http://${hub.host}:${hub.port}/grid/register"/>
+      <arg value="-host"/>
+      <arg value="${node.host}"/>
+      <arg value="-nodeConfig"/>
+      <arg value="${node.configuration.file}"/>
+      <arg value="-debug"/>
+      <arg value="-log"/>
+      <arg value="node.log"/>
+    </java>
+  </target>
+
+  <target name="stop.selenium.grid">
+    <echo taskname="stop.selenium.grid” message=”Stopping servers." />
+    <exec executable="cmd">
+      <arg value="-DseleniumArgs='-multiWindow -debug'"/>
+      <arg value="launch-remote-control"/>
+    </exec>
+
+    <!--<get taskname="stop.selenium"-->
+         <!--src="http://localhost:4444/lifecycle-manager?action=shutdown"-->
+         <!--dest="${func-tests-hub-logs}/shutdown_results.txt"-->
+         <!--ignoreerrors="true" />-->
+  </target>
+</project>

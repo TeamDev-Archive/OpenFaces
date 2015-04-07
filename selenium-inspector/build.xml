@@ -22,7 +22,7 @@
     <mkdir dir="${classes.dir}"/>
     <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false" debug="true">
       <classpath>
-        <fileset dir="${lib.dir}/seleniuminspector">
+        <fileset dir="${lib.dir}/selenium">
           <include name="selenium-java-2.44.0.jar"/>
           <include name="selenium-server-standalone-2.44.0.jar"/>
         </fileset>
@@ -32,6 +32,9 @@
       </classpath>
     </javac>
     <jar jarfile="${selenium-inspector-jar.file}" basedir="${classes.dir}"/>
+
+    <delete file="${lib.dir}/seleniuminspector/selenium-inspector.jar"/>
+    <copy file="${selenium-inspector-jar.file}" todir="../lib/seleniuminspector"/>
   </target>
 
   <target name="build" depends="clean, compile" description="Generate the distribution"/>
