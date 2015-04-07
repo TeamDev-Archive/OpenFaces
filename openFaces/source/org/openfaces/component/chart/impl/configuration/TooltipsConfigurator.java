@@ -31,8 +31,7 @@ public class TooltipsConfigurator extends AbstractConfigurator implements Render
     public TooltipsConfigurator() {
     }
 
-    public void configure(ChartView view, ConfigurableRenderer renderer) {
-        if (renderer instanceof AbstractCategoryItemRenderer) {
+    public void configure(ChartView view, ConfigurableRenderer renderer) {        if (renderer instanceof AbstractCategoryItemRenderer) {
             setupTooltips((GridChartView) view, (AbstractCategoryItemRenderer) renderer);
         } else if (renderer instanceof XYItemRenderer) {
             setupTooltips((GridChartView) view, (XYItemRenderer) renderer);
