@@ -12,7 +12,7 @@
 package org.openfaces.component.popuplayer;
 
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.seleniuminspector.ElementInspector;
@@ -70,8 +70,7 @@ public class PopupLayerTest extends BaseSeleniumTest {
         popupLayer.assertVisible(false);
         assertFalse(newValue.equals(oldValue));
     }
-    @Ignore
-     @Test
+    @Test(enabled = false)
     public void testPopupLayerVisibleByPageLoad() {
         testAppFunctionalPage("/components/popuplayer/popupLayerVisibleByLoad.jsf");
 
@@ -82,8 +81,7 @@ public class PopupLayerTest extends BaseSeleniumTest {
     }
 
     // showPopupLayer, hidePopupLayer
-     @Test
-     @Ignore
+    @Test(enabled = false)
     public void testShowHideJSFunctions() {
         testAppFunctionalPage("/components/popuplayer/popupLayerJSFunctions.jsf");
 
@@ -103,8 +101,7 @@ public class PopupLayerTest extends BaseSeleniumTest {
     }
 
     // showPopupLayerAtXY
-     @Test
-     @Ignore
+    @Test(enabled = false)
     public void testShowPopupLayerAtXYJSFunction() {
         testAppFunctionalPage("/components/popuplayer/popupLayerJSFunctions.jsf");
 
@@ -120,8 +117,7 @@ public class PopupLayerTest extends BaseSeleniumTest {
     }
 
     // showCentered
-     @Test
-    @Ignore
+    @Test(enabled = false)
     public void testShowPopupLayerCenteredJSFunction() {
         testAppFunctionalPage("/components/popuplayer/popupLayerJSFunctions.jsf");
 
@@ -142,8 +138,7 @@ public class PopupLayerTest extends BaseSeleniumTest {
     }
 
     // setPopupLayerLeft, setPopupLayerTop
-     @Test
-     @Ignore
+    @Test(enabled = false)
     public void testSetTopAndLeftJSFunctions() {
         testAppFunctionalPage("/components/popuplayer/popupLayerJSFunctions.jsf");
 
@@ -176,8 +171,7 @@ public class PopupLayerTest extends BaseSeleniumTest {
         popupLayer("formID:styled").modalLayer().assertStyle("background-color: beige");
     }
 
-     @Test
-     @Ignore
+    @Test(enabled = false)
     public void testStyling() {
         testAppFunctionalPage("/components/popuplayer/popupLayerStyling.jsf");
         PopupLayerInspector popupLayer = popupLayer("formID:styled");

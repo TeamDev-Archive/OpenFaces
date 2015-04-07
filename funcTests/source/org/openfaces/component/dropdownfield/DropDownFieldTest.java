@@ -12,7 +12,7 @@
 package org.openfaces.component.dropdownfield;
 
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 /**
  * @author Darya Shumilina
@@ -43,8 +43,7 @@ public class DropDownFieldTest extends BaseDropDownTestCase {
         checkTypedValue("/components/dropdown/dropDownBaseFunctionality.jsf");
     }
 
-    @Test
-    @Ignore // todo: temporarily ignored because of failures in 2.x branch only
+    @Test(enabled = false) // todo: temporarily ignored because of failures in 2.x branch only
     public void testAjaxBasedSuggestion() {
         checkAjaxBasedSuggestion("/components/dropdown/dropDownAjaxSuggestion.jsf");
     }
@@ -59,8 +58,7 @@ public class DropDownFieldTest extends BaseDropDownTestCase {
         checkAutoCompletionFeature("/components/dropdown/dropDownClientSuggestion.jsf");
     }
 
-    @Test
-    @Ignore
+    @Test(enabled = false)
     // todo: bring this test back when it's clear how to disable skinning in RichFaces 4 (M2)
     public void testStyling() {
         checkStyles(false, true, false, "/components/dropdown/dropDownStyling.jsf", true);
@@ -79,8 +77,7 @@ public class DropDownFieldTest extends BaseDropDownTestCase {
         checkValueChangeListener("/components/dropdown/dropDownValueChangeListener.jsf");
     }
 
-    @Test
-    @Ignore
+    @Test(enabled = false)
     public void testNoCashingHighlight() {
         checkNoCachingHighlight("/components/dropdown/dropDownAjaxSuggestion.jsf");
     }

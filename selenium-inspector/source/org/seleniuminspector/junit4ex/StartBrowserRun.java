@@ -26,7 +26,7 @@ public class StartBrowserRun extends Statement {
     }
 
     public void evaluate() throws Throwable {
-        Selenium selenium = SeleniumHolder.getInstance().getSelenium(false);
+        Selenium selenium = SeleniumHolder.getInstance().getSelenium();
         selenium.start();
         fNext.evaluate();
     }

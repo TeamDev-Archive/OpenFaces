@@ -12,7 +12,7 @@
 package org.openfaces.component.treetable;
 
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.openqa.selenium.By;
@@ -33,8 +33,7 @@ import java.util.List;
  * @author Darya Shumilina
  */
 public class TreeTableTest extends BaseSeleniumTest {
-     @Test
-     @Ignore
+    @Test(enabled = false)
      public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/treetable/treeTable_a4j.jsf");
 
@@ -72,8 +71,7 @@ public class TreeTableTest extends BaseSeleniumTest {
      * Check simple TreeTable with static structure and verify rows content (with Ajax and without)
      */
 
-     @Test
-     @Ignore
+    @Test(enabled = false)
     public void testStaticStructure() {
         staticTreeStructure(OpenFacesAjaxLoadingMode.getInstance());
         staticTreeStructure(ServerLoadingMode.getInstance());
@@ -82,8 +80,7 @@ public class TreeTableTest extends BaseSeleniumTest {
     /**
      * Check simple TreeTable with dynamic structure and verify rows content (with Ajax and without)
      */
-     @Test
-     @Ignore
+    @Test(enabled = false)
     public void testDynamicStructure() {
         dynamicTreeStructure(OpenFacesAjaxLoadingMode.getInstance());
         dynamicTreeStructure(ServerLoadingMode.getInstance());
@@ -92,8 +89,7 @@ public class TreeTableTest extends BaseSeleniumTest {
     /**
      * Check TreeTable single selection
      */
-     @Test
-     @Ignore
+    @Test(enabled = false)
     public void testSingleSelectionAndKeyboardNavigation() {
         closeBrowser();
         testAppFunctionalPage("/components/treetable/treeTableSingleSelection.jsf");
@@ -143,8 +139,7 @@ public class TreeTableTest extends BaseSeleniumTest {
      * Check TreeTable multiple selection
      */
     //todo: add checking multiple selection functionality with the 'Ctrl' key
-     @Test
-     @Ignore
+    @Test(enabled = false)
     public void testMultipleSelectionAndKeyboardNavigation() {
         testAppFunctionalPage("/components/treetable/treeTableMultipleSelection.jsf");
         ElementInspector categoryOutput = element("formID:multipleSelectionTreeTableID:0:categoryID");
@@ -237,20 +232,17 @@ public class TreeTableTest extends BaseSeleniumTest {
     }
 
     //Created two different tests because of JSFC-3572
-     @Test
-     @Ignore
+    @Test(enabled = false)
     public void testSortingAjax() {
         testSorting(OpenFacesAjaxLoadingMode.getInstance());
     }
 
-     @Test
-     @Ignore
+    @Test(enabled = false)
     public void testSortingServer() {
         testSorting(ServerLoadingMode.getInstance());
     }
 
-     @Test
-     @Ignore
+    @Test(enabled = false)
     public void testKeyboardNavigation() {
         testAppFunctionalPage("/components/treetable/treeTableKeyboardNavigation.jsf");
 

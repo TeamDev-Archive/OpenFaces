@@ -14,7 +14,7 @@ package org.openfaces.requests;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Assert;
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 
@@ -26,8 +26,7 @@ import java.awt.event.KeyEvent;
 public class JSFC_2662Test extends BaseSeleniumTest {
 
     //todo: test is not completed; there is problem with 'end' key pressing in selenium
-     @Test
-    @Ignore
+    @Test(enabled = false)
     public void testUnexpectedAlertByKeyboardActions() throws InterruptedException {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/requests/JSFC-2662.jsf");

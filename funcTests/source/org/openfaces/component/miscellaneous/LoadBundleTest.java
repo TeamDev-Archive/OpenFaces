@@ -12,7 +12,7 @@
 package org.openfaces.component.miscellaneous;
 
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.openfaces.DropDownFieldFilterInspector;
 import org.seleniuminspector.openfaces.DropDownFieldInspector;
@@ -40,8 +40,7 @@ public class LoadBundleTest extends BaseSeleniumTest {
     private static final String WEEK_JA = "\u9031";
     private static final String WEEK_RU = "\u0421\u0431\u0440\u043E\u0441";
 
-     @Test
-    @Ignore
+    @Test(enabled = false)
     public void testWithDataTable() {
         testAppFunctionalPage("/components/loadbundle/withDataTable.jsf");
 
@@ -293,8 +292,7 @@ public class LoadBundleTest extends BaseSeleniumTest {
         localeChanger.tabs().get(0).clickAndWait();
     }
 
-     @Test
-     @Ignore
+    @Test(enabled = false)
     public void testWithTreeTable() {
         testAppFunctionalPage("/components/loadbundle/withTreeTable.jsf");
 

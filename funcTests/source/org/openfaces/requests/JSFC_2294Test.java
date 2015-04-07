@@ -13,7 +13,7 @@ package org.openfaces.requests;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.openfaces.TreeTableInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
@@ -24,8 +24,7 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 
 public class JSFC_2294Test extends BaseSeleniumTest {
 
-     @Test
-    @Ignore
+    @Test(enabled = false)
     public void testThereIsNoJSErrorOnAjaxTreeTableReloading() {
         Selenium selenium = getSelenium();
         liveDemoPage("/treetable/TreeTable_selectionAndKeyboard.jsf");

@@ -13,7 +13,7 @@ package org.openfaces.component.hintlabel;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.openfaces.HintLabelInspector;
 
@@ -64,8 +64,7 @@ public class HintLabelClientSideEvents extends BaseSeleniumTest {
     }
 
     //todo: uncomment this test if JSFC-1440 fixed
-    @Ignore
-     @Test
+    @Test(enabled = false)
     public void _testHintLabelTooltipPartClientSideEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/hintlabel/hintLabel.jsf");

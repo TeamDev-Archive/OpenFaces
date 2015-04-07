@@ -12,7 +12,7 @@
 package org.openfaces.component.twolistselection;
 
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.seleniuminspector.ElementInspector;
@@ -65,8 +65,7 @@ public class TwoListSelectionTest extends BaseSeleniumTest {
         reordering(twoListSelection("formID:second"));
     }
 
-    @Test
-    @Ignore
+    @Test(enabled = false)
     // todo: bring this test back when it's clear how to disable skinning in RichFaces 4 (M2)
     public void testStyling() {
         checkStyles(false);

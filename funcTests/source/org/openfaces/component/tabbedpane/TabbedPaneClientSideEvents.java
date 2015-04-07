@@ -13,7 +13,7 @@ package org.openfaces.component.tabbedpane;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 
@@ -23,8 +23,7 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 public class TabbedPaneClientSideEvents extends BaseSeleniumTest {
 
     //todo: uncomment when the JSFC-3629 is fixed
-    @Ignore
-     @Test
+    @Test(enabled = false)
     public void _testTabbedPaneClientSideEvents() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/tabbedpane/tabbedPane.jsf");

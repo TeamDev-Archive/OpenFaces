@@ -13,7 +13,7 @@ package org.openfaces.requests;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 
@@ -23,8 +23,7 @@ import org.seleniuminspector.ElementInspector;
 public class JSFC_1727Test extends BaseSeleniumTest {
 
     // JSFC-1927 Non modal popup hides after submit
-     @Test
-     @Ignore
+    @Test(enabled = false)
     public void testNonModalPopupStateSaving() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/requests/JSFC-1727.jsf");

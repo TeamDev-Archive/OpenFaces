@@ -13,7 +13,7 @@ package org.openfaces.component.foldingpanel;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.LoadingMode;
@@ -36,8 +36,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends BaseSeleniumTest 
         calendar.assertVisible(true);
     }
 
-     @Test
-    @Ignore
+    @Test(enabled = false)
     public void testChartInside() {
         testAppFunctionalPage("/components/foldingpanel/chartIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
@@ -68,8 +67,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends BaseSeleniumTest 
         }
     }
 
-     @Test
-    @Ignore
+    @Test(enabled = false)
     public void testDataTableInside() {
         testAppFunctionalPage("/components/foldingpanel/dataTableIn.jsf");
 
@@ -84,8 +82,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends BaseSeleniumTest 
         dataTable.column(1).filter(InputTextFilterInspector.class, "fn:dataTableID:filter1").makeFiltering("col2_row1");
     }
 
-     @Test
-    @Ignore
+    @Test(enabled = false)
     public void testDateChooserInside() {
         testAppFunctionalPage("/components/foldingpanel/dateChooserIn.jsf");
         try {
@@ -108,8 +105,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends BaseSeleniumTest 
         dateChooser.field().assertValue("Jul 30, 2006");
     }
 
-     @Test
-    @Ignore
+    @Test(enabled = false)
     public void testDropDownInside() {
         testAppFunctionalPage("/components/foldingpanel/dropDownIn.jsf");
 
@@ -125,8 +121,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends BaseSeleniumTest 
         dropDownField.field().assertValue("Yellow");
     }
 
-     @Test
-    @Ignore
+    @Test(enabled = false)
     public void testDynamicImageInside() {
         testAppFunctionalPage("/components/foldingpanel/dynamicImageIn.jsf");
 
@@ -138,8 +133,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends BaseSeleniumTest 
         dynamicImage.assertVisible(true);
     }
 
-     @Test
-    @Ignore
+    @Test(enabled = false)
     public void testServerFoldingPanelInside() {
         testAppFunctionalPage("/components/foldingpanel/foldingPanelIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
@@ -181,8 +175,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends BaseSeleniumTest 
         headerPopup.assertSubtext(0, 28, "this is popup layer on tab 1");
     }
 
-     @Test
-    @Ignore
+    @Test(enabled = false)
     public void testAjaxTabbedPaneInside() {
         testAppFunctionalPage("/components/foldingpanel/tabbedPaneIn.jsf");
 
@@ -199,8 +192,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends BaseSeleniumTest 
         element("fn:secondContent").assertText("Some text on the second tab");
     }
 
-     @Test
-    @Ignore
+    @Test(enabled = false)
     public void testTabSetInside() {
         if (isFacelets())
             return; // this for some odd reason fails only on the build server in the Facelets version of tests
@@ -226,8 +218,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends BaseSeleniumTest 
         secondTab.assertText("Server");
     }
 
-     @Test
-    @Ignore
+    @Test(enabled = false)
     public void testTreeTableInside() {
         testAppFunctionalPage("/components/foldingpanel/treeTableIn.jsf");
 
@@ -245,8 +236,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends BaseSeleniumTest 
         treeTable.column(0).filter(InputTextFilterInspector.class, "fn:treeTableID:filter1").makeFiltering("colors");
     }
 
-     @Test
-    @Ignore
+    @Test(enabled = false)
     public void testTwoListSelectionInside() {
         testAppFunctionalPage("/components/foldingpanel/twoListSelectionIn.jsf");
 
@@ -262,8 +252,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends BaseSeleniumTest 
         twoListSelection.rightList().assertText("item 1 labelitem 5 labelitem 3 label");
     }
 
-     @Test
-    @Ignore
+    @Test(enabled = false)
     public void testValidationInside() {
         testAppFunctionalPage("/components/foldingpanel/validationIn.jsf");
 

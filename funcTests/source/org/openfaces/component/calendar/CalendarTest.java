@@ -12,7 +12,7 @@
 package org.openfaces.component.calendar;
 
 import com.thoughtworks.selenium.Selenium;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.CalendarInspector;

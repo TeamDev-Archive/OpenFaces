@@ -12,7 +12,7 @@
 package org.openfaces.component.datechooser;
 
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.component.calendar.BaseCalendarTestCase;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.html.InputInspector;

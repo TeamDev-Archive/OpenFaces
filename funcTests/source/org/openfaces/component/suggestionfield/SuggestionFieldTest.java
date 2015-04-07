@@ -12,7 +12,7 @@
 package org.openfaces.component.suggestionfield;
 
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.component.dropdownfield.BaseDropDownTestCase;
 
 /**
@@ -21,8 +21,7 @@ import org.openfaces.component.dropdownfield.BaseDropDownTestCase;
 public class SuggestionFieldTest extends BaseDropDownTestCase {
 
     //todo: uncomment if 'JSFC-3319' is in 'Fixed' state
-    @Ignore
-    @Test
+    @Test(enabled = false)
     public void _testReRenderThroughA4J() {
         checkReRenderingThroughA4J("/components/suggestionfield/suggestionField_a4j.jsf");
     }
@@ -48,8 +47,7 @@ public class SuggestionFieldTest extends BaseDropDownTestCase {
         checkTypedValue("/components/suggestionfield/suggestionFieldBaseFunctionality.jsf");
     }
 
-    @Test
-    @Ignore // todo: temporarily ignored because of failures in 2.x branch only
+    @Test(enabled = false) // todo: temporarily ignored because of failures in 2.x branch only
     public void testAjaxBasedSuggestion() {
         checkAjaxBasedSuggestion("/components/suggestionfield/suggestionFieldAjaxSuggestion.jsf");
     }
@@ -59,8 +57,7 @@ public class SuggestionFieldTest extends BaseDropDownTestCase {
         checkClientBasedSuggestion("/components/suggestionfield/suggestionFieldClientSuggestion.jsf");
     }
 
-    @Test
-    @Ignore // todo: bring this test back when it's clear how to disable skinning in RichFaces 4 (M2)
+    @Test(enabled = false) // todo: bring this test back when it's clear how to disable skinning in RichFaces 4 (M2)
     public void testStyling() {
         checkStyles(false, true, false, "/components/suggestionfield/suggestionFieldStyling.jsf", false);
         checkStyles(true, false, false, "/components/suggestionfield/suggestionFieldStyling.jsf", false);

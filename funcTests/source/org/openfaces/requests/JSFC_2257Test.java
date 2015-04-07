@@ -11,7 +11,7 @@
  */
 package org.openfaces.requests;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.openqa.selenium.Keys;
 import org.seleniuminspector.ElementInspector;

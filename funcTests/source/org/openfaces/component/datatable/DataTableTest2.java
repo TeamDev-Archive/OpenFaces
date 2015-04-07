@@ -12,7 +12,7 @@
 package org.openfaces.component.datatable;
 
 import org.openfaces.test.BaseSeleniumTest;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 import org.seleniuminspector.openfaces.TabSetInspector;
 import org.seleniuminspector.openfaces.DataTableInspector;

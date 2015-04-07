@@ -12,11 +12,9 @@
 package org.openfaces.component.borderlayoutpanel;
 
 import com.thoughtworks.selenium.Selenium;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
-import org.seleniuminspector.LoadingMode;
 
 import java.awt.*;
 
@@ -29,8 +27,7 @@ public class BorderLayoutPanelFullScreenTest extends BaseSeleniumTest {
         return true;
     }
 
-    @Test
-    @Ignore
+    @Test(enabled = false)
     // todo: investigate why this test fails on build server (but works locally)
     public void testRendering() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanel1ft.jsf");
@@ -75,8 +72,7 @@ public class BorderLayoutPanelFullScreenTest extends BaseSeleniumTest {
 //    saveScreenshotToFile("c:/temp/BorderLayoutPanelFullScreenTest.testRendering.3.png");
     }
 
-     @Test
-    @Ignore
+     @Test(enabled = false)
     // todo: investigate why this test fails on build server (but works locally)
     public void testContentResizeOnWindowResize() {
         Selenium selenium = getSelenium();

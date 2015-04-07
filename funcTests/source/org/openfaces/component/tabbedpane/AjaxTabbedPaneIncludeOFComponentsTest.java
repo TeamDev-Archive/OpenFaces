@@ -13,7 +13,7 @@ package org.openfaces.component.tabbedpane;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.openqa.selenium.By;
 import org.seleniuminspector.ElementInspector;
@@ -37,8 +37,7 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends BaseSeleniumTest {
         secondCalendar.assertVisible(true);
     }
 
-     @Test
-     @Ignore
+    @Test(enabled = false)
     public void testConfirmationInside() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/tabbedpane/confirmationIn.jsf");
@@ -71,8 +70,7 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends BaseSeleniumTest {
     }
 
     //todo: uncomment this method if JSFC-2452 fixed
-    @Ignore
-     @Test
+    @Test(enabled = false)
     public void _testDataTableInsideAjaxTabbedPane() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/tabbedpane/dataTableIn.jsf");
@@ -210,8 +208,7 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends BaseSeleniumTest {
     }
 
     //todo: uncomment when the  JSFC-3629 is fixed
-    @Ignore
-     @Test
+    @Test(enabled = false)
     public void _testAjaxTabbedPaneInsideAjaxTabbedPane() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/tabbedpane/tabbedPaneIn.jsf");
@@ -259,8 +256,7 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends BaseSeleniumTest {
         secondTabSetSecondTab.assertText("Server");
     }
 
-     @Test
-     @Ignore
+    @Test(enabled = false)
     public void testTreeTableInside() {
         testAppFunctionalPage("/components/tabbedpane/treeTableIn.jsf");
         element("fn:firstHeader").assertText("First tab");
@@ -310,8 +306,7 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends BaseSeleniumTest {
         secondTls.rightList().assertText("item 1 labelitem 5 labelitem 3 label");
     }
 
-    @Ignore
-     @Test
+    @Test(enabled = false)
     public void _testValidationInsideAjaxTabbedPane() {
         testAppFunctionalPage("/components/tabbedpane/validationIn.jsf");
 

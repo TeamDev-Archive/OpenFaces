@@ -12,7 +12,7 @@
 package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.seleniuminspector.openfaces.DateChooserInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 

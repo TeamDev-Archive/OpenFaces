@@ -12,201 +12,119 @@
 
 package org.openfaces.test;
 
-import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.Selenium;
 import com.thoughtworks.selenium.SeleniumException;
-import org.apache.commons.lang.StringUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.Description;
-import org.junit.runner.JUnitCore;
-import org.junit.runner.notification.Failure;
-import org.junit.runner.notification.RunListener;
-import org.openfaces.util.PropertyTestConfiguration;
-import org.openfaces.util.ScreenShooter;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.internal.WrapsDriver;
+import org.seleniuminspector.ElementByLocatorInspector;
 import org.seleniuminspector.ElementInspector;
-import org.seleniuminspector.SeleniumFactory;
 import org.seleniuminspector.SeleniumHolder;
-import org.seleniuminspector.SeleniumTestCase;
+import org.seleniuminspector.WindowInspector;
 import org.seleniuminspector.openfaces.*;
-import org.seleniuminspector.webriver.WebDriverBasedSelenium;
-import org.seleniuminspector.webriver.WebDriverBasedSeleniumFactory;
+import org.seleniuminspector.webriver.PropertyTestConfiguration;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Parameters;
 
-import java.sql.Driver;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import static org.openfaces.test.BaseSeleniumTest.BrowserType.CHROME;
-import static org.openfaces.test.BaseSeleniumTest.BrowserType.IEXPLORE;
-import static org.openfaces.test.BaseSeleniumTest.BrowserType.OPERA;
-import static org.openfaces.test.BaseSeleniumTest.TestResultLevel.COMPLETE;
-import static org.openfaces.test.BaseSeleniumTest.TestResultLevel.FAIL;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Max Yurin
  */
-public class BaseSeleniumTest extends SeleniumTestCase {
-    public static final String FUNC_TESTS_PROPERTIES_FILE = "/funcTests.properties";
+public class BaseSeleniumTest extends Assert {
     public static final String DEMO_CONTEXT_PATH = "demo.context.path";
     public static final String TEST_APP_CONTEXT_PATH = "test.app.context.path";
     public static final String TEST_APP_IS_FACELETS = "test.app.is.facelets";
 
+    protected static String testAppUrlPrefix;
+    protected static String demoUrlPrefix;
+    protected static Boolean isFacelets;
+
+    private static WindowInspector windowInspector;
     private static PropertyTestConfiguration properties;
-    private static TestResultLevel testResultLevel = FAIL;
-    private static ScreenShooter screenShooter;
-    private static WebDriver webDriver;
-    private static String testAppUrlPrefix;
-    private static String demoUrlPrefix;
-    private static Boolean isFacelets;
 
-    public WebDriver getWebDriver() {
-        return webDriver;
+    static {
+        properties = new PropertyTestConfiguration();
     }
 
-    protected void assertTestPageAvailable(String pageUrl, String expectedPageTitle) {
-        super.assertPageAvailable(testAppUrlPrefix + pageUrl, expectedPageTitle);
+    public static PropertyTestConfiguration getProperties() {
+        return properties;
     }
 
-    protected void assertDemoPageAvailable(String pageUrl, String expectedPageTitle) {
-        super.assertPageAvailable(demoUrlPrefix + pageUrl, expectedPageTitle);
+    private static String getTestAppUrlPrefix(String systemProperty) {
+        String systemPropertyValue = System.getProperty(systemProperty);
+        final String value = isTestAppFacelets() ? properties.getTestAppFaceletsURLPrefix() : properties.getTestAppJspURLPrefix();
+
+        return org.apache.commons.lang3.StringUtils.isNotBlank(systemPropertyValue) ? systemPropertyValue : value;
     }
 
-    private static class ExecutionListener extends RunListener {
-        @Override
-        public void testFinished(Description description) throws Exception {
-            super.testFinished(description);
-            makeScreenShoot(description.getMethodName());
+    private static String getDemoUrlPrefix(String systemProperty) {
+        String systemPropertyValue = System.getProperty(systemProperty);
+        final String value = isTestAppFacelets() ? properties.getLiveDemoFaceletsURLPrefix() : properties.getLiveDemoJspURLPrefix();
+
+        return org.apache.commons.lang3.StringUtils.isNotBlank(systemPropertyValue) ? systemPropertyValue : value;
+    }
+
+    public static boolean isTestAppFacelets() {
+        if (isFacelets == null) {
+            final String property = System.getProperty(TEST_APP_IS_FACELETS);
+            return !org.apache.commons.lang.StringUtils.isNotBlank(property) || Boolean.parseBoolean(property);
         }
-
-        @Override
-        public void testFailure(Failure failure) throws Exception {
-            super.testFailure(failure);
-            makeScreenShoot(failure.getDescription().getMethodName());
-        }
-
-        @Override
-        public void testIgnored(Description description) throws Exception {
-            super.testIgnored(description);
-        }
-    }
-
-    public enum TestResultLevel {
-        COMPLETE("complete"),
-        FAIL("fail"),
-        IGNORE("ignore");
-
-        TestResultLevel(String value) {
-            this.value = value;
-        }
-
-        private final String value;
-
-        public String getValue() {
-            return value;
-        }
-
-        public static TestResultLevel getTestResult(String value) {
-            if (StringUtils.isNotBlank(value)) {
-                for (TestResultLevel testResultLevel : TestResultLevel.values()) {
-                    if (testResultLevel.getValue().equals(value)) {
-                        return testResultLevel;
-                    }
-                }
-            }
-            return IGNORE;
-        }
-    }
-
-    public static enum BrowserType {
-        FIREFOX,
-        IEXPLORE,
-        CHROME,
-        SAFARI,
-        OPERA;
-
-        public static BrowserType findType(String value) {
-            for (BrowserType browserType : BrowserType.values()) {
-                final String type = browserType.name().toLowerCase();
-                if (type.equals(value)) {
-                    return browserType;
-                }
-            }
-            throw new IllegalArgumentException("Incompatible Browser type: " + value);
-        }
-    }
-
-    @BeforeClass
-    public static void init() {
-        properties = new PropertyTestConfiguration(FUNC_TESTS_PROPERTIES_FILE);
-
-        createDefaultSeleniumInstance();
-
-        screenShooter = new ScreenShooter(webDriver);
-        isFacelets = isTestAppFacelets();
-        testAppUrlPrefix = getTestAppUrlPrefix(TEST_APP_CONTEXT_PATH);
-        demoUrlPrefix = getDemoUrlPrefix(DEMO_CONTEXT_PATH);
-
-        final JUnitCore runner = new JUnitCore();
-        runner.addListener(new ExecutionListener());
-    }
-
-    private static void createDefaultSeleniumInstance() {
-//        selenium = new WebDriverBasedSelenium(webDriver, properties.getDefaultUrl());
-
-        SeleniumFactory seleniumFactory = new WebDriverBasedSeleniumFactory(
-                properties.getDefaultHost(),
-                properties.getCustomSeleniumPort(),
-                getBrowserPath(),
-                properties.getDefaultUrl());
-
-        SeleniumHolder.getInstance().setSeleniumFactory(seleniumFactory);
-        webDriver = ((WrapsDriver) getSelenium()).getWrappedDriver();
-    }
-
-    private static String getBrowserPath() {
-        final String defaultBrowser = properties.getDefaultBrowser();
-
-        if (StringUtils.isNotBlank(defaultBrowser)) {
-            if (defaultBrowser.equals(CHROME.name().toLowerCase())) {
-                return properties.getChromePath();
-            } else if (defaultBrowser.equals(IEXPLORE.name().toLowerCase())) {
-                return properties.getIePath();
-            } else if (defaultBrowser.equals(OPERA.name().toLowerCase())) {
-                return properties.getOperaPath();
-            }
-        }
-
-        return properties.getFirefoxPath();
-    }
-
-    @AfterClass
-    public static void detach() {
-        resetSelenium();
-    }
-
-    private static void resetSelenium() {
-        ((WrapsDriver) getSelenium()).getWrappedDriver().quit();
-        SeleniumHolder.getInstance().resetSelenium();
+        return isFacelets;
     }
 
     public static Boolean isFacelets() {
         return isFacelets != null && isFacelets;
     }
 
-    public static void makeScreenShoot(String methodName) {
-        if (testResultLevel != null && StringUtils.isNotBlank(methodName) &&
-                (FAIL.equals(testResultLevel) || COMPLETE.equals(testResultLevel))) {
+    /**
+     * @return an ElementInspector instance that corresponds to the currently tested window
+     */
+    protected static WindowInspector window() {
+        if (windowInspector == null)
+            windowInspector = new WindowInspector();
+        return windowInspector;
+    }
 
-            final SimpleDateFormat dateFormat = new SimpleDateFormat("HHmmss");
-            final String prefix = testResultLevel == FAIL ? properties.getFailTestsFolder() : properties.getCompleteTestsFolder();
-            final String fileName = prefix + methodName + "_screenShoot_" + dateFormat.format(new Date()) + ".png";
+    @BeforeClass
+    @Parameters({"browser", "version", "platform"})
+    public void setUp(String browser, String version, String platform) throws Exception {
+        SeleniumHolder.getInstance().createNewDriverProvider(properties, browser, version, platform);
 
-            screenShooter.makeScreenShot(fileName);
-        }
+        isFacelets = isTestAppFacelets();
+        testAppUrlPrefix = getTestAppUrlPrefix(TEST_APP_CONTEXT_PATH);
+        demoUrlPrefix = getDemoUrlPrefix(DEMO_CONTEXT_PATH);
+    }
+
+    @AfterClass
+    public void tearDown() {
+        resetSelenium();
+    }
+
+    public void resetSelenium() {
+        SeleniumHolder.resetSelenium();
+    }
+
+    public void sleep(int milliseconds) {
+        getDriver().manage().timeouts().implicitlyWait(milliseconds, TimeUnit.MILLISECONDS);
+    }
+
+    public WebDriver getDriver() {
+        return SeleniumHolder.getInstance().getDriver();
+    }
+
+    @SuppressWarnings("unchecked")
+    public Selenium getSelenium() {
+        return SeleniumHolder.getInstance().getSelenium();
+    }
+
+    protected void assertTestPageAvailable(String pageUrl, String expectedPageTitle) {
+        openPage(testAppUrlPrefix + pageUrl);
+    }
+
+    protected void assertDemoPageAvailable(String pageUrl, String expectedPageTitle) {
+        openPage(demoUrlPrefix + pageUrl);
     }
 
     private boolean assertPageContentValid(String applicationUrl, String pageUrl) {
@@ -227,14 +145,14 @@ public class BaseSeleniumTest extends SeleniumTestCase {
 
             throw new RuntimeException("Couldn`t open the page: " + pageUrl
                     + ", Current page title: " + pageTitle
-                    + ", Current page source: " + getWebDriver().getPageSource(), e);
+                    + ", Current page source: " + getDriver().getPageSource(), e);
         }
 
         boolean htmlSourceValid = htmlSource.contains(getUtilJsUrlSubstring());
         if (!htmlSourceValid) {
             fail("Unexpected page content. Page url: " + fullPageUrl + " ; Expected (but missing) HTML " +
                     "source substring: " + getUtilJsUrlSubstring() + "; Current page title: " +
-                    getWebDriver().getTitle() + " Current page source: " + getWebDriver().getPageSource());
+                    getDriver().getTitle() + " Current page source: " + getDriver().getPageSource());
         }
 
         return true;
@@ -260,15 +178,15 @@ public class BaseSeleniumTest extends SeleniumTestCase {
             try {
                 openAndWait(pageUrl);
                 sleep(1000);
-                ElementInspector.provideUtils(getWebDriver());
+                ElementInspector.provideUtils(getDriver());
             } catch (Exception e) {
                 if (i < maxAttemptCount - 1) {
                     sleep(10000);
                     continue;
                 } else {
                     throw new RuntimeException("Couldn`t open the page: " + pageUrl
-                            + ", Current page title: " + getWebDriver().getTitle()
-                            + ", Current page source: " + getWebDriver().getPageSource(), e);
+                            + ", Current page title: " + getDriver().getTitle()
+                            + ", Current page source: " + getDriver().getPageSource(), e);
                 }
             }
 
@@ -280,35 +198,13 @@ public class BaseSeleniumTest extends SeleniumTestCase {
 
     public void openAndWait(String url) {
         try {
-            getWebDriver().get(properties.getDefaultUrl() + url);
-            ElementInspector.provideUtils(getWebDriver());
+            getDriver().get(properties.getDefaultUrl() + url);
+//            ElementInspector.provideUtils(getWebDriver());
         } catch (Exception e) {
             resetSelenium();
-            getWebDriver().get(properties.getDefaultUrl() + url);
-            ElementInspector.provideUtils(getWebDriver());
+            getDriver().get(properties.getDefaultUrl() + url);
+//            ElementInspector.provideUtils(getWebDriver());
         }
-    }
-
-    private static String getTestAppUrlPrefix(String systemProperty) {
-        String systemPropertyValue = System.getProperty(systemProperty);
-        final String value = isTestAppFacelets() ? properties.getTestAppFaceletsURLPrefix() : properties.getTestAppJspURLPrefix();
-
-        return StringUtils.isNotBlank(systemPropertyValue) ? systemPropertyValue : value;
-    }
-
-    private static String getDemoUrlPrefix(String systemProperty) {
-        String systemPropertyValue = System.getProperty(systemProperty);
-        final String value = isTestAppFacelets() ? properties.getLiveDemoFaceletsURLPrefix() : properties.getLiveDemoJspURLPrefix();
-
-        return StringUtils.isNotBlank(systemPropertyValue) ? systemPropertyValue : value;
-    }
-
-    private static boolean isTestAppFacelets() {
-        if (isFacelets == null) {
-            final String property = System.getProperty(TEST_APP_IS_FACELETS);
-            return !StringUtils.isNotBlank(property) || Boolean.parseBoolean(property);
-        }
-        return isFacelets;
     }
 
     private String getUtilJsUrlSubstring() {
@@ -331,6 +227,92 @@ public class BaseSeleniumTest extends SeleniumTestCase {
         openPage(demoUrlPrefix + testAppPageUrl);
     }
 
+    public void waitForPageToLoad() {
+        sleep(500); // wait a little while Ajax request starts asynchronously
+        Selenium selenium = getSelenium();
+        selenium.waitForCondition("var value = window.document._ajaxInProgressMessage ? window.document._ajaxInProgressMessage.style.display : 'none'; value == 'none';", "30000");
+        sleep(2000);
+    }
+
+    public boolean isMessageTextPresent(String text) {
+        return getSelenium().isElementPresent("//span[contains(text(),'" + text + "')]") ||
+                getSelenium().isElementPresent("//li[contains(text(),'" + text + "')]");
+    }
+
+    public void assertConversionErrorOccured(boolean errorExpected) {
+        assertEquals(errorExpected, isMessageTextPresent("Conversion error") || isMessageTextPresent("Conversion Error") || isMessageTextPresent("could not be understood as a date"));
+    }
+
+    protected void createEvent(ElementInspector containerElement, String elementPath, EventType eventType, String eventName, int keyCode, boolean shiftPressed) {
+
+        String event = null;
+        switch (eventType) {
+            case KEY: {
+                String initKeyEventArgs = eventName + "', true, true, window, false, false, " + shiftPressed + ", false, " + keyCode;
+                event = "var eventObj = document.createEvent('" + eventType + "'); " +
+                        "eventObj.initKeyEvent('" + initKeyEventArgs + ", 0); element.dispatchEvent(eventObj);";
+                break;
+            }
+            case MOUSE: {
+                event = "var eventObj = document.createEvent('" + eventType + "'); eventObj.initEvent('" + eventName + "', true, false );" +
+                        "element.dispatchEvent(eventObj)";
+                break;
+            }
+        }
+
+        String element;
+        if (elementPath == null) {
+            element = "var element = document.getElementById('" + containerElement.id() + "');";
+        } else {
+            element = "var element = document.SeI.getQ__findElementByPath(document.getElementById('" + containerElement.id() + "'), '" + elementPath + "');";
+        }
+        getSelenium().getEval(element + event);
+    }
+
+    /**
+     * @param elementLocator Selenium element locator
+     * @return ElementInspector for an element referred by the specified locator
+     * @see com.thoughtworks.selenium.Selenium
+     */
+    protected ElementInspector element(String elementLocator) {
+        return new ElementByLocatorInspector(elementLocator);
+    }
+
+    public void closeBrowser() {
+        getDriver().close();
+    }
+
+    public boolean isAlertPresent() {
+        try {
+            getDriver().switchTo().alert();
+            return true;
+        } catch (NoAlertPresentException e) {
+            return false;
+        }
+    }
+
+    public String getAlert() {
+        return getDriver().switchTo().alert().getText();
+    }
+
+    public void assertEquals() {
+
+    }
+
+    public void acceptAlert() {
+        getDriver().switchTo().alert().accept();
+    }
+
+    public void dismissAlert() {
+        getDriver().switchTo().alert().dismiss();
+    }
+
+    protected void assertNoAlert(String messagePrefix) {
+        Selenium selenium = getSelenium();
+        if (selenium.isAlertPresent()) {
+            fail(messagePrefix + " " + selenium.getAlert());
+        }
+    }
 
     protected DataTableInspector dataTable(String locator) {
         return new DataTableInspector(locator);
@@ -402,5 +384,19 @@ public class BaseSeleniumTest extends SeleniumTestCase {
 
     protected ForEachInspector forEach(String locator) {
         return new ForEachInspector(locator);
+    }
+
+    protected enum EventType {
+        KEY("KeyEvents"), MOUSE("MouseEvents");
+
+        private String value;
+
+        private EventType(String value) {
+            this.value = value;
+        }
+
+        public String toString() {
+            return value;
+        }
     }
 }

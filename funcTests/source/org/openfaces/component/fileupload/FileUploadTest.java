@@ -12,7 +12,7 @@
 
 package org.openfaces.component.fileupload;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;

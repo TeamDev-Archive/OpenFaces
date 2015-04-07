@@ -12,7 +12,7 @@
 package org.openfaces.component.twolistselection;
 
 import com.thoughtworks.selenium.Selenium;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.openfaces.TwoListSelectionInspector;
 

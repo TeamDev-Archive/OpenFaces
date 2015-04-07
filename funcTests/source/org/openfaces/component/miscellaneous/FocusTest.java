@@ -12,7 +12,7 @@
 package org.openfaces.component.miscellaneous;
 
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 
@@ -45,8 +45,7 @@ public class FocusTest extends BaseSeleniumTest {
         element("out").assertText(FOCUSED);
     }
 
-    @Test
-    @Ignore
+    @Test(enabled = false)
     public void testFocusWithOFDataTable() {
         testAppFunctionalPage("/components/scrollfocus/focusWithDataTable.jsf");
 

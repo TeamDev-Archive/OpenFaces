@@ -13,18 +13,16 @@
 package org.openfaces.component.sessionexpiration;
 
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.openqa.selenium.By;
 import org.seleniuminspector.openfaces.ConfirmationInspector;
-import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 
 /**
  * @author Eugene Goncharov
  */
 public class SessionExpirationTest extends BaseSeleniumTest {
-     @Test
-     @Ignore
+    @Test(enabled = false)
     public void testSessionExpiration() {
         testAppFunctionalPage("/components/sessionexpiration/rawTesting.jsf");
 

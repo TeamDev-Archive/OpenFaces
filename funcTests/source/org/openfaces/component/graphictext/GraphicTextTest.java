@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.graphictext;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 
 /**

@@ -11,11 +11,10 @@
  */
 package org.openfaces.requests;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.openfaces.TabbedPaneInspector;
 import org.seleniuminspector.ElementInspector;
-import org.seleniuminspector.LoadingMode;
 
 /**
  * @author Pavel Kaplin

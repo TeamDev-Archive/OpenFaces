@@ -14,19 +14,16 @@ package org.seleniuminspector;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.HasInputDevices;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.Mouse;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.HasInputDevices;
+import org.openqa.selenium.interactions.Mouse;
 import org.openqa.selenium.internal.Locatable;
-import org.openqa.selenium.internal.WrapsDriver;
 
-import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,20 +44,8 @@ import java.util.Map;
 public abstract class ElementInspector {
 
     private static StringBuilder utilScriptBuilder = null;
-
-    private boolean isUtilScriptPresent() {
-        String utilsIsPresent = "false";
-        try {
-            utilsIsPresent = getSelenium().getEval("!!document.SeI");
-        } catch (Exception e) {
-        } finally {
-            if (Boolean.valueOf(utilsIsPresent)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
+    private static Map<String, String> adaptedColorStrings = new HashMap<String, String>();
+    private static Map<String, String> adaptedFontWeightStrings = new HashMap<String, String>();
 
     public static void provideUtils(WebDriver driver) {
         if (utilScriptBuilder == null) {
@@ -81,16 +66,92 @@ public abstract class ElementInspector {
         jsExecutor.executeScript(script);
     }
 
+    protected static String escapeStringForJSAndQuote(String str) {
+        if (str == null)
+            return "null";
+        return '\'' + escapeStringForJS(str) + '\'';
+    }
+
+    protected static String escapeStringForJS(String str) {
+        if (str == null)
+            return "";
+
+        int len = str.length();
+        StringBuffer buf = new StringBuffer(len << 2);
+        for (int i = 0; i < len; i++) {
+            char chr = str.charAt(i);
+            switch (chr) {
+                case '\\':
+                    buf.append("\\x5c");
+                    break;
+                case '\'':
+                    buf.append("\\x27");
+                    break;
+                case '\"':
+                    buf.append("\\x22");
+                    break;
+                case '\n':
+                    buf.append("\\n");
+                    break;
+                case '[':
+                    buf.append("\\x5b");
+                    break;
+                case ']':
+                    buf.append("\\x5d");
+                    break;
+                case '\r':
+                    buf.append("\\r");
+                    break;
+                case '<':
+                    buf.append("\\x3C");
+                    break;
+                default:
+                    if (((int) chr) >= 0x80) {
+                        final String hex = Integer.toString(chr, 16);
+                        buf.append("\\u");
+                        switch (hex.length()) {
+                            case 2:
+                                buf.append("00");
+                                break;
+                            case 3:
+                                buf.append('0');
+                        }
+                        buf.append(hex);
+                    } else {
+                        buf.append(chr);
+                    }
+            }
+        }
+
+        return buf.toString();
+    }
+
+    private boolean isUtilScriptPresent() {
+        String utilsIsPresent = "false";
+        try {
+            utilsIsPresent = getSelenium().getEval("!!document.SeI");
+        } catch (Exception e) {
+        } finally {
+            if (Boolean.valueOf(utilsIsPresent)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
     public String getEval(String script) {
-       if (!isUtilScriptPresent()) {
-           provideUtils(getDriver());
-       }
-       return getSelenium().getEval(script);
+        if (!isUtilScriptPresent()) {
+            provideUtils(getDriver());
+        }
+        return getSelenium().getEval(script);
     }
 
     protected Selenium getSelenium() {
-        return SeleniumTestCase.getSelenium();
+        return SeleniumHolder.getInstance().getSelenium();
     }
+
+    // ----------------------------------------- Element inspection/navigation methods
 
     /**
      * @return a selenium inspector string that can be used in the ordinary methods of Selenium object.
@@ -101,8 +162,8 @@ public abstract class ElementInspector {
 
     /**
      * @return expression that evaluates to the inspected element. This expression is evaluated by the Selenium.getEval
-     *         method and it is executed in context of the "selenium" object, not the tested window. Use "window" to refer to the
-     *         tested window.
+     * method and it is executed in context of the "selenium" object, not the tested window. Use "window" to refer to the
+     * tested window.
      */
     public abstract String getElementReferenceExpression();
 
@@ -118,8 +179,6 @@ public abstract class ElementInspector {
             throw new RuntimeException("Error evaluating selenium expression: " + fullExpression, e);
         }
     }
-
-    // ----------------------------------------- Element inspection/navigation methods
 
     /**
      * @return true if the element referred to by this element inspector really exists in browser's DOM
@@ -213,7 +272,6 @@ public abstract class ElementInspector {
         return new SubElementByExpressionInspector(this, "parentNode");
     }
 
-
     /**
      * @param elementExpression The property of the element, or function call over the element, or a chain of
      *                          properties/function calls that should be evaluated, e.g. "checked", "style.width", or "_getSelectedItems().length"
@@ -274,7 +332,7 @@ public abstract class ElementInspector {
 
     /**
      * @return evaluates "nodeName" property of the inspected element. It returns the lower-case tag name for tag
-     *         nodes, "#text" for text node, "#comment" for comment nodes, and "#document" for document nodes.
+     * nodes, "#text" for text node, "#comment" for comment nodes, and "#document" for document nodes.
      */
     public String nodeName() {
         return evalExpression("nodeName").toLowerCase();
@@ -322,6 +380,8 @@ public abstract class ElementInspector {
         return evalSeleniumInspectorExpression("getQ__calculateElementStyleProperty(" + getElementReferenceExpression() + ", '" + propertyName + "')");
     }
 
+    // ----------------------------------------- Element manipulation methods
+
     public boolean isVisible() {
         return findElement(By.xpath(getXPath())).isDisplayed();
     }
@@ -352,8 +412,6 @@ public abstract class ElementInspector {
         return new Rectangle(x, y, width, height);
     }
 
-    // ----------------------------------------- Element manipulation methods
-
     /**
      * Fires event with the specified name over this element.
      *
@@ -377,7 +435,7 @@ public abstract class ElementInspector {
     public void click() {
         assertElementExists();
         WebElement element = findElement(By.xpath(getXPath()));
-        Mouse mouse = ((HasInputDevices) getDriver()).getMouse();
+        final Mouse mouse = ((HasInputDevices) getDriver()).getMouse();
         mouse.click(((Locatable) element).getCoordinates());
     }
 
@@ -418,7 +476,6 @@ public abstract class ElementInspector {
         getSelenium().mouseUp(getXPath());
     }
 
-
     public void mouseOver() {
         getSelenium().mouseOver(asSeleniumLocator());
     }
@@ -436,7 +493,6 @@ public abstract class ElementInspector {
         new Actions(getDriver()).dragAndDropBy(element, moveX, moveY).build().perform();
     }
 
-
     public void focus() {
         getSelenium().focus(asSeleniumLocator());
     }
@@ -452,6 +508,7 @@ public abstract class ElementInspector {
     public void keyUp(int keyCode) {
         getSelenium().keyUp(asSeleniumLocator(), "\\" + keyCode);
     }
+    // ----------------------------------------- Assert methods
 
     public void keyPress(Keys key) {
         WebElement element = getDriver().findElement(By.xpath(getXPath()));
@@ -462,7 +519,6 @@ public abstract class ElementInspector {
         getSelenium().keyPress(asSeleniumLocator(), "\\" + keyCode);
     }
 
-
     public String[] selectOptions() {
         return getSelenium().getSelectOptions(asSeleniumLocator());
     }
@@ -470,7 +526,6 @@ public abstract class ElementInspector {
     public void selectByLabel(String label) {
         getSelenium().select(asSeleniumLocator(), "label=" + label);
     }
-    // ----------------------------------------- Assert methods
 
     public void assertElementExists() {
         // todo: ubiquitious checking for element's existence can significantly affect performance, check whether the "silent" (no checking) mode is required
@@ -494,7 +549,7 @@ public abstract class ElementInspector {
     public void assertExpressionEquals(String expression, int expectedValue, int allowedError) {
         int actualValue = evalIntExpression(expression);
         Assert.assertTrue("Checking expression evaluation result. Expression: " + expression + "; element: " + this +
-                "; expected: " + expectedValue + "; but was: " + actualValue,
+                        "; expected: " + expectedValue + "; but was: " + actualValue,
                 Math.abs(actualValue - expectedValue) <= allowedError);
     }
 
@@ -656,7 +711,7 @@ public abstract class ElementInspector {
     public void assertWidth(int width, int allowedError) {
         int actualValue = size().width;
         Assert.assertTrue("Checking element width; element: " + this +
-                "; expected: " + width + "; but was: " + actualValue,
+                        "; expected: " + width + "; but was: " + actualValue,
                 Math.abs(actualValue - width) <= allowedError);
     }
 
@@ -667,7 +722,7 @@ public abstract class ElementInspector {
     public void assertHeight(int height, int allowedError) {
         int actualValue = size().height;
         Assert.assertTrue("Checking element height; element: " + this +
-                "; expected: " + height + "; but was: " + actualValue,
+                        "; expected: " + height + "; but was: " + actualValue,
                 Math.abs(actualValue - height) <= allowedError);
     }
 
@@ -676,6 +731,7 @@ public abstract class ElementInspector {
         Assert.assertEquals("Checking x-position for element: " + this, position.x, actualPosition.x);
         Assert.assertEquals("Checking y-position for element: " + this, position.y, actualPosition.y);
     }
+    // ----------------------------------------- Utility methods
 
     public void assertPosition(int x, int y) {
         assertPosition(new Point(x, y));
@@ -692,11 +748,8 @@ public abstract class ElementInspector {
     }
 
     protected WebDriver getDriver() {
-        return ((WrapsDriver) getSelenium()).getWrappedDriver();
+        return SeleniumHolder.getDriver();
     }
-    // ----------------------------------------- Utility methods
-
-    private static Map<String, String> adaptedColorStrings = new HashMap<String, String>();
 
     public String adaptColorString(String color) {
         if (color == null || color.trim().length() == 0)
@@ -710,8 +763,6 @@ public abstract class ElementInspector {
         return adaptedColor;
     }
 
-    private static Map<String, String> adaptedFontWeightStrings = new HashMap<String, String>();
-
     public String adaptFontWeightString(String fontWeight) {
         if (fontWeight == null || fontWeight.trim().length() == 0)
             return fontWeight;
@@ -724,73 +775,11 @@ public abstract class ElementInspector {
         return adaptedFontWeight;
     }
 
-
     private String nullOrJsString(String str) {
         if (str == null)
             return "null";
         else
             return '\'' + str + '\'';
-    }
-
-    protected static String escapeStringForJSAndQuote(String str) {
-        if (str == null)
-            return "null";
-        return '\'' + escapeStringForJS(str) + '\'';
-    }
-
-
-    protected static String escapeStringForJS(String str) {
-        if (str == null)
-            return "";
-
-        int len = str.length();
-        StringBuffer buf = new StringBuffer(len << 2);
-        for (int i = 0; i < len; i++) {
-            char chr = str.charAt(i);
-            switch (chr) {
-                case '\\':
-                    buf.append("\\x5c");
-                    break;
-                case '\'':
-                    buf.append("\\x27");
-                    break;
-                case '\"':
-                    buf.append("\\x22");
-                    break;
-                case '\n':
-                    buf.append("\\n");
-                    break;
-                case '[':
-                    buf.append("\\x5b");
-                    break;
-                case ']':
-                    buf.append("\\x5d");
-                    break;
-                case '\r':
-                    buf.append("\\r");
-                    break;
-                case '<':
-                    buf.append("\\x3C");
-                    break;
-                default:
-                    if (((int) chr) >= 0x80) {
-                        final String hex = Integer.toString(chr, 16);
-                        buf.append("\\u");
-                        switch (hex.length()) {
-                            case 2:
-                                buf.append("00");
-                                break;
-                            case 3:
-                                buf.append('0');
-                        }
-                        buf.append(hex);
-                    } else {
-                        buf.append(chr);
-                    }
-            }
-        }
-
-        return buf.toString();
     }
 
     protected void sleep(long millis) {

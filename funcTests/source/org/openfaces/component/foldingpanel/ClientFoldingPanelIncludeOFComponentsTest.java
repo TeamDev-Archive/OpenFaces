@@ -11,9 +11,8 @@
  */
 package org.openfaces.component.foldingpanel;
 
-import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.LoadingMode;
@@ -39,8 +38,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends BaseSeleniumTest 
         calendar.assertVisible(true);
     }
 
-    @Test
-    @Ignore
+    @Test(enabled = false)
     public void testChartInside() {
         testAppFunctionalPage("/components/foldingpanel/chartIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -77,7 +75,6 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends BaseSeleniumTest 
     }
 
     @Test
-
     public void testDataTableInside() {
         testAppFunctionalPage("/components/foldingpanel/dataTableIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -96,8 +93,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends BaseSeleniumTest 
     }
 
 
-    @Test
-    @Ignore
+    @Test(enabled = false)
     public void testDateChooserInside() {
         testAppFunctionalPage("/components/foldingpanel/dateChooserIn.jsf");
         try {
@@ -122,8 +118,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends BaseSeleniumTest 
         dateChooser.field().assertValue("Jul 30, 2006");
     }
 
-    @Test
-    @Ignore // was failing in nightly build only for some reason
+    @Test(enabled = false)
     public void testDropDownInside() {
         testAppFunctionalPage("/components/foldingpanel/dropDownIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -191,8 +186,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends BaseSeleniumTest 
         hintLabel.checkVisibilityAndContent("HintLabel Value", "HintLabel Title ;-)");
     }
 
-    @Test
-    @Ignore // command timeout on switchng the tab was happening (on server only)
+    @Test(enabled = false)
     public void testPopupLayerInside() {
         testAppFunctionalPage("/components/foldingpanel/popupLayerIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -254,8 +248,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends BaseSeleniumTest 
         secondTab.assertText("Server");
     }
 
-    @Test
-    @Ignore
+    @Test(enabled = false)
     public void testTreeTableInside() {
         testAppFunctionalPage("/components/foldingpanel/treeTableIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
@@ -276,8 +269,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends BaseSeleniumTest 
         treeTable.column(0).filter(InputTextFilterInspector.class, "fn:treeTableID:filter1").makeFiltering("colors");
     }
 
-    @Test
-    @Ignore
+    @Test(enabled = false)
     public void testTwoListSelectionInside() {
         testAppFunctionalPage("/components/foldingpanel/twoListSelectionIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());

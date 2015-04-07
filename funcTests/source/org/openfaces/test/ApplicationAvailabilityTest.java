@@ -12,17 +12,16 @@
 package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 /**
  * @author Darya Shumilina
  */
 public class ApplicationAvailabilityTest extends BaseSeleniumTest {
 
-     @Test
+    @Test(groups = "test")
     public void testAvailability() {
-        Selenium selenium = getSelenium();
-        selenium.setTimeout("60000");
+        sleep(60000);
 
         assertTestPageAvailable("/main.jsf", "Main");
         assertTestPageAvailable("/components/calendar/calendarTest.jsf", "Calendar Test");

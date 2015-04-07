@@ -11,7 +11,7 @@
  */
 package org.seleniuminspector.junit4ex;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;

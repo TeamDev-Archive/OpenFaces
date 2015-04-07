@@ -12,7 +12,7 @@
 package org.openfaces.requests;
 
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.openfaces.DataTableInspector;
 
@@ -20,8 +20,7 @@ import org.seleniuminspector.openfaces.DataTableInspector;
  * @author Darya Shumilina
  */
 public class JSFC_2478Test extends BaseSeleniumTest {
-     @Test
-     @Ignore
+    @Test(enabled = false)
     public void testJSFC_2478Fix() {
         testAppFunctionalPage("/requests/JSFC-2478.jsf");
 

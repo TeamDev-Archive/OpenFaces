@@ -12,7 +12,7 @@
 package org.openfaces.component.borderlayoutpanel;
 
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.BorderLayoutPanelInspector;
@@ -23,8 +23,7 @@ import org.seleniuminspector.openfaces.SidePanelInspector;
  *         // todo: consider optimizing performance by combinbing several tests that involve various splitter draggings into one test
  */
 public class BorderLayoutPanelTest extends BaseSeleniumTest {
-     @Test
-    @Ignore
+     @Test(groups = "test")
     public void testRendering() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
 
@@ -91,8 +90,7 @@ public class BorderLayoutPanelTest extends BaseSeleniumTest {
         contentDiv.assertElementExists();
     }
 
-     @Test
-    @Ignore
+    @Test(enabled = false)
     public void testSidePanelSplitterDragging() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
 
@@ -181,8 +179,7 @@ public class BorderLayoutPanelTest extends BaseSeleniumTest {
         sidePanel08.assertExpressionEquals("offsetHeight", 50);
     }
 
-     @Test
-    @Ignore
+    @Test(enabled = false)
     public void testEvents() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
         SidePanelInspector sidePanel = sidePanel("formID:sidePanel01");
@@ -194,8 +191,7 @@ public class BorderLayoutPanelTest extends BaseSeleniumTest {
         contentText.assertExpressionEquals("innerHTML", "offsetWidth = 300 offsetHeight = 200");
     }
 
-     @Test
-    @Ignore
+    @Test(enabled = false)
     public void testContentResizeOnSplitterDrag() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
         BorderLayoutPanelInspector borderLayoutPanel00 = borderLayoutPanel("formID:borderLayoutPanel00");
@@ -283,8 +279,7 @@ public class BorderLayoutPanelTest extends BaseSeleniumTest {
         borderLayoutPanel00.content().assertExpressionEquals("offsetHeight", 200);
     }
 
-     @Test
-    @Ignore
+    @Test(enabled = false)
     public void testContentResizeOnParentResize() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
         ElementInspector content1 = borderLayoutPanel("formID:borderLayoutPanel21").content();
@@ -331,8 +326,7 @@ public class BorderLayoutPanelTest extends BaseSeleniumTest {
         content2.assertExpressionEquals("offsetHeight", 300);
     }
 
-     @Test
-    @Ignore
+    @Test(enabled = false)
     public void testTruncatedMode() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
         ElementInspector sidePanel30Splitter = sidePanel("formID:sidePanel30").splitter();
@@ -550,8 +544,7 @@ public class BorderLayoutPanelTest extends BaseSeleniumTest {
         sidePanel4.assertExpressionEquals("offsetHeight", 50);
     }
 
-     @Test
-    @Ignore
+    @Test(enabled = false)
     // todo: investigate why this test fails on build server (but works locally)
     public void testBoxLayoutModel() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");

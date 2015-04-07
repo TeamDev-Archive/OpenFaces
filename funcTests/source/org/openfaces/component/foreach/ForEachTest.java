@@ -14,7 +14,7 @@ package org.openfaces.component.foreach;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.openqa.selenium.By;
 import org.seleniuminspector.ElementInspector;
@@ -226,8 +226,7 @@ public class ForEachTest extends BaseSeleniumTest {
         value2.assertValue("item D");
     }
 
-    @Ignore
-    @Test
+    @Test(enabled = false)
     public void testEvents() {
         closeBrowser();
         testAppFunctionalPage("/components/foreach/forEach.jsf");
@@ -334,8 +333,7 @@ public class ForEachTest extends BaseSeleniumTest {
         message3.assertVisible(false);
     }
 
-    @Ignore
-    @Test
+    @Test(enabled = false)
     public void testAjax() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/foreach/forEach.jsf");

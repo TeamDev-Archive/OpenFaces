@@ -13,7 +13,7 @@ package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Assert;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.seleniuminspector.ElementInspector;

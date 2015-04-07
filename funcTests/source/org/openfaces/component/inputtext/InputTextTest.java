@@ -14,7 +14,7 @@ package org.openfaces.component.inputtext;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.seleniuminspector.ElementInspector;
@@ -243,8 +243,7 @@ public class InputTextTest extends BaseSeleniumTest {
         assertTrue(selenium.isTextPresent("mousemove"));
     }
 
-    @Test
-    @Ignore
+    @Test(enabled = false)
     // revive this test when RichFaces 4 is fully functional
     public void testReRenderingThroughA4J() {
         testAppFunctionalPage("/components/inputtext/inputText_a4j.jsf");

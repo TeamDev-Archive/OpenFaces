@@ -13,7 +13,7 @@ package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.seleniuminspector.openfaces.FoldingPanelInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 import org.seleniuminspector.ElementInspector;
@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * @author Tatyana Matveyeva
  */
-public class AjaxTest extends OpenFacesTestCase {
+public class AjaxTest extends BaseSeleniumTest {
 
     //All DataTable features, that use Ajax is Tested on the demo (DataTable_general.jsf)
      @Test
@@ -37,8 +37,7 @@ public class AjaxTest extends OpenFacesTestCase {
     }
 
     //JSFC-1954
-    @Ignore
-     @Test
+    @Test(enabled = false)
     public void disabledTestFPClientValidation() throws Exception {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/foldingpanel/foldingPanelAjax.jsf");
@@ -50,8 +49,7 @@ public class AjaxTest extends OpenFacesTestCase {
     }
 
     //JSFC-1954
-    @Ignore
-     @Test
+    @Test(enabled = false)
     public void disabledTestTPClientValidation() throws Exception {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/tabbedpane/tabbedPaneAjax.jsf");
@@ -64,8 +62,7 @@ public class AjaxTest extends OpenFacesTestCase {
     }
 
     //JSFC-1953
-    @Ignore
-     @Test
+    @Test(enabled = false)
     public void disabledTestFPMessages() throws Exception {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/foldingpanel/foldingPanelAjax.jsf");
@@ -105,8 +102,7 @@ public class AjaxTest extends OpenFacesTestCase {
         tab1Output.assertElementExists(true);
     }
 
-    @Ignore
-     @Test
+    @Test(enabled = false)
     public void disabledTestPagingValidation() throws Exception {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/dataTableAjax.jsf");
@@ -119,8 +115,7 @@ public class AjaxTest extends OpenFacesTestCase {
         assertEquals("1", selenium.getValue("form2:dataTable2:paginator2--pageNo"));
     }
 
-    @Ignore
-     @Test
+    @Test(enabled = false)
     public void disabledTestPagingClientValidation() throws Exception {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/dataTableAjax.jsf");

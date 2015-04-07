@@ -10,9 +10,6 @@
           <root url="file://$MODULE_DIR$/web" relative="/" />
         </webroots>
       </configuration>
-      <facet type="jsf" name="JSF">
-        <configuration />
-      </facet>
     </facet>
     <facet type="Seam" name="Seam">
       <configuration />

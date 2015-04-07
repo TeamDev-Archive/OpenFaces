@@ -13,7 +13,7 @@ package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.seleniuminspector.ElementInspector;
@@ -75,8 +75,7 @@ public class LiveDemoTest extends BaseSeleniumTest {
     }
 
     // see JSFC-1840 TabSet with locales can switch own value but doesn't switch locale in DateChoosers if validation triggered
-    @Test
-    @Ignore
+    @Test(enabled = false)
     // todo: works locally, but investigate why it fails on the server
     public void testDateChooserTabSetValidation() {
         liveDemoPage("/datechooser/DateChooser.jsf");
@@ -99,8 +98,7 @@ public class LiveDemoTest extends BaseSeleniumTest {
     }
 
     //todo: rework the test appropriately to new demo content
-    @Ignore
-    @Test
+    @Test(enabled = false)
     public void _testSaveFilterInSession() throws Exception {
         Selenium selenium = getSelenium();
         liveDemoPage("/datatable/DataTable_filteringAndPaging.jsf");
@@ -131,8 +129,7 @@ public class LiveDemoTest extends BaseSeleniumTest {
     }
 
 
-    @Test
-    @Ignore
+    @Test(enabled = false)
     public void testConfirmation() throws Exception {
         Selenium selenium = getSelenium();
         liveDemoPage("/confirmation/ConfirmationDefault.jsf");

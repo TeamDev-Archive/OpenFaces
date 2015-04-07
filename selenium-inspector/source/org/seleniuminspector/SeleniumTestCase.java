@@ -65,7 +65,7 @@ public abstract class SeleniumTestCase extends org.junit.Assert {
     }
 
     protected WebDriver getDriver() {
-        return ((WrapsDriver) getSelenium()).getWrappedDriver();
+        return SeleniumHolder.getInstance().getDriver();
     }
 
     protected void openAndWait(String pageUrl) {

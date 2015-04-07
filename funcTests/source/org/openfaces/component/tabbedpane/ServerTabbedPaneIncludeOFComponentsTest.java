@@ -13,7 +13,7 @@ package org.openfaces.component.tabbedpane;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.openqa.selenium.By;
 import org.seleniuminspector.ElementInspector;
@@ -71,8 +71,7 @@ public class ServerTabbedPaneIncludeOFComponentsTest extends BaseSeleniumTest {
         acceptAlert();
     }
 
-     @Test
-    @Ignore
+    @Test(enabled = false)
     public void testDataTableInside() {
         testAppFunctionalPage("/components/tabbedpane/dataTableIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
@@ -212,8 +211,7 @@ public class ServerTabbedPaneIncludeOFComponentsTest extends BaseSeleniumTest {
     }
 
     //todo: uncomment when the JSFC-3629 is fixed
-    @Ignore
-     @Test
+    @Test(enabled = false)
     public void _testServerTabbedPaneInsideServerTabbedPane() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/tabbedpane/tabbedPaneIn.jsf");
@@ -263,8 +261,7 @@ public class ServerTabbedPaneIncludeOFComponentsTest extends BaseSeleniumTest {
         secondTabSetSecondTab.assertText("Server");
     }
 
-     @Test
-     @Ignore
+    @Test(enabled = false)
     public void testTreeTableInside() {
         testAppFunctionalPage("/components/tabbedpane/treeTableIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());

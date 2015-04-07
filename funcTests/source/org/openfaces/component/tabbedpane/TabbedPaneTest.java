@@ -13,7 +13,7 @@ package org.openfaces.component.tabbedpane;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.seleniuminspector.ClientLoadingMode;
@@ -92,31 +92,27 @@ public class TabbedPaneTest extends BaseSeleniumTest {
     }
 
     //todo: uncomment when the  JSFC-3629 is fixed
-    @Ignore
-     @Test
+    @Test(enabled = false)
     public void _testTabSelectionChangeClientLoadingMode() {
         checkSelectionChange(ClientLoadingMode.getInstance());
     }
 
     //todo: uncomment when the  JSFC-3629 is fixed
-    @Ignore
-     @Test
+    @Test(enabled = false)
     public void _testTabSelectionChangeServerLoadingMode() {
         testAppFunctionalPage("/components/tabbedpane/tabbedPaneChangeSelectionStyling.jsf");
         checkSelectionChange(ServerLoadingMode.getInstance());
     }
 
     //todo: uncomment when the  JSFC-3629 is fixed
-    @Ignore
-     @Test
+    @Test(enabled = false)
     public void _testTabSelectionChangeAjaxLoadingMode() {
         testAppFunctionalPage("/components/tabbedpane/tabbedPaneChangeSelectionStyling.jsf");
         checkSelectionChange(OpenFacesAjaxLoadingMode.getInstance());
     }
 
     //todo: uncomment when the  JSFC-3629 is fixed
-    @Ignore
-     @Test
+    @Test(enabled = false)
     public void _testClientSideAPI() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/tabbedpane/tabbedPaneChangeSelectionStyling.jsf");

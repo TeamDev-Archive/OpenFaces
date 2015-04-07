@@ -11,18 +11,18 @@
  */
 package org.openfaces.component.ajax;
 
-import org.junit.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.InputTextInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
+import org.testng.annotations.Test;
 
 /**
  * @author Ilya Musihin
  */
 public class AjaxTest extends BaseSeleniumTest {
      //
-     @Test
+     @Test()
     public void testActionPhase() {
         testAppFunctionalPage("/components/ajax/ajax.jsf");
         element("form1:resetBtn").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());

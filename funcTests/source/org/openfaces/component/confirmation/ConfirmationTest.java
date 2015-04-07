@@ -13,7 +13,7 @@ package org.openfaces.component.confirmation;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.openqa.selenium.By;
@@ -27,8 +27,7 @@ import org.seleniuminspector.openfaces.PopupLayerInspector;
 public class ConfirmationTest extends BaseSeleniumTest {
 
     //todo: uncomment when JSFC-3627 is fixed
-    @Ignore
-    @Test
+    @Test(enabled = false)
     public void _testConfirmationReRenderThroughA4J() throws InterruptedException {
         testAppFunctionalPage("/components/confirmation/confirmation_a4j.jsf");
         Selenium selenium = getSelenium();
@@ -54,8 +53,7 @@ public class ConfirmationTest extends BaseSeleniumTest {
     }
 
     //todo: uncomment when JSFC-3627 is fixed
-    @Ignore
-    @Test
+    @Test(enabled = false)
     public void _testConfirmationInvocationThroughA4JControl() {
         testAppFunctionalPage("/components/confirmation/confirmation_a4j.jsf");
         Selenium selenium = getSelenium();
@@ -152,8 +150,7 @@ public class ConfirmationTest extends BaseSeleniumTest {
     }
 
     //todo: uncomment this test if JSFC-2683 is fixed
-    @Ignore
-    @Test
+    @Test(enabled = false)
     public void _testInputTextInside() {
         testAppFunctionalPage("/components/confirmation/confirmationContentWithArbitraryComponents.jsf");
         Selenium selenium = getSelenium();
@@ -212,8 +209,7 @@ public class ConfirmationTest extends BaseSeleniumTest {
     }
 
     //todo: uncomment when JSFC-3627 is fixed
-    @Ignore
-    @Test
+    @Test(enabled = false)
     public void _testConfirmationClientSideEvents() {
         testAppFunctionalPage("/components/confirmation/confirmation.jsf");
         Selenium selenium = getSelenium();
@@ -296,9 +292,7 @@ public class ConfirmationTest extends BaseSeleniumTest {
         assertTrue(selenium.isTextPresent("onkeyup works"));
         assertTrue(selenium.isTextPresent("onkeyup"));
     }
-
-    @Test
-    @Ignore // todo: bring this test back when it's clear how to disable skinning in RichFaces 4 (M2)
+    @Test(enabled = false)// todo: bring this test back when it's clear how to disable skinning in RichFaces 4 (M2)
     public void testStyles() {
         testAppFunctionalPage("/components/confirmation/confirmationStyles.jsf");
 

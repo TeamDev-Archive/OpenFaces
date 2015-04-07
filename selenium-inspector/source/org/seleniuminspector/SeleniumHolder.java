@@ -12,44 +12,43 @@
 package org.seleniuminspector;
 
 import com.thoughtworks.selenium.Selenium;
+import org.openqa.selenium.WebDriver;
+import org.seleniuminspector.webriver.DriverProvider;
+import org.seleniuminspector.webriver.PropertyTestConfiguration;
 
 public class SeleniumHolder {
-
     private static SeleniumHolder seleniumHolder = new SeleniumHolder();
-
-    private SeleniumFactory seleniumFactory;
-    private Selenium selenium;
+    private static DriverProvider driverProvider;
 
     private SeleniumHolder() {
     }
 
-    public static SeleniumHolder getInstance(){
+    public static SeleniumHolder getInstance() {
         return seleniumHolder;
     }
 
-    public void setSeleniumFactory(SeleniumFactory seleniumFactory) {
-        this.seleniumFactory = seleniumFactory;
+    public static void createNewDriverProvider(PropertyTestConfiguration properties,
+                                               String browser, String version, String platform) {
+        driverProvider = new DriverProvider(properties, browser, version, platform);
     }
 
-    public Selenium getSelenium() {
-        if (selenium == null) {
-            if (seleniumFactory == null) {
-                throw new RuntimeException("Can't obtain selenium. SeleniumFactory isn't specified.");
-            }
-            selenium = seleniumFactory.getSelenium();
+    public static DriverProvider getDriverProvider() {
+        if (driverProvider == null) {
+            throw new RuntimeException("Can't obtain selenium. DriverProvider isn't specified.");
         }
-        return selenium;
-    }
-    public void resetSelenium() {
-         selenium = null;
-    }
-    public Selenium getSelenium(boolean createNew) {
-        if (!createNew) return getSelenium();
-        if (seleniumFactory == null) {
-            throw new RuntimeException("Can't obtain selenium. SeleniumFactory isn't specified.");
-        }
-        selenium = seleniumFactory.getSelenium();
-        return selenium;
+
+        return driverProvider;
     }
 
+    public static WebDriver getDriver(){
+        return driverProvider.getDriver();
+    }
+
+    public static Selenium getSelenium() {
+        return driverProvider.getSelenium();
+    }
+
+    public static void resetSelenium() {
+        driverProvider.resetSelenium();
+    }
 }

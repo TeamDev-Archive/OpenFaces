@@ -12,7 +12,7 @@
 package org.openfaces.component.foldingpanel;
 
 import org.junit.Ignore;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.openfaces.test.BaseSeleniumTest;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.seleniuminspector.ElementInspector;
@@ -23,8 +23,7 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
  * @author Darya Shumilina
  */
 public class FoldingPanelTest extends BaseSeleniumTest {
-    @Test
-    @Ignore
+    @Test(enabled = false)
     // revive this test when RichFaces 4 is fully functional
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/foldingpanel/foldingPanel_a4j.jsf");
