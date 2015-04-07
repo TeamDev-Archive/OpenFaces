@@ -21,27 +21,32 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 /**
  * @author Max Yurin
  */
-public class ScreenShooter {
+public class ScreenShotter {
     private final WebDriver driver;
+    private static final String PNG = ".png";
+    private static final String JPEG = ".jpeg";
 
-    public ScreenShooter(WebDriver driver) {
+    public ScreenShotter(WebDriver driver) {
         this.driver = driver;
     }
 
-    public void makeScreenShot(String fileName) {
+    public void makeScreenShot(String path) {
         try {
             File srcFile = null;
-            if (driver.getClass().equals(RemoteWebDriver.class)) {
-                srcFile = ((TakesScreenshot) new Augmenter().augment(driver)).getScreenshotAs(OutputType.FILE);
-            } else {
-                srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            if (driver != null) {
+                if (driver.getClass().equals(RemoteWebDriver.class)) {
+                    srcFile = ((TakesScreenshot) new Augmenter().augment(driver)).getScreenshotAs(OutputType.FILE);
+                } else {
+                    srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+                }
             }
 
-            FileUtils.copyFile(srcFile, new File(fileName));
+            FileUtils.copyFile(srcFile, new File(path + PNG));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
