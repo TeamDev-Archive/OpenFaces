@@ -16,6 +16,7 @@ import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.Scrolling;
 import org.openfaces.component.table.impl.DynamicCol;
+import org.openfaces.component.table.impl.DynamicColumn;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.TableUtil;
@@ -179,7 +180,7 @@ public abstract class TableHeaderOrFooter extends TableSection {
             BaseColumn startingColumn = columns.get(colIndex);
             for (BaseColumn column = startingColumn;
                  column != null;
-                 column = column.getParent() instanceof BaseColumn ? (BaseColumn) column.getParent() : null) {
+                 column = calculateParent(column) instanceof BaseColumn ? (BaseColumn) calculateParent(column) : null) {
                 if (skipEmptyHeaders && column != startingColumn) {
                     Object header = getHeaderOrFooterCellContent(column, isHeader);
                     if (header == null)
@@ -191,6 +192,13 @@ public abstract class TableHeaderOrFooter extends TableSection {
             columnHierarchyLevels = Math.max(columnHierarchyLevels, columnHierarchy.size());
         }
         return columnHierarchyLevels;
+    }
+
+    private static UIComponent calculateParent(BaseColumn child){
+        if (child instanceof DynamicColumn){
+            return ((DynamicColumn) child).getColumnsParent();
+        }
+        return child.getParent();
     }
 
     private HeaderRow composeCommonHeaderRow(TableStructure tableStructure, String cellTag) {

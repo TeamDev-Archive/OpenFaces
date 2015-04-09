@@ -137,6 +137,10 @@ public class DynamicColumn extends Column implements DynamicCol {
         columns.setConverter(converter);
     }
 
+    public UIComponent getColumnsParent(){
+        return columns.getParent();
+    }
+
     private List<DynamicColumn> getContextEntranceStack(Map<String, Object> requestMap) {
         List<DynamicColumn> contextEntranceStack = (List<DynamicColumn>) requestMap.get(CONTEXT_ENTRANCE_STACK_KEY);
         if (contextEntranceStack == null) {
