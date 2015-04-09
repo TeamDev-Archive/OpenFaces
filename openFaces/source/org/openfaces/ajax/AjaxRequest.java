@@ -90,8 +90,9 @@ public class AjaxRequest {
         this.ajaxResult = ajaxResult;
     }
 
+    //todo: replace validationError with context.validationFailed
     public boolean isValidationError() {
-        return validationError;
+        return validationError || context.isValidationFailed();
     }
 
     public void setValidationError(boolean validationError) {
