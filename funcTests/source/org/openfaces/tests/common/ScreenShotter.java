@@ -10,18 +10,15 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.util;
+package org.openfaces.tests.common;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.Augmenter;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 
 /**
  * @author Max Yurin
@@ -39,11 +36,11 @@ public class ScreenShotter {
         try {
             File srcFile = null;
             if (driver != null) {
-                if (driver.getClass().equals(RemoteWebDriver.class)) {
-                    srcFile = ((TakesScreenshot) new Augmenter().augment(driver)).getScreenshotAs(OutputType.FILE);
-                } else {
+//                if (driver.getClass().equals(RemoteWebDriver.class)) {
+//                    srcFile = ((TakesScreenshot) new Augmenter().augment(driver)).getScreenshotAs(OutputType.FILE);
+//                } else {
                     srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-                }
+//                }
             }
 
             FileUtils.copyFile(srcFile, new File(path + PNG));

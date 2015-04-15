@@ -10,20 +10,18 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.test;
+package org.openfaces.tests.common;
 
 import com.thoughtworks.selenium.Selenium;
 import com.thoughtworks.selenium.SeleniumException;
+import org.apache.commons.lang.StringUtils;
+import org.inspector.SeleniumHolder;
+import org.inspector.navigator.URLPageNavigator;
+import org.inspector.webriver.PropertyTestConfiguration;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
-import org.seleniuminspector.ElementByLocatorInspector;
-import org.seleniuminspector.ElementInspector;
-import org.seleniuminspector.SeleniumHolder;
-import org.seleniuminspector.WindowInspector;
-import org.seleniuminspector.openfaces.*;
-import org.seleniuminspector.webriver.PropertyTestConfiguration;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 
@@ -41,7 +39,8 @@ public class BaseSeleniumTest extends Assert {
     protected static String demoUrlPrefix;
     protected static Boolean isFacelets;
 
-    private static WindowInspector windowInspector;
+    protected URLPageNavigator urlPageNavigator;
+
     private static PropertyTestConfiguration properties;
 
     static {
@@ -52,24 +51,18 @@ public class BaseSeleniumTest extends Assert {
         return properties;
     }
 
-    private static String getTestAppUrlPrefix(String systemProperty) {
-        String systemPropertyValue = System.getProperty(systemProperty);
-        final String value = isTestAppFacelets() ? properties.getTestAppFaceletsURLPrefix() : properties.getTestAppJspURLPrefix();
-
-        return org.apache.commons.lang3.StringUtils.isNotBlank(systemPropertyValue) ? systemPropertyValue : value;
+    private static String getTestAppUrlPrefix() {
+        return properties.getTestAppFaceletsURLPrefix();
     }
 
-    private static String getDemoUrlPrefix(String systemProperty) {
-        String systemPropertyValue = System.getProperty(systemProperty);
-        final String value = isTestAppFacelets() ? properties.getLiveDemoFaceletsURLPrefix() : properties.getLiveDemoJspURLPrefix();
-
-        return org.apache.commons.lang3.StringUtils.isNotBlank(systemPropertyValue) ? systemPropertyValue : value;
+    private static String getDemoUrlPrefix() {
+        return properties.getLiveDemoFaceletsURLPrefix();
     }
 
     public static boolean isTestAppFacelets() {
         if (isFacelets == null) {
             final String property = System.getProperty(TEST_APP_IS_FACELETS);
-            return !org.apache.commons.lang.StringUtils.isNotBlank(property) || Boolean.parseBoolean(property);
+            return !StringUtils.isNotBlank(property) || Boolean.parseBoolean(property);
         }
         return isFacelets;
     }
@@ -78,32 +71,25 @@ public class BaseSeleniumTest extends Assert {
         return isFacelets != null && isFacelets;
     }
 
-    /**
-     * @return an ElementInspector instance that corresponds to the currently tested window
-     */
-    protected static WindowInspector window() {
-        if (windowInspector == null)
-            windowInspector = new WindowInspector();
-        return windowInspector;
-    }
-
     @BeforeClass
     @Parameters({"browser", "version", "platform"})
     public void setUp(String browser, String version, String platform) throws Exception {
-        SeleniumHolder.getInstance().createNewDriverProvider(properties, browser, version, platform);
+        SeleniumHolder.createNewDriverProvider(properties, browser, version, platform);
 
         isFacelets = isTestAppFacelets();
-        testAppUrlPrefix = getTestAppUrlPrefix(TEST_APP_CONTEXT_PATH);
-        demoUrlPrefix = getDemoUrlPrefix(DEMO_CONTEXT_PATH);
+        testAppUrlPrefix = getTestAppUrlPrefix();
+        demoUrlPrefix = getDemoUrlPrefix();
+
+        urlPageNavigator = new URLPageNavigator(getDriver(), properties.getDefaultUrl() + testAppUrlPrefix);
     }
 
-    @AfterClass
+    @AfterMethod
     public void tearDown() {
         resetSelenium();
     }
 
     public void resetSelenium() {
-        SeleniumHolder.resetSelenium();
+        SeleniumHolder.getInstance().resetSelenium();
     }
 
     public void sleep(int milliseconds) {
@@ -178,7 +164,6 @@ public class BaseSeleniumTest extends Assert {
             try {
                 openAndWait(pageUrl);
                 sleep(1000);
-                ElementInspector.provideUtils(getDriver());
             } catch (Exception e) {
                 if (i < maxAttemptCount - 1) {
                     sleep(10000);
@@ -243,41 +228,6 @@ public class BaseSeleniumTest extends Assert {
         assertEquals(errorExpected, isMessageTextPresent("Conversion error") || isMessageTextPresent("Conversion Error") || isMessageTextPresent("could not be understood as a date"));
     }
 
-    protected void createEvent(ElementInspector containerElement, String elementPath, EventType eventType, String eventName, int keyCode, boolean shiftPressed) {
-
-        String event = null;
-        switch (eventType) {
-            case KEY: {
-                String initKeyEventArgs = eventName + "', true, true, window, false, false, " + shiftPressed + ", false, " + keyCode;
-                event = "var eventObj = document.createEvent('" + eventType + "'); " +
-                        "eventObj.initKeyEvent('" + initKeyEventArgs + ", 0); element.dispatchEvent(eventObj);";
-                break;
-            }
-            case MOUSE: {
-                event = "var eventObj = document.createEvent('" + eventType + "'); eventObj.initEvent('" + eventName + "', true, false );" +
-                        "element.dispatchEvent(eventObj)";
-                break;
-            }
-        }
-
-        String element;
-        if (elementPath == null) {
-            element = "var element = document.getElementById('" + containerElement.id() + "');";
-        } else {
-            element = "var element = document.SeI.getQ__findElementByPath(document.getElementById('" + containerElement.id() + "'), '" + elementPath + "');";
-        }
-        getSelenium().getEval(element + event);
-    }
-
-    /**
-     * @param elementLocator Selenium element locator
-     * @return ElementInspector for an element referred by the specified locator
-     * @see com.thoughtworks.selenium.Selenium
-     */
-    protected ElementInspector element(String elementLocator) {
-        return new ElementByLocatorInspector(elementLocator);
-    }
-
     public void closeBrowser() {
         getDriver().close();
     }
@@ -313,79 +263,6 @@ public class BaseSeleniumTest extends Assert {
             fail(messagePrefix + " " + selenium.getAlert());
         }
     }
-
-    protected DataTableInspector dataTable(String locator) {
-        return new DataTableInspector(locator);
-    }
-
-    protected TabSetInspector tabSet(String locator) {
-        return new TabSetInspector(locator);
-    }
-
-    protected TabbedPaneInspector tabbedPane(String locator) {
-        return new TabbedPaneInspector(locator);
-    }
-
-    protected FoldingPanelInspector foldingPanel(String locator) {
-        return new FoldingPanelInspector(locator);
-    }
-
-    protected TreeTableInspector treeTable(String locator) {
-        return new TreeTableInspector(locator);
-    }
-
-    protected DropDownFieldInspector dropDownField(String locator) {
-        return new DropDownFieldInspector(locator);
-    }
-
-    protected SuggestionFieldInspector suggestionField(String locator) {
-        return new SuggestionFieldInspector(locator);
-    }
-
-    protected InputTextInspector inputText(String locator) {
-        return new InputTextInspector(locator);
-    }
-
-    protected PopupLayerInspector popupLayer(String locator) {
-        return new PopupLayerInspector(locator);
-    }
-
-    protected ConfirmationInspector confirmation(String locator) {
-        return new ConfirmationInspector(locator);
-    }
-
-    protected DateChooserInspector dateChooser(String locator) {
-        return new DateChooserInspector(locator);
-    }
-
-    protected CalendarInspector calendar(String locator) {
-        return new CalendarInspector(locator);
-    }
-
-    protected TwoListSelectionInspector twoListSelection(String locator) {
-        return new TwoListSelectionInspector(locator);
-    }
-
-    protected HintLabelInspector hintLabel(String locator) {
-        return new HintLabelInspector(locator);
-    }
-
-    protected BorderLayoutPanelInspector borderLayoutPanel(String locator) {
-        return new BorderLayoutPanelInspector(locator);
-    }
-
-    protected SidePanelInspector sidePanel(String locator) {
-        return new SidePanelInspector(locator);
-    }
-
-    protected DataTablePaginatorInspector dataTablePaginator(String locator) {
-        return new DataTablePaginatorInspector(locator);
-    }
-
-    protected ForEachInspector forEach(String locator) {
-        return new ForEachInspector(locator);
-    }
-
     protected enum EventType {
         KEY("KeyEvents"), MOUSE("MouseEvents");
 

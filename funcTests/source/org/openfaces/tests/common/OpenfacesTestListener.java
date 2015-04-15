@@ -10,14 +10,13 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.util;
+package org.openfaces.tests.common;
 
 import com.google.common.base.Joiner;
-import org.openfaces.test.BaseSeleniumTest;
+import org.inspector.webriver.PropertyTestConfiguration;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.seleniuminspector.webriver.PropertyTestConfiguration;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
@@ -42,18 +41,21 @@ public class OpenfacesTestListener implements ITestListener {
 
     private void init(ITestResult iTestResult) {
         final Object iTestResultInstance = iTestResult.getInstance();
-        final BaseSeleniumTest instance = (BaseSeleniumTest) iTestResultInstance;
-        final WebDriver webDriver = instance.getDriver();
-        properties = BaseSeleniumTest.getProperties();
 
-        if (webDriver != null && webDriver instanceof RemoteWebDriver) {
-            final Capabilities capabilities = ((RemoteWebDriver) webDriver).getCapabilities();
-            if (capabilities != null) {
-                browserName = capabilities.getBrowserName();
+        if (iTestResultInstance instanceof BaseSeleniumTest) {
+            final BaseSeleniumTest instance = (BaseSeleniumTest) iTestResultInstance;
+            final WebDriver webDriver = instance.getDriver();
+            properties = BaseSeleniumTest.getProperties();
+
+            if (webDriver != null && webDriver instanceof RemoteWebDriver) {
+                final Capabilities capabilities = ((RemoteWebDriver) webDriver).getCapabilities();
+                if (capabilities != null) {
+                    browserName = capabilities.getBrowserName();
+                }
             }
-        }
 
-        screenShotter = new ScreenShotter(webDriver);
+            screenShotter = new ScreenShotter(webDriver);
+        }
     }
 
     @Override

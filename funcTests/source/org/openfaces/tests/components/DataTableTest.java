@@ -10,25 +10,10 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.test;
-
-import org.testng.annotations.Test;
+package org.openfaces.tests.components;
 
 /**
  * @author Max Yurin
  */
-public class ServerAvailableTest extends BaseSeleniumTest {
-
-    @Test
-    public void testPage(){
-        //        webDriver.navigate().to("http://google.com");
-//        sleep(10000);
-//        webDriver.get("http://yahoo.com");
-
-        openPage("http://google.com");
-        sleep(10000);
-        openPage("http://yahoo.com");
-        sleep(10000);
-        openPage("http://localhost:8080/TestAppFacelets/main.jsf");
-    }
+public class DataTableTest {
 }
