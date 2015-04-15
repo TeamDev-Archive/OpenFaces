@@ -251,7 +251,7 @@
       </fileset>
     </copy>
 
-    <fail message="print-error-message"/>
+    <fail message="print-error-message" if="junit_test_failed"/>
   </target>
 
   <!--Deployment section-->
