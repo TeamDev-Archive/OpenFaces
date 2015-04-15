@@ -1192,7 +1192,7 @@
   <component name="libraryTable">
     <library name="commons-lang">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-lang-2.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-lang-2.6.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />

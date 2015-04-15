@@ -63,7 +63,9 @@
     <include name="primefaces-3.0.1.jar"/>
   </fileset>
 
-  <fileset id="google-libs" dir="${google.lib.dir}"/>
+  <fileset id="google-libs" dir="${google.lib.dir}">
+    <include name="guava-r07.jar"/>
+  </fileset>
 
   <fileset id="mojarra-2.0" dir="${jsf.lib.dir}">
     <include name="javax.faces-2.1.11.jar"/>
