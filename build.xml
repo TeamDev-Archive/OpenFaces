@@ -251,7 +251,7 @@
       </fileset>
     </copy>
 
-    <antcall target="print-error-message"/>
+    <fail message="print-error-message"/>
   </target>
 
   <!--Deployment section-->
