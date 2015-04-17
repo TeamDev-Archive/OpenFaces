@@ -13,7 +13,7 @@
 package org.inspector.api.impl;
 
 import org.inspector.api.Control;
-import org.inspector.api.ElementWrapper;
+import org.inspector.components.ElementWrapper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 

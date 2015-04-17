@@ -10,24 +10,25 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.inspector;
-
-import org.openqa.selenium.WebDriverException;
+package org.inspector.css;
 
 /**
  * @author Max Yurin
  */
-public class ElementInspectorException extends WebDriverException {
+public enum Border {
+    ALL("border"),
+    BORDER_RIGHT("border-right"),
+    BORDER_LEFT("border-left"),
+    BORDER_TOP("border-top"),
+    BORDER_BOTTOM("border-bottom");
 
-    public ElementInspectorException(String message) {
-        super(message);
+    private String value;
+
+    Border(String value) {
+        this.value = value;
     }
 
-    public ElementInspectorException(Throwable cause) {
-        super(cause);
-    }
-
-    public ElementInspectorException(String message, Throwable cause) {
-        super(message, cause);
+    public String getValue() {
+        return value;
     }
 }

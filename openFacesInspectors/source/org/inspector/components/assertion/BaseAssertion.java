@@ -10,29 +10,11 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.inspector.components;
-
-import org.inspector.api.DateChooser;
-import org.openqa.selenium.WebDriver;
-
-import java.util.Date;
+package org.inspector.components.assertion;
 
 /**
  * @author Max Yurin
  */
-public class Calendar extends ElementWrapper implements DateChooser {
-    public Calendar(WebDriver driver, String id) {
-        super(driver, id, "");
-
-    }
-
-    @Override
-    public void set(Date date) {
-
-    }
-
-    @Override
-    public String getValue() {
-        return null;
-    }
+public class BaseAssertion {
+    protected static final String NBSP_CHAR = "\u00a0";
 }

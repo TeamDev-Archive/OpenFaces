@@ -25,13 +25,12 @@
     <mkdir dir="${classes.dir}"/>
     <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" source="1.5" target="1.5">
       <classpath>
-        <fileset dir="${lib.dir}">
-          <include name="/selenium/selenium-java-2.44.0.jar"/>
-          <include name="/selenium/selenium-server-standalone-2.44.0.jar"/>
-          <include name="/seleniuminspector/selenium-inspector.jar"/>
-        </fileset>
-        <fileset file="../testLib/testng-6.8.21.jar"/>
-        <fileset file="${openfaces-jar.file}"/>
+        <pathelement path="${lib.dir}/apache/commons-lang-2.6.jar"/>
+        <pathelement path="${lib.dir}/selenium/selenium-java-2.44.0.jar"/>
+        <pathelement path="${lib.dir}/selenium/selenium-server-standalone-2.44.0.jar"/>
+        <pathelement path="../testLib/hamcrest-core-1.3.jar"/>
+        <pathelement path="../testLib/testng-6.8.21.jar"/>
+        <pathelement path="${openfaces-jar.file}"/>
       </classpath>
     </javac>
   </target>

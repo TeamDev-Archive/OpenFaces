@@ -12,21 +12,8 @@
 
 package org.inspector.api;
 
-import org.inspector.components.table.Column;
-import org.inspector.components.table.TableRow;
-
-
 /**
  * @author Max Yurin
  */
 public interface Table extends Control {
-    int width();
-    int height();
-    TableRow row(int index);
-    Column column(int index);
-    void toggleNodes();
-    void expandNodes();
-    boolean isEmpty();
-    void clear();
-
 }

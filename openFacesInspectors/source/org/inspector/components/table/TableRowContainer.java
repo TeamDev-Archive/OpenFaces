@@ -12,7 +12,7 @@
 
 package org.inspector.components.table;
 
-import org.inspector.api.ElementWrapper;
+import org.inspector.components.ElementWrapper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -25,6 +25,8 @@ import java.util.List;
  */
 public class TableRowContainer extends ElementWrapper implements Iterable<TableRow> {
     public static final By ROWS = By.xpath(TableRow.TAG_NAME);
+    private List<WebElement> rows;
+    private int index = 0;
 
     public TableRowContainer(WebDriver webDriver, String id, String type) {
         super(webDriver, id, type);
@@ -35,28 +37,24 @@ public class TableRowContainer extends ElementWrapper implements Iterable<TableR
     }
 
     public Iterator<TableRow> iterator() {
-        return new RowIterator(element().findElements(ROWS));
-    }
+        this.rows = element().findElements(ROWS);
+        this.index = 0;
 
-    private final class RowIterator implements Iterator<TableRow> {
-        private List<WebElement> rows;
-        private int index = 0;
+        return new Iterator<TableRow>() {
+            public boolean hasNext() {
+                return index < rows.size();
+            }
 
-        public RowIterator(List<WebElement> rows) {
-            this.rows = rows;
-        }
+            public TableRow next() {
+                final TableRow tableRow = new TableRow(driver(), rows.get(index));
+                index = index + 1;
+                return tableRow;
+            }
 
-        public boolean hasNext() {
-            return index < rows.size();
-        }
-
-        public TableRow next() {
-            return new TableRow(driver(), rows.get(index++).getAttribute("id"));
-        }
-
-        public void remove() {
-            rows.remove(index);
-        }
+            public void remove() {
+                rows.remove(index);
+            }
+        };
     }
 
     public TableRow row(int index) {
@@ -64,8 +62,9 @@ public class TableRowContainer extends ElementWrapper implements Iterable<TableR
         TableRow row;
         int counter = 0;
 
-        while(iterator.hasNext() && (row = iterator.next()) != null){
-            if(counter == index){
+        while (iterator.hasNext()) {
+            row = iterator.next();
+            if (counter == index) {
                 return row;
             }
         }

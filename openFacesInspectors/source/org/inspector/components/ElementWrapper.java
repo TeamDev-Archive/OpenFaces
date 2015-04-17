@@ -10,10 +10,10 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.inspector.api;
+package org.inspector.components;
 
 import org.apache.commons.lang3.StringUtils;
-import org.inspector.ElementInspectorException;
+import org.inspector.css.CssWrapper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -25,10 +25,11 @@ import java.util.List;
 /**
  * @author Max Yurin
  */
-public class ElementWrapper {
+public class ElementWrapper{
     private String id = "";
     private WebDriver driver;
     private WebElement element;
+    private CssWrapper cssWrapper;
 
     public ElementWrapper(WebDriver webDriver, String elementId, String type) {
         this.driver = webDriver;
@@ -37,6 +38,7 @@ public class ElementWrapper {
         this.element = driver.findElement(locator);
 
         checkTagNameExists(element, type);
+        this.cssWrapper = new CssWrapper(element());
     }
 
     public ElementWrapper(WebDriver driver, WebElement element, String type) {
@@ -45,12 +47,17 @@ public class ElementWrapper {
         this.id = element.getAttribute("id");
 
         checkTagNameExists(element, type);
+        this.cssWrapper = new CssWrapper(element());
     }
 
     private void checkTagNameExists(WebElement element, String type) {
-        if (!element.getTagName().equals(type)) {
-            throw new ElementInspectorException("Element should be [" + element.getTagName() + "] but was [" + type + "]");
+        if (!element.getTagName().equalsIgnoreCase(type)) {
+//            throw new ElementInspectorException("Element should be [" + element.getTagName() + "] but was [" + type + "]");
         }
+    }
+
+    public CssWrapper css() {
+        return cssWrapper;
     }
 
     public WebDriver driver() {
@@ -65,20 +72,16 @@ public class ElementWrapper {
         return id;
     }
 
-    public String getCssValue(String cssName) {
-        return element.getCssValue(cssName);
-    }
-
-    public String getAttribute(String name) {
+    public String attribute(String name) {
         return element.getAttribute(name);
     }
 
     public WebElement findElement(By by) {
-        return element().findElement(by);
+        return element.findElement(by);
     }
 
     public List<WebElement> findElements(By by) {
-        return element().findElements(by);
+        return element.findElements(by);
     }
 
     protected By findBy(String id) {
@@ -109,5 +112,17 @@ public class ElementWrapper {
 
     public Coordinates getCoordinates() {
         return ((Locatable) element()).getCoordinates();
+    }
+
+    protected int parseInt(String value, int defaultValue) {
+        if (StringUtils.isBlank(value)) {
+            return defaultValue;
+        }
+
+        try {
+            return Integer.parseInt(value.trim());
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
     }
 }

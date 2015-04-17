@@ -41,7 +41,7 @@ public class InputText extends ControlImpl implements Input {
 
     @Override
     public String getValue() {
-        return getAttribute("value");
+        return attribute("value");
     }
 
     @Override

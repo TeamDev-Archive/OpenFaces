@@ -13,9 +13,13 @@
 package org.inspector.navigator;
 
 import com.google.common.collect.ImmutableMap;
+import org.apache.commons.lang.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 import static org.inspector.navigator.FuncTestsPages.*;
 
 /**
@@ -32,7 +36,11 @@ public class URLPageNavigator {
                     .put(CHECKBOX, new FuncTestURL("/components/checkbox/selectBooleanCheckbox.jsf"))
                     .put(CONFIRMATION, new FuncTestURL("/components/confirmation/confirmation.jsf"))
                     .put(COMPOSITE_FILTER, new FuncTestURL("/components/filter/compositeFilter.jsf"))
+
+                    .put(DATATABLE_PAGINATION, new FuncTestURL("/components/datatable/datatablePagination.jsf"))
                     .put(DATATABLE_AJAX, new FuncTestURL("/components/datatable/dataTableAjax.jsf"))
+                    .put(DATATABLE_COLUMN_GROUPS, new FuncTestURL("/components/datatable/dataTableColumnGroups.jsf"))
+
                     .put(DATECHOOSER, new FuncTestURL("/components/datechooser/dateChooser.jsf"))
                     .put(DROPDOWN_FIELD, new FuncTestURL("/components/dropdown/dropDown.jsf"))
                     .put(DYNAMIC_IMAGE, new FuncTestURL("/components/dynamicimage/dynamicImage_defaultView.jsf"))
@@ -61,24 +69,49 @@ public class URLPageNavigator {
 
     private WebDriver webDriver;
     private String appTestUrl = "";
-
-    public URLPageNavigator() {
-    }
+    private List<String> errors;
 
     public URLPageNavigator(WebDriver webDriver, String testAppUrlPerfix) {
         this.webDriver = webDriver;
         this.appTestUrl = testAppUrlPerfix;
+
+        errors = newArrayList();
     }
 
-    public void navigateTo(String url) {
-        webDriver.get(appTestUrl + url);
-        waitForPageLoad(DEFAULT_TIMEOUT);
-    }
-
-    public void checkAllPages() {
-        for (FuncTestURL url : URLS.values()) {
-            navigateTo(url.getUrl());
+    public void navigateTo(FuncTestsPages page) {
+        final FuncTestURL url = URLS.get(page);
+        if (url == null) {
+            throw new IllegalArgumentException("Page: <" + page.name() + "> is not defined.");
         }
+
+        navigateTo(url);
+    }
+
+    public void navigateTo(FuncTestURL url) {
+        final String pageUrl = appTestUrl + url.getUrl();
+        webDriver.get(pageUrl);
+        waitForPageLoad(DEFAULT_TIMEOUT);
+
+        checkPageExists(pageUrl);
+    }
+
+    private void checkPageExists(String url) {
+        final String title = webDriver.getTitle();
+
+        if (StringUtils.isBlank(title) || title.toLowerCase().contains("error")) {
+            errors.add(url);
+        }
+    }
+
+    public List<String> checkAllPages() {
+        for (FuncTestURL url : URLS.values()) {
+            navigateTo(url);
+        }
+        return errors;
+    }
+
+    private void clear() {
+        errors = newArrayList();
     }
 
     public void waitForPageLoad(int timeout) {

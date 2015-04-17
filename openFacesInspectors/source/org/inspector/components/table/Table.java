@@ -21,8 +21,8 @@ import org.openqa.selenium.WebDriver;
 public class Table extends TableRowContainer {
     public static final String TAG_NAME = "TABLE";
     public static final By TBODY = By.xpath(TableBody.TAG_NAME);
-    public static final By THEAD = By.xpath(TableFooter.TAG_NAME);
-    public static final By TFOOTER = By.xpath(TableHeader.TAG_NAME);
+    public static final By THEAD = By.xpath(TableHeader.TAG_NAME);
+    public static final By TFOOTER = By.xpath(TableFooter.TAG_NAME);
 
     public Table(WebDriver webDriver, String id) {
         super(webDriver, id, TAG_NAME);
@@ -32,7 +32,7 @@ public class Table extends TableRowContainer {
         super(webDriver, webDriver.findElement(locator), TAG_NAME);
     }
 
-    public TableHeader head() {
+    public TableHeader header() {
         return new TableHeader(driver(), findElement(THEAD));
     }
 
@@ -54,14 +54,6 @@ public class Table extends TableRowContainer {
 
     public Column column(int index) {
         return null;
-    }
-
-    public void toggleNodes() {
-
-    }
-
-    public void expandNodes() {
-
     }
 
     public boolean isEmpty() {

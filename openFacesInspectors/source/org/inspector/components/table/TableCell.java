@@ -12,8 +12,10 @@
 
 package org.inspector.components.table;
 
-import org.inspector.api.ElementWrapper;
+import org.inspector.components.ElementWrapper;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 /**
  * @author Max Yurin
@@ -25,7 +27,26 @@ public class TableCell extends ElementWrapper {
         super(webDriver, id, TAG_NAME);
     }
 
-    public String getText(){
+    public TableCell(WebDriver driver, WebElement element) {
+        super(driver, element, TAG_NAME);
+    }
+
+    public String text(){
         return element().getText();
+    }
+
+    public int colSpan(){
+        final String colSpan = attribute("colSpan");
+        return parseInt(colSpan, 1);
+    }
+
+    public int rowSpan(){
+        final String rowSpan = attribute("rowSpan");
+        return parseInt(rowSpan, 1);
+    }
+
+    public boolean isChecked(){
+        final WebElement input = findElement(By.xpath("input"));
+        return input != null && "true".equals(input.getAttribute("value"));
     }
 }
