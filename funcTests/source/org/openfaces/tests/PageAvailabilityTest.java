@@ -12,17 +12,26 @@
 
 package org.openfaces.tests;
 
+import com.google.common.base.Joiner;
 import org.openfaces.tests.common.BaseSeleniumTest;
 import org.testng.annotations.Test;
+
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 /**
  * @author Max Yurin
  */
 public class PageAvailabilityTest extends BaseSeleniumTest {
 
-    @Test(groups = {"page"})
+    @Test(groups = {"component"})
     public void testAllPages(){
-        urlPageNavigator.checkAllPages();
+        final List<String> errors = checkAllPages();
+
+        Joiner joiner = Joiner.on("; ");
+        assertThat("Pages not found: " + joiner.join(errors), true, is(errors.isEmpty()));
     }
 
 }

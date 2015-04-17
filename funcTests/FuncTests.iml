@@ -12,6 +12,6 @@
     <orderEntry type="library" name="jai" level="project" />
     <orderEntry type="module" module-name="OpenFacesInspectors" />
     <orderEntry type="module" module-name="OpenFaces" />
-    <orderEntry type="library" name="commons-lang" level="project" />
+    <orderEntry type="library" exported="" name="commons-lang" level="project" />
   </component>
 </module>

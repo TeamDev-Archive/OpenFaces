@@ -9,6 +9,13 @@
     <parameter name="version" value=""/>
     <parameter name="platform" value="WINDOWS"/>
 
+    <groups>
+      <define name="">
+        <include name="component"/>
+        <!--<include name="ajax"/>-->
+      </define>
+    </groups>
+
     <packages>
       <package name="org.openfaces.tests.*" />
     </packages>
