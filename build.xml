@@ -122,6 +122,8 @@
         <pathelement path="${selenium-inspector-jar.file}"/>
         <pathelement path="lib/mojarra/javax.faces-2.1.11.jar"/>
         <pathelement path="testLib/testng-6.8.21.jar"/>
+        <pathelement path="testLib/hamcrest-core-1.3.jar"/>
+        <pathelement path="lib/apache/commons-lang-2.6.jar"/>
         <pathelement path="lib/jcommander-1.7.jar"/>
       </classpath>
     </javac>
@@ -232,6 +234,7 @@
         <pathelement path="lib/selenium/selenium-java-2.44.0.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-inspector.jar"/>
         <pathelement path="testLib/testng-6.8.21.jar"/>
+        <pathelement path="testLib/hamcrest-core-1.3.jar"/>
       </classpath>
 
       <classfileset dir="${funcTests-source.dir}" includes="**/*Test*.class"/>
@@ -251,7 +254,7 @@
       </fileset>
     </copy>
 
-    <fail message="print-error-message" if="junit_test_failed"/>
+    <fail message="FUNCTIONAL TEST(S) FAILED" if="tests_failed"/>
   </target>
 
   <!--Deployment section-->

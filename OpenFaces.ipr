@@ -524,6 +524,15 @@
           <option name="REPORT_ANNOTATION_NOT_PROPAGATED_TO_OVERRIDERS" value="true" />
           <option name="REPORT_NULLS_PASSED_TO_NON_ANNOTATED_METHOD" value="true" />
         </inspection_tool>
+        <inspection_tool class="groupsTestNG" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="groups">
+            <value>
+              <list size="1">
+                <item index="0" class="java.lang.String" itemvalue="component" />
+              </list>
+            </value>
+          </option>
+        </inspection_tool>
       </profile>
       <profile version="1.0" is_locked="false">
         <option name="myName" value="Standard Inspections" />
