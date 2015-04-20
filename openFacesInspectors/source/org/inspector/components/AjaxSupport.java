@@ -13,7 +13,6 @@
 package org.inspector.components;
 
 import com.google.common.base.Function;
-import org.inspector.SeleniumHolder;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -34,7 +33,6 @@ public class AjaxSupport {
     }
 
     public void waitAjaxProcess() {
-        SeleniumHolder.getDriverProvider().sleep(500);
         waitForCondition();
     }
 
@@ -53,11 +51,6 @@ public class AjaxSupport {
                                 ": 'none'; value == 'none';");
             }
         });
-//
-//        SeleniumHolder.getSelenium()
-//                .waitForCondition("var value = window.document._ajaxInProgressMessage " +
-//                        "? window.document._ajaxInProgressMessage.style.display " +
-//                        ": 'none'; value == 'none';", "30000");
     }
 
     public void catchAlert() {

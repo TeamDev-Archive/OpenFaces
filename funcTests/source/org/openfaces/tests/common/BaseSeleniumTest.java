@@ -51,6 +51,8 @@ public class BaseSeleniumTest {
         properties = new PropertyTestConfiguration();
     }
 
+    private SeleniumHolder seleniumHolder;
+
     public static PropertyTestConfiguration getProperties() {
         return properties;
     }
@@ -98,7 +100,7 @@ public class BaseSeleniumTest {
     @BeforeMethod
     @Parameters({"browser", "version", "platform"})
     public void setUp(String browser, String version, String platform) throws Exception {
-        SeleniumHolder.createNewDriverProvider(properties, browser, version, platform);
+        seleniumHolder = new SeleniumHolder(properties, browser, version, platform);
 
         isFacelets = isTestAppFacelets();
         testAppUrlPrefix = getTestAppUrlPrefix();
@@ -114,7 +116,7 @@ public class BaseSeleniumTest {
     }
 
     public void resetSelenium() {
-        SeleniumHolder.resetSelenium();
+        seleniumHolder.resetSelenium();
     }
 
     public void sleep(int milliseconds) {
@@ -131,11 +133,11 @@ public class BaseSeleniumTest {
     }
 
     public WebDriver getDriver() {
-        return SeleniumHolder.getDriver();
+        return seleniumHolder.getDriver();
     }
 
     @SuppressWarnings("unchecked")
     public Selenium getSelenium() {
-        return SeleniumHolder.getSelenium();
+        return seleniumHolder.getSelenium();
     }
 }

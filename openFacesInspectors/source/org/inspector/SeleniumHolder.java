@@ -17,33 +17,22 @@ import org.inspector.webriver.PropertyTestConfiguration;
 import org.openqa.selenium.WebDriver;
 
 public class SeleniumHolder {
-    private static DriverProvider driverProvider;
+    private DriverProvider driverProvider;
 
-    private SeleniumHolder() {
-    }
-
-    public static void createNewDriverProvider(PropertyTestConfiguration properties,
-                                               String browser, String version, String platform) {
+    public SeleniumHolder(PropertyTestConfiguration properties,
+                          String browser, String version, String platform) {
         driverProvider = new DriverProvider(properties, browser, version, platform);
     }
 
-    public static DriverProvider getDriverProvider() {
-        if (driverProvider == null) {
-            throw new RuntimeException("Can't obtain selenium. DriverProvider isn't specified.");
-        }
-
-        return driverProvider;
-    }
-
-    public static WebDriver getDriver(){
+    public WebDriver getDriver(){
         return driverProvider.getDriver();
     }
 
-    public static Selenium getSelenium() {
+    public Selenium getSelenium() {
         return driverProvider.getSelenium();
     }
 
-    public static void resetSelenium() {
+    public void resetSelenium() {
         driverProvider.resetSelenium();
     }
 }
