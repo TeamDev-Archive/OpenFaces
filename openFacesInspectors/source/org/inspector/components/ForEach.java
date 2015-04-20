@@ -50,11 +50,6 @@ public class ForEach implements Label {
     }
 
     @Override
-    public boolean isEnabled() {
-        return false;
-    }
-
-    @Override
     public void click() {
 
     }

@@ -19,7 +19,7 @@ import org.openqa.selenium.WebElement;
  * @author Max Yurin
  */
 public class TableHeader extends TableRowContainer {
-    public static final String TAG_NAME = "THEAD";
+    public static final String TAG_NAME = "thead";
 
     public TableHeader(WebDriver webDriver, String id) {
         super(webDriver, id, TAG_NAME);

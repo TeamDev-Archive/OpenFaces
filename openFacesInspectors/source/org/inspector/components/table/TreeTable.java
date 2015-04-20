@@ -12,7 +12,7 @@
 
 package org.inspector.components.table;
 
-import org.inspector.api.AjaxSupport;
+import org.inspector.components.AjaxSupport;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

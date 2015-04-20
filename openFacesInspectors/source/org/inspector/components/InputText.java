@@ -21,7 +21,7 @@ import org.openqa.selenium.WebDriver;
  */
 public class InputText extends ControlImpl implements Input {
     public InputText(WebDriver webDriver, String id) {
-        super(webDriver, id, "text");
+        super(webDriver, id, "input");
     }
 
     @Override
@@ -46,6 +46,6 @@ public class InputText extends ControlImpl implements Input {
 
     @Override
     public void setValue(CharSequence... sequence) {
-//        getDriver().executeScript("document.getElementById('elementID').setAttribute('value', 'new value for element')");
+        element().sendKeys(sequence);
     }
 }

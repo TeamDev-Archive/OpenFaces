@@ -19,7 +19,7 @@ import org.openqa.selenium.WebElement;
  * @author Max Yurin
  */
 public class TableFooter extends TableRowContainer {
-    public static final String TAG_NAME = "TFOOT";
+    public static final String TAG_NAME = "tfoot";
 
     public TableFooter(WebDriver webDriver, String id) {
         super(webDriver, id, TAG_NAME);

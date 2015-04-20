@@ -10,15 +10,12 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.inspector.api;
+package org.inspector.components;
 
-import org.inspector.components.AjaxCommandLink;
-import org.inspector.components.Calendar;
-import org.inspector.components.ChartImpl;
-import org.inspector.components.CommandLink;
-import org.inspector.components.CompositeFilter;
-import org.inspector.components.InputText;
-import org.inspector.components.InputTextArea;
+import org.inspector.api.Chart;
+import org.inspector.api.Control;
+import org.inspector.api.DateChooser;
+import org.inspector.api.Input;
 import org.inspector.components.table.Table;
 import org.openqa.selenium.WebDriver;
 
@@ -66,5 +63,13 @@ public class ControlFactory {
 
     public Table getDataTable(String id) {
         return new Table(driver, id);
+    }
+
+    public Pagination getPagination(String id){
+        return new Pagination(driver, id);
+    }
+
+    public TabSet getTabSet(String id){
+        return new TabSet(driver, id);
     }
 }

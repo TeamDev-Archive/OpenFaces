@@ -45,11 +45,6 @@ public class ChartImpl implements Chart {
     }
 
     @Override
-    public boolean isEnabled() {
-        return false;
-    }
-
-    @Override
     public void click() {
 
     }

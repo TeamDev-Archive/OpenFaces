@@ -28,7 +28,7 @@ public class ControlImpl extends ElementWrapper implements Control {
 
     @Override
     public By locator() {
-        return findBy(id());
+        return findById(id());
     }
 
     @Override
@@ -39,15 +39,6 @@ public class ControlImpl extends ElementWrapper implements Control {
     @Override
     public boolean isDisplayed() {
         return element().isDisplayed();
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return element().isEnabled();
-    }
-
-    public void click() {
-        element().click();
     }
 
     public String value() {

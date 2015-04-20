@@ -26,7 +26,5 @@ public interface Control {
 
     boolean isDisplayed();
 
-    boolean isEnabled();
-
     void click();
 }

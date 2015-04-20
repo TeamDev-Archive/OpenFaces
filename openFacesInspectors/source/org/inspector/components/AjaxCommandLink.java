@@ -12,7 +12,6 @@
 
 package org.inspector.components;
 
-import org.inspector.api.AjaxSupport;
 import org.openqa.selenium.WebDriver;
 
 /**

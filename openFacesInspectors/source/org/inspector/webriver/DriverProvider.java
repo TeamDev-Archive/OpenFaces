@@ -19,6 +19,7 @@ import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -84,6 +85,10 @@ public class DriverProvider {
     private RemoteWebDriver createWebDriver(String platform, String browser, String version) throws Exception {
         DesiredCapabilities dc = getBrowserBy(browser);
         dc.setPlatform(getPlatformFor(platform));
+
+        if (findType(browser) == IEXPLORER) {
+            dc.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+        }
 
         if (StringUtils.isNotBlank(version)) {
             dc.setVersion(version);

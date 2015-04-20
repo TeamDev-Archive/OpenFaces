@@ -19,7 +19,7 @@ import org.openqa.selenium.WebElement;
  * @author Max Yurin
  */
 public class TableBody extends TableRowContainer {
-    public static final String TAG_NAME = "TBODY";
+    public static final String TAG_NAME = "tbody";
 
     public TableBody(WebDriver webDriver, String id) {
         super(webDriver, id, TAG_NAME);

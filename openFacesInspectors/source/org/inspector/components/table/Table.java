@@ -19,7 +19,7 @@ import org.openqa.selenium.WebDriver;
  * @author Max Yurin
  */
 public class Table extends TableRowContainer {
-    public static final String TAG_NAME = "TABLE";
+    public static final String TAG_NAME = "table";
     public static final By TBODY = By.xpath(TableBody.TAG_NAME);
     public static final By THEAD = By.xpath(TableHeader.TAG_NAME);
     public static final By TFOOTER = By.xpath(TableFooter.TAG_NAME);

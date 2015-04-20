@@ -14,50 +14,46 @@ package org.inspector.components;
 
 import org.apache.commons.lang3.StringUtils;
 import org.inspector.css.CssWrapper;
+import org.inspector.navigator.DocumentReadyCondition;
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.internal.Coordinates;
-import org.openqa.selenium.internal.Locatable;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
 /**
  * @author Max Yurin
  */
-public class ElementWrapper{
-    private String id = "";
+public class ElementWrapper {
     private WebDriver driver;
     private WebElement element;
-    private CssWrapper cssWrapper;
+    private By locator;
 
     public ElementWrapper(WebDriver webDriver, String elementId, String type) {
-        this.driver = webDriver;
-        this.id = elementId;
-        By locator = findBy(elementId);
-        this.element = driver.findElement(locator);
+        this(webDriver, webDriver.findElement(By.id(elementId)), type);
 
-        checkTagNameExists(element, type);
-        this.cssWrapper = new CssWrapper(element());
+        this.locator = By.id(elementId);
     }
 
     public ElementWrapper(WebDriver driver, WebElement element, String type) {
         this.driver = driver;
         this.element = element;
-        this.id = element.getAttribute("id");
 
         checkTagNameExists(element, type);
-        this.cssWrapper = new CssWrapper(element());
     }
 
     private void checkTagNameExists(WebElement element, String type) {
         if (!element.getTagName().equalsIgnoreCase(type)) {
-//            throw new ElementInspectorException("Element should be [" + element.getTagName() + "] but was [" + type + "]");
+            throw new RuntimeException("Element should be [" + element.getTagName() + "] but was [" + type + "]");
         }
     }
 
     public CssWrapper css() {
-        return cssWrapper;
+        return new CssWrapper(element());
     }
 
     public WebDriver driver() {
@@ -65,27 +61,76 @@ public class ElementWrapper{
     }
 
     public WebElement element() {
-        return element;
+        if (locator != null) {
+            final Wait<WebDriver> wait = new WebDriverWait(driver(), 2000).ignoring(StaleElementReferenceException.class);
+
+            this.element = wait.until(new ExpectedCondition<WebElement>() {
+                @Override
+                public WebElement apply(WebDriver webDriver) {
+                    final WebElement webElement = webDriver.findElement(locator);
+                    return webElement != null && webElement.isDisplayed() ? webElement : null;
+                }
+            });
+        }
+
+        return this.element;
+    }
+
+    private ExpectedCondition<Boolean> stalenessOf(final WebElement element) {
+        return new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver webDriver) {
+                try {
+                    return element.isEnabled();
+                } catch (StaleElementReferenceException e) {
+                    return true;
+                }
+            }
+        };
     }
 
     public String id() {
-        return id;
+        return attribute("id");
+    }
+
+    public MouseWrapper mouse() {
+        return new MouseWrapper(driver(), element());
+    }
+
+    public KeyboardWrapper keyboard() {
+        return new KeyboardWrapper(driver(), element());
+    }
+
+    public void click() {
+        mouse().click();
     }
 
     public String attribute(String name) {
-        return element.getAttribute(name);
+        return element().getAttribute(name);
     }
 
     public WebElement findElement(By by) {
-        return element.findElement(by);
+        try {
+            return element().findElement(by);
+        } catch (StaleElementReferenceException e) {
+            return element().findElement(by);
+        }
     }
 
     public List<WebElement> findElements(By by) {
-        return element.findElements(by);
+        try {
+            return element().findElements(by);
+        } catch (StaleElementReferenceException e) {
+            return element().findElements(by);
+        }
     }
 
-    protected By findBy(String id) {
+    protected By findById(String id) {
         return By.id(id);
+    }
+
+    protected boolean isEnabled() {
+        return element().isEnabled();
     }
 
     public WebElement subElement(String xpath) {
@@ -110,19 +155,20 @@ public class ElementWrapper{
         return element;
     }
 
-    public Coordinates getCoordinates() {
-        return ((Locatable) element()).getCoordinates();
+    protected void waitForCommandExecute() {
+        final WebDriverWait wait = new WebDriverWait(driver(), 200);
+
+        final DocumentReadyCondition condition = new DocumentReadyCondition();
+        condition.apply(driver());
+
+        wait.until(condition);
     }
 
     protected int parseInt(String value, int defaultValue) {
-        if (StringUtils.isBlank(value)) {
-            return defaultValue;
+        if (StringUtils.isNumeric(value)) {
+            return Integer.parseInt(value.trim());
         }
 
-        try {
-            return Integer.parseInt(value.trim());
-        } catch (NumberFormatException e) {
-            return defaultValue;
-        }
+        return defaultValue;
     }
 }

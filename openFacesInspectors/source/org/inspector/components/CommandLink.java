@@ -13,9 +13,7 @@
 package org.inspector.components;
 
 import org.inspector.api.impl.ControlImpl;
-import org.inspector.navigator.DocumentReadyCondition;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * @author Max Yurin
@@ -30,14 +28,5 @@ public class CommandLink extends ControlImpl {
     public void click() {
         super.click();
         waitForCommandExecute();
-    }
-
-    private void waitForCommandExecute() {
-        final WebDriverWait wait = new WebDriverWait(driver(), 200);
-
-        final DocumentReadyCondition condition = new DocumentReadyCondition();
-        condition.apply(driver());
-
-        wait.until(condition);
     }
 }

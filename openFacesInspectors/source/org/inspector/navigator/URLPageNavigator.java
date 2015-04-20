@@ -40,6 +40,7 @@ public class URLPageNavigator {
                     .put(DATATABLE_PAGINATION, new FuncTestURL("/components/datatable/datatablePagination.jsf"))
                     .put(DATATABLE_AJAX, new FuncTestURL("/components/datatable/dataTableAjax.jsf"))
                     .put(DATATABLE_COLUMN_GROUPS, new FuncTestURL("/components/datatable/dataTableColumnGroups.jsf"))
+                    .put(DATATABLE_EVENTS, new FuncTestURL("/components/datatable/dataTable_events.jsf"))
 
                     .put(DATECHOOSER, new FuncTestURL("/components/datechooser/dateChooser.jsf"))
                     .put(DROPDOWN_FIELD, new FuncTestURL("/components/dropdown/dropDown.jsf"))

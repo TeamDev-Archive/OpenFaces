@@ -17,14 +17,9 @@ import org.inspector.webriver.PropertyTestConfiguration;
 import org.openqa.selenium.WebDriver;
 
 public class SeleniumHolder {
-    private static SeleniumHolder seleniumHolder = new SeleniumHolder();
     private static DriverProvider driverProvider;
 
     private SeleniumHolder() {
-    }
-
-    public static SeleniumHolder getInstance() {
-        return seleniumHolder;
     }
 
     public static void createNewDriverProvider(PropertyTestConfiguration properties,

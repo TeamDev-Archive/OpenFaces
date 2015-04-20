@@ -36,6 +36,10 @@ public class TableRowContainer extends ElementWrapper implements Iterable<TableR
         super(driver, element, type);
     }
 
+    public TableRow nextRow() {
+        return iterator().next();
+    }
+
     public Iterator<TableRow> iterator() {
         this.rows = element().findElements(ROWS);
         this.index = 0;
@@ -46,9 +50,7 @@ public class TableRowContainer extends ElementWrapper implements Iterable<TableR
             }
 
             public TableRow next() {
-                final TableRow tableRow = new TableRow(driver(), rows.get(index));
-                index = index + 1;
-                return tableRow;
+                return new TableRow(driver(), rows.get(index++));
             }
 
             public void remove() {
