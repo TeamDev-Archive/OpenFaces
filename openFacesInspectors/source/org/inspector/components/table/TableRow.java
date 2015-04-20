@@ -13,7 +13,6 @@
 package org.inspector.components.table;
 
 import org.apache.commons.lang.StringUtils;
-import org.inspector.components.ElementWrapper;
 import org.inspector.css.Border;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -28,7 +27,7 @@ import static org.inspector.css.Border.*;
 /**
  * @author Max Yurin
  */
-public class TableRow extends ElementWrapper {
+public class TableRow extends TableCellContainer {
     public static final String TAG_NAME = "tr";
     private static final By CELLS = By.xpath(TableCell.TAG_NAME);
 
