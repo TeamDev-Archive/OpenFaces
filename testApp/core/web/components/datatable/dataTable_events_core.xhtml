@@ -210,6 +210,54 @@
     </o:dataTable>
   </td>
 </tr>
+<tr>
+    <td>
+        <o:dataTable id="multiple"
+                     var="table_events"
+                     value="#{TestEventsBean.tableTestCollection}"
+                     verticalGridLines="1px solid gray">
+            <o:multipleRowSelection rowDatas="#{TestEventsBean.list}"
+                                    onchange="logJSEvents('multiple selection onchange works', 'empty'); logJSEvents('multiple ' + event.type, 'empty');"
+                                    style="background: #a4aec5; color: white;"/>
+            <o:selectionColumn style="width: 5%;" id="sel_col"></o:selectionColumn>
+            <o:column style="width: 5%;" id="col_one">
+                <f:facet name="header">
+                    <h:outputText value="Col1"/>
+                </f:facet>
+                <h:inputText value="#{table_events.firstColumn}"/>
+            </o:column>
+            <o:column id="col_two">
+                <f:facet name="header">
+                    <h:outputText value="Col2"/>
+                </f:facet>
+                <h:inputText value="#{table_events.secondColumn}"/>
+            </o:column>
+        </o:dataTable>
+    </td>
+    <td>
+        <o:dataTable id="single"
+                     var="table_events"
+                     value="#{TestEventsBean.tableTestCollection}"
+                     verticalGridLines="1px solid gray">
+            <o:singleRowSelection rowData="#{TestEventsBean.selectedItem}"
+                                  onchange="logJSEvents('single selection onchange works', 'empty'); logJSEvents('single ' + event.type, 'empty');"
+                                  style="background: #a4aec5; color: white;"/>
+            <o:selectionColumn style="width: 5%;" id="sel_col"></o:selectionColumn>
+            <o:column style="width: 5%;" id="col_one">
+                <f:facet name="header">
+                    <h:outputText value="Col1"/>
+                </f:facet>
+                <h:inputText value="#{table_events.firstColumn}"/>
+            </o:column>
+            <o:column id="col_two">
+                <f:facet name="header">
+                    <h:outputText value="Col2"/>
+                </f:facet>
+                <h:inputText value="#{table_events.secondColumn}"/>
+            </o:column>
+        </o:dataTable>
+    </td>
+</tr>
 </table>
 
 
