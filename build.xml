@@ -254,7 +254,7 @@
       </fileset>
     </copy>
 
-    <fail message="FUNCTIONAL TEST(S) FAILED" if="tests_failed"/>
+    <ant target="print-error-message"/>
   </target>
 
   <!--Deployment section-->
