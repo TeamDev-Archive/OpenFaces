@@ -78,7 +78,7 @@ public class OpenfacesTestListener implements ITestListener {
         String className = strings.length > 0 ? strings[strings.length - 1] : "";
 
         final String testName = iTestResult.getName();
-        System.out.println("Test " + testName + "failure");
+        System.out.println("Test " + testName + " failed");
         screenShotter.makeScreenShot(getPath(FAILURE, className, testName));
     }
 

@@ -15,11 +15,16 @@ package org.openfaces.tests.common;
 import com.thoughtworks.selenium.Selenium;
 import org.apache.commons.lang.StringUtils;
 import org.inspector.SeleniumHolder;
-import org.inspector.api.ControlFactory;
+import org.inspector.components.ControlFactory;
+import org.inspector.components.Pagination;
+import org.inspector.navigator.DocumentReadyCondition;
 import org.inspector.navigator.FuncTestsPages;
 import org.inspector.navigator.URLPageNavigator;
 import org.inspector.webriver.PropertyTestConfiguration;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
@@ -78,8 +83,16 @@ public class BaseSeleniumTest {
         urlPageNavigator.navigateTo(page);
     }
 
-    protected List<String> checkAllPages(){
+    protected Pagination getTabNavigator(String tabSetId) {
+        return new Pagination(getDriver(), By.id(tabSetId));
+    }
+
+    protected List<String> checkAllPages() {
         return urlPageNavigator.checkAllPages();
+    }
+
+    public WebElement findBy(String id) {
+        return getDriver().findElement(By.id(id));
     }
 
     @BeforeMethod
@@ -101,19 +114,28 @@ public class BaseSeleniumTest {
     }
 
     public void resetSelenium() {
-        SeleniumHolder.getInstance().resetSelenium();
+        SeleniumHolder.resetSelenium();
     }
 
     public void sleep(int milliseconds) {
         getDriver().manage().timeouts().implicitlyWait(milliseconds, TimeUnit.MILLISECONDS);
     }
 
+    public void waitForDocumentReady() {
+        final WebDriverWait wait = new WebDriverWait(getDriver(), 200);
+
+        final DocumentReadyCondition condition = new DocumentReadyCondition();
+        condition.apply(getDriver());
+
+        wait.until(condition);
+    }
+
     public WebDriver getDriver() {
-        return SeleniumHolder.getInstance().getDriver();
+        return SeleniumHolder.getDriver();
     }
 
     @SuppressWarnings("unchecked")
     public Selenium getSelenium() {
-        return SeleniumHolder.getInstance().getSelenium();
+        return SeleniumHolder.getSelenium();
     }
 }

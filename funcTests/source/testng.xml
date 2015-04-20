@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="Unit tests" verbose="8" thread-count="10">
+<suite name="Unit tests" parallel="methods" verbose="5" thread-count="5">
   <listeners>
     <listener class-name="org.openfaces.tests.common.OpenfacesTestListener"/>
   </listeners>
