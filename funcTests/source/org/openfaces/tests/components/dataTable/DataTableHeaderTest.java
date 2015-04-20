@@ -10,7 +10,7 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.tests.components;
+package org.openfaces.tests.components.dataTable;
 
 import org.inspector.components.table.Table;
 import org.inspector.components.table.TableCellParams;
@@ -25,7 +25,7 @@ import java.util.Iterator;
 /**
  * @author Max Yurin
  */
-public class DataTableTest extends BaseSeleniumTest {
+public class DataTableHeaderTest extends BaseSeleniumTest {
     private static final String TABLE_ID = "formID:twoHeadersTable";
     private FuncTestsPages page = FuncTestsPages.DATATABLE_COLUMN_GROUPS;
 
