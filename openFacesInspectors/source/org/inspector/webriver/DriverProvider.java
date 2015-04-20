@@ -19,6 +19,7 @@ import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -31,6 +32,7 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import static org.inspector.webriver.DriverProvider.BrowserType.CHROME;
+import static org.inspector.webriver.DriverProvider.BrowserType.FIREFOX;
 import static org.inspector.webriver.DriverProvider.BrowserType.IEXPLORER;
 import static org.inspector.webriver.DriverProvider.BrowserType.findType;
 
@@ -83,20 +85,29 @@ public class DriverProvider {
     }
 
     private RemoteWebDriver createWebDriver(String platform, String browser, String version) throws Exception {
+        URL url = driverService != null ? driverService.getUrl() : new URL("http://localhost:9090");
+
         DesiredCapabilities dc = getBrowserBy(browser);
         dc.setPlatform(getPlatformFor(platform));
+        RemoteWebDriver driver;
 
         if (findType(browser) == IEXPLORER) {
             dc.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+        }
+
+        if (findType(browser) == FIREFOX) {
+            FirefoxProfile profile = new FirefoxProfile();
+            profile.setPreference("toolkit.startup.max_resumed_crashes", "-1");
+            driver = new FirefoxDriver(profile);
+        } else {
+            driver = new RemoteWebDriver(url, dc);
         }
 
         if (StringUtils.isNotBlank(version)) {
             dc.setVersion(version);
         }
 
-        URL url = driverService != null ? driverService.getUrl() : new URL("http://localhost:9090");
-
-        return dc.getBrowserName().equals("firefox") ? new FirefoxDriver(dc) : new RemoteWebDriver(url, dc);
+        return driver;
     }
 
     private Platform getPlatformFor(String platform) {
