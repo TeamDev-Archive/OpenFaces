@@ -74,16 +74,6 @@ public class DriverProvider {
         selenium = new WebDriverBackedSelenium(webDriver, properties.getDefaultUrl());
     }
 
-    public void resetSelenium() {
-        if (getDriver() != null) {
-            getDriver().close();
-//            getDriver().quit();
-        }
-        if (driverService != null) {
-            driverService.stop();
-        }
-    }
-
     private RemoteWebDriver createWebDriver(String platform, String browser, String version) throws Exception {
         URL url = driverService != null ? driverService.getUrl() : new URL("http://localhost:9090");
 
@@ -98,7 +88,7 @@ public class DriverProvider {
         if (findType(browser) == FIREFOX) {
             FirefoxProfile profile = new FirefoxProfile();
             profile.setPreference("toolkit.startup.max_resumed_crashes", "-1");
-            driver = new FirefoxDriver(profile);
+            driver = new FirefoxDriver(dc);
         } else {
             driver = new RemoteWebDriver(url, dc);
         }

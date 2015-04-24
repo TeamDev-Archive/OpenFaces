@@ -12,22 +12,20 @@
 
 package org.openfaces.tests.common;
 
-import com.thoughtworks.selenium.Selenium;
 import org.apache.commons.lang.StringUtils;
-import org.inspector.SeleniumHolder;
+import org.inspector.InspectorContext;
 import org.inspector.components.ControlFactory;
 import org.inspector.components.Pagination;
 import org.inspector.navigator.DocumentReadyCondition;
 import org.inspector.navigator.FuncTestsPages;
 import org.inspector.navigator.URLPageNavigator;
 import org.inspector.webriver.PropertyTestConfiguration;
+import org.inspector.webriver.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Parameters;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -43,26 +41,19 @@ public class BaseSeleniumTest {
     protected static String testAppUrlPrefix;
     protected static String demoUrlPrefix;
     protected static Boolean isFacelets;
-    private static PropertyTestConfiguration properties;
     private URLPageNavigator urlPageNavigator;
     private ControlFactory controlFactory;
 
-    static {
-        properties = new PropertyTestConfiguration();
-    }
-
-    private SeleniumHolder seleniumHolder;
-
     public static PropertyTestConfiguration getProperties() {
-        return properties;
+        return InspectorContext.getProperties();
     }
 
     private static String getTestAppUrlPrefix() {
-        return properties.getTestAppFaceletsURLPrefix();
+        return getProperties().getTestAppFaceletsURLPrefix();
     }
 
     private static String getDemoUrlPrefix() {
-        return properties.getLiveDemoFaceletsURLPrefix();
+        return getProperties().getLiveDemoFaceletsURLPrefix();
     }
 
     public static boolean isTestAppFacelets() {
@@ -77,12 +68,24 @@ public class BaseSeleniumTest {
         return isFacelets != null && isFacelets;
     }
 
+    public URLPageNavigator getUrlPageNavigator() {
+        if (urlPageNavigator == null) {
+            urlPageNavigator = new URLPageNavigator(getProperties().getDefaultUrl() + testAppUrlPrefix);
+        }
+
+        return urlPageNavigator;
+    }
+
     public ControlFactory getControlFactory() {
+        if (controlFactory == null) {
+            controlFactory = new ControlFactory();
+        }
+
         return controlFactory;
     }
 
     protected void navigateTo(FuncTestsPages page) {
-        urlPageNavigator.navigateTo(page);
+        getUrlPageNavigator().navigateTo(page);
     }
 
     protected Pagination getTabNavigator(String tabSetId) {
@@ -90,7 +93,7 @@ public class BaseSeleniumTest {
     }
 
     protected List<String> checkAllPages() {
-        return urlPageNavigator.checkAllPages();
+        return getUrlPageNavigator().checkAllPages();
     }
 
     public WebElement findBy(String id) {
@@ -98,25 +101,10 @@ public class BaseSeleniumTest {
     }
 
     @BeforeMethod
-    @Parameters({"browser", "version", "platform"})
-    public void setUp(String browser, String version, String platform) throws Exception {
-        seleniumHolder = new SeleniumHolder(properties, browser, version, platform);
-
+    public void setUp() throws Exception {
         isFacelets = isTestAppFacelets();
         testAppUrlPrefix = getTestAppUrlPrefix();
         demoUrlPrefix = getDemoUrlPrefix();
-
-        urlPageNavigator = new URLPageNavigator(getDriver(), properties.getDefaultUrl() + testAppUrlPrefix);
-        controlFactory = new ControlFactory(getDriver());
-    }
-
-    @AfterMethod
-    public void tearDown() {
-        resetSelenium();
-    }
-
-    public void resetSelenium() {
-        seleniumHolder.resetSelenium();
     }
 
     public void sleep(int milliseconds) {
@@ -133,11 +121,6 @@ public class BaseSeleniumTest {
     }
 
     public WebDriver getDriver() {
-        return seleniumHolder.getDriver();
-    }
-
-    @SuppressWarnings("unchecked")
-    public Selenium getSelenium() {
-        return seleniumHolder.getSelenium();
+        return WebDriverManager.getWebDriver();
     }
 }

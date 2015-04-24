@@ -1,6 +1,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="Unit tests" parallel="false" verbose="5" thread-count="5">
+<suite name="Unit tests" parallel="false" verbose="10" thread-count="5">
   <listeners>
+    <listener class-name="org.openfaces.tests.common.WebDriverInvokedListener"/>
     <listener class-name="org.openfaces.tests.common.OpenfacesTestListener"/>
   </listeners>
 
@@ -9,12 +10,16 @@
     <parameter name="version" value=""/>
     <parameter name="platform" value="WINDOWS"/>
 
-    <groups>
-      <define name="">
-        <include name="component"/>
-        <!--<include name="ajax"/>-->
-      </define>
-    </groups>
+    <!--<groups>-->
+      <!--<define name="">-->
+        <!--<include name="component"/>-->
+        <!--&lt;!&ndash;<include name="ajax"/>&ndash;&gt;-->
+      <!--</define>-->
+    <!--</groups>-->
+
+    <!--<classes>-->
+      <!--<class name="org.openfaces.tests.components.dataTable.DataTableTest_Filtering"></class>-->
+    <!--</classes>-->
 
     <packages>
       <package name="org.openfaces.tests.*" />
@@ -26,18 +31,24 @@
     <parameter name="version" value=""/>
     <parameter name="platform" value="WINDOWS"/>
 
+    <!--<classes>-->
+      <!--<class name="org.openfaces.tests.components.dataTable.DataTableTest_Filtering"></class>-->
+    <!--</classes>-->
     <packages>
       <package name="org.openfaces.tests.*" />
     </packages>
   </test>
 
-  <test name="IExplorer">
+  <test name="IExplorer" enabled="false">
     <parameter name="browser" value="iexplorer"/>
     <parameter name="version" value=""/>
     <parameter name="platform" value="WINDOWS"/>
 
-    <packages>
-      <package name="org.openfaces.tests.*" />
-    </packages>
+    <classes>
+      <class name="org.openfaces.tests.components.dataTable.DataTableTest_Sorting"></class>
+    </classes>
+    <!--<packages>-->
+      <!--<package name="org.openfaces.tests.*" />-->
+    <!--</packages>-->
   </test>
 </suite>

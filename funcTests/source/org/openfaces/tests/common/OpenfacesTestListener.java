@@ -33,7 +33,6 @@ public class OpenfacesTestListener implements ITestListener {
     public static final String SUCCESS = "success";
     public static final String SEPARATOR = "/";
     public static final String SCREEN_SHOOT = "_screenShoot_";
-    public static final String PNG = ".png";
     private static String browserName = "firefox";
 
     private static ScreenShotter screenShotter;
@@ -54,7 +53,7 @@ public class OpenfacesTestListener implements ITestListener {
                 }
             }
 
-            screenShotter = new ScreenShotter(webDriver);
+            screenShotter = new ScreenShotter();
         }
     }
 
@@ -66,19 +65,18 @@ public class OpenfacesTestListener implements ITestListener {
     @Override
     public void onTestSuccess(ITestResult iTestResult) {
         final String testName = iTestResult.getName();
-        System.out.println("Test " + testName + " successfully completed");
+        System.out.println("Test " + testName + " completed");
     }
 
     @Override
     public void onTestFailure(ITestResult iTestResult) {
-        init(iTestResult);
+        final String testName = iTestResult.getName();
+        System.out.println("Test " + testName + " failed");
 
+        init(iTestResult);
 
         final String[] strings = iTestResult.getInstanceName().split("\\.");
         String className = strings.length > 0 ? strings[strings.length - 1] : "";
-
-        final String testName = iTestResult.getName();
-        System.out.println("Test " + testName + " failed");
         screenShotter.makeScreenShot(getPath(FAILURE, className, testName));
     }
 
@@ -99,7 +97,7 @@ public class OpenfacesTestListener implements ITestListener {
 
     @Override
     public void onFinish(ITestContext iTestContext) {
-        System.out.println("Test " + iTestContext.getName() + " Started");
+        System.out.println("Test " + iTestContext.getName() + " Finished");
     }
 
     private String getPath(String status, String className, String testName) {

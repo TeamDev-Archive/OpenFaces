@@ -12,8 +12,20 @@
 
 package org.inspector;
 
+
+import org.inspector.webriver.PropertyTestConfiguration;
+
 /**
  * @author Max Yurin
  */
-public class OpenfacesInspectorContext {
+public class InspectorContext {
+    private static PropertyTestConfiguration properties;
+
+    public static void createInstance(){
+        properties = new PropertyTestConfiguration();
+    }
+
+    public static PropertyTestConfiguration getProperties() {
+        return properties;
+    }
 }
