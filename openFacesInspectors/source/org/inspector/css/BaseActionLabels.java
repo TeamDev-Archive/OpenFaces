@@ -34,7 +34,7 @@ public enum BaseActionLabels {
     KEY_V("v"),
     KEY_C("c"),
 
-    ON_CHANGE("onchange");
+    ON_CHANGE("change");
 
     private String value;
 
