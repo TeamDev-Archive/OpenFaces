@@ -13,9 +13,10 @@
 package org.openfaces.tests.common;
 
 import org.apache.commons.lang.StringUtils;
-import org.inspector.InspectorContext;
+import org.inspector.OpenfacesInspectorContext;
+import org.inspector.components.AjaxSupport;
 import org.inspector.components.ControlFactory;
-import org.inspector.components.Pagination;
+import org.inspector.components.table.Pagination;
 import org.inspector.navigator.DocumentReadyCondition;
 import org.inspector.navigator.FuncTestsPages;
 import org.inspector.navigator.URLPageNavigator;
@@ -25,7 +26,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Parameters;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -34,6 +37,7 @@ import java.util.concurrent.TimeUnit;
  * @author Max Yurin
  */
 public class BaseSeleniumTest {
+    public static final String NBSP_CHAR = "\u00a0";
     public static final String DEMO_CONTEXT_PATH = "demo.context.path";
     public static final String TEST_APP_CONTEXT_PATH = "test.app.context.path";
     public static final String TEST_APP_IS_FACELETS = "test.app.is.facelets";
@@ -45,7 +49,7 @@ public class BaseSeleniumTest {
     private ControlFactory controlFactory;
 
     public static PropertyTestConfiguration getProperties() {
-        return InspectorContext.getProperties();
+        return OpenfacesInspectorContext.getProperties();
     }
 
     private static String getTestAppUrlPrefix() {
@@ -101,10 +105,22 @@ public class BaseSeleniumTest {
     }
 
     @BeforeMethod
-    public void setUp() throws Exception {
+    @Parameters({"browser", "version", "platform"})
+    public void setUp(String browser, String version, String platform) throws Exception {
+        OpenfacesInspectorContext.createInstance();
+
+        WebDriverManager.createInstance(browser, version, platform);
+
+        AjaxSupport.init(WebDriverManager.getWebDriver());
+
         isFacelets = isTestAppFacelets();
         testAppUrlPrefix = getTestAppUrlPrefix();
         demoUrlPrefix = getDemoUrlPrefix();
+    }
+
+    @AfterMethod
+    public void tearDown(){
+        WebDriverManager.close();
     }
 
     public void sleep(int milliseconds) {

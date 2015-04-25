@@ -12,9 +12,8 @@
 
 package org.openfaces.tests.common;
 
-import org.inspector.InspectorContext;
+import org.inspector.OpenfacesInspectorContext;
 import org.inspector.components.AjaxSupport;
-import org.inspector.webriver.PropertyTestConfiguration;
 import org.inspector.webriver.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.testng.IInvokedMethod;
@@ -22,6 +21,7 @@ import org.testng.IInvokedMethodListener;
 import org.testng.ITestResult;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Max Yurin
@@ -29,7 +29,7 @@ import java.util.Map;
 public class WebDriverInvokedListener implements IInvokedMethodListener {
     @Override
     public void beforeInvocation(IInvokedMethod method, ITestResult iTestResult) {
-        InspectorContext.createInstance();
+        OpenfacesInspectorContext.createInstance();
 
         if (method.isTestMethod()) {
             final Map<String, String> parameters = method.getTestMethod().getXmlTest().getLocalParameters();
@@ -37,8 +37,10 @@ public class WebDriverInvokedListener implements IInvokedMethodListener {
             final String version = parameters.get("version");
             final String platform = parameters.get("platform");
 
-            final PropertyTestConfiguration properties = InspectorContext.getProperties();
-            WebDriverManager.createInstance(properties, browser, version, platform);
+            WebDriverManager.createInstance(browser, version, platform);
+
+            WebDriverManager.getWebDriver().get("http://google.com");
+            WebDriverManager.getWebDriver().manage().timeouts().implicitlyWait(2000, TimeUnit.MILLISECONDS);
 
             AjaxSupport.init(WebDriverManager.getWebDriver());
         }

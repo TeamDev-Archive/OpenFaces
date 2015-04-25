@@ -20,12 +20,11 @@ import org.openqa.selenium.WebDriver;
 public class WebDriverManager {
     private static ThreadLocal<WebDriver> webDriverThreadLocal = new ThreadLocal<WebDriver>();
 
-    public static WebDriver createInstance(PropertyTestConfiguration properties, String browser, String version, String platform){
-        final DriverProvider driverProvider = new DriverProvider(properties, browser, version, platform);
+    public static void createInstance(String browser, String version, String platform){
+        final DriverProvider driverProvider = new DriverProvider(browser, version, platform);
         final WebDriver driver = driverProvider.getDriver();
 
         webDriverThreadLocal.set(driver);
-        return webDriverThreadLocal.get();
     }
 
     public static WebDriver getWebDriver() {

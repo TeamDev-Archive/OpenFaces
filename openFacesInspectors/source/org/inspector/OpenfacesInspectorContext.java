@@ -18,11 +18,13 @@ import org.inspector.webriver.PropertyTestConfiguration;
 /**
  * @author Max Yurin
  */
-public class InspectorContext {
+public class OpenfacesInspectorContext {
     private static PropertyTestConfiguration properties;
 
     public static void createInstance(){
-        properties = new PropertyTestConfiguration();
+        if (properties == null) {
+            properties = new PropertyTestConfiguration();
+        }
     }
 
     public static PropertyTestConfiguration getProperties() {
