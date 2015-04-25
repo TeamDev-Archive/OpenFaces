@@ -14,6 +14,7 @@ package org.inspector.navigator;
 
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang.StringUtils;
+import org.inspector.webriver.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -38,6 +39,8 @@ public class URLPageNavigator {
                     .put(COMPOSITE_FILTER, new FuncTestURL("/components/filter/compositeFilter.jsf"))
 
                     .put(DATATABLE_PAGINATION, new FuncTestURL("/components/datatable/datatablePagination.jsf"))
+                    .put(DATATABLE_SORTING, new FuncTestURL("/components/datatable/datatableSorting.jsf"))
+                    .put(DATATABLE_FILTERING, new FuncTestURL("/components/datatable/datatableFiltering.jsf"))
                     .put(DATATABLE_AJAX, new FuncTestURL("/components/datatable/dataTableAjax.jsf"))
                     .put(DATATABLE_COLUMN_GROUPS, new FuncTestURL("/components/datatable/dataTableColumnGroups.jsf"))
                     .put(DATATABLE_EVENTS, new FuncTestURL("/components/datatable/dataTable_events.jsf"))
@@ -54,7 +57,9 @@ public class URLPageNavigator {
                     .put(INPUTTEXTAREA, new FuncTestURL("/components/inputtextarea/inputTextArea.jsf"))
                     .put(LAYERED_PANEL, new FuncTestURL("/components/layeredpane/layeredpane.jsf"))
                     .put(TABBED_PANE, new FuncTestURL("/components/tabbedpane/tabbedpane_defaultView.jsf"))
-                    .put(TAB_SET, new FuncTestURL("/components/tabSet/tabSet.jsf"))
+
+                    .put(TAB_SET, new FuncTestURL("/components/tabset/tabSet.jsf"))
+
                     .put(TIME_TABLE, new FuncTestURL("/components/timetable/dayTable.jsf"))
                     .put(TREETABLE, new FuncTestURL("/components/treetable/treeTableTest.jsf"))
                     .put(TWO_LIST_SELECTION, new FuncTestURL("/components/twolistselection/twolistselection.jsf"))
@@ -68,36 +73,37 @@ public class URLPageNavigator {
                     .put(WINDOW, new FuncTestURL("/components/window/window.jsf"))
                     .build();
 
-    private WebDriver webDriver;
     private String appTestUrl = "";
-    private List<String> errors;
+    private List<String> errors = newArrayList();
+    ;
 
-    public URLPageNavigator(WebDriver webDriver, String testAppUrlPerfix) {
-        this.webDriver = webDriver;
+    public URLPageNavigator(String testAppUrlPerfix) {
         this.appTestUrl = testAppUrlPerfix;
+    }
 
-        errors = newArrayList();
+    public WebDriver getDriver() {
+        return WebDriverManager.getWebDriver();
     }
 
     public void navigateTo(FuncTestsPages page) {
         final FuncTestURL url = URLS.get(page);
-        if (url == null) {
-            throw new IllegalArgumentException("Page: <" + page.name() + "> is not defined.");
-        }
-
         navigateTo(url);
     }
 
     public void navigateTo(FuncTestURL url) {
+        if (url == null) {
+            throw new IllegalArgumentException("Page: <" + url + "> is not defined.");
+        }
+
         final String pageUrl = appTestUrl + url.getUrl();
-        webDriver.get(pageUrl);
+        getDriver().get(pageUrl);
         waitForPageLoad(DEFAULT_TIMEOUT);
 
         checkPageExists(pageUrl);
     }
 
     private void checkPageExists(String url) {
-        final String title = webDriver.getTitle();
+        final String title = getDriver().getTitle();
 
         if (StringUtils.isBlank(title) || title.toLowerCase().contains("error")) {
             errors.add(url);
@@ -116,7 +122,7 @@ public class URLPageNavigator {
     }
 
     public void waitForPageLoad(int timeout) {
-        WebDriverWait webDriverWait = new WebDriverWait(webDriver, timeout);
+        WebDriverWait webDriverWait = new WebDriverWait(getDriver(), timeout);
         webDriverWait.until(new DocumentReadyCondition());
     }
 

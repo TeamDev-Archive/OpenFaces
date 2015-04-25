@@ -4,7 +4,6 @@
      xmlns:a4j="http://richfaces.org/a4j"
      xmlns:rich="http://richfaces.org/rich"
      xmlns:t="http://myfaces.apache.org/tomahawk"
-     xmlns:comp="http://java.sun.com/jsf/composite/components"
        >
   <a href="../../main.jsf">Back to the main page</a>
   <br/>
@@ -29,8 +28,6 @@
                 <h:outputText value="first column header" id="sortableDataTable_firstHeader"/>
               </f:facet>
               <h:outputText value="#{sortable.thirdColumn}" id="sortableDataTable_firstBody"/>
-
-              <comp:testLabel id="l1" value="[#{sortable.thirdColumn}]" to="formID:cb1"/>
               <h:selectBooleanCheckbox id="cb1"/>
 
               <f:facet name="footer">
