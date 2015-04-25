@@ -12,18 +12,29 @@
 
 package org.inspector.components;
 
+import com.google.common.base.Joiner;
 import org.apache.commons.lang3.StringUtils;
 import org.inspector.css.CssWrapper;
 import org.inspector.navigator.DocumentReadyCondition;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.HasInputDevices;
+import org.openqa.selenium.interactions.Mouse;
+import org.openqa.selenium.interactions.internal.Coordinates;
+import org.openqa.selenium.internal.Locatable;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.Collections;
 import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * @author Max Yurin
@@ -36,7 +47,7 @@ public class ElementWrapper {
     public ElementWrapper(WebDriver webDriver, String elementId, String type) {
         this(webDriver, webDriver.findElement(By.id(elementId)), type);
 
-        this.locator = By.id(elementId);
+        initLocator(elementId, type);
     }
 
     public ElementWrapper(WebDriver driver, WebElement element, String type) {
@@ -44,6 +55,47 @@ public class ElementWrapper {
         this.element = element;
 
         checkTagNameExists(element, type);
+    }
+
+    private void initLocator(String elementId, String type) {
+        final String existingElementId = id();
+
+        if (StringUtils.isBlank(existingElementId) && StringUtils.isBlank(elementId)) {
+            this.locator = findLocatorFor(type);
+        } else {
+            this.locator = By.id(existingElementId);
+        }
+    }
+
+    private By findLocatorFor(String type) {
+        return By.xpath(getFullPathFromClosestParent(this.element) + type);
+    }
+
+    protected String getFullPathFromClosestParent(WebElement element) {
+        final By parentLocator = By.xpath("..");
+
+        String id;
+        WebElement el = element;
+        List<String> tags = newArrayList();
+
+        do {
+            el = el.findElement(parentLocator);
+            id = el.getAttribute("id");
+
+            if (StringUtils.isBlank(id)) {
+                final String tagName = el.getTagName();
+                if (StringUtils.isNotBlank(tagName)) {
+                    tags.add(tagName);
+                }
+            }
+        } while (StringUtils.isBlank(id));
+
+        Joiner join = Joiner.on("//");
+        Collections.reverse(tags);
+
+        final String splitterTags = join.join(tags) + (tags.size() >= 1 ? "//" : "");
+
+        return String.format("//%s[@id='%s']//", el.getTagName(), id) + splitterTags;
     }
 
     private void checkTagNameExists(WebElement element, String type) {
@@ -60,9 +112,13 @@ public class ElementWrapper {
         return driver;
     }
 
+    public By locator() {
+        return locator;
+    }
+
     public WebElement element() {
         if (locator != null) {
-            final Wait<WebDriver> wait = new WebDriverWait(driver(), 2000).ignoring(StaleElementReferenceException.class);
+            final Wait<WebDriver> wait = new WebDriverWait(driver(), 3).ignoring(StaleElementReferenceException.class);
 
             this.element = wait.until(new ExpectedCondition<WebElement>() {
                 @Override
@@ -94,15 +150,21 @@ public class ElementWrapper {
     }
 
     public MouseWrapper mouse() {
-        return new MouseWrapper(driver(), element());
+        return new MouseWrapper(element());
     }
 
     public KeyboardWrapper keyboard() {
-        return new KeyboardWrapper(driver(), element());
+        return new KeyboardWrapper(driver, element());
     }
 
     public void click() {
         mouse().click();
+    }
+
+    public void clickAndWait() {
+        click();
+        waitForCommandExecute();
+        AjaxSupport.waitAjaxProcess(locator);
     }
 
     public String attribute(String name) {
@@ -129,8 +191,12 @@ public class ElementWrapper {
         return By.id(id);
     }
 
-    protected boolean isEnabled() {
+    public boolean isEnabled() {
         return element().isEnabled();
+    }
+
+    public boolean isDisplayed() {
+        return element().isDisplayed();
     }
 
     public WebElement subElement(String xpath) {
@@ -156,7 +222,7 @@ public class ElementWrapper {
     }
 
     protected void waitForCommandExecute() {
-        final WebDriverWait wait = new WebDriverWait(driver(), 200);
+        final WebDriverWait wait = new WebDriverWait(driver(), 2);
 
         final DocumentReadyCondition condition = new DocumentReadyCondition();
         condition.apply(driver());
@@ -170,5 +236,110 @@ public class ElementWrapper {
         }
 
         return defaultValue;
+    }
+
+    public static class KeyboardWrapper {
+        private Actions actions;
+        private WebElement element;
+        private WebDriver driver;
+
+        public KeyboardWrapper(WebDriver driver, WebElement element) {
+            this.element = element;
+            this.actions = new Actions(driver);
+        }
+
+        public void keyPress(Keys keys) {
+            actions.sendKeys(element, keys).perform();
+        }
+
+        public void keyUp(Keys controlKey, Keys key) {
+            actions.keyUp(element, controlKey).sendKeys(element, key).perform();
+        }
+
+        public void keyUpWithControlPressed(Keys keys) {
+            actions.keyUp(element, Keys.CONTROL).sendKeys(element, keys).perform();
+        }
+
+        public void keyUpWithAltPressed(Keys keys) {
+            actions.keyUp(element, Keys.ALT).sendKeys(element, keys).perform();
+        }
+
+        public void keyUpWithShiftPressed(Keys keys) {
+            actions.keyUp(element, Keys.SHIFT).sendKeys(element, keys).perform();
+        }
+
+        public void keyUpJs(Keys keys) {
+            ((JavascriptExecutor) driver).executeScript(element.getAttribute("onkeyup"), element);
+        }
+
+        public void keyDown(Keys keys) {
+            actions.keyDown(element, Keys.CONTROL).sendKeys(element, keys).perform();
+        }
+    }
+
+    public class MouseWrapper {
+        private Mouse mouse;
+        private Actions actions;
+        private WebElement element;
+
+        public MouseWrapper(WebElement element) {
+            this.mouse = ((HasInputDevices) driver()).getMouse();
+            this.actions = new Actions(driver());
+            this.element = element;
+        }
+
+        public void click() {
+            this.element.click();
+        }
+
+        public void clickAndHold() {
+            actions.clickAndHold(this.element).perform();
+        }
+
+        public void mouseOver() {
+            mouseMove(this.element);
+        }
+
+        public void focus() {
+//        mouseMove(element());
+            //Workaround
+//        final JavascriptExecutor executor = (JavascriptExecutor) driver();
+//        executor.executeScript("var x = document.getElementById(\'" + id() + "\'); x.focus();");
+
+            this.element.click();
+        }
+
+        public void blur() {
+            final JavascriptExecutor executor = (JavascriptExecutor) driver;
+            executor.executeScript("var x = document.getElementById(\'" + this.element.getAttribute("id") + "\'); x.blur();");
+        }
+
+        public void mouseMove(WebElement element) {
+            this.mouse.mouseMove(getCoordinates(element));
+//        this.actions.moveToElement(element).perform();
+        }
+
+        public void mouseUp() {
+//        getMouse().mouseUp(getCoordinates());
+
+            //Workaround for last selenium
+            this.actions.release(this.element).perform();
+        }
+
+        public void mouseDown() {
+            this.mouse.mouseDown(getCoordinates());
+        }
+
+        public void doubleClick() {
+            this.mouse.doubleClick(getCoordinates());
+        }
+
+        public Coordinates getCoordinates() {
+            return getCoordinates(this.element);
+        }
+
+        private Coordinates getCoordinates(WebElement element) {
+            return ((Locatable) element).getCoordinates();
+        }
     }
 }

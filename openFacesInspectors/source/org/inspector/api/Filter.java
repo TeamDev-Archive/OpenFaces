@@ -12,8 +12,18 @@
 
 package org.inspector.api;
 
+
 /**
  * @author Max Yurin
  */
 public interface Filter {
+    void doFilter(String value);
+
+    String getFilterValue();
+
+    public enum FilterType {
+        INPUTTEXT,
+        DROPDOWN,
+        COMBOBOX
+    }
 }

@@ -18,6 +18,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.util.List;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -43,9 +45,10 @@ public class TableRow extends TableCellContainer {
         return findElements(CELLS).size();
     }
 
-    public TableCell cell(int index) {
-        return new TableCell(driver(), findElements(CELLS).get(index));
-    }
+//    public TableCell cell(int index) {
+////        return new TableCell(driver(), findElements(CELLS).get(index));
+//        return super.cell(index);
+//    }
 
     public WebElement treeTableToggle() {
         return findElement(By.className("o_treetable_folding"));
@@ -53,18 +56,17 @@ public class TableRow extends TableCellContainer {
 
     public void assertCellParams(TableCellParams[] paramsArray) {
         assertThat("Checking number of cells: ", paramsArray.length, is(cellCount()));
+        final List<TableCell> cells = cells();
 
         for (int i = 0; i < paramsArray.length; i++) {
             final TableCellParams param = paramsArray[i];
-            final TableCell cell = cell(i);
+            final TableCell cell = cells.get(i);
 
-            if (StringUtils.isNotBlank(param.getText())) {
-                assertThat("Checking cell text: ", cell.text(), is(param.getText()));
-                assertThat("Checking cell col span: ", cell.colSpan(), is(param.getColSpan()));
-                assertThat("Checking cell row span: ", cell.rowSpan(), is(param.getRowSpan()));
+            assertThat("Checking cell text: ", cell.text(), is(param.getText()));
+            assertThat("Checking cell col span: ", cell.colSpan(), is(param.getColSpan()));
+            assertThat("Checking cell row span: ", cell.rowSpan(), is(param.getRowSpan()));
 
-                assertStyle(param.getStyle());
-            }
+            assertStyle(param.getStyle());
         }
     }
 

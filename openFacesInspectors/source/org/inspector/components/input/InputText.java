@@ -10,18 +10,19 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.inspector.components;
+package org.inspector.components.input;
 
 import org.inspector.api.Input;
-import org.inspector.api.impl.ControlImpl;
+import org.inspector.components.ElementWrapper;
 import org.openqa.selenium.WebDriver;
 
 /**
  * @author Max Yurin
  */
-public class InputText extends ControlImpl implements Input {
+public class InputText extends ElementWrapper implements Input {
+
     public InputText(WebDriver webDriver, String id) {
-        super(webDriver, id, "input");
+        super(webDriver, id, TAG_NAME);
     }
 
     @Override

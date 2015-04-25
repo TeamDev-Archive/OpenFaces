@@ -12,49 +12,64 @@
 
 package org.inspector.components;
 
-import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author Max Yurin
  */
 public class AjaxSupport {
-    private WebDriver webDriver;
+    public final static int DEFAULT_WAIT_4_PAGE = 2; //seconds
 
-    public AjaxSupport(WebDriver webDriver) {
-        this.webDriver = webDriver;
+    private static WebDriver driver;
+
+    public AjaxSupport() {}
+
+    public static void init(WebDriver webDriver){
+        driver = webDriver;
     }
 
-    public void waitAjaxProcess() {
+    public static void waitAjaxProcess(By locator) {
+        By by = locator != null ? locator : By.xpath("//html");
+
         waitForCondition();
+        waitForElementPresent(by);
     }
 
-    public void waitForCondition() {
-        final Wait<WebDriver> wait = new FluentWait<WebDriver>(webDriver)
-                .withTimeout(30, TimeUnit.SECONDS)
-                .pollingEvery(5, TimeUnit.SECONDS)
-                .ignoring(NoSuchElementException.class);
-
-        wait.until(new Function<WebDriver, WebElement>() {
+    public static void waitForCondition() {
+        new WebDriverWait(driver, DEFAULT_WAIT_4_PAGE) {
+        }.until(new Predicate<WebDriver>() {
             @Override
-            public WebElement apply(WebDriver webDriver) {
-                return (WebElement) ((JavascriptExecutor) webDriver).executeScript(
-                        "var value = window.document._ajaxInProgressMessage " +
-                                "? window.document._ajaxInProgressMessage.style.display " +
-                                ": 'none'; value == 'none';");
+            public boolean apply(WebDriver webDriver) {
+                return ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete");
             }
         });
     }
 
-    public void catchAlert() {
-        JavascriptExecutor js = (JavascriptExecutor) webDriver;
+    private static void waitForElementPresent(final By locator) {
+        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+
+        final WebElement webElement = new WebDriverWait(driver, DEFAULT_WAIT_4_PAGE) {
+        }
+                .until(new ExpectedCondition<WebElement>() {
+                    @Override
+                    public WebElement apply(WebDriver webDriver) {
+                        return webDriver.findElement(locator);
+                    }
+                });
+
+        driver.manage().timeouts().implicitlyWait(DEFAULT_WAIT_4_PAGE, TimeUnit.SECONDS);
+    }
+
+    public static void catchAlert() {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("window.alert = function(msg) { document.lastAlert=msg; }");
         String lastAlert = (String) js.executeScript("return document.lastAlert");
         if (lastAlert != null) {

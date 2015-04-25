@@ -10,12 +10,11 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.inspector.components;
+package org.inspector.components.table;
 
 import org.apache.commons.lang.StringUtils;
 import org.inspector.api.Input;
-import org.inspector.components.table.Table;
-import org.inspector.components.table.TableCell;
+import org.inspector.components.input.InputText;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -23,7 +22,7 @@ import org.openqa.selenium.WebElement;
 /**
  * @author Max Yurin
  */
-public class Pagination extends Table {
+public class Pagination extends DataTable {
     private static final String PAGE_NUMBER_ID = "--pageNo";
     private static final String FIRST_PAGE_BTN_ID = "--firstPage";
     private static final String PREVIOUS_PAGE_BTN_ID = "--prevPage";

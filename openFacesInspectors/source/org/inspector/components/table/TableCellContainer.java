@@ -12,21 +12,22 @@
 
 package org.inspector.components.table;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import org.inspector.components.ElementWrapper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.Iterator;
 import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * @author Max Yurin
  */
-public class TableCellContainer extends ElementWrapper implements Iterable<TableCell> {
+public class TableCellContainer extends ElementWrapper {
     public static final By CELLS = By.xpath(TableCell.TAG_NAME);
-    private List<WebElement> cells;
-    private int index = 0;
 
     public TableCellContainer(WebDriver driver, WebElement element, String type) {
         super(driver, element, type);
@@ -36,33 +37,27 @@ public class TableCellContainer extends ElementWrapper implements Iterable<Table
         super(webDriver, elementId, type);
     }
 
-    public Iterator<TableCell> cellIterator() {
-        return iterator();
-    }
-
     public TableCell nextCell() {
-        return iterator().next();
+        return cells().iterator().next();
     }
 
-    @Override
-    public Iterator<TableCell> iterator() {
-        this.cells = element().findElements(CELLS);
+    public List<WebElement> iterator() {
+        return element().findElements(CELLS);
+    }
 
-        return new Iterator<TableCell>() {
-            @Override
-            public boolean hasNext() {
-                return index < cells.size();
-            }
+    public TableCell cell(int index) {
+        return cells().get(index);
+    }
 
-            @Override
-            public TableCell next() {
-                return new TableCell(driver(), cells.get(index++));
-            }
+    public List<TableCell> cells() {
+        final List<WebElement> elements = element().findElements(CELLS);
 
-            @Override
-            public void remove() {
-                cells.remove(index);
-            }
-        };
+        return newArrayList(
+                Lists.transform(elements, new Function<WebElement, TableCell>() {
+                    @Override
+                    public TableCell apply(WebElement element) {
+                        return new TableCell(driver(), element);
+                    }
+                }));
     }
 }

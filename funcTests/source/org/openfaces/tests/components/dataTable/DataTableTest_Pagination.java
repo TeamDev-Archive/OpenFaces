@@ -12,8 +12,9 @@
 
 package org.openfaces.tests.components.dataTable;
 
-import org.inspector.components.Pagination;
-import org.inspector.components.table.Table;
+import org.inspector.api.Table;
+import org.inspector.components.table.Pagination;
+import org.inspector.components.TabSet;
 import org.inspector.components.table.TableCell;
 import org.inspector.navigator.FuncTestsPages;
 import org.openfaces.tests.common.BaseSeleniumTest;
@@ -36,11 +37,13 @@ public class DataTableTest_Pagination extends BaseSeleniumTest {
     private static final String PAGINABLE_TABLE_ID = "formID:paginableDataTable";
     private static final String PAGINATOR_ID = "formID:paginableDataTable:paginableDataTablePaginator";
 
-    Pagination pagination;
-
     @Test(groups = {"component"})
     public void testPagination_common() {
         navigateTo(PAGE);
+
+        final TabSet tabSet = getControlFactory().getTabSet(TAB_SET_ID);
+        tabSet.openTab("1");
+
         final Pagination pagination = getControlFactory().getPagination(PAGINATOR_ID);
 
         assertThat("Page index is not equals default value: ", pagination.getIndex(), is(DEFAULT_PAGE_INDEX));
@@ -50,6 +53,10 @@ public class DataTableTest_Pagination extends BaseSeleniumTest {
     @Test(groups = {"component"}, expectedExceptions = NoSuchElementException.class)
     public void test_onFirstPageMoveToFirstIsNotAvailable() {
         navigateTo(PAGE);
+
+        final TabSet tabSet = getControlFactory().getTabSet(TAB_SET_ID);
+        tabSet.openTab("1");
+
         final Pagination pagination = getControlFactory().getPagination(PAGINATOR_ID);
 
         pagination.moveToFirst();
@@ -58,6 +65,9 @@ public class DataTableTest_Pagination extends BaseSeleniumTest {
     @Test(groups = {"component"}, expectedExceptions = NoSuchElementException.class)
     public void test_onFirstPageMovePreviousIsNotAvailable() {
         navigateTo(PAGE);
+        final TabSet tabSet = getControlFactory().getTabSet(TAB_SET_ID);
+        tabSet.openTab("1");
+
         final Pagination pagination = getControlFactory().getPagination(PAGINATOR_ID);
 
         pagination.movePrevious();
@@ -66,12 +76,15 @@ public class DataTableTest_Pagination extends BaseSeleniumTest {
     @Test(groups = {"component"})
     public void testPagination_moveToPage() {
         navigateTo(PAGE);
-        final Pagination pagination = getControlFactory().getPagination(PAGINATOR_ID);
+
+        final TabSet tabSet = getControlFactory().getTabSet(TAB_SET_ID);
+        tabSet.openTab("1");
 
         final Table firstPage = getControlFactory().getDataTable(PAGINABLE_TABLE_ID);
         final TableCell firstPageCell = firstPage.body().nextRow().nextCell();
         final String firstPageCellValue = firstPageCell.text();
 
+        final Pagination pagination = getControlFactory().getPagination(PAGINATOR_ID);
         pagination.moveToPageByNumber(2);
         pagination.keyboard().keyPress(Keys.ENTER);
 
@@ -87,6 +100,10 @@ public class DataTableTest_Pagination extends BaseSeleniumTest {
     @Test(groups = {"component"})
     public void testPagination_moveForward() {
         navigateTo(PAGE);
+
+        final TabSet tabSet = getControlFactory().getTabSet(TAB_SET_ID);
+        tabSet.openTab("1");
+
         final Pagination pagination = getControlFactory().getPagination(PAGINATOR_ID);
 
         final Table firstPageTable = getControlFactory().getDataTable(PAGINABLE_TABLE_ID);
@@ -108,6 +125,10 @@ public class DataTableTest_Pagination extends BaseSeleniumTest {
     @Test(groups = {"component"})
     public void testPagination_moveBackward() {
         navigateTo(PAGE);
+
+        final TabSet tabSet = getControlFactory().getTabSet(TAB_SET_ID);
+        tabSet.openTab("1");
+
         final Pagination pagination = getControlFactory().getPagination(PAGINATOR_ID);
 
         pagination.moveToLast();
@@ -131,6 +152,10 @@ public class DataTableTest_Pagination extends BaseSeleniumTest {
     @Test(groups = {"component"})
     public void testPagination_moveToFirstPage() {
         navigateTo(PAGE);
+
+        final TabSet tabSet = getControlFactory().getTabSet(TAB_SET_ID);
+        tabSet.openTab("1");
+
         final Pagination pagination = getControlFactory().getPagination(PAGINATOR_ID);
 
         pagination.moveToLast();
@@ -153,6 +178,10 @@ public class DataTableTest_Pagination extends BaseSeleniumTest {
     @Test(groups = {"component"})
     public void testPagination_moveToLastPage() {
         navigateTo(PAGE);
+
+        final TabSet tabSet = getControlFactory().getTabSet(TAB_SET_ID);
+        tabSet.openTab("1");
+
         final Pagination pagination = getControlFactory().getPagination(PAGINATOR_ID);
 
         final Table firstPageTable = getControlFactory().getDataTable(PAGINABLE_TABLE_ID);

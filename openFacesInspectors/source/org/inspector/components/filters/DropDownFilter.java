@@ -10,39 +10,30 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.inspector.api.impl;
+package org.inspector.components.filters;
 
-import org.inspector.api.Control;
-import org.inspector.components.ElementWrapper;
-import org.openqa.selenium.By;
+import org.inspector.api.Filter;
+import org.inspector.components.input.DropDownImpl;
 import org.openqa.selenium.WebDriver;
 
 /**
  * @author Max Yurin
  */
-public class ControlImpl extends ElementWrapper implements Control {
+public class DropDownFilter extends DropDownImpl implements Filter {
 
-    public ControlImpl(WebDriver webDriver, String id, String type) {
-        super(webDriver, id, type);
+    public DropDownFilter(WebDriver webDriver, String elementId) {
+        super(webDriver, elementId);
     }
 
     @Override
-    public By locator() {
-        return findById(id());
+    public void doFilter(String value) {
+        super.getButton().click();
     }
 
     @Override
-    public boolean isVisible() {
-        return element() != null;
+    public String getFilterValue() {
+        return super.getInputField().getValue();
     }
 
-    @Override
-    public boolean isDisplayed() {
-        return element().isDisplayed();
-    }
-
-    public String value() {
-        return element().getAttribute("value");
-    }
 
 }

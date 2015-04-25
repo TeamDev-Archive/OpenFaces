@@ -16,6 +16,8 @@ package org.inspector.api;
  * @author Max Yurin
  */
 public interface Input extends Control {
+    public static final String TAG_NAME = "input";
+
     void setText(String text);
 
     void setValue(CharSequence... sequence);

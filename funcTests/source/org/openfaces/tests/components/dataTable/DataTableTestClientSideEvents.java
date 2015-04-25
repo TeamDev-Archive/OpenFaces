@@ -13,7 +13,7 @@
 package org.openfaces.tests.components.dataTable;
 
 import org.apache.commons.lang3.StringUtils;
-import org.inspector.components.table.Table;
+import org.inspector.api.Table;
 import org.inspector.components.table.TableCell;
 import org.inspector.css.BaseActionLabels;
 import org.inspector.navigator.FuncTestsPages;
@@ -92,7 +92,7 @@ public class DataTableTestClientSideEvents extends BaseSeleniumTest {
     public void testFocus() {
         navigateTo(PAGE);
         final Table sixthTable = getControlFactory().getDataTable(SIXTH_TABLE_ID);
-        sixthTable.click();
+        sixthTable.body().row(2).cell(3).element().click();
 
         assertEventFired(ON_FOCUS);
     }
@@ -156,7 +156,7 @@ public class DataTableTestClientSideEvents extends BaseSeleniumTest {
     public void testKeyDown_SingleSelectionTable() {
         navigateTo(PAGE);
         final Table singleTable = getControlFactory().getDataTable(SINGLE_TABLE_ID);
-        singleTable.keyboard().keyDown(Keys.DOWN);
+        singleTable.body().nextRow().nextCell().keyboard().keyDown(Keys.DOWN);
 
         assertEventFired(ON_CHANGE);
     }

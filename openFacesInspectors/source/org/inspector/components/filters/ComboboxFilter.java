@@ -10,16 +10,27 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.inspector.components;
+package org.inspector.components.filters;
 
 import org.inspector.api.Filter;
+import org.inspector.components.input.ComboBoxImpl;
 import org.openqa.selenium.WebDriver;
 
 /**
  * @author Max Yurin
  */
-public class CompositeFilter implements Filter {
-    public CompositeFilter(WebDriver id, String driver) {
+public class ComboboxFilter extends ComboBoxImpl implements Filter {
+    public ComboboxFilter(WebDriver webDriver, String elementId) {
+        super(webDriver, elementId);
+    }
 
+    @Override
+    public void doFilter(String value) {
+        select(value);
+    }
+
+    @Override
+    public String getFilterValue() {
+        return super.getSelectedOption();
     }
 }

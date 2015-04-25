@@ -16,60 +16,57 @@ import org.inspector.api.Chart;
 import org.inspector.api.Control;
 import org.inspector.api.DateChooser;
 import org.inspector.api.Input;
-import org.inspector.components.table.Table;
+import org.inspector.components.input.InputText;
+import org.inspector.components.input.InputTextArea;
+import org.inspector.components.table.DataTable;
+import org.inspector.components.table.Pagination;
+import org.inspector.webriver.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 
 /**
  * @author Max Yurin
  */
 public class ControlFactory {
-    private WebDriver driver;
-
-    public ControlFactory(WebDriver driver) {
-        this.driver = driver;
+    public ControlFactory() {
     }
 
     public WebDriver getDriver() {
-        return driver;
+        return WebDriverManager.getWebDriver();
     }
 
     public Control getAjaxCommandLink(String id) {
-        return new AjaxCommandLink(driver, id);
+        return new AjaxCommandLink(getDriver(), id);
     }
 
     public Control getCommandLink(String id) {
-        return new CommandLink(driver, id);
-    }
-
-    public CompositeFilter getCompositeFilter(String id) {
-        return new CompositeFilter(driver, id);
+        return new CommandLink(getDriver(), id);
     }
 
     public DateChooser getCalendar(String id) {
-        return new Calendar(driver, id);
+        return new Calendar(getDriver(), id);
     }
 
     public Chart getChart(String id) {
-        return new ChartImpl(driver, id);
+        return new ChartImpl(getDriver(), id);
     }
 
     public Input getInputText(String id) {
-        return new InputText(driver, id);
+        return new InputText(getDriver(), id);
     }
 
     public Input getInputTextArea(String id) {
-        return new InputTextArea(driver, id);
+        return new InputTextArea(getDriver(), id);
     }
 
-    public Table getDataTable(String id) {
-        return new Table(driver, id);
+    public DataTable getDataTable(String id) {
+        return new DataTable(getDriver(), id);
     }
 
-    public Pagination getPagination(String id){
-        return new Pagination(driver, id);
+    public Pagination getPagination(String id) {
+        return new Pagination(getDriver(), id);
     }
 
-    public TabSet getTabSet(String id){
-        return new TabSet(driver, id);
+    public TabSet getTabSet(String id) {
+        return new TabSet(getDriver(), id);
     }
 }

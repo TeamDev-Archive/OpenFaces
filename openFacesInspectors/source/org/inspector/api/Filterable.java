@@ -10,10 +10,13 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.inspector.components.table;
+package org.inspector.api;
 
 /**
  * @author Max Yurin
  */
-public class Column {
+public interface Filterable {
+    Filter createFilter(Filter.FilterType type);
+
+    Filter getFilter();
 }

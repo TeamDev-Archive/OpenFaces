@@ -10,7 +10,7 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.inspector.components;
+package org.inspector.components.input;
 
 import org.openqa.selenium.WebDriver;
 

@@ -12,8 +12,23 @@
 
 package org.inspector.api;
 
+import org.inspector.components.table.TableBody;
+import org.inspector.components.table.TableFooter;
+import org.inspector.components.table.TableHeader;
+
 /**
  * @author Max Yurin
  */
-public interface Table extends Control {
+public interface Table extends Control, Filterable {
+    public static final String TAG_NAME = "table";
+
+    TableHeader header();
+
+    TableBody body();
+
+    TableFooter footer();
+
+    String width();
+
+    String height();
 }

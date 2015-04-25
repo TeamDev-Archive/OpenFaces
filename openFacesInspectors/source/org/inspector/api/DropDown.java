@@ -12,9 +12,14 @@
 
 package org.inspector.api;
 
+import org.openqa.selenium.WebElement;
+
 /**
  * @author Max Yurin
  */
-public interface DropDown extends Control {
-    void select(String item);
+public interface DropDown extends Popup {
+    public static final String TAG_NAME = "input";
+
+    Input getInputField();
+    WebElement getButton();
 }

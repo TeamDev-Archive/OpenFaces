@@ -13,39 +13,13 @@
 package org.inspector.components;
 
 import org.inspector.api.Chart;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 /**
  * @author Max Yurin
  */
-public class ChartImpl implements Chart {
-    public ChartImpl(WebDriver driver, String id) {
-
-    }
-
-    @Override
-    public String id() {
-        return null;
-    }
-
-    @Override
-    public By locator() {
-        return null;
-    }
-
-    @Override
-    public boolean isVisible() {
-        return false;
-    }
-
-    @Override
-    public boolean isDisplayed() {
-        return false;
-    }
-
-    @Override
-    public void click() {
-
+public class ChartImpl extends ElementWrapper implements Chart {
+    public ChartImpl(WebDriver webDriver, String elementId) {
+        super(webDriver, elementId, "table");
     }
 }

@@ -13,12 +13,16 @@
 package org.inspector.components;
 
 import org.inspector.api.Label;
-import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 
 /**
  * @author Max Yurin
  */
-public class ForEach implements Label {
+public class ForEach extends ElementWrapper implements Label {
+    public ForEach(WebDriver webDriver, String elementId) {
+        super(webDriver, elementId, "input");
+    }
+
     @Override
     public void setText(String label) {
 
@@ -27,26 +31,6 @@ public class ForEach implements Label {
     @Override
     public void getText() {
 
-    }
-
-    @Override
-    public String id() {
-        return null;
-    }
-
-    @Override
-    public By locator() {
-        return null;
-    }
-
-    @Override
-    public boolean isVisible() {
-        return false;
-    }
-
-    @Override
-    public boolean isDisplayed() {
-        return false;
     }
 
     @Override

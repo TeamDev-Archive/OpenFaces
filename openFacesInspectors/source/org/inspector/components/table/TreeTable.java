@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * @author Max Yurin
  */
-public class TreeTable extends Table {
+public class TreeTable extends DataTable {
     public static final String DEFAULT_TOGGLE_CLASS_NAME = "o_treetable_expansionToggle";
 
     private AjaxSupport ajaxSupport;
@@ -48,7 +48,6 @@ public class TreeTable extends Table {
             final WebElement element = elementList.get(i);
             if(DEFAULT_TOGGLE_CLASS_NAME.equals(element.getAttribute("class"))){
                 element.click();
-                ajaxSupport.waitAjaxProcess();
             }
         }
     }

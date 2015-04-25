@@ -12,21 +12,22 @@
 
 package org.inspector.components.table;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import org.inspector.components.ElementWrapper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.Iterator;
 import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * @author Max Yurin
  */
-public class TableRowContainer extends ElementWrapper implements Iterable<TableRow> {
+public class TableRowContainer extends ElementWrapper {
     public static final By ROWS = By.xpath(TableRow.TAG_NAME);
-    private List<WebElement> rows;
-    private int index = 0;
 
     public TableRowContainer(WebDriver webDriver, String id, String type) {
         super(webDriver, id, type);
@@ -37,40 +38,24 @@ public class TableRowContainer extends ElementWrapper implements Iterable<TableR
     }
 
     public TableRow nextRow() {
-        return iterator().next();
+        return rows().iterator().next();
     }
 
-    public Iterator<TableRow> iterator() {
-        this.rows = element().findElements(ROWS);
-        this.index = 0;
+    public List<TableRow> rows() {
+        return newArrayList(
+                Lists.transform(element().findElements(ROWS), new Function<WebElement, TableRow>() {
+                    @Override
+                    public TableRow apply(WebElement element) {
+                        return new TableRow(driver(), element);
+                    }
+                }));
+    }
 
-        return new Iterator<TableRow>() {
-            public boolean hasNext() {
-                return index < rows.size();
-            }
-
-            public TableRow next() {
-                return new TableRow(driver(), rows.get(index++));
-            }
-
-            public void remove() {
-                rows.remove(index);
-            }
-        };
+    public int rowsCount() {
+        return findElements(ROWS).size();
     }
 
     public TableRow row(int index) {
-        final Iterator<TableRow> iterator = iterator();
-        TableRow row;
-        int counter = 0;
-
-        while (iterator.hasNext()) {
-            row = iterator.next();
-            if (counter == index) {
-                return row;
-            }
-        }
-
-        return null;
+        return rows().get(index);
     }
 }

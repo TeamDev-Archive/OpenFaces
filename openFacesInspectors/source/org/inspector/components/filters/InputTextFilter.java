@@ -10,22 +10,27 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.inspector.components;
+package org.inspector.components.filters;
 
+import org.inspector.api.Filter;
+import org.inspector.components.input.InputText;
 import org.openqa.selenium.WebDriver;
 
 /**
  * @author Max Yurin
  */
-public class AjaxCommandLink extends CommandLink {
-
-    public AjaxCommandLink(WebDriver webDriver, String id) {
-        super(webDriver, id);
+public class InputTextFilter extends InputText implements Filter {
+    public InputTextFilter(WebDriver webDriver, String elementId) {
+        super(webDriver, elementId);
     }
 
     @Override
-    public void click() {
-        super.click();
-        AjaxSupport.waitAjaxProcess(locator());
+    public void doFilter(String value) {
+        super.setValue(value);
+    }
+
+    @Override
+    public String getFilterValue() {
+        return super.getValue();
     }
 }

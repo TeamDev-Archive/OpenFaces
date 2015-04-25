@@ -12,7 +12,7 @@
 
 package org.openfaces.tests.components.dataTable;
 
-import org.inspector.components.table.Table;
+import org.inspector.api.Table;
 import org.inspector.components.table.TableCellParams;
 import org.inspector.components.table.TableHeader;
 import org.inspector.components.table.TableRow;
@@ -34,7 +34,7 @@ public class DataTableHeaderTest extends BaseSeleniumTest {
         navigateTo(page);
         final Table table = getControlFactory().getDataTable(TABLE_ID);
         final TableHeader header = table.header();
-        final Iterator<TableRow> iterator = header.iterator();
+        final Iterator<TableRow> iterator = header.rows().iterator();
 
         final TableRow firstHeaderRow = iterator.next();
         firstHeaderRow.assertCellParams(getFirstHeader());
@@ -45,7 +45,7 @@ public class DataTableHeaderTest extends BaseSeleniumTest {
 
     private TableCellParams[] getFirstHeader() {
         return new TableCellParams[]{
-                new TableCellParams("", 1, 2,
+                new TableCellParams(" ", 1, 2,
                         "border-right: 1px solid #a0a0a0; border-bottom: 1px solid #a0a0a0"),
                 new TableCellParams("String Fields", 4, 1,
                         "background: SteelBlue; border-right: 1px solid #a0a0a0; border-bottom: ? none ?"),
@@ -56,7 +56,7 @@ public class DataTableHeaderTest extends BaseSeleniumTest {
 
     private TableCellParams[] getSecondHeader() {
         return new TableCellParams[]{
-                new TableCellParams(null, 1, 1,
+                new TableCellParams("", 1, 1,
                         "background: LightSteelBlue; border-right: ? none ?; border-bottom: 1px solid #a0a0a0"),
                 new TableCellParams("String Field 1", 1, 1,
                         "background: LightSteelBlue; border-right: ? none ?; border-bottom: 1px solid #a0a0a0"),

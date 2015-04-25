@@ -12,13 +12,13 @@
 
 package org.inspector.components;
 
-import org.inspector.api.impl.ControlImpl;
+import org.inspector.api.Link;
 import org.openqa.selenium.WebDriver;
 
 /**
  * @author Max Yurin
  */
-public class CommandLink extends ControlImpl {
+public class CommandLink extends ElementWrapper implements Link {
 
     public CommandLink(WebDriver webDriver, String id) {
         super(webDriver, id, "");
@@ -27,6 +27,10 @@ public class CommandLink extends ControlImpl {
     @Override
     public void click() {
         super.click();
-        waitForCommandExecute();
+    }
+
+    @Override
+    public void getLabel() {
+
     }
 }

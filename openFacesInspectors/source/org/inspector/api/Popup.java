@@ -12,8 +12,20 @@
 
 package org.inspector.api;
 
+import java.util.List;
+
 /**
  * @author Max Yurin
  */
-public interface Popup {
+public interface Popup extends Control{
+    public static final String SUFFIX = "--popup";
+    public static final String LIST = "::innerTable";
+
+    void select(int item);
+
+    void select(String desiredValue);
+
+    String getSelectedOption();
+
+    List<String> itemsList();
 }

@@ -12,10 +12,8 @@
 
 package org.inspector.components;
 
-import org.inspector.api.Popup;
-
 /**
  * @author Max Yurin
  */
-public class Window implements Popup {
+public class Window {
 }
