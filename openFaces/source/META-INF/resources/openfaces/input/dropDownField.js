@@ -985,15 +985,15 @@ O$.DropDownField = {
           field._skipRepetitiveOnkeydown = undefined;
         }, 1);
       }
-      var result = field._handleKeyDown(e);
       // IE doesn't react on arrows in onKeyPress
       var evt = O$.getEvent(e);
       var keyCode = evt.keyCode;
       var ctrlKey = evt.ctrlKey || evt.metaKey;
 
       if (ctrlKey && keyCode == 86 || keyCode == 8 || keyCode == 46) // Ctrl + V or Tab or Del
-        field.onkeypress(e);
-      return result;
+        return field.onkeypress(e);
+
+      return field._handleKeyDown(e);
     };
 
     popup._addVisibilityChangeListener(dropDown._visibilityChangeListener);
