@@ -1,166 +1,226 @@
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
-     xmlns:f="http://java.sun.com/jsf/core"
+<div xmlns="http://www.w3.org/1999/xhtml"
      xmlns:o="http://openfaces.org/"
-     xmlns:a4j="http://richfaces.org/a4j"
-     xmlns:rich="http://richfaces.org/rich"
-     xmlns:t="http://myfaces.apache.org/tomahawk"
-       >
-  <br/>
-  <a href="../../testPageIndex.jsf">Return to main testing page</a><br/><br/>
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+        >
+    <br/>
+    <a href="../../testPageIndex.jsf">Return to main testing page</a><br/><br/>
 
         <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
-         DropDown client-side events
+         DropDown test cases
         </span><br/>
-<table>
-<tr>
-  <td class="header">onchange</td>
-  <td class="header">onkeypress</td>
-  <td class="header">onclick</td>
-  <td class="header">ondblclick</td>
-  <td class="header">onmousedown</td>
-</tr>
-<tr>
-  <td class="container">
-    <o:dropDownField id="changeID"
-                     onchange="logJSEvents('onchange works', 'empty'); logJSEvents(event.type, 'empty');">
-      <o:dropDownItem value="Red"/>
-      <o:dropDownItem value="Yellow"/>
-      <o:dropDownItem value="Blue"/>
-    </o:dropDownField>
-  </td>
-  <td class="container">
-    <o:dropDownField id="keypressID"
-                     onkeypress="logJSEvents('onkeypress works', 'empty'); logJSEvents(event.type, 'empty');">
-      <o:dropDownItem value="Red"/>
-      <o:dropDownItem value="Yellow"/>
-      <o:dropDownItem value="Blue"/>
-    </o:dropDownField>
-  </td>
-  <td class="container">
-    <o:dropDownField id="clickID"
-                     onclick="logJSEvents('onclick works', 'empty'); logJSEvents(event.type, 'empty');">
-      <o:dropDownItem value="Red"/>
-      <o:dropDownItem value="Yellow"/>
-      <o:dropDownItem value="Blue"/>
-    </o:dropDownField>
-  </td>
-  <td class="container">
-    <o:dropDownField id="doubleclickID"
-                     ondblclick="logJSEvents('ondblclick works', 'empty'); logJSEvents(event.type, 'empty');">
-      <o:dropDownItem value="Red"/>
-      <o:dropDownItem value="Yellow"/>
-      <o:dropDownItem value="Blue"/>
-    </o:dropDownField>
-  </td>
-  <td class="container">
-    <o:dropDownField id="mousedownID"
-                     onmousedown="logJSEvents('onmousedown works', 'empty'); logJSEvents(event.type, 'empty');">
-      <o:dropDownItem value="Red"/>
-      <o:dropDownItem value="Yellow"/>
-      <o:dropDownItem value="Blue"/>
-    </o:dropDownField>
-  </td>
-</tr>
-<tr>
-  <td class="header">onmouseover</td>
-  <td class="header">onmouseup</td>
-  <td class="header">onmouseout</td>
-  <td class="header">onmousemove</td>
-  <td class="header">onfocus</td>
-</tr>
-<tr>
-  <td class="container">
-    <o:dropDownField id="mouseoverID"
-                     onmouseover="logJSEvents('onmouseover works', 'empty'); logJSEvents(event.type, 'empty');">
-      <o:dropDownItem value="Red"/>
-      <o:dropDownItem value="Yellow"/>
-      <o:dropDownItem value="Blue"/>
-    </o:dropDownField>
-  </td>
-  <td class="container">
-    <o:dropDownField id="mouseupID"
-                     onmouseup="logJSEvents('onmouseup works', 'empty'); logJSEvents(event.type, 'empty');">
-      <o:dropDownItem value="Red"/>
-      <o:dropDownItem value="Yellow"/>
-      <o:dropDownItem value="Blue"/>
-    </o:dropDownField>
-  </td>
-  <td class="container">
-    <o:dropDownField id="mouseoutID"
-                     onmouseout="logJSEvents('onmouseout works', 'empty'); logJSEvents(event.type, 'empty');">
-      <o:dropDownItem value="Red"/>
-      <o:dropDownItem value="Yellow"/>
-      <o:dropDownItem value="Blue"/>
-    </o:dropDownField>
-  </td>
-  <td class="container">
-    <o:dropDownField id="mousemoveID"
-                     onmousemove="logJSEvents('onmousemove works', 'empty'); logJSEvents(event.type, 'empty');">
-      <o:dropDownItem value="Red"/>
-      <o:dropDownItem value="Yellow"/>
-      <o:dropDownItem value="Blue"/>
-    </o:dropDownField>
-  </td>
-  <td class="container">
-    <o:dropDownField id="focusID"
-                     onfocus="logJSEvents('onfocus works', 'empty'); logJSEvents(event.type, 'empty');">
-      <o:dropDownItem value="Red"/>
-      <o:dropDownItem value="Yellow"/>
-      <o:dropDownItem value="Blue"/>
-    </o:dropDownField>
-  </td>
-</tr>
-<tr>
-  <td class="header">onblur</td>
-  <td class="header">onkeydown</td>
-  <td class="header">onkeyup</td>
-  <td class="header">ondropdown</td>
-  <td class="header">oncloseup</td>
-</tr>
-<tr>
-  <td class="container">
-    <o:dropDownField id="blurID"
-                     onblur="logJSEvents('onblur works', 'empty'); logJSEvents(event.type, 'empty');">
-      <o:dropDownItem value="Red"/>
-      <o:dropDownItem value="Yellow"/>
-      <o:dropDownItem value="Blue"/>
-    </o:dropDownField>
-  </td>
-  <td class="container">
-    <o:dropDownField id="keydownID"
-                     onkeydown="logJSEvents('onkeydown works', 'empty'); logJSEvents(event.type, 'empty');">
-      <o:dropDownItem value="Red"/>
-      <o:dropDownItem value="Yellow"/>
-      <o:dropDownItem value="Blue"/>
-    </o:dropDownField>
-  </td>
-  <td class="container">
-    <o:dropDownField id="keyupID"
-                     onkeyup="logJSEvents('onkeyup works', 'empty'); logJSEvents(event.type, 'empty');">
-      <o:dropDownItem value="Red"/>
-      <o:dropDownItem value="Yellow"/>
-      <o:dropDownItem value="Blue"/>
-    </o:dropDownField>
-  </td>
-  <td class="container">
-    <o:dropDownField id="dropdownID"
-                     ondropdown="logJSEvents('ondropdown works', 'empty'); logJSEvents(event.type, 'empty');">
-      <o:dropDownItem value="Red"/>
-      <o:dropDownItem value="Yellow"/>
-      <o:dropDownItem value="Blue"/>
-    </o:dropDownField>
-  </td>
-  <td class="container">
-    <o:dropDownField id="closeupID"
-                     oncloseup="logJSEvents('oncloseup works', 'empty'); logJSEvents(event.type, 'empty');">
-      <o:dropDownItem value="Red"/>
-      <o:dropDownItem value="Yellow"/>
-      <o:dropDownItem value="Blue"/>
-    </o:dropDownField>
-  </td>
-</tr>
-</table>
-<div id="empty"></div>
+    <table>
+        <tr>
+            <td class="header">Test DropDown Events</td>
+            <td class="header">Test Select Value</td>
+            <td class="header">Test DropDown Styles</td>
+        </tr>
+        <tr>
+            <td class="container">
+                <o:dropDownField id="dropDownEvents"
+                                 onchange="logJSEvents(event.type, 'empty');"
+                                 onclick="logJSEvents(event.type, 'empty');"
+                                 ondblclick="logJSEvents(event.type, 'empty');"
+                                 onfocus="logJSEvents(event.type, 'empty');"
+                                 onkeydown="logJSEvents(event.type, 'empty');"
+                                 onkeyup="logJSEvents(event.type, 'empty');"
+                                 onkeypress="logJSEvents(event.type, 'empty');"
+                                 onmousemove="logJSEvents(event.type, 'empty');"
+                                 onmousedown="logJSEvents(event.type, 'empty');"
+                                 onmouseout="logJSEvents(event.type, 'empty');"
+                                 onmouseover="logJSEvents(event.type, 'empty');"
+                                 onmouseup="logJSEvents(event.type, 'empty');"
+                                 onblur="logJSEvents(event.type, 'empty');">
+                    <o:dropDownItem value="Red"/>
+                    <o:dropDownItem value="Yellow"/>
+                    <o:dropDownItem value="Blue"/>
+                </o:dropDownField>
+            </td>
+            <td class="container">
+                <o:dropDownField id="selectValue" value="#{DropDownBean.testSelectedValue}"
+                                 autoComplete="true">
+                    <o:dropDownItem value="Red"/>
+                    <o:dropDownItem value="Yellow"/>
+                    <o:dropDownItem value="Blue"/>
+                    <f:ajax event="change" render="selectedValue"/>
+                </o:dropDownField>
+                Value: <h:outputText id="selectedValue" value="#{DropDownBean.testSelectedValue}"/>
+            </td>
+            <td class="container">
+                <o:dropDownField id="styled"
 
+                                 disabled="#{DropDownBean.disabled}"
+                                 disabledButtonImageUrl="dropdown_arrow_disabled.gif"
+                                 disabledButtonStyle="background: pink;"
+                                 disabledFieldStyle="background: yellow; border: 2px solid green;"
+                                 disabledStyle="width: 400px;"
 
+                                 value="#{DropDownBean.selectedBGColor}"
+                                 var="color"
+                                 converter="#{DropDownBean.colorConverter}"
+
+                                 buttonStyle="border: 1px solid blue; background: PowderBlue;"
+                                 fieldStyle="background: GreenYellow; font-weight: bold;"
+                                 listItemStyle="color: Teal; font-size: 18px;"
+                                 listStyle="border: 1px dotted red;"
+                                 pressedButtonStyle="border: 1px solid OrangeRed; background: PaleVioletRed;"
+                                 rolloverButtonStyle="border: 2px solid darkgreen; background: green;"
+
+                                 listFooterRowStyle="color: silver;"
+                                 listHeaderRowStyle="text-decoration: underline; color: red;"
+                                 oddListItemStyle="border: 1px solid green; background: bisque;"
+
+                                 verticalGridLines="1px solid blue"
+                                 horizontalGridLines="2px dotted DarkOliveGreen"
+                                 headerVertSeparator="2px dashed springgreen"
+                                 headerHorizSeparator="2px solid fuchsia"
+                                 footerVertSeparator="3px solid black"
+                                 footerHorizSeparator="2px solid green"
+
+                                 multiHeaderSeparator="1px solid green, 2px solid green"
+
+                                 buttonImageUrl="dropdown_arrow.gif"
+                                 rolloverFieldStyle="border: 2px dashed MediumSpringGreen;"
+                                 rolloverListItemStyle="color: orange; font: Comic Sans MS;
+                                          background: LightGreen;"
+                                 rolloverListStyle="border: 3px dotted pink;"
+                                 rolloverStyle="border: 1px dotted darkblue;"
+                                 focusedStyle="border: 1px solid yellow;"
+                                 style="width: 230px;">
+                    <o:dropDownItems value="#{DropDownBean.colors}"/>
+                    <o:column>
+                        <f:facet name="header">
+                            <h:outputText value="Name"/>
+                        </f:facet>
+                        <h:outputText value="#{color.name}"/>
+                        <f:facet name="footer">
+                            <h:outputText value="footer"/>
+                        </f:facet>
+                    </o:column>
+                    <o:columnGroup>
+                        <f:facet name="header">
+                            <h:outputText value="Parameters"/>
+                        </f:facet>
+                        <o:columnGroup>
+                            <f:facet name="header">
+                                <h:outputText value=""/>
+                            </f:facet>
+                            <o:column>
+                                <f:facet name="header">
+                                    <h:outputText value="R"/>
+                                </f:facet>
+                                <h:outputText value="#{color.r}"/>
+                            </o:column>
+                            <o:column>
+                                <f:facet name="header">
+                                    <h:outputText value="G"/>
+                                </f:facet>
+                                <h:outputText value="#{color.g}"/>
+                            </o:column>
+                            <o:column>
+                                <f:facet name="header">
+                                    <h:outputText value="B"/>
+                                </f:facet>
+                                <h:outputText value="#{color.b}"/>
+                            </o:column>
+                        </o:columnGroup>
+                        <o:column>
+                            <f:facet name="header">
+                                <h:outputText value="Hex"/>
+                            </f:facet>
+                            <h:outputText value="#{color.hex}"/>
+                        </o:column>
+                    </o:columnGroup>
+                </o:dropDownField>
+            </td>
+        </tr>
+    </table>
+        <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+         DropDown Suggestion Mode test cases
+        </span><br/>
+    <table>
+        <tr>
+            <td class="header">Test Suggestion Mode "substring"</td>
+            <td class="header">Test Suggestion Mode "stringStart"</td>
+            <td class="header">Test Suggestion Mode "stringEnd"</td>
+            <td class="header">Test Suggestion Mode "all"</td>
+        </tr>
+        <tr>
+            <td class="container">
+                <o:dropDownField id="substringDD"
+                                 var="color"
+                                 converter="#{DropDownBean.colorConverter}"
+                                 customValueAllowed="false"
+                                 required="true"
+                                 suggestionMode="substring"
+                                 autoComplete="true"
+                                 style="width: 155px;"
+                                 listItemClass="demo_font"
+                                 listItemStyle="padding: 2px 4px 2px 4px;">
+                    <o:dropDownItems value="#{DropDownBean.colors}"/>
+                    <o:column width="12px">
+                        <h:outputText styleClass="colorRect" style="background: #{color.name};"/>
+                    </o:column>
+                    <o:column>
+                        <h:outputText value="#{color.name}"/>
+                    </o:column>
+                </o:dropDownField>
+            </td>
+            <td class="container">
+                <o:dropDownField id="stringStartDD"
+                                 var="color"
+                                 converter="#{DropDownBean.colorConverter}"
+                                 customValueAllowed="false"
+                                 required="true"
+                                 suggestionMode="stringStart"
+                                 autoComplete="true"
+                                 style="width: 155px;"
+                                 listItemClass="demo_font"
+                                 listItemStyle="padding: 2px 4px 2px 4px;">
+                    <o:dropDownItems value="#{DropDownBean.colors}"/>
+                    <o:column width="12px">
+                        <h:outputText styleClass="colorRect" style="background: #{color.name};"/>
+                    </o:column>
+                    <o:column>
+                        <h:outputText value="#{color.name}"/>
+                    </o:column>
+                </o:dropDownField>
+            </td>
+            <td class="container">
+                <o:dropDownField id="stringEndDD"
+                                 var="color"
+                                 converter="#{DropDownBean.colorConverter}"
+                                 customValueAllowed="false"
+                                 required="true"
+                                 suggestionMode="stringEnd"
+                                 autoComplete="true"
+                                 style="width: 155px;"
+                                 listItemClass="demo_font"
+                                 listItemStyle="padding: 2px 4px 2px 4px;">
+                    <o:dropDownItems value="#{DropDownBean.colors}"/>
+                    <o:column width="12px">
+                        <h:outputText styleClass="colorRect" style="background: #{color.name};"/>
+                    </o:column>
+                    <o:column>
+                        <h:outputText value="#{color.name}"/>
+                    </o:column>
+                </o:dropDownField>
+            </td>
+            <td class="container">
+                <o:dropDownField id="allDD"
+                                 var="color"
+                                 suggestionMode="all"
+                                 autoComplete="true"
+                                 style="width: 155px;"
+                                 listItemClass="demo_font"
+                                 listItemStyle="padding: 2px 4px 2px 4px;">
+                    <o:dropDownItem value="test1"/>
+                    <o:dropDownItem value="sample2"/>
+                    <o:dropDownItem value="demo3"/>
+                </o:dropDownField>
+            </td>
+        </tr>
+    </table>
+
+    <div id="empty"></div>
 </div>
