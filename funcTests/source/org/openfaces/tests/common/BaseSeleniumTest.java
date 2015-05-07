@@ -23,15 +23,18 @@ import org.inspector.navigator.URLPageNavigator;
 import org.inspector.webriver.PropertyTestConfiguration;
 import org.inspector.webriver.WebDriverManager;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Max Yurin
@@ -88,6 +91,11 @@ public class BaseSeleniumTest {
         return controlFactory;
     }
 
+    public void refreshPage() {
+        getDriver().navigate().refresh();
+        waitForDocumentReady();
+    }
+
     protected void navigateTo(FuncTestsPages page) {
         getUrlPageNavigator().navigateTo(page);
     }
@@ -100,8 +108,20 @@ public class BaseSeleniumTest {
         return getUrlPageNavigator().checkAllPages();
     }
 
-    public WebElement findBy(String id) {
-        return getDriver().findElement(By.id(id));
+    public WebElement findBy(final String id) {
+        if (StringUtils.isNotBlank(id)) {
+            final Wait<WebDriver> wait = new WebDriverWait(getDriver(), 3).ignoring(StaleElementReferenceException.class);
+
+            return wait.until(new ExpectedCondition<WebElement>() {
+                @Override
+                public WebElement apply(WebDriver webDriver) {
+                    final WebElement webElement = webDriver.findElement(By.id(id));
+                    return webElement != null && webElement.isDisplayed() ? webElement : null;
+                }
+            });
+        }
+
+        return null;
     }
 
     @BeforeMethod
@@ -119,12 +139,16 @@ public class BaseSeleniumTest {
     }
 
     @AfterMethod
-    public void tearDown(){
+    public void tearDown() {
         WebDriverManager.close();
     }
 
     public void sleep(int milliseconds) {
-        getDriver().manage().timeouts().implicitlyWait(milliseconds, TimeUnit.MILLISECONDS);
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void waitForDocumentReady() {
@@ -138,5 +162,9 @@ public class BaseSeleniumTest {
 
     public WebDriver getDriver() {
         return WebDriverManager.getWebDriver();
+    }
+
+    public void setWindowSize(Dimension size) {
+        getDriver().manage().window().setSize(size);
     }
 }
