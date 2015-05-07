@@ -15,7 +15,9 @@ package org.inspector.components;
 import org.inspector.api.Chart;
 import org.inspector.api.Control;
 import org.inspector.api.DateChooser;
+import org.inspector.api.DropDown;
 import org.inspector.api.Input;
+import org.inspector.components.input.DropDownImpl;
 import org.inspector.components.input.InputText;
 import org.inspector.components.input.InputTextArea;
 import org.inspector.components.table.DataTable;
@@ -64,6 +66,10 @@ public class ControlFactory {
 
     public Pagination getPagination(String id) {
         return new Pagination(getDriver(), id);
+    }
+
+    public DropDown getDropDown(String id){
+        return new DropDownImpl(getDriver(), id);
     }
 
     public TabSet getTabSet(String id) {

@@ -31,4 +31,8 @@ public interface Table extends Control, Filterable {
     String width();
 
     String height();
+
+    boolean hasHorizontalScrollBar();
+
+    boolean hasVerticalScrollBar();
 }

@@ -45,15 +45,6 @@ public class TableRow extends TableCellContainer {
         return findElements(CELLS).size();
     }
 
-//    public TableCell cell(int index) {
-////        return new TableCell(driver(), findElements(CELLS).get(index));
-//        return super.cell(index);
-//    }
-
-    public WebElement treeTableToggle() {
-        return findElement(By.className("o_treetable_folding"));
-    }
-
     public void assertCellParams(TableCellParams[] paramsArray) {
         assertThat("Checking number of cells: ", paramsArray.length, is(cellCount()));
         final List<TableCell> cells = cells();

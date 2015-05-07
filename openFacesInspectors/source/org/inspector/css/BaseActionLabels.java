@@ -16,19 +16,19 @@ package org.inspector.css;
  * @author Max Yurin
  */
 public enum BaseActionLabels {
-    ON_FOCUS("onfocus"),
-    ON_BLUR("onblur"),
-    ON_CLICK("onclick"),
-    ON_DOUBLE_CLICK("ondblclick"),
-    ON_MOUSE_DOWN("onmousedown"),
-    ON_MOUSE_OVER("onmouseover"),
-    ON_MOUSE_MOVE("onmousemove"),
-    ON_MOUSE_UP("onmouseup"),
-    ON_MOUSE_OUT("onmouseout"),
+    ON_FOCUS("focus"),
+    ON_BLUR("blur"),
+    ON_CLICK("click"),
+    ON_DOUBLE_CLICK("dblclick"),
+    ON_MOUSE_DOWN("mousedown"),
+    ON_MOUSE_OVER("mouseover"),
+    ON_MOUSE_MOVE("mousemove"),
+    ON_MOUSE_UP("mouseup"),
+    ON_MOUSE_OUT("mouseout"),
 
-    ON_KEY_UP("onkeyup"),
-    ON_KEY_DOWN("onkeydown"),
-    ON_KEY_PRESS("onkeypress"),
+    ON_KEY_UP("keyup"),
+    ON_KEY_DOWN("keydown"),
+    ON_KEY_PRESS("keypress"),
 
     KEY_CTRL("ctrl"),
     KEY_V("v"),

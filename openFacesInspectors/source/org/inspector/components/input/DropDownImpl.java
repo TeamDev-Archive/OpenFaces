@@ -14,34 +14,31 @@ package org.inspector.components.input;
 
 import org.inspector.api.DropDown;
 import org.inspector.api.Input;
-import org.inspector.api.Link;
+import org.inspector.api.Popup;
 import org.inspector.components.ElementWrapper;
+import org.inspector.components.popup.PopupBasedOnTable;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
-
-import java.util.List;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * @author Max Yurin
  */
 public class DropDownImpl extends ElementWrapper implements DropDown {
     public static final String SEARCH_COMPONENT = "--searchComponent";
+    public static final String POPUP = "--popup::innerTable";
     public static final String BUTTON = "::button";
     public static final String INPUT_FIELD = "::field";
 
     private Input inputField;
-    private Link link;
+    private Popup popup;
 
     public DropDownImpl(WebDriver webDriver, String elementId) {
         super(webDriver, elementId, DropDown.TAG_NAME);
     }
 
     @Override
-    public Input getInputField() {
+    public Input inputField() {
         if (inputField == null) {
             inputField = new InputText(driver(), id() + INPUT_FIELD);
         }
@@ -49,38 +46,63 @@ public class DropDownImpl extends ElementWrapper implements DropDown {
     }
 
     @Override
-    public WebElement getButton() {
-        return element().findElement(By.id(id().split("::")[0] + "::button"));
+    public WebElement button() {
+        final WebElement table = getParent("table");
+        return table.findElement(By.id(table.getAttribute("id") + BUTTON));
     }
 
     @Override
-    public void select(int index) {
-        Select select = new Select(element());
-        select.selectByIndex(index);
-    }
-
-    @Override
-    public void select(String desiredValue) {
-        Select select = new Select(element());
-        select.selectByValue(desiredValue);
-    }
-
-    @Override
-    public String getSelectedOption() {
-        final WebElement element = findElement(By.xpath("//select[@id='" + id() + "']//option[@selected='selected']"));
-        return element.getText();
-    }
-
-    @Override
-    public List<String> itemsList() {
-        Select select = new Select(element());
-        final List<WebElement> options = select.getOptions();
-        List<String> optionsValue = newArrayList();
-
-        for (WebElement option : options) {
-            optionsValue.add(option.getText());
+    public Popup popup() {
+        if (popup == null) {
+            popup = new PopupBasedOnTable(driver(), By.id(id() + POPUP));
         }
 
-        return optionsValue;
+        return popup;
+    }
+
+    @Override
+    public void setValue(String desiredValue) {
+        inputField().setValue(desiredValue);
+    }
+
+    @Override
+    public DropDown togglePopup() {
+        this.button().click();
+
+        return this;
+    }
+
+    @Override
+    public DropDown showPopup() {
+        int count = 5;
+
+        while (!popup().isDisplayed()) {
+            if (count > 0) {
+                togglePopup();
+            } else {
+                throw new RuntimeException("Popup is not displayed. DRopDown: " + id());
+            }
+
+            count--;
+        }
+
+        return this;
+    }
+
+    @Override
+    public DropDown hidePopup() {
+        int count = 5;
+
+        while (popup().isDisplayed()) {
+            if (count > 0) {
+                togglePopup();
+            } else {
+                throw new RuntimeException("Popup is not displayed. DRopDown: " + id());
+            }
+
+            count--;
+        }
+
+        return this;
     }
 }

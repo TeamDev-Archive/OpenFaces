@@ -10,23 +10,22 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.inspector.api;
+package org.inspector.assertion;
 
-import java.util.List;
+import org.inspector.api.Control;
+import org.openqa.selenium.WebDriver;
 
 /**
  * @author Max Yurin
  */
-public interface Popup extends Control{
-    public static final String TAG_NAME = "table";
-    public static final String SUFFIX = "--popup";
-    public static final String LIST = "::innerTable";
+public class CssStylesAssertion {
+    private WebDriver driver;
 
-    String select(int item);
+    public CssStylesAssertion(WebDriver driver) {
+        this.driver = driver;
+    }
 
-    void select(String desiredValue);
+    public void assertStyles(Control control){
 
-    String getSelectedOption();
-
-    List<String> getItemsList();
+    }
 }

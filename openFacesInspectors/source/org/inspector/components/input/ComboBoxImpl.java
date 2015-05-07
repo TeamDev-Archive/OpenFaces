@@ -29,7 +29,6 @@ import static com.google.common.collect.Lists.newArrayList;
  * @author Max Yurin
  */
 public class ComboBoxImpl extends ElementWrapper implements ComboBox {
-    public static final String SEARCH_COMPONENT = "--searchComponent";
     public static final String BUTTON = "::button";
     public static final String INPUT_FIELD = "::field";
 
@@ -39,8 +38,7 @@ public class ComboBoxImpl extends ElementWrapper implements ComboBox {
         super(webDriver, elementId, ComboBox.TAG_NAME);
     }
 
-    @Override
-    public Link getButton() {
+    private Link getButton() {
         if (link == null) {
             link = new CommandLink(driver(), id() + BUTTON);
         }
@@ -48,9 +46,16 @@ public class ComboBoxImpl extends ElementWrapper implements ComboBox {
     }
 
     @Override
-    public void select(int index) {
+    public void toggle() {
+        getButton().click();
+    }
+
+    @Override
+    public String select(int index) {
         Select select = new Select(element());
         select.selectByIndex(index);
+
+        return select.getFirstSelectedOption().getText();
     }
 
     @Override
@@ -66,7 +71,7 @@ public class ComboBoxImpl extends ElementWrapper implements ComboBox {
     }
 
     @Override
-    public List<String> itemsList() {
+    public List<String> getItemsList() {
         Select select = new Select(element());
         final List<WebElement> options = select.getOptions();
         List<String> optionsValue = newArrayList();

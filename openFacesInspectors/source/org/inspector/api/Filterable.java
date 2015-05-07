@@ -16,7 +16,5 @@ package org.inspector.api;
  * @author Max Yurin
  */
 public interface Filterable {
-    Filter createFilter(Filter.FilterType type);
-
-    Filter getFilter();
+    Filter filter(Filter.FilterType type);
 }

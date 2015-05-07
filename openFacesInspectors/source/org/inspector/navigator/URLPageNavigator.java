@@ -38,15 +38,18 @@ public class URLPageNavigator {
                     .put(CONFIRMATION, new FuncTestURL("/components/confirmation/confirmation.jsf"))
                     .put(COMPOSITE_FILTER, new FuncTestURL("/components/filter/compositeFilter.jsf"))
 
-                    .put(DATATABLE_PAGINATION, new FuncTestURL("/components/datatable/datatablePagination.jsf"))
-                    .put(DATATABLE_SORTING, new FuncTestURL("/components/datatable/datatableSorting.jsf"))
-                    .put(DATATABLE_FILTERING, new FuncTestURL("/components/datatable/datatableFiltering.jsf"))
-                    .put(DATATABLE_AJAX, new FuncTestURL("/components/datatable/dataTableAjax.jsf"))
-                    .put(DATATABLE_COLUMN_GROUPS, new FuncTestURL("/components/datatable/dataTableColumnGroups.jsf"))
-                    .put(DATATABLE_EVENTS, new FuncTestURL("/components/datatable/dataTable_events.jsf"))
+                    .put(DATATABLE_GENERAL, new FuncTestURL("/components/datatable/general.jsf")) //TODO Done
+                    .put(DATATABLE_PAGINATION, new FuncTestURL("/components/datatable/datatablePagination.jsf")) //Done
+                    .put(DATATABLE_SORTING, new FuncTestURL("/components/datatable/datatableSorting.jsf")) //Done
+                    .put(DATATABLE_FILTERING, new FuncTestURL("/components/datatable/datatableFiltering.jsf")) //Done
+                    .put(DATATABLE_AJAX, new FuncTestURL("/components/datatable/dataTableAjax.jsf")) //Done
+                    .put(DATATABLE_COLUMN_GROUPS, new FuncTestURL("/components/datatable/dataTableColumnGroups.jsf")) //Done
+                    .put(DATATABLE_EVENTS, new FuncTestURL("/components/datatable/dataTable_events.jsf")) //Done
 
                     .put(DATECHOOSER, new FuncTestURL("/components/datechooser/dateChooser.jsf"))
-                    .put(DROPDOWN_FIELD, new FuncTestURL("/components/dropdown/dropDown.jsf"))
+
+                    .put(DROPDOWN_FIELD, new FuncTestURL("/components/dropdown/dropDown.jsf")) //Done
+
                     .put(DYNAMIC_IMAGE, new FuncTestURL("/components/dynamicimage/dynamicImage_defaultView.jsf"))
                     .put(FILE_UPLOAD, new FuncTestURL("/components/fileupload/singleFileupload.jsf"))
                     .put(FOLDING_PANEL, new FuncTestURL("/components/foldingpanel/foldingPanel.jsf"))

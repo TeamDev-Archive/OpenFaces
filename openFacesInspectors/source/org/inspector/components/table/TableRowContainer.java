@@ -43,12 +43,16 @@ public class TableRowContainer extends ElementWrapper {
 
     public List<TableRow> rows() {
         return newArrayList(
-                Lists.transform(element().findElements(ROWS), new Function<WebElement, TableRow>() {
+                Lists.transform(getElements(), new Function<WebElement, TableRow>() {
                     @Override
                     public TableRow apply(WebElement element) {
                         return new TableRow(driver(), element);
                     }
                 }));
+    }
+
+    private List<WebElement> getElements() {
+        return element().findElements(ROWS);
     }
 
     public int rowsCount() {
@@ -57,5 +61,64 @@ public class TableRowContainer extends ElementWrapper {
 
     public TableRow row(int index) {
         return rows().get(index);
+    }
+
+    public Column getColumn(int rowIndex) {
+        return Column.getOne(rowIndex, rows());
+    }
+
+    public List<Column> getAllColumns() {
+        return Column.getAll(rows());
+    }
+
+    public static class Column {
+        private int rowIndex;
+        private List<TableCell> columnCells = newArrayList();
+
+        public Column(int rowIndex) {
+            this.rowIndex = rowIndex;
+        }
+
+        public static Column getOne(int rowIndex, List<TableRow> rows) {
+            List<TableCell> tableCells = newArrayList();
+
+            for (TableRow row : rows) {
+                tableCells.add(row.cell(rowIndex));
+            }
+
+            final Column column = new Column(rowIndex);
+            column.getColumnCells().addAll(tableCells);
+
+            return column;
+        }
+
+        public static List<Column> getAll(List<TableRow> rows) {
+            List<Column> columns = newArrayList();
+
+            final List<TableCell> cellList = rows.get(0).cells();
+
+            for (int i = 0; i < cellList.size(); i++) {
+                List<TableCell> cells = newArrayList();
+
+                for (int j = 0; j < rows.size(); j++) {
+                    TableRow row = rows.get(j);
+                    cells.add(row.cell(j));
+                }
+                final Column column = new Column(i);
+                column.getColumnCells().addAll(cells);
+
+                columns.add(column);
+            }
+
+            return columns;
+        }
+
+        public int getRowIndex() {
+            return rowIndex;
+        }
+
+        public List<TableCell> getColumnCells() {
+            return columnCells;
+        }
     }
 }

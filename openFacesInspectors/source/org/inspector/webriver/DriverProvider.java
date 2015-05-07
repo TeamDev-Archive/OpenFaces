@@ -78,7 +78,7 @@ public class DriverProvider {
             FirefoxProfile profile = new FirefoxProfile();
             profile.setPreference("toolkit.startup.max_resumed_crashes", "-1");
             profile.setAcceptUntrustedCertificates(true);
-            driver = new FirefoxDriver(profile);
+            driver = new FirefoxDriver(dc);
         } else {
             driver = new RemoteWebDriver(url, dc);
         }
@@ -86,6 +86,8 @@ public class DriverProvider {
         if (StringUtils.isNotBlank(version)) {
             dc.setVersion(version);
         }
+
+        driver.manage().window().maximize();
 
         return driver;
     }
@@ -106,7 +108,6 @@ public class DriverProvider {
             driverService = new ChromeDriverService.Builder()
                     .usingDriverExecutable(new File(CHROMEDRIVER_EXE))
                     .withSilent(true)
-                    .withVerbose(true)
                     .usingAnyFreePort()
                     .build();
 

@@ -14,9 +14,10 @@ package org.inspector.components;
 
 import com.google.common.base.Joiner;
 import org.apache.commons.lang3.StringUtils;
-import org.inspector.css.CssWrapper;
+import org.inspector.css.Border;
 import org.inspector.navigator.DocumentReadyCondition;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -28,6 +29,7 @@ import org.openqa.selenium.interactions.Mouse;
 import org.openqa.selenium.interactions.internal.Coordinates;
 import org.openqa.selenium.internal.Locatable;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -57,6 +59,12 @@ public class ElementWrapper {
         checkTagNameExists(element, type);
     }
 
+    private void checkTagNameExists(WebElement element, String type) {
+        if (!element.getTagName().equalsIgnoreCase(type)) {
+            throw new RuntimeException("Element should be [" + element.getTagName() + "] but was [" + type + "]");
+        }
+    }
+
     private void initLocator(String elementId, String type) {
         final String existingElementId = id();
 
@@ -68,10 +76,10 @@ public class ElementWrapper {
     }
 
     private By findLocatorFor(String type) {
-        return By.xpath(getFullPathFromClosestParent(this.element) + type);
+        return By.xpath(getFullPathFromClosestParentTo(this.element) + type);
     }
 
-    protected String getFullPathFromClosestParent(WebElement element) {
+    protected String getFullPathFromClosestParentTo(WebElement element) {
         final By parentLocator = By.xpath("..");
 
         String id;
@@ -96,12 +104,6 @@ public class ElementWrapper {
         final String splitterTags = join.join(tags) + (tags.size() >= 1 ? "//" : "");
 
         return String.format("//%s[@id='%s']//", el.getTagName(), id) + splitterTags;
-    }
-
-    private void checkTagNameExists(WebElement element, String type) {
-        if (!element.getTagName().equalsIgnoreCase(type)) {
-            throw new RuntimeException("Element should be [" + element.getTagName() + "] but was [" + type + "]");
-        }
     }
 
     public CssWrapper css() {
@@ -143,6 +145,32 @@ public class ElementWrapper {
                 }
             }
         };
+    }
+
+    public boolean hasVerticalScrollBar() {
+        final Boolean apply = new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver webDriver) {
+                Object result = ((JavascriptExecutor) webDriver).executeScript(
+                        "document.getElementById('" + id() + "').scrollHeight >" +
+                                " document.getElementById('" + id() + "').clientHeight");
+                return result != null && result instanceof Boolean && (Boolean) result;
+            }
+        }.apply(driver());
+
+        return apply != null ? apply : false;
+    }
+
+    public boolean hasHorizontalScrollBar() {
+        final Boolean apply = new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver webDriver) {
+                Object result = ((JavascriptExecutor) webDriver).executeScript(
+                        "document.getElementById('" + id() + "').scrollWidth >" +
+                                " document.getElementById('" + id() + "').clientWidth");
+                return result != null && result instanceof Boolean && (Boolean) result;
+            }
+        }.apply(driver());
+
+        return apply != null ? apply : false;
     }
 
     public String id() {
@@ -210,15 +238,21 @@ public class ElementWrapper {
     public WebElement getParent(String tagName) {
         WebElement element = element();
 
-        if (StringUtils.isBlank(tagName)) {
-            return null;
-        }
-
-        while (!element().getTagName().equalsIgnoreCase(tagName)) {
-            element = element().findElement(By.xpath(".."));
+        if (element != null && element.getTagName() != null || StringUtils.isNotBlank(tagName)) {
+            while (!element.getTagName().equalsIgnoreCase(tagName)) {
+                element = element.findElement(By.xpath(".."));
+                if (element != null && element.getTagName().equals("body")) {
+                    return element;
+                }
+            }
         }
 
         return element;
+    }
+
+    protected void waitUntilElementIsNotVisible() {
+        final WebDriverWait wait = new WebDriverWait(driver(), 4000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
     protected void waitForCommandExecute() {
@@ -342,4 +376,79 @@ public class ElementWrapper {
             return ((Locatable) element).getCoordinates();
         }
     }
+
+    public class CssWrapper {
+        private WebElement element;
+
+        public CssWrapper(WebElement element) {
+            this.element = element;
+        }
+
+        public String style() {
+            return element.getAttribute("style");
+        }
+
+        public String backgroundColor() {
+            return element.getCssValue("background-color");
+        }
+
+        public String fontWeight() {
+            return element.getCssValue("font-weight");
+        }
+
+        public String getCssValue(String cssName) {
+            return element.getCssValue(cssName);
+        }
+
+        public String cssClass() {
+            return element.getAttribute("class");
+        }
+
+        public String color() {
+            return adaptColor(element.getCssValue("color"));
+        }
+
+        public Dimension size() {
+            final int width = Integer.parseInt(element.getCssValue("width"));
+            final int height = Integer.parseInt(element.getCssValue("height"));
+
+            return new Dimension(width, height);
+        }
+
+        public String borderStyle(Border property) {
+            String value = property == Border.ALL ? "" : property.getValue();
+
+            return element.getCssValue(value + "-style");
+        }
+
+        public String borderWidth(Border property) {
+            String value = property == Border.ALL ? "" : property.getValue();
+
+            return element.getCssValue("border" + value + "-width");
+        }
+
+        public String borderColor(Border property) {
+            String value = property == Border.ALL ? "" : property.getValue();
+
+            return adaptColor(element.getCssValue(value + "-color"));
+        }
+
+
+        private String adaptColor(String color) {
+            String[] hexValue = new String[0];
+
+            if (color.contains("rgb(")) {
+                hexValue = color.replace("rgb(", "").replace(")", "").split(",");
+            } else if (color.contains("rgba(")) {
+                hexValue = color.replace("rgba(", "").replace(")", "").split(",");
+            }
+
+            final int hex1 = Integer.parseInt(hexValue[0].trim());
+            final int hex2 = Integer.parseInt(hexValue[1].trim());
+            final int hex3 = Integer.parseInt(hexValue[2].trim());
+
+            return String.format("#%02x%02x%02x", hex1, hex2, hex3);
+        }
+    }
+
 }

@@ -32,6 +32,9 @@ public class WebDriverManager {
     }
 
     public static void close(){
-        webDriverThreadLocal.get().close();
+        final WebDriver webDriver = webDriverThreadLocal.get();
+        if (webDriver != null) {
+            webDriver.close();
+        }
     }
 }

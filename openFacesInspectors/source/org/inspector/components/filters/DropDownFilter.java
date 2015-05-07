@@ -27,13 +27,12 @@ public class DropDownFilter extends DropDownImpl implements Filter {
 
     @Override
     public void doFilter(String value) {
-        super.getButton().click();
+        super.popup().select(value);
+        super.button().click();
     }
 
     @Override
     public String getFilterValue() {
-        return super.getInputField().getValue();
+        return super.inputField().getValue();
     }
-
-
 }

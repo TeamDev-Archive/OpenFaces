@@ -33,8 +33,6 @@ public class DataTable extends ElementWrapper implements Table {
     public static final By THEAD = By.xpath(TableHeader.TAG_NAME);
     public static final By TFOOTER = By.xpath(TableFooter.TAG_NAME);
 
-    private Filter filter;
-
     public DataTable(WebDriver webDriver, String id) {
         super(webDriver, id, Table.TAG_NAME);
     }
@@ -69,31 +67,21 @@ public class DataTable extends ElementWrapper implements Table {
     }
 
     @Override
-    public Filter createFilter(Filter.FilterType type) {
+    public Filter filter(Filter.FilterType type) {
         WebElement element;
 
         switch (type) {
             case INPUTTEXT:
                 element = header().findElement(By.tagName(Input.TAG_NAME));
-                this.filter = new InputTextFilter(driver(), element.getAttribute("id"));
-                break;
+                return new InputTextFilter(driver(), element.getAttribute("id"));
             case DROPDOWN:
                 element = header().findElement(By.tagName(DropDown.TAG_NAME));
-                this.filter = new DropDownFilter(driver(), element.getAttribute("id"));
-                break;
+                return new DropDownFilter(driver(), element.getAttribute("id"));
             case COMBOBOX:
                 element = header().findElement(By.tagName(ComboBox.TAG_NAME));
-                this.filter = new ComboboxFilter(driver(), element.getAttribute("id"));
-                break;
+                return new ComboboxFilter(driver(), element.getAttribute("id"));
             default:
                 throw new IllegalArgumentException("Uncompatible filter type");
         }
-
-        return this.filter;
-    }
-
-    @Override
-    public Filter getFilter() {
-        return this.filter;
     }
 }

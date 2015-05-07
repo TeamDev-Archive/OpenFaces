@@ -17,9 +17,20 @@ import org.openqa.selenium.WebElement;
 /**
  * @author Max Yurin
  */
-public interface DropDown extends Popup {
-    public static final String TAG_NAME = "input";
+public interface DropDown extends Control {
+    public static final String TAG_NAME = "table";
 
-    Input getInputField();
-    WebElement getButton();
+    Input inputField();
+
+    WebElement button();
+
+    Popup popup();
+
+    void setValue(String desiredValue);
+
+    DropDown togglePopup();
+
+    DropDown showPopup();
+
+    DropDown hidePopup();
 }

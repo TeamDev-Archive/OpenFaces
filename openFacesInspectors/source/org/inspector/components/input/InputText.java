@@ -48,5 +48,7 @@ public class InputText extends ElementWrapper implements Input {
     @Override
     public void setValue(CharSequence... sequence) {
         element().sendKeys(sequence);
+
+        waitForCommandExecute();
     }
 }
