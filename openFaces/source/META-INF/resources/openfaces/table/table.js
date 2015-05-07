@@ -3697,7 +3697,7 @@ O$.Table = {
                                   }
                                 }
                               }
-                              debugger;
+                              //debugger;
                               if (oldIndex == newIndex) {
                                 table.setColumnsOrder(columnIds);
 

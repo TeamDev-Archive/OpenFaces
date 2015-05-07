@@ -1531,18 +1531,29 @@ O$.Tables = {
         var buf = new O$.StringBuffer();
         for (var i = 0; i < 4 * preallocateCount; i++)
           buf.append("." + prefix).append(i).append("{overflow:hidden} ");
-        styleElement.styleSheet.cssText = buf.toString();
+
+        if (styleElement.stylesheet) {
+          styleElement.styleSheet.cssText = buf.toString();
+        } else {
+          styleElement.style.cssText =  buf.toString();
+        }
 
         var headTags = document.getElementsByTagName("head");
         var styleParent = headTags.length > 0 ? headTags[0] : document.getElementsByTagName("body")[0];
         styleParent.appendChild(styleElement);
 
-        var predefinedColClasses = styleElement.styleSheet.rules;
+        var predefinedColClasses = getRules(styleElement);
         predefinedColClasses._obtained = 0;
         predefinedColClasses._prefix = prefix;
-        predefinedColClasses._styleSheet = styleElement.styleSheet;
+        predefinedColClasses._styleSheet = styleElement.styleSheet ? styleElement.stylesheet : styleElement.sheet;
         return predefinedColClasses;
       }
+
+
+      function getRules(el) {
+        return el.styleSheet ? el.stylesheet.rules : el.sheet.cssRules;
+      }
+
       var colClasses = null;
       if (!O$.Tables._predefinedColClasses)
         O$.Tables._predefinedColClasses = createPredefinedColClasses("o_predefinedCol", 50);
@@ -2839,8 +2850,11 @@ O$.Tables = {
             O$.isMozillaFF() /* mozilla reports 0 in some cases (see TreeTable demo 1) */
             ? 17
             : el.offsetHeight - el.clientHeight;
-  }
+  },
 
+  __getstyleSheet: function(el){
+
+  }
 
 };
 

@@ -138,6 +138,10 @@ O$.TreeTable = {
 
         function processRecursively(firstRowIndex, level, thisLevelRowCount, thisLevelVisible, parentRow) {
           for (var i = 0; i < thisLevelRowCount; i++) {
+            if(firstRowIndex > rows.length - 1){
+              return firstRowIndex - 1;
+            }
+
             var row = rows[firstRowIndex];
             O$.assert(row, "processRowVisibility: rowIndex == " + firstRowIndex);
             row._level = level;
