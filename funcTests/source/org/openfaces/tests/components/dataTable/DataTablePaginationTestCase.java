@@ -29,7 +29,7 @@ import static org.hamcrest.core.Is.is;
 /**
  * @author Max Yurin
  */
-public class DataTableTest_Pagination extends BaseSeleniumTest {
+public class DataTablePaginationTestCase extends BaseSeleniumTest {
     public static final int DEFAULT_PAGE_INDEX = 1;
     public static final int PAGE_COUNT = 3;
     private static final FuncTestsPages PAGE = FuncTestsPages.DATATABLE_PAGINATION;
@@ -50,8 +50,18 @@ public class DataTableTest_Pagination extends BaseSeleniumTest {
         assertThat("Page count index is not equals: ", pagination.getMaxIndex(), is(PAGE_COUNT));
     }
 
+    @Test(groups = {"component"}, enabled = false)
+    public void testStyles_common(){
+        navigateTo(PAGE);
+
+        final TabSet tabSet = getControlFactory().getTabSet(TAB_SET_ID);
+        tabSet.openTab("1");
+
+        final Pagination pagination = getControlFactory().getPagination(PAGINATOR_ID);
+    }
+
     @Test(groups = {"component"}, expectedExceptions = NoSuchElementException.class)
-    public void test_onFirstPageMoveToFirstIsNotAvailable() {
+    public void test_moveToFirstPageIsNotAvailable() {
         navigateTo(PAGE);
 
         final TabSet tabSet = getControlFactory().getTabSet(TAB_SET_ID);
@@ -63,7 +73,7 @@ public class DataTableTest_Pagination extends BaseSeleniumTest {
     }
 
     @Test(groups = {"component"}, expectedExceptions = NoSuchElementException.class)
-    public void test_onFirstPageMovePreviousIsNotAvailable() {
+    public void test_movePreviousIsNotAvailable() {
         navigateTo(PAGE);
         final TabSet tabSet = getControlFactory().getTabSet(TAB_SET_ID);
         tabSet.openTab("1");

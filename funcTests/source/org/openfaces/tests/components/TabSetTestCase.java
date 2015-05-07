@@ -29,7 +29,7 @@ import static org.hamcrest.core.Is.is;
 /**
  * @author Max Yurin
  */
-public class TabSetTest extends BaseSeleniumTest {
+public class TabSetTestCase extends BaseSeleniumTest {
     private static final FuncTestsPages PAGE = FuncTestsPages.TAB_SET;
     private static final String REPORT_BLOCK_ID = "empty";
     String clickableTabSet = "test_form:onclickTabSetID";

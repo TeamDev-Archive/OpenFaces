@@ -15,5 +15,5 @@ package org.openfaces.tests.components;
 /**
  * @author Max Yurin
  */
-public class AjaxTest {
+public class AjaxTestCase {
 }

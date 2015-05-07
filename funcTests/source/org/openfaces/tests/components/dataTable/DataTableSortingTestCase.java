@@ -29,7 +29,7 @@ import static org.hamcrest.core.Is.is;
 /**
  * @author Max Yurin
  */
-public class DataTableTest_Sorting extends BaseSeleniumTest {
+public class DataTableSortingTestCase extends BaseSeleniumTest {
     private static final String TABLE_ID = "formID:twoHeadersTable";
     private static final FuncTestsPages PAGE = FuncTestsPages.DATATABLE_SORTING;
     private static final String SORTABLE_DATATABLE_WITH_AJAX = "formID:sortableDataTable1";
@@ -69,21 +69,6 @@ public class DataTableTest_Sorting extends BaseSeleniumTest {
 
         secondColumnData = getTableData(table, 1);
         assertColumnsAreEqual(firstColumnData, secondColumnData);
-    }
-
-    @Test(groups = {"component"}, enabled = false)
-    public void testFilteringWithInputTextField() {
-
-    }
-
-    @Test(groups = {"component"}, enabled = false)
-    public void testFilteringWithCombobox() {
-
-    }
-
-    @Test(groups = {"component"}, enabled = false)
-    public void testFilteringWithDropDown() {
-
     }
 
     private List<String> getTableData(Table table, int index) {

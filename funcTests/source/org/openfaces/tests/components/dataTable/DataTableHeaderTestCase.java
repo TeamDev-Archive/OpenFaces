@@ -25,7 +25,7 @@ import java.util.Iterator;
 /**
  * @author Max Yurin
  */
-public class DataTableHeaderTest extends BaseSeleniumTest {
+public class DataTableHeaderTestCase extends BaseSeleniumTest {
     private static final String TABLE_ID = "formID:twoHeadersTable";
     private FuncTestsPages page = FuncTestsPages.DATATABLE_COLUMN_GROUPS;
 

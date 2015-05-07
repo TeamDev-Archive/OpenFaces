@@ -28,7 +28,7 @@ import static org.inspector.css.BaseActionLabels.*;
 /**
  * @author Max Yurin
  */
-public class DataTableTestClientSideEvents extends BaseSeleniumTest {
+public class DataTableClientSideEventsTestCase extends BaseSeleniumTest {
     private static final FuncTestsPages PAGE = FuncTestsPages.DATATABLE_EVENTS;
 
     private static final String FIRST_TABLE_ID = "fn:first";
@@ -87,7 +87,6 @@ public class DataTableTestClientSideEvents extends BaseSeleniumTest {
         assertEventFired(ON_DOUBLE_CLICK);
     }
 
-    //TODO: (Yurin) Enable when will be able feature with DataTable focusable
     @Test(groups = {"component", "events"})
     public void testFocus() {
         navigateTo(PAGE);
@@ -97,7 +96,6 @@ public class DataTableTestClientSideEvents extends BaseSeleniumTest {
         assertEventFired(ON_FOCUS);
     }
 
-    //TODO: (Yurin) Enable when will be able feature with DataTable focusable
     @Test(groups = {"component", "events"}, enabled = false)
     public void testBlur() {
         navigateTo(PAGE);

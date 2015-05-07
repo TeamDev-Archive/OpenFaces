@@ -24,7 +24,7 @@ import static org.hamcrest.Matchers.is;
 /**
  * @author Max Yurin
  */
-public class PageAvailabilityTest extends BaseSeleniumTest {
+public class PageAvailabilityTestCase extends BaseSeleniumTest {
 
     @Test(groups = {"component"})
     public void testAllPages(){
