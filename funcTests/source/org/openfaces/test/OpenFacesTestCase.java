@@ -21,7 +21,6 @@ import org.seleniuminspector.SeleniumFactory;
 import org.seleniuminspector.SeleniumHolder;
 import org.seleniuminspector.SeleniumTestCase;
 import org.seleniuminspector.openfaces.*;
-import org.seleniuminspector.webriver.OpenFacesPatchedSeleniumFactory;
 import org.seleniuminspector.webriver.WebDriverBasedSeleniumFactory;
 
 import java.io.IOException;

@@ -1,0 +1,149 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+       >
+  <a href="../../main.jsf">Main page</a><br/>
+  <a href="../../testPageIndex.jsf">Component test pages</a><br/><br/>
+
+    <br/>
+    <span style="font-weight:bold;">Use ajax:</span><br/>
+    <o:tabSet id="loadingModes"
+              selectedIndex="#{DataTableLoadingModeBean.loadingModeSelectedIndex}"
+              onchange="document.forms[0].submit();">
+        <o:tabSetItems value="#{DataTableLoadingModeBean.loadingModeList}"/>
+    </o:tabSet>
+
+<table>
+    <tr class="header"><td>Pagination</td></tr>
+    <tr>
+        <td>
+            <o:dataTable id="banks" var="bank"
+                         value="#{BanksBean.banks}"
+                         rowKey="#{bank.id}"
+                         style="width: 100%; height: 820px;"
+                         pageSize="30"
+
+                         sortColumnId="institutionName"
+
+                         sortableHeaderRolloverStyle="repeat-x !important;"
+                         headerRowStyle="height:20px;"
+                         subHeaderRowStyle="border-top: 1px solid #f6f7f8;"
+
+                         bodySectionStyle="background: #ffffff"
+
+                         headerVertSeparator="1px solid #d0d0d0, 1px solid #a0a0a0"
+                         horizontalGridLines="1px solid #f6f7f8"
+                         columnsOrder="#{sessionScope.banks_savedColumnsOrder}">
+                <f:facet name="header">
+                    <o:groupingBox/>
+                </f:facet>
+                <f:facet name="below">
+                    <o:dataTablePaginator id="paginatorBelow"
+                                          style="margin-left: 230px; margin-bottom:10px;"
+                                          pageNumberFieldStyle="background: white; border: 1px solid #005d96;">
+                    </o:dataTablePaginator>
+                </f:facet>
+                <o:rowGrouping groupingRules="#{sessionScope.banks_savedGroupingRules}"
+                               expansionState="#{BanksBean.expansionState}"
+                               groupHeaderRowStyle="font-size: 11pt"/>
+                <o:scrollPosition autoSaveScrollPos="true" for="banks"/>
+                <o:scrolling horizontal="true" vertical="true" />
+                <!--<o:singleRowSelection rowData="#{sessionScope.selectedBank}"-->
+                <!--style="background: url('../images/treetable/selected.gif') repeat-x #5d8bba !important; color: white !important;"/>-->
+                <o:columnResizing resizingState="#{sessionScope.banks_columnResizingState}" autoSaveState="true"/>
+                <o:columnReordering/>
+                <o:multipleRowSelection rowDatas="#{BanksBean.selectedBanks}"/>
+
+                <f:facet name="columnMenu">
+                    <o:columnMenu/>
+                </f:facet>
+                <f:facet name="columnMenuButton">
+                    <o:captionButton style="border-left: none; "/>
+                </f:facet>
+
+                <o:column id="institutionName"
+                          header="Institution Name"
+                          width="150px"
+                          sortingExpression="#{bank.institutionName}"
+                          bodyStyle="text-align: left; white-space: nowrap;"
+                          headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
+                    <f:facet name="subHeader">
+                        <o:inputTextFilter/>
+                    </f:facet>
+                    <h:outputText value="#{bank.institutionName}" style="white-space: nowrap;"/>
+                </o:column>
+                <o:column header="Certificate Number"
+                          width="100px"
+                          headerStyle="white-space: normal;"
+                          sortingExpression="#{bank.certificateNumber}"
+                          bodyStyle="text-align: right; padding-right: 5px;">
+                    <f:facet name="subHeader">
+                        <o:inputTextFilter maxlength="5" autoFilterDelay="1000"/>
+                    </f:facet>
+                    <h:outputText value="#{bank.certificateNumber}"/>
+                </o:column>
+                <o:columnGroup header="Address">
+                    <o:column header="City"
+                              width="100px"
+                              sortingExpression="#{bank.city}"
+                              bodyStyle="padding-left: 5px; "
+                              headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
+                        <f:facet name="subHeader">
+                            <o:inputTextFilter/>
+                        </f:facet>
+
+                        <h:outputText value="#{bank.city}"/>
+                    </o:column>
+                    <o:column header="State"
+                              width="70px"
+                              sortingExpression="#{bank.state}"
+                              bodyStyle="padding-left: 5px; "
+                              headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
+                        <f:facet name="subHeader">
+                            <o:dropDownFieldFilter maxlength="2" customValueAllowed="false"/>
+                        </f:facet>
+                        <h:outputText value="#{bank.state}"/>
+                    </o:column>
+                    <o:column header="Zip"
+                              width="80px"
+                              bodyStyle="text-align: right; padding-right: 5px;"
+                              headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;"
+                              sortingExpression="#{bank.zip}">
+                        <f:facet name="subHeader">
+                            <o:inputTextFilter maxlength="5" autoFilterDelay="1000"/>
+                        </f:facet>
+                        <h:outputText value="#{bank.zip}"/>
+                    </o:column>
+                    <o:column header="County"
+                              width="150px"
+                              sortingExpression="#{bank.county}"
+                              bodyStyle="padding-left: 5px; white-space: nowrap;"
+                              headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
+                        <f:facet name="subHeader">
+                            <o:inputTextFilter/>
+                        </f:facet>
+
+                        <h:outputText value="#{bank.county}"/>
+                    </o:column>
+                </o:columnGroup>
+                <o:column header="Average Assets"
+                          width="80px"
+                          bodyStyle="text-align: right; padding-right: 5px;"
+                          headerStyle="text-align: center; padding-left: 5px; padding-right: 5px; white-space: normal;"
+                          sortingExpression="#{bank.averageAssets}"
+                          groupingExpression="#{BanksBean.averageAssetsRange}">
+                    <f:facet name="subHeader">
+                        <o:comboBoxFilter expression="#{BanksBean.averageAssetsRange}"
+                                          options="#{BanksBean.averageAssetsFilterValues}"/>
+                    </f:facet>
+
+                    <h:outputText value="#{bank.averageAssets}">
+                        <f:convertNumber type="number"/>
+                    </h:outputText>
+                </o:column>
+            </o:dataTable>
+        </td>
+    </tr>
+</table>
+
+</div>
