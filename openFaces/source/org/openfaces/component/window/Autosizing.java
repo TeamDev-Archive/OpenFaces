@@ -17,7 +17,8 @@ package org.openfaces.component.window;
  */
 public enum Autosizing {
     ON("on"),
-    OFF("off");
+    OFF("off"),
+    ONCE("once");
 
     private final String value;
 

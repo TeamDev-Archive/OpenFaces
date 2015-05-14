@@ -144,7 +144,7 @@ public class PopupLayerRenderer extends RendererBase {
 
         ScriptBuilder sb = new ScriptBuilder();
         String width = popup.getWidth();
-        if (width == null && popup.getAutosizing() != Autosizing.ON)
+        if (width == null && popup.getAutosizing() != Autosizing.ON && popup.getAutosizing() != Autosizing.ONCE)
             width = getDefaultWidth();
         String height = popup.getHeight();
         if (height == null && popup.getAutosizing() != Autosizing.ON)

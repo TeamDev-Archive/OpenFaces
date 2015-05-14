@@ -207,7 +207,7 @@ O$.PopupLayer = {
         if (popup.isVisible()) return;
         popup.hidden = false;
         popup.style.display = "block";
-        if (autosizing == "on") {
+        if (autosizing == "on" || autosizing == "once") {
           popup._resizeToContent();
         }
         if (popup._containment) {
