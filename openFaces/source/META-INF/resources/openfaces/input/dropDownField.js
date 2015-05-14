@@ -425,6 +425,8 @@ O$.DropDownField = {
           if (dropDown._ddf_focused)
             O$._selectTextRange(field, field.value.length, field.value.length);
 
+          dropDown._previousLabel = dropDown._lastOnchangeItemLabel;
+          dropDown._previousValue = dropDown._lastOnchangeItemValue;
           dropDown._lastOnchangeItemLabel = dropDown.value;
           dropDown._lastOnchangeItemValue = dropDown._selectedItemValue;
 
@@ -468,6 +470,14 @@ O$.DropDownField = {
 
       setValue:function (text) {
         dropDown._setValue(text);
+      },
+
+      getPreviousLabel: function() {
+        return dropDown._previousLabel ? dropDown._previousLabel : dropDown.value;
+      },
+
+      getPreviousValue: function() {
+        return dropDown._previousValue ? dropDown._previousValue : dropDown._selectedItemValue;
       },
 
       _setItemPresentationValue:function () {
