@@ -30,7 +30,6 @@ public class ValidationTest extends OpenFacesTestCase {
 
      @Test
     public void testServerDefaultPresentation() {
-        closeBrowser();
         testAppFunctionalPage("/components/validation/serverDefaultPresentation.jsf");
         isNotDefaultPresentation();
         element("testForm:fillInvalidData").click();

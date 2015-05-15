@@ -12,6 +12,7 @@
 
 package org.openfaces.component.fileupload;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openqa.selenium.By;
@@ -50,6 +51,7 @@ public class FileUploadTest  extends OpenFacesTestCase {
     }
 
      @Test
+     @Ignore
     public void testWrongMimeTypeAndSize() {
         testAppFunctionalPage("/components/fileupload/singleFileUpload.jsf");
         WebElement input = getDriver().

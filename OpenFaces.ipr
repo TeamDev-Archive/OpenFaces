@@ -14,6 +14,7 @@
     <buildFile url="file://$PROJECT_DIR$/openFacesInspectors/build.xml">
       <maximumStackSize value="32" />
     </buildFile>
+    <buildFile url="file://$PROJECT_DIR$/selenium-inspector-sources/build.xml" />
   </component>
   <component name="ArtifactManager">
     <artifact name="OpenFaces:jar">
@@ -782,10 +783,10 @@
         <inspection_tool class="UnusedLibrary" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="UtilityClassWithPublicConstructor" enabled="true" level="WARNING" enabled_by_default="true" />
         <inspection_tool class="UtilityClassWithoutPrivateConstructor" enabled="true" level="WARNING" enabled_by_default="true">
-          <option name="ignoreClassesWithOnlyMain" value="false" />
           <option name="ignorableAnnotations">
             <value />
           </option>
+          <option name="ignoreClassesWithOnlyMain" value="false" />
         </inspection_tool>
         <inspection_tool class="ZeroLengthArrayInitialization" enabled="true" level="WARNING" enabled_by_default="true" />
       </profile>
@@ -1198,12 +1199,13 @@
       <module fileurl="file://$PROJECT_DIR$/testApp/core/TestAppCore.iml" filepath="$PROJECT_DIR$/testApp/core/TestAppCore.iml" group="TestApp" />
       <module fileurl="file://$PROJECT_DIR$/testApp/facelets/TestAppFacelets.iml" filepath="$PROJECT_DIR$/testApp/facelets/TestAppFacelets.iml" group="TestApp" />
       <module fileurl="file://$PROJECT_DIR$/testApp/jsp/TestAppJsp.iml" filepath="$PROJECT_DIR$/testApp/jsp/TestAppJsp.iml" group="TestApp" />
+      <module fileurl="file://$PROJECT_DIR$/selenium-inspector-sources/selenium-inspector-sources.iml" filepath="$PROJECT_DIR$/selenium-inspector-sources/selenium-inspector-sources.iml" />
     </modules>
   </component>
   <component name="ProjectResources">
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.5" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK" />
   <component name="ResourceManagerContainer">
     <option name="myResourceBundles">
       <value>
@@ -1554,14 +1556,14 @@
     </library>
     <library name="selenium-java-client-driver">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-java-2.34.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-java-2.44.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
     <library name="selenium-server">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-server-standalone-2.34.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-server-standalone-2.44.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
@@ -1572,7 +1574,7 @@
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-inspector-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/seleniuminspector-source.jar!/" />
       </SOURCES>
     </library>
     <library name="servlet-api">
@@ -1603,4 +1605,3 @@
     </library>
   </component>
 </project>
-
