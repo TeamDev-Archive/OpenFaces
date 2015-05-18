@@ -454,6 +454,7 @@ O$.PopupLayer = {
       onmousedown: function (e) {
         if (popup._onmousedown) {
           popup._onmousedown(e);
+          O$.cancelEvent(e);
         }
         if (popup._draggable && !popup._draggingDisabled) {
           var evt = O$.getEvent(e);
