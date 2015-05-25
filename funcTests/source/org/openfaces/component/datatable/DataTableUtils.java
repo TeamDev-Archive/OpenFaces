@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 /**
  * @author Darya Shumilina
  */
@@ -121,4 +123,32 @@ class DataTableUtils {
         }
     }
 
+    public static class TableColumn {
+        private int rowIndex;
+        private List<String> columnCells = newArrayList();
+
+        public TableColumn(int rowIndex) {
+            this.rowIndex = rowIndex;
+        }
+
+        public int getRowIndex() {
+            return rowIndex;
+        }
+
+        public List<String> getAll(){
+            return columnCells;
+        }
+
+        public String next() {
+            return columnCells.iterator().next();
+        }
+
+        public boolean hasNext() {
+            return columnCells.iterator().hasNext();
+        }
+
+        public void add(String s) {
+            columnCells.add(s);
+        }
+    }
 }

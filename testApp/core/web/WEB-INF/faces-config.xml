@@ -243,6 +243,12 @@
   </managed-bean>
 
   <managed-bean>
+    <managed-bean-name>BanksBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.datatable.BanksBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
     <managed-bean-name>UserPermissionsTableDemoBean</managed-bean-name>
     <managed-bean-class>org.openfaces.testapp.datatable.UserPermissionsTableDemoBean</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>

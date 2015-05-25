@@ -1498,7 +1498,7 @@ O$.processStylesIncludes = function (styles) {
     var rule = styleElement.tagName ? styleElement.getAttribute("value") : styleElement.value;
     O$.addCssRule(rule);
   }
-}
+};
 
 O$.executeScripts = function (source) {
   if (!source || source.length == 0) return;

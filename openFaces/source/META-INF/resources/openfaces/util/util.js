@@ -3112,8 +3112,8 @@ if (!window.O$) {
       return;
 
     try {
+      var rules = styleSheet.cssRules ? styleSheet.cssRules : styleSheet.rules;
       if (styleSheet.addRule) { // IE only
-        var rules = styleSheet.cssRules ? styleSheet.cssRules : styleSheet.rules;
         if (rules && rules.length > 4000) { // IN IE (<10) there are MAX readable 4096 rules
           O$._removeUnusedCssRules();
 
@@ -3162,7 +3162,7 @@ if (!window.O$) {
           }
         }
       } else { // all others
-        styleSheet.insertRule(strRule, styleSheet.rules.length);
+        styleSheet.insertRule(strRule, rules.length);
       }
       return styleSheet;
     } catch (e) {
@@ -3271,7 +3271,7 @@ if (!window.O$) {
 
     try {
       if (styleSheet.removeRule) { // IE only
-        var rules = styleSheet.rules;
+        var rules = styleSheet.rules || styleSheet.cssRules;
         for (var i = 0; i < rules.length; i++) {
           if (rules[i].selectorText == nameOfCssClass) {
             var ruleBySelector = O$._cssRulesBySelectors ? O$._cssRulesBySelectors[nameOfCssClass] : null;
@@ -3281,7 +3281,7 @@ if (!window.O$) {
           }
         }
       } else { // all others
-        var rules = styleSheet.rules;
+        var rules = styleSheet.rules || styleSheet.cssRules;
         for (var i = 0; i < rules.length; i++) {
           if (rules[i].selectorText == nameOfCssClass) {
             var ruleBySelector = O$._cssRulesBySelectors ? O$._cssRulesBySelectors[nameOfCssClass] : null;

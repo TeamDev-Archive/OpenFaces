@@ -13,15 +13,15 @@ package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
 import com.thoughtworks.selenium.SeleniumException;
-import org.junit.*;
+import org.junit.AfterClass;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.internal.WrapsDriver;
+import org.openqa.selenium.remote.SessionNotFoundException;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.SeleniumFactory;
 import org.seleniuminspector.SeleniumHolder;
 import org.seleniuminspector.SeleniumTestCase;
 import org.seleniuminspector.openfaces.*;
-import org.seleniuminspector.webriver.OpenFacesPatchedSeleniumFactory;
 import org.seleniuminspector.webriver.WebDriverBasedSeleniumFactory;
 
 import java.io.IOException;
@@ -105,9 +105,12 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
         for (int i = 1; i <= attemptCount; i++) {
             boolean lastAttempt = (i == attemptCount);
             try {
+                if(getDriver().getWindowHandles().size() > 1){
+                    closeBrowser();
+                }
                 openAndWait(applicationUrl, pageUrl);
-                sleep(1000);
-                ElementInspector.provideUtils(getDriver());
+            } catch(SessionNotFoundException e){
+                openAndWait(applicationUrl, pageUrl);
             } catch (Exception e) {
                 if (!lastAttempt) {
                     sleep(10 * 1000);
@@ -117,11 +120,13 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
                 throw new RuntimeException(e);
             }
 
-
             if (assertPageContentValid(applicationUrl, pageUrl, htmlSubstringOfAValidPage, lastAttempt))
-                break;
+                return;
             sleep(10 * 1000);
         }
+
+        sleep(1000);
+        ElementInspector.provideUtils(getDriver());
     }
 
     private boolean assertPageContentValid(

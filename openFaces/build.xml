@@ -22,7 +22,7 @@
 
   <target name="compile" depends="init" description="Compile the source code">
     <mkdir dir="${classes.dir}"/>
-    <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" source="1.5" target="1.5">
+    <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true">
       <classpath>
         <fileset dir="${lib.dir}">
           <include name="jsp-api-2.1.jar"/>
