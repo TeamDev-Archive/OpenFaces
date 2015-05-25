@@ -1527,20 +1527,18 @@ O$.Tables = {
     function newClass_IE(declaration, cachingDisabled) {
       function createPredefinedColClasses(prefix, preallocateCount) {
         var styleElement = document.createElement("style");
-        styleElement.setAttribute("type", "text/css");
-        var buf = new O$.StringBuffer();
-        for (var i = 0; i < 4 * preallocateCount; i++)
-          buf.append("." + prefix).append(i).append("{overflow:hidden} ");
-        styleElement.styleSheet.cssText = buf.toString();
 
         var headTags = document.getElementsByTagName("head");
         var styleParent = headTags.length > 0 ? headTags[0] : document.getElementsByTagName("body")[0];
         styleParent.appendChild(styleElement);
 
-        var predefinedColClasses = styleElement.styleSheet.rules;
+        var styleSheet = styleElement.styleSheet ? styleElement.styleSheet : styleElement.sheet;
+        styleSheet.cssText = getCssData(prefix, preallocateCount);
+
+        var predefinedColClasses = styleSheet.cssRules ? styleSheet.cssRules : styleSheet.rules;
         predefinedColClasses._obtained = 0;
         predefinedColClasses._prefix = prefix;
-        predefinedColClasses._styleSheet = styleElement.styleSheet;
+        predefinedColClasses._styleSheet = styleSheet;
         return predefinedColClasses;
       }
       var colClasses = null;
@@ -1562,6 +1560,16 @@ O$.Tables = {
         return newClass_raw(declaration, cachingDisabled);
       }
     }
+
+    function getCssData(prefix, preallocateCount){
+      var buf = new O$.StringBuffer();
+      for (var i = 0; i < 4 * preallocateCount; i++) {
+        buf.append("." + prefix).append(i).append("{overflow:hidden} ");
+      }
+
+      return buf.toString();
+    }
+
     function newClass_raw(declaration, cachingDisabled) {
       var className = O$.createCssClass(declaration, cachingDisabled);
       var cls = O$.findCssRule("." + className);
@@ -2840,7 +2848,5 @@ O$.Tables = {
             ? 17
             : el.offsetHeight - el.clientHeight;
   }
-
-
 };
 
