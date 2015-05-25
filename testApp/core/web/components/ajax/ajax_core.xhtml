@@ -59,8 +59,9 @@
 
 
 
-    <h:graphicImage id="image1" url="../datatable/arrowBullet.gif"/>
+    <h:graphicImage id="image1" url="../datatable/arrowBullet.gif">
       <o:ajax render="counter" listener="#{TableTestBean.incrementCounter}"/>
+    </h:graphicImage>
     <h:panelGroup>
       <h:graphicImage id="image2" url="../datatable/arrowBullet.gif"/>
       <o:ajax for="image2" render="counter" listener="#{TableTestBean.incrementCounter}"/>

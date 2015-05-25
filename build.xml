@@ -34,11 +34,11 @@
   <property name="funcTestsFramework-temp.dir" location="${funcTestsFramework.dir}/temp"/>
   <property name="openfaces-inspectors-jar.file" location="${funcTestsFramework-distrib.dir}/openfaces-inspectors.jar"/>
   <property name="patched-selenium-server.file"
-            location="lib/seleniuminspector/selenium-server-standalone-2.44.0.jar"/>
+            location="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
   <property name="funcTestsFrameworkManifest.file" location="${funcTestsFramework-target.dir}/manifest.mf"/>
 
   <property name="compile.debug" value="true" />
-  <property name="tomcat.home" value="${env.CATALINA_HOME}"/>
+  <property name="tomcat.home" value="${catalina.home}"/>
   <property name="build.home" value="${basedir}"/>
   <property name="project.lib" value="${basedir}/lib" />
 
@@ -54,15 +54,6 @@
 
   <target name="init">
     <tstamp/>
-  </target>
-
-  <target name="rebuildInspectorRebuildTestsAndRestartTomcat"
-          description="Rebuild Selenium inspector, rebuild test app and restart tomcat server">
-    <ant target="stop-tomcat-remote" />
-    <ant dir="selenium-inspector-sources" target="build"/>
-    <ant target="build"/>
-    <ant target="deploy-tomcat"/>
-    <ant target="start-tomcat-remote"/>
   </target>
 
   <!-- *** Public Targets ** -->
@@ -118,10 +109,11 @@
   <target name="compile-func-test-framework" description="Compile framework required for functional testing">
     <mkdir dir="${funcTestsFramework-target.dir}"/>
     <javac srcdir="${funcTestsFramework-source.dir}" destdir="${funcTestsFramework-target.dir}"
-           debug="true" includeantruntime="false">
+           debug="true" includeantruntime="false"
+           source="1.5" target="1.5">
       <classpath>
-        <pathelement path="lib/seleniuminspector/selenium-java-2.44.0.jar"/>
-        <pathelement path="lib/seleniuminspector/selenium-server-standalone-2.44.0.jar"/>
+        <pathelement path="lib/seleniuminspector/selenium-java-2.14.0.jar"/>
+        <pathelement path="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-inspector.jar"/>
         <pathelement path="testLib/junit.jar"/>
         <fileset file="${openfaces-jar.file}"/>
@@ -133,8 +125,8 @@
     </manifest>
     <mkdir dir="${funcTestsFramework-distrib.dir}"/>
     <jar jarfile="${openfaces-inspectors-jar.file}" basedir="${funcTestsFramework-target.dir}"/>
-    <copy file="lib/seleniuminspector/selenium-server-standalone-2.44.0.jar" todir="${funcTestsFramework-distrib.dir}"/>
-    <copy file="lib/seleniuminspector/selenium-java-2.44.0.jar" todir="${funcTestsFramework-distrib.dir}"/>
+    <copy file="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar" todir="${funcTestsFramework-distrib.dir}"/>
+    <copy file="lib/seleniuminspector/selenium-java-2.14.0.jar" todir="${funcTestsFramework-distrib.dir}"/>
   </target>
 
   <target name="-fail-if-no-openfaces-jar" unless="openfaces-jar.file">
@@ -148,9 +140,7 @@
   <target name="compile-func-tests" depends="-fail-if-no-openfaces-jar, compile-func-test-framework" description="Compile functional tests">
     <delete dir="${funcTests-target.dir}/classes"/>
     <mkdir dir="${funcTests-target.dir}/classes"/>
-    <javac includeantruntime="false" srcdir="${funcTests-source.dir}"
-           destdir="${funcTests-target.dir}/classes" debug="true" encoding="UTF-8"
-            target="1.5" source="1.5">
+    <javac includeantruntime="false" srcdir="${funcTests-source.dir}" destdir="${funcTests-target.dir}/classes" debug="true" encoding="UTF-8">
       <classpath>
         <pathelement path="${openfaces-jar.file}"/>
         <pathelement path="${openfaces-inspectors-jar.file}"/>
@@ -158,8 +148,8 @@
         <pathelement path="testLib/jai/mlibwrapper_jai.jar"/>
         <pathelement path="testLib/jai/jai_core.jar"/>
         <pathelement path="testLib/jai/jai_codec.jar"/>
-        <pathelement path="lib/seleniuminspector/selenium-java-2.44.0.jar"/>
-        <pathelement path="lib/seleniuminspector/selenium-server-standalone-2.44.0.jar"/>
+        <pathelement path="lib/seleniuminspector/selenium-java-2.14.0.jar"/>
+        <pathelement path="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-inspector.jar"/>
       </classpath>
     </javac>
@@ -216,8 +206,8 @@
     <junit fork="yes" forkmode="once" failureproperty="junit_test_failed" dir="${funcTests-target.dir}">
       <classpath>
         <pathelement path="${openfaces-jar.file}"/>
-        <pathelement path="lib/seleniuminspector/selenium-server-standalone-2.44.0.jar"/>
-        <pathelement path="lib/seleniuminspector/selenium-java-2.44.0.jar"/>
+        <pathelement path="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
+        <pathelement path="lib/seleniuminspector/selenium-java-2.14.0.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-inspector.jar"/>
         <pathelement path="lib/mojarra/jsf-api-1.2_12-b01.jar"/>
         <pathelement location="${funcTests-target.dir}/classes"/>
@@ -298,7 +288,7 @@
   </target>
 
   <target name="start-tomcat-remote" depends="is-tomcat-running" unless="if.tomcat.running">
-    <echo message="Tomcat home: ${tomcat.home}"/>
+    <echo message="Tomcat home: ${tomcat.manager.url}"/>
 
     <java classname="org.apache.catalina.startup.Bootstrap" fork="true">
       <classpath path="${tomcat.home}/bin/bootstrap.jar:${tomcat.home}/bin/tomcat-juli.jar" />

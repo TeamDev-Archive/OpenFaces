@@ -13,10 +13,10 @@ package org.openfaces.component.borderlayoutpanel;
 
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openqa.selenium.By;
-import org.seleniuminspector.ElementInspector;
-import org.seleniuminspector.ServerLoadingMode;
 import org.seleniuminspector.openfaces.SidePanelInspector;
+import org.seleniuminspector.ServerLoadingMode;
+import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.LoadingMode;
 
 /**
  * @author Alexey Tarasyuk
@@ -213,11 +213,13 @@ public class SidePanelTest extends OpenFacesTestCase {
         sidePanelText.assertExpressionEquals("innerHTML", "size = 25%");
 
         /* test oncollapse */
-        sidePanel.splitter().click();
+        sidePanel.splitter().mouseDown();
+        sidePanel.splitter().mouseUp();
         sidePanelText.assertExpressionEquals("innerHTML", "size panel is collapsed");
 
         /* test onrestore */
-         sidePanel.splitter().click();
+        sidePanel.splitter().mouseDown();
+        sidePanel.splitter().mouseUp();
         sidePanelText.assertExpressionEquals("innerHTML", "size panel is restored");
     }
 
@@ -323,7 +325,7 @@ public class SidePanelTest extends OpenFacesTestCase {
 
         sidePanel.evalExpression("resize('25.5%')");
         sidePanel.evalExpression("collapse()");
-        getDriver().findElement(By.id("formID")).click();
+        getSelenium().submit("formID");
         ServerLoadingMode.getInstance().waitForLoad();
         sidePanel.assertExpressionEquals("_size", "7px");
         sidePanel.assertExpressionEquals("_collapsed", true);
