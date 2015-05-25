@@ -38,7 +38,7 @@
   <property name="funcTestsFrameworkManifest.file" location="${funcTestsFramework-target.dir}/manifest.mf"/>
 
   <property name="compile.debug" value="true" />
-  <property name="tomcat.home" value="${catalina.home}"/>
+  <property name="tomcat.home" value="${env.CATALINA_HOME}"/>
   <property name="build.home" value="${basedir}"/>
   <property name="project.lib" value="${basedir}/lib" />
 
