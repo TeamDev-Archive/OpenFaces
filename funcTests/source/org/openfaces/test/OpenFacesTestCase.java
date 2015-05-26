@@ -38,7 +38,7 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
     // SUN11 - Sun Reference Implementation 1.1
     protected static final String IMPLEMENTATION = getSystemProperty("test.app.jsf.implementation", "SUN12");
 
-    protected static final String TEST_APP_URL_PREFIX = "";
+    protected static final String TEST_APP_URL_PREFIX = "/TestAppFacelets";
 //    protected static final String TEST_APP_URL_PREFIX = getSystemProperty("test.app.context.path", IS_FACELETS ? "/TestAppFacelets" : "/TestAppJsp");
     protected static final String LIVE_DEMO_URL_PREFIX = getSystemProperty("demo.context.path", IS_FACELETS ? "/LiveDemoFacelets" : "/LiveDemoJsp");
 //    protected static final String LIVE_DEMO_URL_PREFIX = "";
