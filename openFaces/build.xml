@@ -1,6 +1,5 @@
 <project name="OpenFaces Library" default="build" basedir=".">
 
-  <buildnumber file="build.number"/>
   <property file="ofversion.properties"/>
 
   <property name="lib.dir" location="../lib/"/>

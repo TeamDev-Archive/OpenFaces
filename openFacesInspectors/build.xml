@@ -1,9 +1,5 @@
 <project name="OpenFaces Inspectors" default="build" basedir=".">
 
-  <buildnumber file="build.number"/>
-  <property file="../ofversion.properties"/>
-  <property name="of-version" value="${ofversion}.${build.number}"/>
-
   <property name="src.dir" location="source"/>
   <property name="target.dir" location="antout"/>
   <property name="distrib.dir" location="distribution"/>
@@ -14,7 +10,6 @@
   <property name="manifest.file" location="${target.dir}/manifest.mf"/>
   <property name="lib.dir" location="../lib"/>
   <property name="temp.dir" location="temp"/>
-  <property name="openfaces-jar.file" location="../openFaces/target/openfaces-${of-version}.jar"/>
   <property name="openFacesInspectors-zip.file" location="${distrib.dir}/openfaces-inspectors.zip"/>
 
   <target name="init">
@@ -25,12 +20,9 @@
     <mkdir dir="${classes.dir}"/>
     <javac srcdir="${src.dir}" includeantruntime="false" destdir="${classes.dir}" debug="true" source="1.5" target="1.5">
       <classpath>
-        <fileset dir="${lib.dir}">
-          <include name="../lib/seleniuminspector/selenium-java-2.14.0.jar "/>
-          <include name="../lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
-          <include name="seleniuminspector/selenium-inspector.jar"/>
-        </fileset>
-        <fileset file="../testLib/junit.jar"/>
+        <fileset file="../lib/seleniuminspector/selenium-java-2.14.0.jar"/>
+        <fileset file="../lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
+        <fileset file="../lib/seleniuminspector/selenium-inspector.jar"/>
         <fileset file="${openfaces-jar.file}"/>
       </classpath>
     </javac>

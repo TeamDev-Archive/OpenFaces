@@ -6,7 +6,7 @@
 
   <buildnumber file="build.number"/>
   <property file="ofversion.properties"/>
-  <property name="of-version" value="${ofversion}.40"/>
+  <property name="of-version" value="${ofversion}.${build.number}"/>
 
   <property name="build.compiler" value="javac1.5"/>
 
@@ -69,6 +69,7 @@
       <property name="lib.dir" value="../lib"/>
       <property name="retain.classes.dir" value="true"/>
       <property file="ofversion.properties"/>
+      <property name="build.number" value="${build.number}" />
     </ant>
     <echo>OpenFaces core built successfully.</echo>
 
@@ -100,6 +101,13 @@
     </ant>
     <echo>Live Demo (Facelets-based version) build successfully.</echo>
 
+    <echo>Building Live Demo (Facelets-based version)...</echo>
+    <ant dir="${funcTestsFramework.dir}" target="build" inheritall="false">
+      <property name="openfaces-jar.file" value="${openfaces-jar.file}"/>
+      <property name="ofversion" value="${ofversion}"/>
+      <property name="build.number" value="${build.number}" />
+    </ant>
+    <echo>Live Demo (Facelets-based version) build successfully.</echo>
   </target>
 
   <target name="clean" depends="init" description="clean up">
@@ -116,7 +124,7 @@
         <pathelement path="lib/seleniuminspector/selenium-server-standalone-2.14.0.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-inspector.jar"/>
         <pathelement path="testLib/junit.jar"/>
-        <fileset file="${openfaces-jar.file}"/>
+        <fileset dir="${target-lib.dir}"/>
       </classpath>
     </javac>
     <manifest file="${funcTestsFrameworkManifest.file}">
@@ -137,12 +145,12 @@
     <fail>"Facelets war file" must be specified</fail>
   </target>
 
-  <target name="compile-func-tests" depends="-fail-if-no-openfaces-jar, compile-func-test-framework" description="Compile functional tests">
+  <target name="compile-func-tests" depends="compile-func-test-framework" description="Compile functional tests">
     <delete dir="${funcTests-target.dir}/classes"/>
     <mkdir dir="${funcTests-target.dir}/classes"/>
     <javac includeantruntime="false" srcdir="${funcTests-source.dir}" destdir="${funcTests-target.dir}/classes" debug="true" encoding="UTF-8">
       <classpath>
-        <pathelement path="${openfaces-jar.file}"/>
+        <fileset dir="${target-lib.dir}"/>
         <pathelement path="${openfaces-inspectors-jar.file}"/>
         <pathelement path="testLib/junit.jar"/>
         <pathelement path="testLib/jai/mlibwrapper_jai.jar"/>
