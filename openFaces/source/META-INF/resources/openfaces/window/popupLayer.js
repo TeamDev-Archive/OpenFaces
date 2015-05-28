@@ -451,10 +451,9 @@ O$.PopupLayer = {
       },
 
       _onmousedown: popup.onmousedown,
-      onmousedown: function (e) {
-        if (popup._onmousedown) {
+      _onmousedown: function (e) {
+        if (e && e.type === 'mousedown') {
           popup._onmousedown(e);
-          O$.cancelEvent(e);
         }
         if (popup._draggable && !popup._draggingDisabled) {
           var evt = O$.getEvent(e);
@@ -464,6 +463,8 @@ O$.PopupLayer = {
             O$.startDragging(e, popup);
           }
         }
+
+        O$.cancelEvent(e);
       },
 
       _onmousemove: popup.onmousemove,
@@ -609,6 +610,10 @@ O$.PopupLayer = {
         else
           popup._visibleField.value == "false"
     }, isAjaxRequest);
+
+    O$.addEventHandler(popup, "mousedown", function(){
+      popup._onmousedown = popup.onmousedown;
+    }, false);
 
   },
 
