@@ -632,6 +632,7 @@ O$.DropDownField = {
         if (dropDown.isOpened())
           dropDown.closeUp();
         else {
+          O$.Popup.__hideAllOpenedPanels();
           dropDown.dropDown();
           if (!dropDown._cachingAllowed)
             dropDown._clearSuggestions();
@@ -768,6 +769,8 @@ O$.DropDownField = {
         }
 
         O$.Popup._hideAllPopupsExceptOne(popup);
+        O$.Popup.__hideAllOpenedPanels();
+
         O$.cancelEvent(e);
       };
 

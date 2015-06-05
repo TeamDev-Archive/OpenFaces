@@ -293,7 +293,6 @@ O$.DropDown = {
               return;
             button.className = dropDown._pressedButtonClass;
             dropDown._showHidePopup();
-            O$.Popup._hideAllPopupsExceptOne(popup);
             O$.cancelEvent(e);
           },
           ondblclick:function (e) {
@@ -446,13 +445,14 @@ O$.DropDown = {
       var innerTable = O$(dropDown.id + "--popup::innerTable");
       var tableWidth = innerTable.offsetWidth;
       var tableHeight = innerTable.offsetHeight;
-      if (popup._initializedTableWidth != tableWidth ||
-              popup._initializedTableHeight != tableHeight ||
-              container.offsetHeight != dropDown._containerHeight ||
-              dropDown.oldY != O$.getElementPos(dropDown).y ||
-              dropDown.oldYInComponent != O$.getYElementPosInAnotherComponent(dropDown, container)
+      var popupNeedCorrectWidth = popup._initializedTableWidth != tableWidth
+              || popup._initializedTableHeight != tableHeight
+              || container.offsetHeight != dropDown._containerHeight
+              || dropDown.oldY != O$.getElementPos(dropDown).y
+              || dropDown.oldYInComponent != O$.getYElementPosInAnotherComponent(dropDown, container);
 
-              ) {
+
+      if (popupNeedCorrectWidth) {
         popup._initializedTableWidth = tableWidth;
         popup._initializedTableHeight = tableHeight;
         dropDown._containerHeight = container.offsetHeight;
@@ -467,8 +467,9 @@ O$.DropDown = {
           if (tableWidth > dropDownRect.width) {
             minWidth = tableWidth;
           }
-        } else
+        } else {
           minWidth = popup.offsetWidth;
+        }
 
         if (popup.offsetWidth < minWidth) {
           popup.style.width = minWidth + "px";
@@ -492,6 +493,7 @@ O$.DropDown = {
         } else {
           popup.style.height = popup._initialClientHeight + "px";
         }
+
         function adjustHeight() {
           var contentHeight;
           if (container || container.tagName.toLowerCase() === "table") {
@@ -511,6 +513,8 @@ O$.DropDown = {
             var heightCorrection = popup.clientHeight - preferredHeight;
             if (heightCorrection)
               popup.style.height = (preferredHeight - heightCorrection - borderAccomodation) + "px";
+          } else {
+            popup.style.height = contentHeight;
           }
 
           if (innerTable.offsetHeight < popup.offsetHeight) {
@@ -526,7 +530,7 @@ O$.DropDown = {
             innerTable.width = "";
           var contentWidth = innerTable.offsetWidth;
           var missingWidth = contentWidth - popup.clientWidth;
-          if (missingWidth > 0)
+          if (missingWidth > 20 && popup.offsetWidth > 0)
             popup.style.width = popup.offsetWidth + missingWidth + "px";
           if (recalculateWidth && popup.clientWidth != 0)
             innerTable.width = popup.clientWidth;

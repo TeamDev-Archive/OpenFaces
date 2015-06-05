@@ -153,6 +153,15 @@ O$.Popup = {
     }
   },
 
+  //TODO: PrimeFaces select...Menu components needed only!!!
+  // Should be remove after creating <o:selectCheckboxMenu component
+  __hideAllOpenedPanels: function () {
+    jQuery("div.ui-selectcheckboxmenu-panel:visible").each(function (index) {
+      jQuery(this).css("z-index", "");
+      jQuery(this).hide();
+    });
+  },
+
   _hideAllPopupsExceptOne: function(popupToRetain) {
     if (!O$._popupsOnPage)
       return;

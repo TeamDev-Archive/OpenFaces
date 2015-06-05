@@ -2822,6 +2822,8 @@ if (!window.O$) {
       if (draggable._dragEl && draggable._dragEl._onresizing) {
         draggable._dragEl._onresizing();
       }
+
+      O$.Popup.__hideAllOpenedPanels();
       O$.cancelEvent(evt);
     }
 
