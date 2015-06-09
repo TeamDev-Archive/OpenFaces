@@ -16,6 +16,8 @@ if (!window.O$) {
   };
 
   O$.extend = function (obj, withObj) {
+    if(!obj) return;
+
     var previousPropertyValues = {};
     /*Added explorer memory leak fix because of circular references - IE itself doesn't resolve them,
      * so we call destroyAllFunctions where all functions added with extend method will be cleared */
