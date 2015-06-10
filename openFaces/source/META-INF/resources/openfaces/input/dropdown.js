@@ -293,6 +293,7 @@ O$.DropDown = {
               return;
             button.className = dropDown._pressedButtonClass;
             dropDown._showHidePopup();
+            O$.Popup._hideAllPopupsExceptOne(popup);
             O$.cancelEvent(e);
           },
           ondblclick:function (e) {

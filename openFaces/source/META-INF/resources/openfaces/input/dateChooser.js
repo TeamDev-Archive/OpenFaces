@@ -154,6 +154,7 @@ O$.DateChooser = {
     }
 
     dc._showHidePopup = function () {
+      O$.Popup.__hideAllOpenedPanels();
       O$.DateChooser._changeCalendarVisibility(dc);
     };
 
