@@ -761,7 +761,7 @@ O$.AjaxObject = function (render) {
       }
       return;
     }
-  }
+  };
 
   this._processResponse = function () {
     var request = this._request;
@@ -806,38 +806,24 @@ O$.AjaxObject = function (render) {
       //set flag - ajax update in progress
       document._of_page_is_already_initialized = true;
       if (request.responseXML) {
-        var responseXML = null;
-        responseXML = request.responseXML;
+        var responseXML = request.responseXML;
 
         //TODO: for huge xml responses some versions of IE can't automaticly parse XML
-
         if (O$.isExplorer && responseXML && !responseXML.firstChild) {
-          var pos = request.responseText.indexOf('scripts="') + 9;
-          var pos2 = request.responseText.indexOf('value="');
-          var oldValue = null;
-          var oldScripts = request.responseText.slice(pos, pos2 - 2);
-          oldValue = request.responseText.slice(pos2 + 7);
-          var pos3 = oldValue.indexOf(">");
-          oldValue = oldValue.slice(0, pos3 - 3)
-          pos3 += pos2;
-          var newResponseText = request.responseText.slice(0, pos);
-          newResponseText += 'temporary" value="temporary"';
-          newResponseText += request.responseText.slice(pos3 + 6);
+          var originalResponseText = request.responseText;
 
           if (window.DOMParser) {
             var parser = new DOMParser();
-            responseXML = parser.parseFromString(newResponseText, 'text/xml');
-          } else if (window.ActiveXObject) {
-            responseXML = new ActiveXObject("Microsoft.XMLDOM");
+            responseXML = parser.parseFromString(originalResponseText, 'text/xml');
+          } else {
+            if (O$.isIEDocMode8()) {
+              responseXML = new ActiveXObject("Msxml2.DOMDocument.6.0");
+            } else {
+              responseXML = new ActiveXObject("Microsoft.XMLDOM");
+            }
             responseXML.async = false;
-            responseXML.loadXML(newResponseText);
+            responseXML.loadXML(originalResponseText);
           }
-          responseXML.childNodes[0].childNodes[1].attributes.scripts.nodeValue = O$.decodeHTML(oldScripts);
-          responseXML.childNodes[0].childNodes[1].attributes.scripts.textContent = O$.decodeHTML(oldScripts);
-          responseXML.childNodes[0].childNodes[1].attributes.scripts.value = O$.decodeHTML(oldScripts);
-          responseXML.childNodes[0].childNodes[1].attributes.value.nodeValue = O$.decodeHTML(oldValue);
-          responseXML.childNodes[0].childNodes[1].attributes.value.textContent = O$.decodeHTML(oldValue);
-          responseXML.childNodes[0].childNodes[1].attributes.value.value = O$.decodeHTML(oldValue);
         }
 
         this._jsIncludes = responseXML.getElementsByTagName(O$.TAG_AJAX_SCRIPT);
@@ -911,9 +897,7 @@ O$.AjaxObject = function (render) {
         O$.restoreDocumentWrite();
         throw e;
       }
-    }
-    catch
-            (e) {
+    } catch (e) {
       O$.requestFinished(this);
       throw e;
     }
