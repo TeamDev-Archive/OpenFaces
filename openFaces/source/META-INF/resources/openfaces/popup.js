@@ -66,16 +66,17 @@ O$.Popup = {
 
 
       show: function() {
-        if (this.isVisible())
+        if (this.isVisible()) {
           return;
+        }
 
         setTimeout(function() {
           O$.addIETransparencyControl(popup);
         }, 1);
+
         this.style.visibility = "visible";
-        var style = O$.getElementStyle(this, ["display"]);
-        if (style.display == "none")
-          this.style.display = this._originalStyleDisplay;
+        this.style.display = 'block';
+
         O$.Popup._notifyVisibilityChangeListeners(this);
         popup.hidden = false;
       },

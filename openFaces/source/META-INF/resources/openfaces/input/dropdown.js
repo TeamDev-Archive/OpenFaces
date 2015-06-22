@@ -443,11 +443,14 @@ O$.DropDown = {
     if (calendar) {
       popup.style.width = calendar.offsetWidth + "px";
     } else {
+      var popupHeight;
       var innerTable = O$(dropDown.id + "--popup::innerTable");
       var tableWidth = innerTable.offsetWidth;
       var tableHeight = innerTable.offsetHeight;
       var popupNeedCorrectWidth = popup._initializedTableWidth != tableWidth
               || popup._initializedTableHeight != tableHeight
+              || !popup.style.width
+              || !popup.style.height
               || container.offsetHeight != dropDown._containerHeight
               || dropDown.oldY != O$.getElementPos(dropDown).y
               || dropDown.oldYInComponent != O$.getYElementPosInAnotherComponent(dropDown, container);
@@ -489,10 +492,10 @@ O$.DropDown = {
           repaintDropDown = true;
         }
 
-        if (popup._initialClientHeight == undefined) {
+        if (!popup._initialClientHeight || popup._initialClientHeight < 1) {
           popup._initialClientHeight = popup.clientHeight;
         } else {
-          popup.style.height = popup._initialClientHeight + "px";
+          popupHeight = popup._initialClientHeight + "px";
         }
 
         function adjustHeight() {
@@ -513,13 +516,17 @@ O$.DropDown = {
             popup.style.height = preferredHeight + "px";
             var heightCorrection = popup.clientHeight - preferredHeight;
             if (heightCorrection)
-              popup.style.height = (preferredHeight - heightCorrection - borderAccomodation) + "px";
+              popupHeight = (preferredHeight - heightCorrection - borderAccomodation) + "px";
           } else {
-            popup.style.height = contentHeight;
+            popupHeight = contentHeight;
           }
 
           if (innerTable.offsetHeight < popup.offsetHeight) {
-            popup.style.height = innerTable.offsetHeight + "px";
+            popupHeight = innerTable.offsetHeight + "px";
+          }
+
+          if(popupHeight && popupHeight > 0){
+            popup.style.height = popupHeight;
           }
         }
 
