@@ -992,6 +992,28 @@ if (!window.O$) {
     return O$._explorer9;
   };
 
+
+  O$.isExplorer10 = function () {
+    if (O$._explorer10 == undefined) {
+      O$._explorer10 = O$.isExplorer() && O$.userAgentContains("MSIE 10");
+    }
+    return O$._explorer10;
+  };
+
+  O$.isExplorer10AndOlder = function () {
+    if (!O$._explorer10AndOlder) {
+      O$._explorer10AndOlder = O$.isExplorer10() || O$.isExplorer9() || O$.isExplorer8AndOlder();
+    }
+    return O$._explorer10AndOlder;
+  };
+
+  O$.isExplorer11 = function () {
+    if (!O$._explorer11) {
+      O$._explorer11 = !!navigator.userAgent.match(/Trident.*rv[ :]*11\./);
+    }
+    return O$._explorer11;
+  };
+
   O$.isOpera9AndLate = function () {
     if (O$._opera9 == undefined) {
       if (O$.isOpera()) {

@@ -745,14 +745,22 @@ O$.Table = {
     if (pagingFld)
       pagingFld.value = "";
 
+    var eventName = (O$.isSafariOnMac() || O$.isOpera() || O$.isMozillaFF() || O$.isExplorer11()) ? "onkeypress" : "onkeydown";
 
-    var eventName = (O$.isSafariOnMac() || O$.isOpera() || O$.isMozillaFF()) ? "onkeypress" : "onkeydown";
     table._prevKeyHandler = table[eventName];
-    table[eventName] = function (evt) {
-      var e = O$.getEvent(evt);
 
-      if (this._prevKeyHandler)
-        this._prevKeyHandler(evt);
+    if (O$.isExplorer11()) {
+      O$.addEventHandler(document, "keydown", keyDownHandler);
+    } else {
+      table[eventName] = keyDownHandler;
+    }
+
+    function keyDownHandler (evt) {
+      var e = O$.getEvent(evt);
+      var obj = O$.isExplorer11() ? table : this;
+
+      if (obj._prevKeyHandler)
+        obj._prevKeyHandler(evt);
 
       var ctrlPressed = e.ctrlKey;
       var altPressed = e.altKey;
@@ -817,45 +825,45 @@ O$.Table = {
       if (controlPaginationWithKeyboard && !altPressed && !shiftPressed) {
         if (e.pageUpPressed) {
           passEvent = false;
-          if (!(this._params.scrolling && this._selectionKeyboardSupport && this._selectionEnabled))
-            this._previousPage();
+          if (!(obj._params.scrolling && obj._selectionKeyboardSupport && obj._selectionEnabled))
+            obj._previousPage();
         }
         if (e.pageDownPressed) {
           passEvent = false;
-          if (!(this._params.scrolling && this._selectionKeyboardSupport && this._selectionEnabled))
-            this._nextPage();
+          if (!(obj._params.scrolling && obj._selectionKeyboardSupport && obj._selectionEnabled))
+            obj._nextPage();
         }
         if (ctrlPressed && e.homePressed) {
           passEvent = false;
-          this._firstPage();
+          obj._firstPage();
         }
         if (ctrlPressed && e.endPressed) {
           passEvent = false;
-          this._lastPage();
+          obj._lastPage();
         }
       }
 
-      if (this._selectionKeyboardSupport && this._selectionEnabled) {
-        var rowCount = this.__getRowCount();
-        if (this._selectableItems == "rows") {
-          if (this._multipleSelectionAllowed && !altPressed && !ctrlPressed) {      // ------ multiple selection
-            var selectedRowIndexes = this.__getSelectedRowIndexes();
+      if (obj._selectionKeyboardSupport && obj._selectionEnabled) {
+        var rowCount = obj.__getRowCount();
+        if (obj._selectableItems == "rows") {
+          if (obj._multipleSelectionAllowed && !altPressed && !ctrlPressed) {      // ------ multiple selection
+            var selectedRowIndexes = obj.__getSelectedRowIndexes();
             var idx, newIdx;
             if (selectedRowIndexes.length == 0)
               idx = -1;
             else if (selectedRowIndexes.length == 1)
               idx = selectedRowIndexes[0];
             else {
-              idx = this._rangeEndRowIndex;
+              idx = obj._rangeEndRowIndex;
               if (!idx)
                 idx = selectedRowIndexes[0];
             }
 
             if (!shiftPressed) {
-              newIdx = O$.Table._checkRowNavigation(this, idx, rowCount, e);
+              newIdx = O$.Table._checkRowNavigation(obj, idx, rowCount, e);
               if (newIdx != null) {
                 passEvent = false;
-                this.__setSelectedRowIndexes([newIdx]);
+                obj.__setSelectedRowIndexes([newIdx]);
                 ///////////////////////////////////////////////////
                 var activeElement = null
                 if (O$._activeElement != null) {
@@ -871,7 +879,7 @@ O$.Table = {
                   while (isNeedNode) {
                     needElement = needElement.parentNode;
                     if (needElement.nodeName == "TD") {
-                      if (needElement._column._table == this) {
+                      if (needElement._column._table == obj) {
                         needColumn = needElement.cellIndex;
                         needElement = needElement.parentNode.parentNode;
                         needChildrenNodes = needElement.childNodes;
@@ -886,38 +894,38 @@ O$.Table = {
                   }
                 }
                 ///////////////////////////////////////////////////////
-                O$.Table._scrollToRowIndexes(this, [newIdx]);
-                this._baseRowIndex = null;
-                this._baseSelectedRowIndexes = null;
-                this._rangeEndRowIndex = null;
+                O$.Table._scrollToRowIndexes(obj, [newIdx]);
+                obj._baseRowIndex = null;
+                obj._baseSelectedRowIndexes = null;
+                obj._rangeEndRowIndex = null;
               }
             } else {
-              var baseRowIndex = this._baseRowIndex;
+              var baseRowIndex = obj._baseRowIndex;
               if (baseRowIndex == null) {
                 baseRowIndex = idx != -1 ? idx : 0;
-                this._baseRowIndex = baseRowIndex;
-                this._baseSelectedRowIndexes = selectedRowIndexes;
+                obj._baseRowIndex = baseRowIndex;
+                obj._baseSelectedRowIndexes = selectedRowIndexes;
               }
-              var rangeEndRowIndex = this._rangeEndRowIndex;
+              var rangeEndRowIndex = obj._rangeEndRowIndex;
               if (rangeEndRowIndex == null)
                 rangeEndRowIndex = baseRowIndex;
-              var newRangeEndRowIndex = O$.Table._checkRowNavigation(this, rangeEndRowIndex, rowCount, e);
+              var newRangeEndRowIndex = O$.Table._checkRowNavigation(obj, rangeEndRowIndex, rowCount, e);
               if (newRangeEndRowIndex != null) {
                 passEvent = false;
-                var newSelectedRowIndexes = O$.Table._combineSelectedRowsWithRange(this, this._baseSelectedRowIndexes, baseRowIndex, newRangeEndRowIndex);
-                this._rangeEndRowIndex = newRangeEndRowIndex;
-                this.__setSelectedRowIndexes(newSelectedRowIndexes);
-                O$.Table._scrollToRowIndexes(this, [newRangeEndRowIndex]);
+                var newSelectedRowIndexes = O$.Table._combineSelectedRowsWithRange(obj, obj._baseSelectedRowIndexes, baseRowIndex, newRangeEndRowIndex);
+                obj._rangeEndRowIndex = newRangeEndRowIndex;
+                obj.__setSelectedRowIndexes(newSelectedRowIndexes);
+                O$.Table._scrollToRowIndexes(obj, [newRangeEndRowIndex]);
               }
             }
 
           }
-          if (!this._multipleSelectionAllowed && noModifiersPressed) {              // ------ single selection
-            idx = this.__getSelectedRowIndex();
-            newIdx = O$.Table._checkRowNavigation(this, idx, rowCount, e);
+          if (!obj._multipleSelectionAllowed && noModifiersPressed) {              // ------ single selection
+            idx = obj.__getSelectedRowIndex();
+            newIdx = O$.Table._checkRowNavigation(obj, idx, rowCount, e);
             if (newIdx != null) {
               passEvent = false;
-              this.__setSelectedRowIndex(newIdx);
+              obj.__setSelectedRowIndex(newIdx);
               ///////////////////////////////////////////////////
               var activeElement = null
               if (O$._activeElement != null) {
@@ -933,7 +941,7 @@ O$.Table = {
                 while (isNeedNode) {
                   needElement = needElement.parentNode;
                   if (needElement.nodeName == "TD") {
-                    if (needElement._column._table == this) {
+                    if (needElement._column._table == obj) {
                       needColumn = needElement.cellIndex;
                       needElement = needElement.parentNode.parentNode;
                       needChildrenNodes = needElement.childNodes;
@@ -948,58 +956,58 @@ O$.Table = {
                 }
               }
               ///////////////////////////////////////////////////////
-              O$.Table._scrollToRowIndexes(this, [newIdx]);
+              O$.Table._scrollToRowIndexes(obj, [newIdx]);
             }
           }
-        } else if (this._selectableItems == "cells") {
+        } else if (obj._selectableItems == "cells") {
           var bodyRows = table.body._getRows();
           var cursorCell;
-          if (!this._multipleSelectionAllowed) {
+          if (!obj._multipleSelectionAllowed) {
             if (!shiftPressed) {
               var cellId = (table._cursorCell != null) ?
                       [table._cursorCell._row._index, table._cursorCell._column.columnId] : [-1, null];
-              var newRowId = O$.Table._checkRowNavigation(this, cellId[0], rowCount, e);
+              var newRowId = O$.Table._checkRowNavigation(obj, cellId[0], rowCount, e);
               if (newRowId != null) {
                 passEvent = false;
                 if (cellId[1] == null) {
                   cellId[1] = table._columns[0].columnId;
                 }
-                this._setSelectedItems([
+                obj._setSelectedItems([
                   [newRowId, cellId[1]]
                 ]);
                 cursorCell = bodyRows[newRowId]._cells[table._columns.byId(cellId[1])._index];
                 cursorCell._setAsCursor();
-                O$.Table._scrollToRowIndexes(this, [newRowId]);
+                O$.Table._scrollToRowIndexes(obj, [newRowId]);
               }
               if (newRowId != cellId[0]) {
-                var newColumnId = O$.Table._checkColumnNavigation(this, cellId[1], table._columns.length, e);
+                var newColumnId = O$.Table._checkColumnNavigation(obj, cellId[1], table._columns.length, e);
                 if (newColumnId != null && newColumnId != cellId[1]) {
                   passEvent = false;
                   if (cellId[0] == -1) {
                     cellId[0] = 0;
                   }
-                  this._setSelectedItems([
+                  obj._setSelectedItems([
                     [cellId[0], newColumnId]
                   ]);
 
                   cursorCell = bodyRows[cellId[0]]._cells[table._columns.byId(newColumnId)._index];
                   cursorCell._setAsCursor();
-                  O$.Table._scrollToCells(this, [
+                  O$.Table._scrollToCells(obj, [
                     [cellId[0], newColumnId]
                   ]);
                 } else if (table._fillDirection == "document") {
-                  var newCellId = O$.Table._checkCellNavigationInDocumentMode(this, cellId, e);
+                  var newCellId = O$.Table._checkCellNavigationInDocumentMode(obj, cellId, e);
                   if (newCellId != null) {
-                    this._setSelectedItems([newCellId]);
+                    obj._setSelectedItems([newCellId]);
                     cursorCell = bodyRows[newCellId[0]]._cells[table._columns.byId(newCellId[1])._index];
                     cursorCell._setAsCursor();
-                    O$.Table._scrollToCells(this, [newCellId]);
+                    O$.Table._scrollToCells(obj, [newCellId]);
                   }
                 }
               }
             }
           } else {
-            var selectedCellIds = this.__getSelectedCellIds();
+            var selectedCellIds = obj.__getSelectedCellIds();
             var cellId, newRowId;
             if (selectedCellIds.length == 0) {
               if (table._cursorCell != null) {
@@ -1011,105 +1019,105 @@ O$.Table = {
             else if (selectedCellIds.length == 1)
               cellId = selectedCellIds[0];
             else {
-              cellId = this._rangeEndCellId;
+              cellId = obj._rangeEndCellId;
               if (!cellId)
                 cellId = selectedCellIds[0];
             }
             if (!shiftPressed) {
-              newRowId = O$.Table._checkRowNavigation(this, cellId[0], rowCount, e);
+              newRowId = O$.Table._checkRowNavigation(obj, cellId[0], rowCount, e);
               if (newRowId != null) {
                 passEvent = false;
-                this._baseCellId = null;
-                this._baseSelectedCellIds = null;
-                this._rangeEndCellId = null;
+                obj._baseCellId = null;
+                obj._baseSelectedCellIds = null;
+                obj._rangeEndCellId = null;
                 if (cellId[1] == null) {
                   cellId[1] = table._columns[0].columnId;
                 }
-                this._setSelectedItems([
+                obj._setSelectedItems([
                   [newRowId, cellId[1]]
                 ]);
 
                 cursorCell = bodyRows[newRowId]._cells[table._columns.byId(cellId[1])._index];
                 cursorCell._setAsCursor();
-                O$.Table._scrollToRowIndexes(this, [newRowId]);
+                O$.Table._scrollToRowIndexes(obj, [newRowId]);
               }
               if (newRowId != cellId[0]) {
-                var newColumnId = O$.Table._checkColumnNavigation(this, cellId[1], table._columns.length, e);
+                var newColumnId = O$.Table._checkColumnNavigation(obj, cellId[1], table._columns.length, e);
                 if (newColumnId != null && newColumnId != cellId[1]) {
                   passEvent = false;
-                  this._baseCellId = null;
-                  this._rangeEndCellId = null;
+                  obj._baseCellId = null;
+                  obj._rangeEndCellId = null;
                   if (cellId[0] == -1) {
                     cellId[0] = 0;
                   }
-                  this._setSelectedItems([
+                  obj._setSelectedItems([
                     [cellId[0], newColumnId]
                   ]);
 
                   cursorCell = bodyRows[cellId[0]]._cells[table._columns.byId(newColumnId)._index];
                   cursorCell._setAsCursor();
-                  O$.Table._scrollToCells(this, [
+                  O$.Table._scrollToCells(obj, [
                     [cellId[0], newColumnId]
                   ]);
                 } else if (table._fillDirection == "document") {
-                  var newCellId = O$.Table._checkCellNavigationInDocumentMode(this, cellId, e);
+                  var newCellId = O$.Table._checkCellNavigationInDocumentMode(obj, cellId, e);
                   if (newCellId != null) {
-                    this._baseCellId = null;
-                    this._rangeEndCellId = null;
+                    obj._baseCellId = null;
+                    obj._rangeEndCellId = null;
                     passEvent = false;
-                    this._setSelectedItems([newCellId]);
+                    obj._setSelectedItems([newCellId]);
 
                     cursorCell = bodyRows[newCellId[0]]._cells[table._columns.byId(newCellId[1])._index];
                     cursorCell._setAsCursor();
-                    O$.Table._scrollToCells(this, [newCellId]);
+                    O$.Table._scrollToCells(obj, [newCellId]);
                   }
                 }
               }
             } else if (cellId[0] != -1 && cellId[1] != null) {
-              var baseCellId = this._baseCellId;
+              var baseCellId = obj._baseCellId;
               if (baseCellId == null) {
                 baseCellId = cellId;
-                this._baseCellId = baseCellId;
-                this._baseSelectedCellIds = [baseCellId];
+                obj._baseCellId = baseCellId;
+                obj._baseSelectedCellIds = [baseCellId];
               }
-              var rangeEndCellId = this._rangeEndCellId;
+              var rangeEndCellId = obj._rangeEndCellId;
               var newSelectedCellIdsIndexes;
               if (rangeEndCellId == null)
                 rangeEndCellId = baseCellId;
-              var newRangeEndRowIndex = O$.Table._checkRowNavigation(this, rangeEndCellId[0], rowCount, e);
+              var newRangeEndRowIndex = O$.Table._checkRowNavigation(obj, rangeEndCellId[0], rowCount, e);
               if (newRangeEndRowIndex != null) {
                 passEvent = false;
-                newSelectedCellIdsIndexes = O$.Table._combineSelectedCellsWithRange(this, this._baseSelectedCellIds, baseCellId, [newRangeEndRowIndex, rangeEndCellId[1]]);
-                this._rangeEndCellId = [newRangeEndRowIndex, rangeEndCellId[1]];
-                this._setSelectedItems(newSelectedCellIdsIndexes);
+                newSelectedCellIdsIndexes = O$.Table._combineSelectedCellsWithRange(obj, obj._baseSelectedCellIds, baseCellId, [newRangeEndRowIndex, rangeEndCellId[1]]);
+                obj._rangeEndCellId = [newRangeEndRowIndex, rangeEndCellId[1]];
+                obj._setSelectedItems(newSelectedCellIdsIndexes);
 
-                cursorCell = bodyRows[this._rangeEndCellId[0]]._cells[table._columns.byId(this._rangeEndCellId[1])._index];
+                cursorCell = bodyRows[obj._rangeEndCellId[0]]._cells[table._columns.byId(obj._rangeEndCellId[1])._index];
                 cursorCell._setAsCursor();
-                O$.Table._scrollToCells(this, [this._rangeEndCellId]);
+                O$.Table._scrollToCells(obj, [obj._rangeEndCellId]);
               }
 
               if (newRangeEndRowIndex != rangeEndCellId[0]) {
-                var newColumnId = O$.Table._checkColumnNavigation(this, rangeEndCellId[1], table._columns.length, e);
+                var newColumnId = O$.Table._checkColumnNavigation(obj, rangeEndCellId[1], table._columns.length, e);
                 if (newColumnId != null && newColumnId != rangeEndCellId[1]) {
                   passEvent = false;
-                  newSelectedCellIdsIndexes = O$.Table._combineSelectedCellsWithRange(this, this._baseSelectedCellIds, baseCellId, [rangeEndCellId[0], newColumnId]);
-                  this._rangeEndCellId = [rangeEndCellId[0], newColumnId];
-                  this._setSelectedItems(newSelectedCellIdsIndexes);
+                  newSelectedCellIdsIndexes = O$.Table._combineSelectedCellsWithRange(obj, obj._baseSelectedCellIds, baseCellId, [rangeEndCellId[0], newColumnId]);
+                  obj._rangeEndCellId = [rangeEndCellId[0], newColumnId];
+                  obj._setSelectedItems(newSelectedCellIdsIndexes);
 
-                  cursorCell = bodyRows[this._rangeEndCellId[0]]._cells[table._columns.byId(this._rangeEndCellId[1])._index];
+                  cursorCell = bodyRows[obj._rangeEndCellId[0]]._cells[table._columns.byId(obj._rangeEndCellId[1])._index];
                   cursorCell._setAsCursor();
-                  O$.Table._scrollToCells(this, [this._rangeEndCellId]);
+                  O$.Table._scrollToCells(obj, [obj._rangeEndCellId]);
                 } else if (table._fillDirection == "document") {
-                  var cellId = O$.Table._checkCellNavigationInDocumentMode(this, rangeEndCellId, e);
+                  var cellId = O$.Table._checkCellNavigationInDocumentMode(obj, rangeEndCellId, e);
                   if (cellId != null) {
                     passEvent = false;
-                    newSelectedCellIdsIndexes = O$.Table._combineSelectedCellsWithRange(this, this._baseSelectedCellIds, baseCellId, cellId);
-                    this._rangeEndCellId = cellId;
-                    this._setSelectedItems(newSelectedCellIdsIndexes);
+                    newSelectedCellIdsIndexes = O$.Table._combineSelectedCellsWithRange(obj, obj._baseSelectedCellIds, baseCellId, cellId);
+                    obj._rangeEndCellId = cellId;
+                    obj._setSelectedItems(newSelectedCellIdsIndexes);
 
-                    cursorCell = bodyRows[this._rangeEndCellId[0]]._cells[table._columns.byId(this._rangeEndCellId[1])._index];
+                    cursorCell = bodyRows[obj._rangeEndCellId[0]]._cells[table._columns.byId(obj._rangeEndCellId[1])._index];
                     cursorCell._setAsCursor();
-                    O$.Table._scrollToCells(this, [this._rangeEndCellId]);
+                    O$.Table._scrollToCells(obj, [obj._rangeEndCellId]);
                   }
                 }
               }
@@ -1118,8 +1126,8 @@ O$.Table = {
         }
       }
       if (passEvent) {
-        if (this._onKeyboardNavigation)
-          passEvent = this._onKeyboardNavigation(e);
+        if (obj._onKeyboardNavigation)
+          passEvent = obj._onKeyboardNavigation(e);
       }
       if (!passEvent) {
         O$.cancelEvent(e);
@@ -1152,7 +1160,6 @@ O$.Table = {
         return true;
       }
     }
-    ;
 
     O$.addUnloadHandler(table, function () {
       table[eventName] = null;
