@@ -443,7 +443,6 @@ O$.DropDown = {
     if (calendar) {
       popup.style.width = calendar.offsetWidth + "px";
     } else {
-      var popupHeight;
       var innerTable = O$(dropDown.id + "--popup::innerTable");
       var tableWidth = innerTable.offsetWidth;
       var tableHeight = innerTable.offsetHeight;
@@ -492,10 +491,10 @@ O$.DropDown = {
           repaintDropDown = true;
         }
 
-        if (!popup._initialClientHeight || popup._initialClientHeight < 1) {
+        if (!popup._initialClientHeight) {
           popup._initialClientHeight = popup.clientHeight;
         } else {
-          popupHeight = popup._initialClientHeight + "px";
+          popup.style.height = popup._initialClientHeight + "px";
         }
 
         function adjustHeight() {
@@ -516,17 +515,11 @@ O$.DropDown = {
             popup.style.height = preferredHeight + "px";
             var heightCorrection = popup.clientHeight - preferredHeight;
             if (heightCorrection)
-              popupHeight = (preferredHeight - heightCorrection - borderAccomodation) + "px";
-          } else {
-            popupHeight = contentHeight;
+              popup.style.height = (preferredHeight - heightCorrection - borderAccomodation) + "px";
           }
 
           if (innerTable.offsetHeight < popup.offsetHeight) {
-            popupHeight = innerTable.offsetHeight + "px";
-          }
-
-          if(popupHeight && popupHeight > 0){
-            popup.style.height = popupHeight;
+            popup.style.height = innerTable.offsetHeight + "px";
           }
         }
 
