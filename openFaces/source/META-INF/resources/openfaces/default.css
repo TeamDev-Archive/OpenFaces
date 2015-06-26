@@ -1196,7 +1196,7 @@
 }
 
 .o_dateChooser_popup {
-    position: absolute; display: none;
+    position: fixed; display: none;
 }
 
 .o_dropdown_field {
