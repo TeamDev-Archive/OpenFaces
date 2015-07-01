@@ -241,7 +241,6 @@ public class TableStructure extends TableElement {
             writer.startElement("td", table);
             writer.writeAttribute("style", "vertical-align: top", null);
             writer.startElement("div", table);
-            writer.writeAttribute("style", "position: absolute; ", null);
         }
 
         TableHeader header = getHeader();
