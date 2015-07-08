@@ -1183,6 +1183,18 @@ if (!window.O$) {
     return element;
   };
 
+  O$.getParentByClass = function (element, className) {
+    className = className.toUpperCase();
+    while (element) {
+      var elementClassName = element.className.toUpperCase();
+      if (elementClassName && elementClassName.indexOf(className) != -1) {
+        return element;
+      }
+      element = element.offsetParent;
+    }
+    return element;
+  };
+
   O$.getAnyParentNode = function (element, tagNames) {
     for (var i = 0, count = tagNames.length; i < count; i++)
       tagNames[i] = tagNames[i].toUpperCase();
@@ -5170,6 +5182,26 @@ if (!window.O$) {
       return true;
 
     return O$.isVisibleRecursive(parentNode);
+  };
+
+  O$.isInParentBoundRecursive = function (element) {
+    if (!element || O$.getElementStyle(element, 'display') === 'none')
+      return false;
+
+    var className = "o_window";
+    var window = O$.getParentByClass(element, className);
+
+    if (window) {
+      var clientRect = element.getBoundingClientRect();
+      var windowRect = window.getBoundingClientRect();
+
+      return clientRect.top > windowRect.top
+              && clientRect.bottom < windowRect.bottom
+              && clientRect.left > windowRect.left
+              && (clientRect.right - clientRect.width) < windowRect.right;
+    }
+
+    return true;
   };
 
   O$.isVisibleParentRecursive = function (element) {

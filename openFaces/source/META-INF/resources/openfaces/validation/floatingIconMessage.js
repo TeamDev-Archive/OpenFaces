@@ -47,6 +47,7 @@ O$.extend(O$._FloatingIconMessageRenderer.prototype, {
         if (!messageElement) {
           messageElement = document.createElement("img");
           messageElement.id = this.clientId;
+          messageElement.forId = forElement.id;
           messageElement.src = this.imageUrl;
           messageElement.style.position = "absolute";
           O$.assignEvents(messageElement, this.iconEvents);
@@ -100,7 +101,7 @@ O$.extend(O$._FloatingIconMessageRenderer.prototype, {
     if (messageElement) {
       var forElement = O$.byIdOrName(this.forId);
 
-      if (!O$.isVisibleRecursive(forElement)) {
+      if (!O$.isVisibleRecursive(forElement) || !O$.isInParentBoundRecursive(forElement)) {
         messageElement.style.display = "none";
         return;
       }
