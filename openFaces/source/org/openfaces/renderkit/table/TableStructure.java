@@ -241,6 +241,7 @@ public class TableStructure extends TableElement {
             writer.startElement("td", table);
             writer.writeAttribute("style", "vertical-align: top", null);
             writer.startElement("div", table);
+            writer.writeAttribute("style", getContentPosition(table), null);
         }
 
         TableHeader header = getHeader();
@@ -266,6 +267,17 @@ public class TableStructure extends TableElement {
         UIComponent belowFacet = table.getBelow();
         if (belowFacet != null && !skipExternalFacets)
             belowFacet.encodeAll(context);
+    }
+
+    private String getContentPosition(AbstractTable table) {
+        final String style = table.getStyle();
+        String position = "position: absolute; ";
+
+        if (style != null && style.contains("position")) {
+            position = "";
+        }
+
+        return position;
     }
 
     private void writeStyleAndClass(FacesContext context, AbstractTable table, ResponseWriter writer) throws IOException {
