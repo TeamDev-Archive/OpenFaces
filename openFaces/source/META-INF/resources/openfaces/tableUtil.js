@@ -2617,65 +2617,56 @@ O$.Tables = {
         var areaHeight = 0;
         var rows = section._getRows();
         rows.forEach(function (row) {
-          var artificialRow = !row.nodeName || row.nodeName.toUpperCase() != "TR";
-          if (!artificialRow) return;
-          var rowNodes = [row._leftRowNode, row._rowNode, row._rightRowNode];
+          if (row.nodeName && row.nodeName.toUpperCase() === "TR") { return; }
+          if (section != table.body) { return; }
 
+          var rowNodes = [row._leftRowNode, row._rowNode, row._rightRowNode];
+          var height = getMaxRowHeight(rowNodes);
+
+          rowNodes.forEach(function (rowNode) {
+            if (rowNode){
+              setRowHeight(rowNode, height, true);
+
+              for (var i = 0; i < rowNode._cells.length; i++) {
+                var cell = rowNode._cells[i];
+                  cell.style.paddingTop = "0px";
+                  cell.style.paddingBottom = "0px";
+              }
+            }
+          });
+          areaHeight += height;
+
+          if ((O$.isChrome() || O$.isSafari()) && O$.isQuirksMode()) {
+            section._scrollingAreas.forEach(function (area) {
+              O$.setElementHeight(area._table, areaHeight);
+            });
+          }
+
+          function getMaxRowHeight(nodes) {
+            var maxNodesHeight = 0;
+
+            nodes.forEach(function (node) {
+              if (node) {
+                if (section == table.body) {
+                  setRowHeight(node, __minHeight, true);
+                  maxNodesHeight = maxNodesHeight < node.offsetHeight ? node.offsetHeight : maxNodesHeight;
+                } else {
+                  setRowHeight(node, 0, true);
+                }
+              }
+            });
+            return maxNodesHeight;
+          }
           function setRowHeight(rowNode, height, trim) {
             row.__height = height;
-            height = height + "px";
             rowNode.style.height = height;
             if (assignCellHeights && trim) {
-              for (var i = 0, count = rowNode.cells.length; i < count; i++) {
-                rowNode.cells[i].style.height = height;
+              for(var i = 0; i < rowNode._cells.length; i++){
+                rowNode._cells[i].style.height = height + "px";
               }
             }
           }
-
-          var height = 0;
-          rowNodes.forEach(function (rowNode) {
-            if (!rowNode) return;
-            if (!(O$.isExplorer() && O$.isQuirksMode()))
-              if (section == table.body){
-                setRowHeight(rowNode, __minHeight, true);
-              } else {
-                setRowHeight(rowNode, 0, true);
-              }
-            var rowHeight = rowNode.offsetHeight;
-            if (rowHeight > height)
-              height = rowHeight;
-          });
-          rowNodes.forEach(function (rowNode) {
-            if (!rowNode) return;
-            setRowHeight(rowNode, height, true);
-          });
-          areaHeight += height;
         });
-        if ((O$.isChrome() || O$.isSafari()) && O$.isQuirksMode())
-          section._scrollingAreas.forEach(function (area) {
-            O$.setElementHeight(area._table, areaHeight);
-          });
-
-
-        if (assignCellHeights) {
-          // setting row height is not enough for Chrome and Safari, setting cell heights solves this issue
-          for (var rowIndex = 0, rowCount = rows.length; rowIndex < rowCount; rowIndex++) {
-            var row = rows[rowIndex];
-            var artificialRow = !row.nodeName || row.nodeName.toUpperCase() != "TR";
-            if (!artificialRow) continue;
-            row._cells.forEach(function (cell) {
-              var rowSpan = cell.rowSpan ? cell.rowSpan : 1;
-              var cellHeight = 0;
-              for (var i = rowIndex; i < rowIndex + rowSpan; i++) {
-                cellHeight += rows[i].__height;
-              }
-              O$.setElementHeight(cell, cellHeight);
-            });
-
-          }
-        }
-
-
       });
     };
     var delayUnderIE = O$.isExplorer() && !(O$.isExplorer8() && O$.isStrictMode());
