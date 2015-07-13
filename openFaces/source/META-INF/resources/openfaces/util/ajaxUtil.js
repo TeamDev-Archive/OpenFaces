@@ -124,6 +124,8 @@ O$.UPDATE_TYPE_INITIALIZATION = "initialization";
 O$.TEXT_RESPONSE_PREFIX = "_openfaces_ajax_response_prefix_";
 O$.TEXT_RESPONSE_SUFFIX = "_openfaces_ajax_response_suffix_";
 
+var url;
+
 window.OpenFaces.Ajax = {
   _ajaxEndHandlers:[],
   _addAjaxEndHandler:function (handler) {
@@ -456,7 +458,7 @@ O$.sendAjaxRequest = function (render, args) {
   ajaxObject._completionCallback = args.onajaxend;
   ajaxObject._requestedRender = render;
 
-  var url = O$.Ajax._ajaxRequestUrl || submittedForm.action;
+  url = O$.Ajax._ajaxRequestUrl || submittedForm.action;
   ajaxObject._request.open("POST", url, true);
   ajaxObject._request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
   ajaxObject._request.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT");
@@ -805,34 +807,9 @@ O$.AjaxObject = function (render) {
     try {
       //set flag - ajax update in progress
       document._of_page_is_already_initialized = true;
-      if (request.responseXML) {
-        var responseXML = request.responseXML;
+      var $scope = this;
+      parseDomXML($scope, request);
 
-        //TODO: for huge xml responses some versions of IE can't automaticly parse XML
-        if (O$.isExplorer && responseXML && !responseXML.firstChild) {
-          var originalResponseText = request.responseText;
-
-          if (window.DOMParser) {
-            var parser = new DOMParser();
-            responseXML = parser.parseFromString(originalResponseText, 'text/xml');
-          } else {
-            if (O$.isIEDocMode8()) {
-              responseXML = new ActiveXObject("Msxml2.DOMDocument.6.0");
-            } else {
-              responseXML = new ActiveXObject("Microsoft.XMLDOM");
-            }
-            responseXML.async = false;
-            responseXML.loadXML(originalResponseText);
-          }
-        }
-
-        this._jsIncludes = responseXML.getElementsByTagName(O$.TAG_AJAX_SCRIPT);
-        this._updatables = responseXML.getElementsByTagName(O$.TAG_AJAX_UPDATABLE);
-        this._styles = responseXML.getElementsByTagName(O$.TAG_AJAX_STYLE);
-        this._ajaxResult = responseXML.getElementsByTagName(O$.TAG_AJAX_RESULT);
-        this._validationError = responseXML.getElementsByTagName(O$.TAG_VALIDATION_ERROR);
-        this._cssFiles = responseXML.getElementsByTagName(O$.TAG_AJAX_CSS);
-      }
       if ((!this._updatables || this._updatables.length == 0) && (!this._ajaxResult || this._ajaxResult.length == 0)) {
         var responseText = request.responseText;
         var startIndex = responseText.indexOf(O$.TEXT_RESPONSE_PREFIX);
@@ -926,6 +903,80 @@ O$.AjaxObject = function (render) {
 
     document._of_page_is_already_initialized = null;
   };
+
+  function parseDomXML($scope, request) {
+    if (request.responseXML) {
+      var responseXML = request.responseXML;
+      var str
+      //TODO: for huge xml responses some versions of IE can't automaticly parse XML
+      if (O$.isExplorer && responseXML && !responseXML.firstChild) {
+        var originalResponseText = request.responseText;
+        /*originalResponseText = originalResponseText.replace(/\<\?xml.*\?\>\r\n|\r|\n/g, '');*/
+
+        str = str.substring(0, str.indexOf("\<updatable")) +
+                str.substring(str.indexOf("\<updatable"), str.indexOf("value=") + 7) +
+                "someText\" " +
+                str.substring(str.indexOf("scripts="), str.indexOf("scripts=") + 9) + "someText2\"/\>" +
+                str.substring(str.indexOf("/\>\<script") + 2);
+
+        if (window.DOMParser) {
+          responseXML = new DOMParser().parseFromString(str, 'text/xml');
+        } else {
+          responseXML = new ActiveXObject("Microsoft.XMLDOM");
+          responseXML.async = false;
+          responseXML.loadXML(str);
+
+        }
+
+
+      }
+      str = request.responseText;
+      var parserUpdateTable = [];
+      str = str.substring(str.indexOf("\<updatable"), str.indexOf("/\>\<") + 2);
+      var updateTableObj = {};
+      if (str.indexOf("type=") != -1) {
+        var typeStr = str.substring(str.indexOf("type=") + 6);
+        typeStr = typeStr.substring(0, typeStr.indexOf(" ") - 1);
+        updateTableObj.type = typeStr;
+      }
+      if (str.indexOf("id=") != -1) {
+        var idStr = str.substring(str.indexOf("id=") + 4);
+        idStr = idStr.substring(0, idStr.indexOf(" ") - 1);
+        updateTableObj.id = idStr;
+      }
+      if (str.indexOf("value=") != -1) {
+        var valueStr = str.substring(str.indexOf("value=") + 7);
+        valueStr = valueStr.substring(0, valueStr.indexOf("\" scripts=\"") - 1);
+        valueStr = valueStr.replace(/&lt;/g, "\<");
+        valueStr = valueStr.replace(/&quot;/g, "\"");
+        valueStr = valueStr.replace(/&gt;/g, "\>");
+        valueStr  = valueStr .replace(/&#xA;/g, "\t\n");
+        updateTableObj.value = valueStr;
+      }
+      if (str.indexOf("scripts=") != -1) {
+        var scriptsStr = str.substring(str.indexOf("scripts=") + 9, str.length - 3);
+        scriptsStr = scriptsStr.replace(/&lt;/g, "\<");
+        scriptsStr = scriptsStr.replace(/&quot;/g, "\"");
+        scriptsStr = scriptsStr.replace(/&gt;/g, "\>");
+        scriptsStr = scriptsStr.replace(/&#xA;/g, "\t\n");
+        console.log(scriptsStr)
+        updateTableObj.scripts = scriptsStr;
+      }
+      /*
+       &#xA;
+       updateTableObj.tagName = "updatable";*/
+      parserUpdateTable.push(updateTableObj);
+      $scope._jsIncludes = responseXML.getElementsByTagName(O$.TAG_AJAX_SCRIPT);
+      $scope._updatables = parserUpdateTable;
+      /* $scope._updatables = responseXML.getElementsByTagName(O$.TAG_AJAX_UPDATABLE);*/
+      $scope._styles = responseXML.getElementsByTagName(O$.TAG_AJAX_STYLE);
+      $scope._ajaxResult = responseXML.getElementsByTagName(O$.TAG_AJAX_RESULT);
+      $scope._validationError = responseXML.getElementsByTagName(O$.TAG_VALIDATION_ERROR);
+      $scope._cssFiles = responseXML.getElementsByTagName(O$.TAG_AJAX_CSS);
+    }
+
+  }
+
   this._processUpdatesWhenReady = function () {
     try {
       var jsIncludes = this._jsIncludes;
@@ -1155,6 +1206,7 @@ O$.AjaxObject = function (render) {
   };
 
 }
+
 ;
 
 /*
