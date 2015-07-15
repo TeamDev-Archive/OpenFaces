@@ -80,7 +80,6 @@ class AjaxResponse {
     private AjaxSavedStateIdxHolder stateIdxHolder;
 
     private static final String XML_CONTENT_TYPE = "text/xml;charset=UTF-8";
-    private static final String XML_CONTENT_LENGHT = "content-length";
     private static final String HTML_CONTENT_TYPE = "text/html;charset=UTF-8";
 
     public AjaxResponse() {
@@ -527,7 +526,8 @@ class AjaxResponse {
             elem.setAttribute("type", type);
             if (data != null)
                 elem.setAttribute("data", data.toString());
-
+            if (scripts != null)
+                elem.setAttribute("scripts", scripts);
 
             // dividing response onto chunks is required because of IE8 issue where placing more than ~550K+ inside of
             // one XML node resulted in the Ajax response being interpreted as an empty(!) one for some reason, and 
@@ -548,14 +548,13 @@ class AjaxResponse {
                 chunkElement.setAttribute("value", chunk);
                 elem.addContent(chunkElement);
             }
-            if (scripts != null)
-                elem.setAttribute("scripts", scripts);
             return elem;
         }
 
         private static Element createScript(String value) {
             Element elem = new Element(TAG_AJAX_SCRIPT);
             elem.setAttribute("value", value);
+            elem.setAttribute("type", "text/javascript");
             return elem;
         }
 

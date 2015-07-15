@@ -843,20 +843,23 @@ O$.AjaxObject = function (render) {
         this._exceptionMessage = responseObj[O$.TAG_AJAX_EXCEPTION_MESSAGE];
       }
       this._ajaxResult = this._ajaxResult[0];
-      var ajaxResultStr = this._ajaxResult.tagName ? this._ajaxResult.getAttribute("value") : this._ajaxResult.value;
+      var ajaxResultStr = this._ajaxResult.tagName || this._ajaxResult.getAttribute("value") || this._ajaxResult.value || this._ajaxResult;
       try {
         var ajaxResult;
         eval("ajaxResult = " + ajaxResultStr);
-        this._ajaxResult = ajaxResult;
+        if (ajaxResult) {
+          this._ajaxResult = ajaxResult;
+        }
       } catch (e) {
         this._ajaxResult = ajaxResultStr;
       }
 
       this._validationError = this._validationError[0];
       var validationErrorStr = this._validationError.tagName ? this._validationError.getAttribute("value") : this._validationError.value;
+      /*var validationErrorStr = this._validationError.tagName || this._validationError.getAttribute("value") || this._validationError.value || this._validationError;*/
       this._validationError = (validationErrorStr == "true");
 
-      var serverException = this._exception ? this._exception[0].value : undefined;
+      var serverException = this._exception && this._exception[0].value;
       if (serverException) {
         var exceptionMessage = serverException + ": " + this._exceptionMessage[0].value;
         O$.processErrorDuringAjaxRequest(exceptionMessage, this._targetIds, this);
@@ -907,74 +910,253 @@ O$.AjaxObject = function (render) {
   function parseDomXML($scope, request) {
     if (request.responseXML) {
       var responseXML = request.responseXML;
-      var str
-      //TODO: for huge xml responses some versions of IE can't automaticly parse XML
+
       if (O$.isExplorer && responseXML && !responseXML.firstChild) {
-        var originalResponseText = request.responseText;
-        /*originalResponseText = originalResponseText.replace(/\<\?xml.*\?\>\r\n|\r|\n/g, '');*/
-
-        str = str.substring(0, str.indexOf("\<updatable")) +
-                str.substring(str.indexOf("\<updatable"), str.indexOf("value=") + 7) +
-                "someText\" " +
-                str.substring(str.indexOf("scripts="), str.indexOf("scripts=") + 9) + "someText2\"/\>" +
-                str.substring(str.indexOf("/\>\<script") + 2);
-
         if (window.DOMParser) {
-          responseXML = new DOMParser().parseFromString(str, 'text/xml');
-        } else {
-          responseXML = new ActiveXObject("Microsoft.XMLDOM");
-          responseXML.async = false;
-          responseXML.loadXML(str);
-
+          responseXML = new DOMParser().parseFromString(request.responseText, 'text/xml');
         }
 
-
+        if(!responseXML || responseXML.parseError && responseXML.parseError.errorCode) {
+          responseXML = createNewActiveXDomDocument(request.responseText);
+        }
       }
-      str = request.responseText;
-      var parserUpdateTable = [];
-      str = str.substring(str.indexOf("\<updatable"), str.indexOf("/\>\<") + 2);
-      var updateTableObj = {};
-      if (str.indexOf("type=") != -1) {
-        var typeStr = str.substring(str.indexOf("type=") + 6);
-        typeStr = typeStr.substring(0, typeStr.indexOf(" ") - 1);
-        updateTableObj.type = typeStr;
-      }
-      if (str.indexOf("id=") != -1) {
-        var idStr = str.substring(str.indexOf("id=") + 4);
-        idStr = idStr.substring(0, idStr.indexOf(" ") - 1);
-        updateTableObj.id = idStr;
-      }
-      if (str.indexOf("value=") != -1) {
-        var valueStr = str.substring(str.indexOf("value=") + 7);
-        valueStr = valueStr.substring(0, valueStr.indexOf("\" scripts=\"") - 1);
-        valueStr = valueStr.replace(/&lt;/g, "\<");
-        valueStr = valueStr.replace(/&quot;/g, "\"");
-        valueStr = valueStr.replace(/&gt;/g, "\>");
-        valueStr  = valueStr .replace(/&#xA;/g, "\t\n");
-        updateTableObj.value = valueStr;
-      }
-      if (str.indexOf("scripts=") != -1) {
-        var scriptsStr = str.substring(str.indexOf("scripts=") + 9, str.length - 3);
-        scriptsStr = scriptsStr.replace(/&lt;/g, "\<");
-        scriptsStr = scriptsStr.replace(/&quot;/g, "\"");
-        scriptsStr = scriptsStr.replace(/&gt;/g, "\>");
-        scriptsStr = scriptsStr.replace(/&#xA;/g, "\t\n");
-        console.log(scriptsStr)
-        updateTableObj.scripts = scriptsStr;
-      }
-      /*
-       &#xA;
-       updateTableObj.tagName = "updatable";*/
-      parserUpdateTable.push(updateTableObj);
-      $scope._jsIncludes = responseXML.getElementsByTagName(O$.TAG_AJAX_SCRIPT);
-      $scope._updatables = parserUpdateTable;
-      /* $scope._updatables = responseXML.getElementsByTagName(O$.TAG_AJAX_UPDATABLE);*/
-      $scope._styles = responseXML.getElementsByTagName(O$.TAG_AJAX_STYLE);
-      $scope._ajaxResult = responseXML.getElementsByTagName(O$.TAG_AJAX_RESULT);
-      $scope._validationError = responseXML.getElementsByTagName(O$.TAG_VALIDATION_ERROR);
-      $scope._cssFiles = responseXML.getElementsByTagName(O$.TAG_AJAX_CSS);
+        $scope._updatables = responseXML.getElementsByTagName(O$.TAG_AJAX_UPDATABLE);
+        $scope._jsIncludes = responseXML.getElementsByTagName("scripts");
+        $scope._styles = responseXML.getElementsByTagName(O$.TAG_AJAX_STYLE);
+        $scope._ajaxResult = responseXML.getElementsByTagName(O$.TAG_AJAX_RESULT);
+        $scope._validationError = responseXML.getElementsByTagName(O$.TAG_VALIDATION_ERROR);
+        $scope._cssFiles = responseXML.getElementsByTagName(O$.TAG_AJAX_CSS);
     }
 
+    function createNewActiveXDomDocument(str){
+      var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+      var ajaxResponseNode = xmlDoc.createElement('ajaxResponse');
+
+      var responseText = request.responseText;
+      appendChild(parseUpdateTable(xmlDoc, responseText));
+      appendChild(parseScriptsNode(xmlDoc, responseText));
+      parseAndAppendOuterScriptNodes(xmlDoc, ajaxResponseNode, responseText);
+      appendChild(parseAjaxStyle(xmlDoc, responseText));
+      appendChild(parseAjaxResult(xmlDoc, responseText));
+      appendChild(parseValidationError(xmlDoc, responseText));
+      appendChild(parseCssStyles(xmlDoc, responseText));
+
+      xmlDoc.appendChild(ajaxResponseNode);
+
+      function appendChild(child){
+        if (child){
+          ajaxResponseNode.appendChild(child);
+        }
+      }
+
+      return xmlDoc;
+    }
+
+    function parseUpdateTable(xmlDoc, str) {
+      var node;
+      var updateTableObj = {};
+
+      var startIndex = str.indexOf("\<updatable");
+      var endIndex = str.indexOf("<script");
+      str = str.substring(startIndex, endIndex);
+
+      if(str){
+        node = xmlDoc.createElement(O$.TAG_AJAX_UPDATABLE);
+      } else {
+        return null;
+      }
+
+      var typeStartIndex = str.indexOf("type=");
+      if (typeStartIndex != -1) {
+        var typeStr = str.substring(typeStartIndex + 6);
+        typeStr = typeStr.substring(0, typeStr.indexOf(" ") - 1);
+        node.setAttribute("type", typeStr);
+
+        updateTableObj.type = typeStr;
+      }
+
+      var idStartIndex = str.indexOf("id=");
+      if (idStartIndex != -1) {
+        var idStr = str.substring(idStartIndex + 4);
+        idStr = idStr.substring(0, idStr.indexOf(" ") - 1);
+        node.setAttribute("id", idStr);
+
+        updateTableObj.id = idStr;
+      }
+
+      var valueStartIndex = str.indexOf("value=");
+      if (valueStartIndex != -1) {
+        var valueStr = str.substring(valueStartIndex + 7);
+        valueStr = valueStr.substring(0, valueStr.indexOf("\"") - 1);
+
+        node.setAttribute("value", valueStr);
+        updateTableObj.value = valueStr;
+      }
+
+      var chunks = str.match(/\<valueChunk\b[\s\S]*?\/>/gm);
+      if(chunks){
+        chunks.forEach(function (value){
+          var subNode = xmlDoc.createElement("valueChunk");
+          var valueStr = value && value.substring(value.indexOf("value=") + 7);
+          if (valueStr) {
+            valueStr = valueStr.substring(0, valueStr.indexOf("\""));
+            subNode.setAttribute("value", valueStr);
+          }
+
+          node.appendChild(subNode);
+        });
+      }
+
+
+      if (str.indexOf("scripts=") != -1) {
+        var scriptsStr = str.substring(str.indexOf("scripts=") + 9, str.length - 3);
+        scriptsStr = scriptsStr.substring(0, scriptsStr.indexOf("\""));
+
+        node.setAttribute("scripts", scriptsStr);
+        updateTableObj.scripts = scriptsStr;
+      }
+
+      return node;
+    }
+    function parseScriptsNode(xmlDoc, responseText){
+      var scripts = responseText.match(/\<scripts\b[\s\S]*?\/>/gm);
+      var node;
+
+      if(scripts){
+        node = xmlDoc.createElement("scripts");
+      } else {
+        return null;
+      }
+
+      scripts.forEach(function(value){
+        var scriptNode = xmlDoc.createElement(O$.TAG_AJAX_SCRIPT);
+        var start = value && value.indexOf("type=");
+
+        var typeStr;
+        if (start > -1) {
+          typeStr = value.substring(start + 6);
+          typeStr = typeStr && typeStr.substring(0, typeStr.indexOf(" ") - 1);
+        }
+
+        typeStr = typeStr || "text/javascript";
+        scriptNode.setAttribute("type", typeStr);
+
+        var valueStr = value && value.substring(value.indexOf("value=") + 7);
+        if (valueStr) {
+          valueStr = valueStr.substring(0, valueStr.indexOf("\""));
+          scriptNode.setAttribute("value", valueStr);
+        }
+
+        node.appendChild(scriptNode);
+      });
+
+      return node;
+    }
+
+    function parseAndAppendOuterScriptNodes(xmlDoc, node, responseText){
+      var scripts = responseText.match(/\<script\b[\s\S]*?\/>/gm);
+      if(!scripts && !scripts[0]){
+        return null;
+      }
+
+      scripts.forEach(function(value){
+        var scriptNode = xmlDoc.createElement(O$.TAG_AJAX_SCRIPT);
+        var start = value && value.indexOf("type=");
+
+        var typeStr;
+        if (start > -1) {
+          typeStr = value.substring(start + 6);
+          typeStr = typeStr && typeStr.substring(0, typeStr.indexOf(" ") - 1);
+        }
+
+        typeStr = typeStr || "text/javascript";
+        scriptNode.setAttribute("type", typeStr);
+
+        var valueStr = value && value.substring(value.indexOf("value=") + 7);
+        if (valueStr) {
+          valueStr = valueStr.substring(0, valueStr.indexOf("\""));
+          scriptNode.setAttribute("value", valueStr);
+        }
+        node.appendChild(scriptNode);
+      });
+    }
+
+    function parseAjaxStyle(xmlDoc, responseText){
+      var node;
+      var str = responseText.match(/\<style\b[\s\S]*?\/>/gm);
+      str = str && str[0];
+
+      if(str && str[0]){
+        node = xmlDoc.createElement(O$.TAG_AJAX_STYLE)
+      } else {
+        return null;
+      }
+
+      var valueStr = str && str.substring(str.indexOf("value=") + 7);
+      if (valueStr) {
+        valueStr = valueStr.substring(0, valueStr.indexOf("\""));
+        node.setAttribute("value", valueStr);
+      }
+
+      return node;
+    }
+    function parseAjaxResult(xmlDoc, responseText){
+      var node;
+      var str = responseText.match(/\<ajaxResult\b[\s\S]*?\/>/gm);
+      str = str && str[0];
+
+      if(str){
+        node = xmlDoc.createElement(O$.TAG_AJAX_RESULT)
+      } else {
+        return null;
+      }
+
+      var valueStr = str && str.substring(str.indexOf("value=") + 7);
+      if (valueStr) {
+        valueStr = valueStr.substring(0, valueStr.indexOf("\""));
+        node.setAttribute("value", valueStr);
+      }
+
+      return node;
+    }
+    function parseValidationError(xmlDoc, responseText){
+      var node;
+      var str = responseText.match(/\<validationError\b[\s\S]*?\/>/gm);
+      str = str && str[0];
+
+      if(str){
+        node = xmlDoc.createElement(O$.TAG_VALIDATION_ERROR)
+      } else {
+        return null;
+      }
+
+      var valueStr = str && str.substring(str.indexOf("value=") + 7);
+      if (valueStr) {
+        valueStr = valueStr.substring(0, valueStr.indexOf("\""));
+        node.setAttribute("value", valueStr);
+      }
+
+      return node;
+    }
+    function parseCssStyles(xmlDoc, responseText){
+      var node;
+      var str = responseText.match(/\<css\b[\s\S]*?\/>/gm);
+      str = str && str[0];
+
+      if(str){
+        node = xmlDoc.createElement(O$.TAG_AJAX_CSS)
+      } else {
+        return null;
+      }
+
+      var valueStr = str && str && str.substring(str.indexOf("value=") + 7);
+      if (valueStr) {
+        valueStr = valueStr.substring(0, valueStr.indexOf("\""));
+        node.setAttribute("value", valueStr);
+      }
+
+      return node;
+    }
   }
 
   this._processUpdatesWhenReady = function () {
@@ -1055,6 +1237,17 @@ O$.AjaxObject = function (render) {
         updHTML = updHTML.replace(/&#38;/g, "&");
         updHTML = updHTML.replace(/&amp;/g, "&");
       }
+
+      updScripts = updScripts.replace(/&(lt|gt|quot);/g, function (m, p) {
+        switch(p){
+          case "lt": return "<";
+          case "gt": return ">";
+          case "quot": return '"';
+          case 'xA': return "\r\n";
+        }
+      });
+      updScripts = updScripts.replace(/&#xA;/g, "\r\n");
+
 
       if (updType == O$.UPDATE_TYPE_SIMPLE) {
         if (this._mode == "Expiration-Handling") {
