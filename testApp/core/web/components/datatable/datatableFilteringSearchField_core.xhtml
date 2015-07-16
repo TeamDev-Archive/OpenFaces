@@ -23,16 +23,20 @@
         <td class="container">
           <o:dataTable id="filterableDataTable_searchField"
                        var="filterable_searchField"
-                       useAjax="#{DataTableLoadingModeBean.useAjax}"
+                       rowKey="#{filterable_searchField.dateColumn}"
                        value="#{TestEventsBean.tableTestCollection}"
                        verticalGridLines="1px solid gray">
+              <o:multipleRowSelection rowDatas="#{TestEventsBean.selected}" />
+
             <o:column id="col_first"
                       style="padding: 10px 10px 10px 10px;">
               <f:facet name="header">
                 <h:outputText value="first column header" id="filterableDataTable_searchField_firstHeader"/>
               </f:facet>
               <f:facet name="subHeader">
-                <o:inputTextFilter id="filter1" expression="#{filterable_searchField.thirdColumn}"/>
+                <o:inputTextFilter id="filter1" expression="#{filterable_searchField.thirdColumn}">
+                    <a4j:support event="onchange" reRender="filterableDataTable_searchField"/>
+                </o:inputTextFilter>
               </f:facet>
               <h:outputText value="#{filterable_searchField.thirdColumn}" id="filterableDataTable_searchField_firstBody"/>
               <f:facet name="footer">

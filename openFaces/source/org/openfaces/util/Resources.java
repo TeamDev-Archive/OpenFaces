@@ -540,14 +540,14 @@ public class Resources {
             return;
         }
         if (jQueryMode.equals("embedded"))
-            registerJavascriptLibrary(context, internalURL(context, "util/jquery-1.4.2.min.js"));
+            registerJavascriptLibrary(context, internalURL(context, "util/jquery-1.11.3.min.js"));
             /* below are the official jQuery CDNs as referenced here: http://docs.jquery.com/Downloading_jQuery */
         else if (jQueryMode.equals("jquery"))
-            renderJSLinkIfNeeded(context, "http://code.jquery.com/jquery-1.4.2.min.js");
+            renderJSLinkIfNeeded(context, "http://code.jquery.com/jquery-1.11.3.min.js");
         else if (jQueryMode.equals("google"))
-            renderJSLinkIfNeeded(context, "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js");
+            renderJSLinkIfNeeded(context, "http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js");
         else if (jQueryMode.equals("microsoft"))
-            renderJSLinkIfNeeded(context, "http://ajax.microsoft.com/ajax/jquery/jquery-1.4.2.min.js");
+            renderJSLinkIfNeeded(context, "http://ajax.microsoft.com/ajax/jquery/jquery-1.11.3.min.js");
         else {
             if (!jQueryMode.startsWith("http"))
                 throw new FacesException("Invalid value for the " + PARAM_ORG_OPENFACES_JQUERY + " context parameter: \"" + jQueryMode + "\" ; It should either be one of the predefined values: none, embedded, jquery, google, microsoft, or be a URL string starting with \"http\". ");

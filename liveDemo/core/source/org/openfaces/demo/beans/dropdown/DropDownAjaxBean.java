@@ -12,9 +12,9 @@
 
 package org.openfaces.demo.beans.dropdown;
 
-import org.openfaces.util.Faces;
 import org.openfaces.demo.beans.datatable.CitiesDB;
 import org.openfaces.demo.beans.util.City;
+import org.openfaces.util.Faces;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -55,6 +55,21 @@ public class DropDownAjaxBean {
                 animals.add(new String(currentString.getBytes(), "UTF-8"));
             }
             reader.close();
+
+            /*File output = new File("animals1.txt");
+            output.createNewFile();
+            PrintWriter writer = new PrintWriter("animals1.txt", "UTF-8");
+
+            int counter = 1;
+
+            while(counter <= 5000){
+                for (String animal : animals) {
+                    writer.println(animal + "_" + counter);
+                    counter ++;
+                }
+            }
+
+            writer.close();*/
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

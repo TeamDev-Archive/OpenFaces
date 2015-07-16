@@ -290,7 +290,7 @@ public class MultipleRowSelection extends DataTableSelection {
     @Override
     public Object getFirstSelectedRowData(){
         List<Object> rowDatas = getRowDatas();
-        return rowDatas != null ? rowDatas.get(0) : null;
+        return rowDatas != null && !rowDatas.isEmpty() ? rowDatas.get(0) : null;
     }
 
     @Override

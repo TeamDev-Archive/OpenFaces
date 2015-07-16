@@ -31,6 +31,8 @@ public class TestEventsBean { // todo: this backing bean is used in many non eve
     private List list = new ArrayList();
     private List checkedList = new ArrayList();
 
+    private List<TestTableItem> selected;
+
     private TestTableItem selectedItem;
     private DataTable testTable = new DataTable();
     private List calendarSelectionList = new ArrayList();
@@ -89,6 +91,18 @@ public class TestEventsBean { // todo: this backing bean is used in many non eve
         dataTableMajorFeaturesTestCollection.add(new TestTableItem("id_8", "criterion_7,8,9", "criterion_3,6,9", "8"));
         dataTableMajorFeaturesTestCollection.add(new TestTableItem("id_9", "criterion_7,8,9", "criterion_2,5,8", "9"));
 
+    }
+
+    public List<TestTableItem> getSelected() {
+        if(selected == null){
+            selected = new ArrayList<TestTableItem>();
+        }
+
+        return selected;
+    }
+
+    public void setSelected(List<TestTableItem> selected) {
+        this.selected = selected;
     }
 
     public List<TestTableItem> getTableTestCollection() {

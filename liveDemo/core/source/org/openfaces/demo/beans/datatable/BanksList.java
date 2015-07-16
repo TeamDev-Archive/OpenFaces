@@ -12,219 +12,38 @@
 
 package org.openfaces.demo.beans.datatable;
 
-import org.openfaces.component.table.CSVTableDataFormatter;
-import org.openfaces.component.table.DataScope;
-import org.openfaces.component.table.DataTable;
 import org.openfaces.component.table.ExpansionState;
-import org.openfaces.demo.beans.util.FacesUtils;
-import org.openfaces.util.Faces;
 
-import javax.faces.event.ActionEvent;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Darya Shumilina
  */
 public class BanksList implements Serializable {
-
-    private List<Bank> allBanks = new ArrayList<Bank>();
-    private List<Bank> banks = new ArrayList<Bank>();
-    private int paginatorStyleSelectedIndex;
-    private List<PaginatorStyleItem> paginatorStyles = new ArrayList<PaginatorStyleItem>();
-    private Collection<State> bankStates;
-    private State selectedState;
     private ExpansionState expansionState;
+    private static final long serialVersionUID = -855625904411046277L;
+
+    private List<Employee> rows;
+    private List<Employee> selected;
+
+    private int rowSize = 100;
+
+    private int pageSize = 20;
+    private String buttonLabel = "Pagination to Scrollbar";
 
     public BanksList() {
-        paginatorStyleSelectedIndex = 0;
-
-        paginatorStyles.add(new PaginatorStyleItem(null, null, null, null, null, null, null, null, null));
-        paginatorStyles.add(new PaginatorStyleItem("../images/datatable/custom_paginator/inactive_first.gif",
-                "../images/datatable/custom_paginator/first.gif",
-                "../images/datatable/custom_paginator/inactive_next.gif",
-                "../images/datatable/custom_paginator/next.gif",
-                "../images/datatable/custom_paginator/inactive_prev.gif",
-                "../images/datatable/custom_paginator/prev.gif",
-                "../images/datatable/custom_paginator/inactive_last.gif",
-                "../images/datatable/custom_paginator/last.gif",
-                "background: white; border: 1px solid #005d96;"));
-
-        try {
-            InputStream resource = BanksList.class.getResourceAsStream("Banks.txt");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
-            String currentString;
-            int i = 0;
-            while (true) {
-                currentString = reader.readLine();
-                if (currentString == null) break;
-                String[] bankAttributes = currentString.split("\t");
-                String institutionName = new String(bankAttributes[0].getBytes(), "utf-8");
-                String certificateNumber = new String(bankAttributes[1].getBytes(), "utf-8");
-                String city = new String(bankAttributes[2].getBytes(), "utf-8");
-                String state = new String(bankAttributes[3].getBytes(), "utf-8");
-                String zip = new String(bankAttributes[4].getBytes(), "utf-8");
-                String country = new String(bankAttributes[5].getBytes(), "utf-8");
-                String averageAssets = new String(bankAttributes[6].getBytes(), "utf-8");
-                Bank bank = new Bank(institutionName.trim(), Integer.parseInt(certificateNumber.trim()), city.trim(), state.trim(),
-                        Integer.parseInt(zip.trim()), country.trim(), Integer.parseInt(averageAssets.replaceAll(",", "").trim()));
-                allBanks.add(bank);
-                if (i++ % 7 == 0)
-                    banks.add(bank);
-            }
-            reader.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        init();
     }
 
-
-    public List<Bank> getBanks() {
-        return banks;
+    public List<Employee> getSelected() {
+        return selected;
     }
 
-    public List<Bank> getAllBanks() {
-        return allBanks;
-    }
-
-    public void setAllBanks(List<Bank> allBanks) {
-        this.allBanks = allBanks;
-    }
-
-    public State getSelectedState() {
-        return selectedState;
-    }
-
-    public void setSelectedState(State selectedState) {
-        this.selectedState = selectedState;
-    }
-
-    public Collection<State> getBankStates() {
-        if (bankStates == null) {
-            Map<String, State> stateBanksMap = new HashMap<String, State>();
-            for (Bank bank : allBanks) {
-                String stateName = bank.getState().getDescription();
-                State state = stateBanksMap.get(stateName);
-                if (state == null) {
-                    state = new State(stateName);
-                    stateBanksMap.put(stateName, state);
-                }
-                state.getBanks().add(bank);
-            }
-            bankStates = stateBanksMap.values();
-        }
-        return bankStates;
-    }
-
-    public void selectState(ActionEvent event) {
-        String state = (String) FacesUtils.getEventParameter(event, "state");
-        if (state != null) {
-            for (State bankState : bankStates) {
-                if (bankState.getStateName().equals(state)) {
-                    selectedState = bankState;
-                }
-            }
-        }
-    }
-
-
-    public List<String> getAverageAssetsFilterValues() {
-        List<String> averageAssetsRange = new ArrayList<String>();
-        averageAssetsRange.add("< 50,000");
-        averageAssetsRange.add("50,000 \u2013 100,000");
-        averageAssetsRange.add("100,000 \u2013 200,000");
-        averageAssetsRange.add("200,000 \u2013 400,000");
-        averageAssetsRange.add("400,000 \u2013 800,000");
-        averageAssetsRange.add("800,000 \u2013 2,000,000");
-        averageAssetsRange.add("2,000,000 \u2013 10,000,000");
-        averageAssetsRange.add("10,000,000 \u2013 30,000,000");
-        return averageAssetsRange;
-    }
-
-    public String getAverageAssetsRange() {
-        Bank bank = Faces.var("bank", Bank.class);
-        int averageAsset = bank.getAverageAssets();
-        if (averageAsset <= 50000)
-            return "< 50,000";
-        if (averageAsset <= 100000)
-            return "50,000 \u2013 100,000";
-        if (averageAsset <= 200000)
-            return "100,000 \u2013 200,000";
-        if (averageAsset <= 400000)
-            return "200,000 \u2013 400,000";
-        if (averageAsset <= 800000)
-            return "400,000 \u2013 800,000";
-        if (averageAsset <= 2000000)
-            return "800,000 \u2013 2,000,000";
-        if (averageAsset <= 10000000)
-            return "2,000,000 \u2013 10,000,000";
-        return "10,000,000 \u2013 30,000,000";
-    }
-
-    public int getPaginatorStyleSelectedIndex() {
-        return paginatorStyleSelectedIndex;
-    }
-
-    public void setPaginatorStyleSelectedIndex(int paginatorStyleSelectedIndex) {
-        this.paginatorStyleSelectedIndex = paginatorStyleSelectedIndex;
-    }
-
-    public List<PaginatorStyleItem> getPaginatorStyles() {
-        return paginatorStyles;
-    }
-
-    public String getFirstDisabledImageUrl() {
-        PaginatorStyleItem currentStyleItem = paginatorStyles.get(paginatorStyleSelectedIndex);
-        return currentStyleItem.getFirstDisabledImageUrl();
-    }
-
-    public String getFirstImageUrl() {
-        PaginatorStyleItem currentStyleItem = paginatorStyles.get(paginatorStyleSelectedIndex);
-        return currentStyleItem.getFirstImageUrl();
-    }
-
-    public String getNextDisabledImageUrl() {
-        PaginatorStyleItem currentStyleItem = paginatorStyles.get(paginatorStyleSelectedIndex);
-        return currentStyleItem.getNextDisabledImageUrl();
-    }
-
-    public String getNextImageUrl() {
-        PaginatorStyleItem currentStyleItem = paginatorStyles.get(paginatorStyleSelectedIndex);
-        return currentStyleItem.getNextImageUrl();
-    }
-
-    public String getPreviousDisabledImageUrl() {
-        PaginatorStyleItem currentStyleItem = paginatorStyles.get(paginatorStyleSelectedIndex);
-        return currentStyleItem.getPreviousDisabledImageUrl();
-    }
-
-    public String getPreviousImageUrl() {
-        PaginatorStyleItem currentStyleItem = paginatorStyles.get(paginatorStyleSelectedIndex);
-        return currentStyleItem.getPreviousImageUrl();
-    }
-
-    public String getLastDisabledImageUrl() {
-        PaginatorStyleItem currentStyleItem = paginatorStyles.get(paginatorStyleSelectedIndex);
-        return currentStyleItem.getLastDisabledImageUrl();
-    }
-
-    public String getLastImageUrl() {
-        PaginatorStyleItem currentStyleItem = paginatorStyles.get(paginatorStyleSelectedIndex);
-        return currentStyleItem.getLastImageUrl();
-    }
-
-    public String getPageNumberFieldStyle() {
-        PaginatorStyleItem currentStyleItem = paginatorStyles.get(paginatorStyleSelectedIndex);
-        return currentStyleItem.getPageNumberFieldStyle();
+    public void setSelected(List<Employee> selected) {
+        this.selected = selected;
     }
 
     public ExpansionState getExpansionState() {
@@ -235,10 +54,117 @@ public class BanksList implements Serializable {
         this.expansionState = expansionState;
     }
 
-    public void export() {
-        Faces.component("form:banks", DataTable.class).export(
-                DataScope.DISPLAYED_ROWS,
-                new CSVTableDataFormatter());
+    private void init() {
+        if (rows == null) {
+            rows = new ArrayList<Employee>();
+
+            for (int i = 0; i < rowSize; i++) {
+                Employee e = new Employee();
+                e.setId(i);
+                e.setFirstName("FirstName_" + i);
+                e.setLastName("LastName_" + i);
+                rows.add(e);
+            }
+        }
     }
 
+    public List<Employee> getRows() {
+        init();
+        return rows;
+    }
+
+    public void setRows(List<Employee> rows) {
+        this.rows = rows;
+    }
+
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public String getRealPageSize() {
+        return String.valueOf(pageSize);
+    }
+
+    public void setRealPageSize(String pageSize) {
+        this.pageSize = Integer.parseInt(pageSize);
+    }
+
+
+    public String getButtonLabel() {
+        return buttonLabel;
+    }
+
+    public void setButtonLabel(String buttonLabel) {
+        this.buttonLabel = buttonLabel;
+    }
+
+    public void changeToScrollbar() {
+        System.out.println("Current PageSize: " + pageSize);
+        if (this.pageSize <= 20) {
+            this.pageSize = rowSize;
+            this.buttonLabel = "Scrollbar to Pagination";
+        } else {
+            this.pageSize = 20;
+            this.buttonLabel = "Pagination to Scrollbar";
+        }
+        System.out.println("Updated PageSize: " + pageSize);
+    }
+
+    public class Employee {
+
+        private int id = 0;
+        private String firstName = "";
+        private String lastName = "";
+        private String gender = "Male";
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+
+        public String getLastName() {
+            return lastName;
+        }
+
+        public void setLastName(String lastName) {
+            this.lastName = lastName;
+        }
+
+        public String getGender() {
+            return gender;
+        }
+
+        public void setGender(String gender) {
+            this.gender = gender;
+        }
+
+        public List<SelectItem> getGenders (){
+            final ArrayList<SelectItem> list = new ArrayList<SelectItem>();
+            list.add(new SelectItem("Male"));
+            list.add(new SelectItem("Female"));
+
+            return list;
+        }
+
+        public void setGenders(List<SelectItem> values){
+            //
+        }
+
+    }
 }

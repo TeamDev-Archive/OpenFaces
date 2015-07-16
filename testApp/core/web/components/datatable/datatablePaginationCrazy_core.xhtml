@@ -1,0 +1,513 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <br/>
+  
+    <a href="../../testPageIndex.jsf">Return to main testing page</a><br/><br/>
+
+    <br/>
+    <span style="font-weight:bold;">Use ajax:</span><br/>
+    <table cellpadding="0" cellspacing="5">
+      <tr>
+        <td class="header">Pagination</td>
+      </tr>
+      <tr>
+        <td class="container">
+            <o:ajaxSettings/>
+
+            <o:dataTable id="dt" align="center" bgcolor="white" pageSize="#{BanksList.pageSize}" var="employee" value="#{BanksList.rows}">
+                <o:scrolling horizontal="true" vertical="false"/>
+
+                <o:column style="width:100px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee ID" />
+                    </f:facet>
+                    <h:outputText value="#{employee.id}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee FirstName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.firstName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee LastName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.lastName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee Gender" />
+                    </f:facet>
+                    <o:dropDownField value="#{employee.gender}">
+                        <o:dropDownItem value="Male"/>
+                        <o:dropDownItem value="Female"/>
+                    </o:dropDownField>
+                </o:column>
+
+
+                <o:column style="width:100px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee ID" />
+                    </f:facet>
+                    <h:outputText value="#{employee.id}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee FirstName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.firstName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee LastName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.lastName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee Gender" />
+                    </f:facet>
+                    <o:dropDownField value="#{employee.gender}">
+                        <o:dropDownItem value="Male"/>
+                        <o:dropDownItem value="Female"/>
+                    </o:dropDownField>
+                </o:column>
+
+
+                <o:column style="width:100px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee ID" />
+                    </f:facet>
+                    <h:outputText value="#{employee.id}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee FirstName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.firstName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee LastName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.lastName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee Gender" />
+                    </f:facet>
+                    <o:dropDownField value="#{employee.gender}">
+                        <o:dropDownItem value="Male"/>
+                        <o:dropDownItem value="Female"/>
+                    </o:dropDownField>
+                </o:column>
+
+
+                <o:column style="width:100px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee ID" />
+                    </f:facet>
+                    <h:outputText value="#{employee.id}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee FirstName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.firstName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee LastName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.lastName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee Gender" />
+                    </f:facet>
+                    <o:dropDownField value="#{employee.gender}">
+                        <o:dropDownItem value="Male"/>
+                        <o:dropDownItem value="Female"/>
+                    </o:dropDownField>
+                </o:column>
+
+
+                <o:column style="width:100px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee ID" />
+                    </f:facet>
+                    <h:outputText value="#{employee.id}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee FirstName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.firstName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee LastName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.lastName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee Gender" />
+                    </f:facet>
+                    <o:dropDownField value="#{employee.gender}">
+                        <o:dropDownItem value="Male"/>
+                        <o:dropDownItem value="Female"/>
+                    </o:dropDownField>
+                </o:column>
+
+
+                <o:column style="width:100px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee ID" />
+                    </f:facet>
+                    <h:outputText value="#{employee.id}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee FirstName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.firstName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee LastName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.lastName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee Gender" />
+                    </f:facet>
+                    <o:dropDownField value="#{employee.gender}">
+                        <o:dropDownItem value="Male"/>
+                        <o:dropDownItem value="Female"/>
+                    </o:dropDownField>
+                </o:column>
+                <o:column style="width:100px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee ID" />
+                    </f:facet>
+                    <h:outputText value="#{employee.id}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee FirstName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.firstName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee LastName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.lastName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee Gender" />
+                    </f:facet>
+                    <o:dropDownField value="#{employee.gender}">
+                        <o:dropDownItem value="Male"/>
+                        <o:dropDownItem value="Female"/>
+                    </o:dropDownField>
+                </o:column>
+
+
+                <o:column style="width:100px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee ID" />
+                    </f:facet>
+                    <h:outputText value="#{employee.id}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee FirstName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.firstName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee LastName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.lastName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee Gender" />
+                    </f:facet>
+                    <o:dropDownField value="#{employee.gender}">
+                        <o:dropDownItem value="Male"/>
+                        <o:dropDownItem value="Female"/>
+                    </o:dropDownField>
+                </o:column>
+
+
+                <o:column style="width:100px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee ID" />
+                    </f:facet>
+                    <h:outputText value="#{employee.id}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee FirstName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.firstName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee LastName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.lastName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee Gender" />
+                    </f:facet>
+                    <o:dropDownField value="#{employee.gender}">
+                        <o:dropDownItem value="Male"/>
+                        <o:dropDownItem value="Female"/>
+                    </o:dropDownField>
+                </o:column>
+
+
+                <o:column style="width:100px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee ID" />
+                    </f:facet>
+                    <h:outputText value="#{employee.id}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee FirstName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.firstName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee LastName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.lastName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee Gender" />
+                    </f:facet>
+                    <o:dropDownField value="#{employee.gender}">
+                        <o:dropDownItem value="Male"/>
+                        <o:dropDownItem value="Female"/>
+                    </o:dropDownField>
+                </o:column>
+
+
+                <o:column style="width:100px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee ID" />
+                    </f:facet>
+                    <h:outputText value="#{employee.id}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee FirstName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.firstName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee LastName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.lastName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee Gender" />
+                    </f:facet>
+                    <o:dropDownField value="#{employee.gender}">
+                        <o:dropDownItem value="Male"/>
+                        <o:dropDownItem value="Female"/>
+                    </o:dropDownField>
+                </o:column>
+
+
+                <o:column style="width:100px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee ID" />
+                    </f:facet>
+                    <h:outputText value="#{employee.id}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee FirstName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.firstName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee LastName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.lastName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee Gender" />
+                    </f:facet>
+                    <o:dropDownField value="#{employee.gender}">
+                        <o:dropDownItem value="Male"/>
+                        <o:dropDownItem value="Female"/>
+                    </o:dropDownField>
+                </o:column>
+                <o:column style="width:100px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee ID" />
+                    </f:facet>
+                    <h:outputText value="#{employee.id}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee FirstName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.firstName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee LastName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.lastName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee Gender" />
+                    </f:facet>
+                    <o:dropDownField value="#{employee.gender}">
+                        <o:dropDownItem value="Male"/>
+                        <o:dropDownItem value="Female"/>
+                    </o:dropDownField>
+                </o:column>
+
+
+                <o:column style="width:100px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee ID" />
+                    </f:facet>
+                    <h:outputText value="#{employee.id}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee FirstName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.firstName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee LastName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.lastName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee Gender" />
+                    </f:facet>
+                    <o:dropDownField value="#{employee.gender}">
+                        <o:dropDownItem value="Male"/>
+                        <o:dropDownItem value="Female"/>
+                    </o:dropDownField>
+                </o:column>
+
+
+                <o:column style="width:100px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee ID" />
+                    </f:facet>
+                    <h:outputText value="#{employee.id}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee FirstName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.firstName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee LastName" />
+                    </f:facet>
+                    <h:inputText value="#{employee.lastName}" />
+                </o:column>
+
+                <o:column style="width:180px">
+                    <f:facet name="header">
+                        <h:outputText value="Employee Gender" />
+                    </f:facet>
+                    <o:dropDownField value="#{employee.gender}">
+                        <o:dropDownItem value="Male"/>
+                        <o:dropDownItem value="Female"/>
+                    </o:dropDownField>
+                </o:column>
+
+                <f:facet name="below">
+                    <o:dataTablePaginator id="paginator" showIfOnePage="true"/>
+                </f:facet>
+
+            </o:dataTable>
+
+            <br></br> <br></br> <br></br>
+
+            <o:commandButton value="#{BanksList.buttonLabel}" action="#{BanksList.changeToScrollbar}" render="dt"/>
+        </td>
+      </tr>
+    </table>
+  
+</div>

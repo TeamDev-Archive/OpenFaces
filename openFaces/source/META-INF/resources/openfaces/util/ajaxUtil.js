@@ -956,9 +956,8 @@ O$.AjaxObject = function (render) {
       var node;
       var updateTableObj = {};
 
-      var startIndex = str.indexOf("\<updatable");
-      var endIndex = str.indexOf("<script");
-      str = str.substring(startIndex, endIndex);
+      str = request.responseText.match(/\<updatable\s\S*(.*)(<\/updatable>|<\/>)/gm);
+      str = str && str[0];
 
       if(str){
         node = xmlDoc.createElement(O$.TAG_AJAX_UPDATABLE);
@@ -984,11 +983,15 @@ O$.AjaxObject = function (render) {
         updateTableObj.id = idStr;
       }
 
-      var valueStartIndex = str.indexOf("value=");
-      if (valueStartIndex != -1) {
-        var valueStr = str.substring(valueStartIndex + 7);
-        valueStr = valueStr.substring(0, valueStr.indexOf("\"") - 1);
+      var valueStr = str.match(/value="(.*?)"/gm);
+      if (valueStr) {
+        valueStr = valueStr && valueStr[0];
 
+        var valueStartIndex = valueStr.indexOf("value=");
+        valueStr = valueStr.substring(valueStartIndex + 7);
+        valueStr = valueStr.substring(0, valueStr.indexOf("\""));
+
+        valueStr = replaceSymbols(valueStr);
         node.setAttribute("value", valueStr);
         updateTableObj.value = valueStr;
       }
@@ -997,9 +1000,14 @@ O$.AjaxObject = function (render) {
       if(chunks){
         chunks.forEach(function (value){
           var subNode = xmlDoc.createElement("valueChunk");
-          var valueStr = value && value.substring(value.indexOf("value=") + 7);
+
+          var valueStr = value.match(/value="(.*?)"/gm);
+          valueStr = valueStr && valueStr[0];
           if (valueStr) {
+            valueStr = valueStr.substring(valueStr.indexOf("value=") + 7);
             valueStr = valueStr.substring(0, valueStr.indexOf("\""));
+
+            valueStr = replaceSymbols(valueStr);
             subNode.setAttribute("value", valueStr);
           }
 
@@ -1007,11 +1015,11 @@ O$.AjaxObject = function (render) {
         });
       }
 
-
       if (str.indexOf("scripts=") != -1) {
         var scriptsStr = str.substring(str.indexOf("scripts=") + 9, str.length - 3);
         scriptsStr = scriptsStr.substring(0, scriptsStr.indexOf("\""));
 
+        scriptsStr = replaceSymbols(scriptsStr);
         node.setAttribute("scripts", scriptsStr);
         updateTableObj.scripts = scriptsStr;
       }
@@ -1157,6 +1165,19 @@ O$.AjaxObject = function (render) {
 
       return node;
     }
+
+    function replaceSymbols(str){
+      str = str.replace(/&#xA;/g, "\r\n");
+      str = str.replace(/&(lt|gt|quot);/g, function (m, p) {
+        switch(p){
+          case "lt": return "<";
+          case "gt": return ">";
+          case "quot": return '"';
+          case 'xA': return "\r\n";
+        }
+      });
+      return str;
+    }
   }
 
   this._processUpdatesWhenReady = function () {
@@ -1237,17 +1258,6 @@ O$.AjaxObject = function (render) {
         updHTML = updHTML.replace(/&#38;/g, "&");
         updHTML = updHTML.replace(/&amp;/g, "&");
       }
-
-      updScripts = updScripts.replace(/&(lt|gt|quot);/g, function (m, p) {
-        switch(p){
-          case "lt": return "<";
-          case "gt": return ">";
-          case "quot": return '"';
-          case 'xA': return "\r\n";
-        }
-      });
-      updScripts = updScripts.replace(/&#xA;/g, "\r\n");
-
 
       if (updType == O$.UPDATE_TYPE_SIMPLE) {
         if (this._mode == "Expiration-Handling") {
@@ -1412,6 +1422,11 @@ O$.replaceDocumentElements = function (htmlPortion, allowElementsWithNewIds) {
   var tempDiv = document.createElement("div");
   try {
     tempDiv.innerHTML = htmlPortion;
+    /*if(window.ActiveXObject && htmlPortion.length > 50000){
+      tempDiv.appendChild(createElement(htmlPortion));
+    } else {
+      tempDiv.innerHTML = htmlPortion;
+    }*/
   } catch (e) {
     O$.log("ERROR: O$.replaceDocumentElements: couldn't set innerHTML for tempDiv. error message: " + e.message + "; htmlPortion: " + htmlPortion);
 //    O$.logError("O$.replaceDocumentElements: couldn't set innerHTML for tempDiv. error message: " + e.message + "; htmlPortion: " + htmlPortion);
@@ -1445,6 +1460,18 @@ O$.replaceDocumentElements = function (htmlPortion, allowElementsWithNewIds) {
           O$.destroyAllFunctions(oldElement);
         }, 1);
       }
+    }
+
+    function createElement( str ) {
+      var frag = document.createDocumentFragment();
+
+      var elem = document.createElement('div');
+      elem.innerHTML = str;
+
+      while (elem.childNodes[0]) {
+        frag.appendChild(elem.childNodes[0]);
+      }
+      return frag;
     }
 
     parent.replaceChild(newElement, oldElement);
