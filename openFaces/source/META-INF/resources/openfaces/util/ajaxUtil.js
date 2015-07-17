@@ -965,6 +965,15 @@ O$.AjaxObject = function (render) {
         return null;
       }
 
+      var idStartIndex = str.indexOf("id=");
+      if (idStartIndex != -1) {
+        var idStr = str.substring(idStartIndex + 4);
+        idStr = idStr.substring(0, idStr.indexOf(" ") - 1);
+        node.setAttribute("id", idStr);
+
+        updateTableObj.id = idStr;
+      }
+
       var typeStartIndex = str.indexOf("type=");
       if (typeStartIndex != -1) {
         var typeStr = str.substring(typeStartIndex + 6);
@@ -974,13 +983,13 @@ O$.AjaxObject = function (render) {
         updateTableObj.type = typeStr;
       }
 
-      var idStartIndex = str.indexOf("id=");
-      if (idStartIndex != -1) {
-        var idStr = str.substring(idStartIndex + 4);
-        idStr = idStr.substring(0, idStr.indexOf(" ") - 1);
-        node.setAttribute("id", idStr);
+      if (str.indexOf("scripts=") != -1) {
+        var scriptsStr = str.substring(str.indexOf("scripts=") + 9, str.length - 3);
+        scriptsStr = scriptsStr.substring(0, scriptsStr.indexOf("\""));
 
-        updateTableObj.id = idStr;
+        scriptsStr = replaceSymbols(scriptsStr);
+        node.setAttribute("scripts", scriptsStr);
+        updateTableObj.scripts = scriptsStr;
       }
 
       var valueStr = str.match(/value="(.*?)"/gm);
@@ -1013,15 +1022,6 @@ O$.AjaxObject = function (render) {
 
           node.appendChild(subNode);
         });
-      }
-
-      if (str.indexOf("scripts=") != -1) {
-        var scriptsStr = str.substring(str.indexOf("scripts=") + 9, str.length - 3);
-        scriptsStr = scriptsStr.substring(0, scriptsStr.indexOf("\""));
-
-        scriptsStr = replaceSymbols(scriptsStr);
-        node.setAttribute("scripts", scriptsStr);
-        updateTableObj.scripts = scriptsStr;
       }
 
       return node;
@@ -1167,8 +1167,6 @@ O$.AjaxObject = function (render) {
     }
 
     function replaceSymbols(str){
-      str = str.replace(/&#xA;/g, "\r\n");
-      str = str.replace(/&#160;/g, "&nbsp;");
       str = str.replace(/&(lt|gt|quot);/g, function (m, p) {
         switch(p){
           case "lt": return "<";
@@ -1176,6 +1174,10 @@ O$.AjaxObject = function (render) {
           case "quot": return '"';
         }
       });
+      str = str.replace(/&#xA;/g, " ");
+      str = str.replace(/&apos;/g, "'");
+      str = str.replace(/&amp;/g, "&");
+      str = str.replace(/&#160;/g, "&nbsp;");
       return str;
     }
   }
@@ -1422,8 +1424,9 @@ O$.replaceDocumentElements = function (htmlPortion, allowElementsWithNewIds) {
   var tempDiv = document.createElement("div");
   try {
     tempDiv.innerHTML = htmlPortion;
-    /*if(window.ActiveXObject && htmlPortion.length > 50000){
-      tempDiv.appendChild(createElement(htmlPortion));
+    /*if(window.ActiveXObject && htmlPortion.length > 100000){
+      var textNode = document.createTextNode(htmlPortion);
+      tempDiv.appendChild(textNode);
     } else {
       tempDiv.innerHTML = htmlPortion;
     }*/
@@ -1461,19 +1464,6 @@ O$.replaceDocumentElements = function (htmlPortion, allowElementsWithNewIds) {
         }, 1);
       }
     }
-
-    function createElement( str ) {
-      var frag = document.createDocumentFragment();
-
-      var elem = document.createElement('div');
-      elem.innerHTML = str;
-
-      while (elem.childNodes[0]) {
-        frag.appendChild(elem.childNodes[0]);
-      }
-      return frag;
-    }
-
     parent.replaceChild(newElement, oldElement);
 
     if (O$.isOpera()) { // needed for Opera8.5 only (JSFC-1170)
