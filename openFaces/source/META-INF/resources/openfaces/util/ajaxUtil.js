@@ -1169,16 +1169,11 @@ O$.AjaxObject = function (render) {
     function replaceSymbols(str){
       str = str.replace(/&#xA;/g, "\r\n");
       str = str.replace(/&#160;/g, "&nbsp;");
-      str = str.replace(/&(lt|gt|quot|xA|xa|XA|Xa|160);/g, function (m, p) {
+      str = str.replace(/&(lt|gt|quot);/g, function (m, p) {
         switch(p){
           case "lt": return "<";
           case "gt": return ">";
           case "quot": return '"';
-          case 'xA':
-          case 'Xa':
-          case 'xa':
-          case 'XA': return "\r\n";
-          case '160': return "&nbsp;";
         }
       });
       return str;

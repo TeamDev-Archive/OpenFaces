@@ -95,7 +95,7 @@
 
         <o:scrolling horizontal="true" vertical="false"/>
 
-       <!-- <o:column style="width:100px"
+        <o:column style="width:100px"
                   sortingExpression="#{employee.id}">
             <f:facet name="header">
                 <h:outputText value="Employee ID" />
@@ -122,7 +122,6 @@
             </f:facet>
             <o:dropDownField value="#{employee.gender}">                 <f:selectItems value="#{employee.genders}"/>             </o:dropDownField>
         </o:column>
--->
         <o:column style="width:180px" sortingComparator="caseInsensitiveText">
             <f:facet name="header">
                 <h:outputText value="Employee Gender" />
@@ -141,7 +140,8 @@
                 <f:selectItems value="#{employee.genders}"/>
             </o:dropDownField>
         </o:column>
-        <!--        <o:column style="width:180px" sortingComparator="caseInsensitiveText">
+<!--
+                <o:column style="width:180px" sortingComparator="caseInsensitiveText">
                     <f:facet name="header">
                         <h:outputText value="Employee Gender" />
                     </f:facet>
@@ -300,7 +300,8 @@
                                 <h:outputText value="Employee ID" />
                             </f:facet>
                             <o:dropDownField value="#{employee.gender}">                 <f:selectItems value="#{employee.genders}"/>             </o:dropDownField>
-                        </o:column>-->
+                        </o:column>
+-->
 
 
 
