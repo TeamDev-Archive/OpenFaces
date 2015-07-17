@@ -1388,9 +1388,13 @@ O$.AjaxObject = function (render) {
 
     var tempDiv = O$.replaceDocumentElements(updHTML);
 
-    //todo: insert runtime js library invokation with all initial scripts (instead of scripts passing to ajax response) here.
-    //todo: replace O$.executeScripts() method with runtime js library invokation
-    O$.executeScripts(updScripts);
+    if(updScripts.length > 100000){
+      O$.nonRecursiveExecuteScripts(updScripts);
+    } else {
+      //todo: insert runtime js library invokation with all initial scripts (instead of scripts passing to ajax response) here.
+      //todo: replace O$.executeScripts() method with runtime js library invokation
+      O$.executeScripts(updScripts);
+    }
 
     O$.processStateUpdate(updId, updateStateHTML);
     if (O$.isExplorer()) {
@@ -1745,6 +1749,36 @@ O$.processStylesIncludes = function (styles) {
     O$.addCssRule(rule);
   }
 };
+
+O$.nonRecursiveExecuteScripts = function (source) {
+  if (!source || source.length == 0) return;
+
+  var scripts = source.match(/<script\b (.*?)>(.*?)\<\/script>/gm).map(function(val){
+    return val.replace(/<script\b (.*?)>/g,'').replace(/<\/script>/g);
+  });
+
+  for (var i = 0; i < scripts.length; i++) {
+    var script = scripts[i];
+    var idx1 = source.indexOf("<script");
+    var str;
+    if (idx1 > -1) {
+      str = source.substring(idx1);
+      idx1 = str.indexOf(">");
+      idx1 += 1;
+
+      var idx2 = str.indexOf("</script>");
+      script = str.substring(idx1, idx2);
+      script = script.replace(/<!--/g, "");
+      script = script.replace(/\/\/-->/g, "");
+      try {
+        window.eval(script);
+      } catch (e) {
+        alert("Exception '" + e.message + "' while executing script on Ajax request: \n" + script);
+        throw e;
+      }
+    }
+  }
+}
 
 O$.executeScripts = function (source) {
   if (!source || source.length == 0) return;
