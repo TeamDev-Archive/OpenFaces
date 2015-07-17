@@ -1479,7 +1479,7 @@ O$.replaceDocumentElements = function (htmlPortion, allowElementsWithNewIds) {
     oldElement = null;
   }
   return tempDiv;
-}
+};
 
 O$.processSessionExpiration = function (loc, ajaxRender, ajaxObject, isHandlingWasDelayed) {
 
@@ -1753,32 +1753,21 @@ O$.processStylesIncludes = function (styles) {
 O$.nonRecursiveExecuteScripts = function (source) {
   if (!source || source.length == 0) return;
 
-  var scripts = source.match(/<script\b (.*?)>(.*?)\<\/script>/gm).map(function(val){
-    return val.replace(/<script\b (.*?)>/g,'').replace(/<\/script>/g);
+  var scripts = source.match(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi).map(function (val) {
+    return val.replace(/<script[^>]+>/g, '').replace("</script>", '');
   });
 
   for (var i = 0; i < scripts.length; i++) {
     var script = scripts[i];
-    var idx1 = source.indexOf("<script");
-    var str;
-    if (idx1 > -1) {
-      str = source.substring(idx1);
-      idx1 = str.indexOf(">");
-      idx1 += 1;
-
-      var idx2 = str.indexOf("</script>");
-      script = str.substring(idx1, idx2);
-      script = script.replace(/<!--/g, "");
-      script = script.replace(/\/\/-->/g, "");
-      try {
-        window.eval(script);
-      } catch (e) {
-        alert("Exception '" + e.message + "' while executing script on Ajax request: \n" + script);
-        throw e;
-      }
+    try {
+      window.eval(script);
+    } catch (e) {
+      alert("Exception '" + e.message + "' while executing script on Ajax request: \n" + script);
+      throw e;
     }
   }
-}
+};
+
 
 O$.executeScripts = function (source) {
   if (!source || source.length == 0) return;
