@@ -1172,6 +1172,7 @@ O$.AjaxObject = function (render) {
         }
       });
       str = str.replace(/&#xA;/g, " ");
+      str = str.replace(/&#x9;/g, " ");
       str = str.replace(/&apos;/g, "'");
       str = str.replace(/&amp;/g, "&");
       str = str.replace(/&#160;/g, "&nbsp;");
