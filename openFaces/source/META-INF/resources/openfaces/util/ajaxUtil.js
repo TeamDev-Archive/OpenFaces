@@ -124,8 +124,6 @@ O$.UPDATE_TYPE_INITIALIZATION = "initialization";
 O$.TEXT_RESPONSE_PREFIX = "_openfaces_ajax_response_prefix_";
 O$.TEXT_RESPONSE_SUFFIX = "_openfaces_ajax_response_suffix_";
 
-var url;
-
 window.OpenFaces.Ajax = {
   _ajaxEndHandlers:[],
   _addAjaxEndHandler:function (handler) {
@@ -332,11 +330,11 @@ O$.sendAjaxRequest = function (render, args) {
   if (document.__sessionHasExpired
           && document.__componentsAjaxEventHandlerInitialized
           && render.every(function (element) {
-    return (document.__componentsAjaxEventHandlerInitialized[element]);
-  })
+            return (document.__componentsAjaxEventHandlerInitialized[element]);
+          })
           && render.every(function (element) {
-    return (document.__componentsAjaxEventHandlerInitialized[element]["onsessionexpired"]);
-  })) {
+            return (document.__componentsAjaxEventHandlerInitialized[element]["onsessionexpired"]);
+          })) {
     if (O$.processSessionExpiration(document.__sessionReloadLocation, render, null, true)) {
       if (args.onerror) {
         args.onerror();
@@ -458,7 +456,7 @@ O$.sendAjaxRequest = function (render, args) {
   ajaxObject._completionCallback = args.onajaxend;
   ajaxObject._requestedRender = render;
 
-  url = O$.Ajax._ajaxRequestUrl || submittedForm.action;
+  var url = O$.Ajax._ajaxRequestUrl || submittedForm.action;
   ajaxObject._request.open("POST", url, true);
   ajaxObject._request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
   ajaxObject._request.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT");
@@ -843,7 +841,7 @@ O$.AjaxObject = function (render) {
         this._exceptionMessage = responseObj[O$.TAG_AJAX_EXCEPTION_MESSAGE];
       }
       this._ajaxResult = this._ajaxResult[0];
-      var ajaxResultStr = this._ajaxResult.tagName || this._ajaxResult.getAttribute("value") || this._ajaxResult.value || this._ajaxResult;
+      var ajaxResultStr = this._ajaxResult.tagName ? this._ajaxResult.getAttribute("value") : this._ajaxResult.value;
       try {
         var ajaxResult;
         eval("ajaxResult = " + ajaxResultStr);
@@ -856,7 +854,6 @@ O$.AjaxObject = function (render) {
 
       this._validationError = this._validationError[0];
       var validationErrorStr = this._validationError.tagName ? this._validationError.getAttribute("value") : this._validationError.value;
-      /*var validationErrorStr = this._validationError.tagName || this._validationError.getAttribute("value") || this._validationError.value || this._validationError;*/
       this._validationError = (validationErrorStr == "true");
 
       var serverException = this._exception && this._exception[0].value;
@@ -921,7 +918,7 @@ O$.AjaxObject = function (render) {
         }
       }
         $scope._updatables = responseXML.getElementsByTagName(O$.TAG_AJAX_UPDATABLE);
-        $scope._jsIncludes = responseXML.getElementsByTagName("scripts");
+        $scope._jsIncludes = responseXML.getElementsByTagName(O$.TAG_AJAX_SCRIPT);
         $scope._styles = responseXML.getElementsByTagName(O$.TAG_AJAX_STYLE);
         $scope._ajaxResult = responseXML.getElementsByTagName(O$.TAG_AJAX_RESULT);
         $scope._validationError = responseXML.getElementsByTagName(O$.TAG_VALIDATION_ERROR);
@@ -956,23 +953,13 @@ O$.AjaxObject = function (render) {
       var node;
       var updateTableObj = {};
 
-      var startIndex = str.indexOf("\<updatable");
-      var endIndex = str.indexOf("<script");
-      str = str.substring(startIndex, endIndex);
+      str = request.responseText.match(/\<updatable\s\S*(.*)(<\/updatable>|\/>)/gm);
+      str = str && str[0];
 
       if(str){
         node = xmlDoc.createElement(O$.TAG_AJAX_UPDATABLE);
       } else {
         return null;
-      }
-
-      var typeStartIndex = str.indexOf("type=");
-      if (typeStartIndex != -1) {
-        var typeStr = str.substring(typeStartIndex + 6);
-        typeStr = typeStr.substring(0, typeStr.indexOf(" ") - 1);
-        node.setAttribute("type", typeStr);
-
-        updateTableObj.type = typeStr;
       }
 
       var idStartIndex = str.indexOf("id=");
@@ -984,11 +971,33 @@ O$.AjaxObject = function (render) {
         updateTableObj.id = idStr;
       }
 
-      var valueStartIndex = str.indexOf("value=");
-      if (valueStartIndex != -1) {
-        var valueStr = str.substring(valueStartIndex + 7);
-        valueStr = valueStr.substring(0, valueStr.indexOf("\"") - 1);
+      var typeStartIndex = str.indexOf("type=");
+      if (typeStartIndex != -1) {
+        var typeStr = str.substring(typeStartIndex + 6);
+        typeStr = typeStr.substring(0, typeStr.indexOf(" ") - 1);
+        node.setAttribute("type", typeStr);
 
+        updateTableObj.type = typeStr;
+      }
+
+      if (str.indexOf("scripts=") != -1) {
+        var scriptsStr = str.substring(str.indexOf("scripts=") + 9, str.length - 3);
+        scriptsStr = scriptsStr.substring(0, scriptsStr.indexOf("\""));
+
+        scriptsStr = replaceSymbols(scriptsStr);
+        node.setAttribute("scripts", scriptsStr);
+        updateTableObj.scripts = scriptsStr;
+      }
+
+      var valueStr = str.match(/value="(.*?)"/gm);
+      if (valueStr) {
+        valueStr = valueStr && valueStr[0];
+
+        var valueStartIndex = valueStr.indexOf("value=");
+        valueStr = valueStr.substring(valueStartIndex + 7);
+        valueStr = valueStr.substring(0, valueStr.indexOf("\""));
+
+        valueStr = replaceSymbols(valueStr);
         node.setAttribute("value", valueStr);
         updateTableObj.value = valueStr;
       }
@@ -997,23 +1006,19 @@ O$.AjaxObject = function (render) {
       if(chunks){
         chunks.forEach(function (value){
           var subNode = xmlDoc.createElement("valueChunk");
-          var valueStr = value && value.substring(value.indexOf("value=") + 7);
+
+          var valueStr = value.match(/value="(.*?)"/gm);
+          valueStr = valueStr && valueStr[0];
           if (valueStr) {
+            valueStr = valueStr.substring(valueStr.indexOf("value=") + 7);
             valueStr = valueStr.substring(0, valueStr.indexOf("\""));
+
+            valueStr = replaceSymbols(valueStr);
             subNode.setAttribute("value", valueStr);
           }
 
           node.appendChild(subNode);
         });
-      }
-
-
-      if (str.indexOf("scripts=") != -1) {
-        var scriptsStr = str.substring(str.indexOf("scripts=") + 9, str.length - 3);
-        scriptsStr = scriptsStr.substring(0, scriptsStr.indexOf("\""));
-
-        node.setAttribute("scripts", scriptsStr);
-        updateTableObj.scripts = scriptsStr;
       }
 
       return node;
@@ -1157,6 +1162,21 @@ O$.AjaxObject = function (render) {
 
       return node;
     }
+
+    function replaceSymbols(str){
+      str = str.replace(/&(lt|gt|quot);/g, function (m, p) {
+        switch(p){
+          case "lt": return "<";
+          case "gt": return ">";
+          case "quot": return '"';
+        }
+      });
+      str = str.replace(/&#xA;/g, " ");
+      str = str.replace(/&apos;/g, "'");
+      str = str.replace(/&amp;/g, "&");
+      str = str.replace(/&#160;/g, "&nbsp;");
+      return str;
+    }
   }
 
   this._processUpdatesWhenReady = function () {
@@ -1237,17 +1257,6 @@ O$.AjaxObject = function (render) {
         updHTML = updHTML.replace(/&#38;/g, "&");
         updHTML = updHTML.replace(/&amp;/g, "&");
       }
-
-      updScripts = updScripts.replace(/&(lt|gt|quot);/g, function (m, p) {
-        switch(p){
-          case "lt": return "<";
-          case "gt": return ">";
-          case "quot": return '"';
-          case 'xA': return "\r\n";
-        }
-      });
-      updScripts = updScripts.replace(/&#xA;/g, "\r\n");
-
 
       if (updType == O$.UPDATE_TYPE_SIMPLE) {
         if (this._mode == "Expiration-Handling") {
@@ -1376,9 +1385,13 @@ O$.AjaxObject = function (render) {
 
     var tempDiv = O$.replaceDocumentElements(updHTML);
 
-    //todo: insert runtime js library invokation with all initial scripts (instead of scripts passing to ajax response) here.
-    //todo: replace O$.executeScripts() method with runtime js library invokation
-    O$.executeScripts(updScripts);
+    if(updScripts.length > 100000){
+      O$.nonRecursiveExecuteScripts(updScripts);
+    } else {
+      //todo: insert runtime js library invokation with all initial scripts (instead of scripts passing to ajax response) here.
+      //todo: replace O$.executeScripts() method with runtime js library invokation
+      O$.executeScripts(updScripts);
+    }
 
     O$.processStateUpdate(updId, updateStateHTML);
     if (O$.isExplorer()) {
@@ -1398,9 +1411,7 @@ O$.AjaxObject = function (render) {
     this._customProcessor(component, portionName, portionHTML, portionScripts, portionData);
   };
 
-}
-
-;
+};
 
 /*
  Replaces all elements in htmlPortion if they have an appropriate counterpart with the same Id in the document. All
@@ -1458,17 +1469,17 @@ O$.replaceDocumentElements = function (htmlPortion, allowElementsWithNewIds) {
     oldElement = null;
   }
   return tempDiv;
-}
+};
 
 O$.processSessionExpiration = function (loc, ajaxRender, ajaxObject, isHandlingWasDelayed) {
 
   if (ajaxRender) {
     if (ajaxRender.every(function (element) {
-      return !!OpenFaces.Ajax.Components[element];
-    })
+              return !!OpenFaces.Ajax.Components[element];
+            })
             && ajaxRender.every(function (element) {
-      return !!OpenFaces.Ajax.Components[ajaxRender].onsessionexpired;
-    })) {
+              return !!OpenFaces.Ajax.Components[ajaxRender].onsessionexpired;
+            })) {
       var sessionexpiredEvent = O$.createEvent("sessionexpired");
 
       try {
@@ -1521,11 +1532,11 @@ O$.processSessionExpiration = function (loc, ajaxRender, ajaxObject, isHandlingW
 O$.processErrorDuringAjaxRequest = function (errorMessage, ajaxRender, ajaxObject) {
   if (ajaxRender) {
     if (ajaxRender.every(function (element) {
-      return (OpenFaces.Ajax.Components[element]);
-    })
+              return (OpenFaces.Ajax.Components[element]);
+            })
             && ajaxRender.every(function (element) {
-      return (OpenFaces.Ajax.Components[ajaxRender].onerror);
-    })) {
+              return (OpenFaces.Ajax.Components[ajaxRender].onerror);
+            })) {
       var errorEvent = O$.createEvent("error");
       var result = false;
       try {
@@ -1728,6 +1739,25 @@ O$.processStylesIncludes = function (styles) {
     O$.addCssRule(rule);
   }
 };
+
+O$.nonRecursiveExecuteScripts = function (source) {
+  if (!source || source.length == 0) return;
+
+  var scripts = source.match(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi).map(function (val) {
+    return val.replace(/<script[^>]+>/g, '').replace("</script>", '');
+  });
+
+  for (var i = 0; i < scripts.length; i++) {
+    var script = scripts[i];
+    try {
+      window.eval(script);
+    } catch (e) {
+      alert("Exception '" + e.message + "' while executing script on Ajax request: \n" + script);
+      throw e;
+    }
+  }
+};
+
 
 O$.executeScripts = function (source) {
   if (!source || source.length == 0) return;
