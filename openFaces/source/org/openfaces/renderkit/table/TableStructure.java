@@ -85,7 +85,9 @@ public class TableStructure extends TableElement {
         scrolling = tableStyles.getScrolling();
         leftFixedCols = 0;
         rightFixedCols = 0;
-        if (scrolling != null && scrolling.isHorizontal()) {
+        boolean noDataMessageAllowed = isNoDataMessageAllowed(component);
+
+        if (scrolling != null && scrolling.isHorizontal() && !noDataMessageAllowed) {
             for (BaseColumn column : columns) {
                 if (!isFixedColumn(column))
                     break;
@@ -126,6 +128,11 @@ public class TableStructure extends TableElement {
         }  catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    private boolean isNoDataMessageAllowed(UIComponent component) {
+        return component instanceof AbstractTable
+                && ((AbstractTable)component).getNoDataMessageAllowed();
     }
 
     public static TableStructure getCurrentInstance(AbstractTable table) {
