@@ -181,6 +181,7 @@ public class TableBody extends TableSection {
             rows = rowsForAreas[1];
             rightRows = rowsForAreas[2];
         } else if (table.getNoDataMessageAllowed()) {
+//            fixedLeftColumns = noDataRows ? 0 : fixedLeftColumns;
             leftRows = fixedLeftColumns > 0 ? Collections.singletonList(createEmptyNoDataRow(table, fixedLeftColumns)) : null;
             rows = Collections.singletonList(createNoDataRow(context, stringWriter, allColCount - fixedLeftColumns - fixedRightColumns));
             rightRows = fixedRightColumns > 0 ? Collections.singletonList(createEmptyNoDataRow(table, fixedRightColumns)) : null;
