@@ -175,8 +175,8 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
 
         if (sizeStr != null) {
             String[] widthAndHeightArr = sizeStr.split(",");
-            int width = Integer.parseInt(widthAndHeightArr[0]);
-            int height = Integer.parseInt(widthAndHeightArr[1]);
+            double width = Double.parseDouble(widthAndHeightArr[0]);
+            double height = Double.parseDouble(widthAndHeightArr[1]);
             window.setWidth(width + "px");
             window.setHeight(height + "px");
         }
