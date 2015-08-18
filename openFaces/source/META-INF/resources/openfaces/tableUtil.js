@@ -2694,7 +2694,7 @@ O$.Tables = {
       }).forEach(function (area) {
                 if (!area) return;
                 if (area._spacer)
-                  O$.setElementSize(area._spacer, {width:30, height:1});
+                  O$.setElementSize(area._spacer, {width:0, height:1});
               });
       [table.body._leftScrollingArea, table.body._rightScrollingArea].forEach(function (area) {
         if (!area) return;
@@ -2702,7 +2702,9 @@ O$.Tables = {
       });
     }
 
-    accountForScrollersWidth();
+    if (scrollingDiv.scrollHeight > scrollingDiv.clientHeight) {
+      accountForScrollersWidth();
+    }
 
     function scrollToPosition() {
       var scrollPos = scrolling.position;
@@ -2787,7 +2789,7 @@ O$.Tables = {
         }
         column._tempWidth = colWidth;
       }
-      if (!scrolling || !scrolling.horizontal) {
+      if (!scrolling || scrolling.horizontal && firstInitialization) {
         if (column._relativeWidth || column._widthNotSpecified)
           relativeWidthColumns.push(column);
         else
@@ -2803,9 +2805,7 @@ O$.Tables = {
       // required to calculate relative width columns properly
       table._relayoutRelativeWidthColumns = true;
     }
-    if ((
-            !scrolling || (!scrolling.horizontal && !scrolling._widthAlignmentDisabled)
-            ) && (!(O$.isExplorer() && !tableWidth))) {
+    if ((!scrolling || scrolling.horizontal && firstInitialization || !scrolling._widthAlignmentDisabled) && (!(O$.isExplorer() && !tableWidth))) {
       var remainingWidth = tableWidth - nonRelativeWidth;
       if (remainingWidth > 0 && relativeWidthColumns.length > 0) {
         var unspecifiedWidthColCount = 0;

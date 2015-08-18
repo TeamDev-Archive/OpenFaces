@@ -2939,7 +2939,7 @@ O$.Table = {
   _initColumnResizing:function (tableId, retainTableWidth, minColWidth, resizeHandleWidth, columnParams, autoSaveState) {
     var thisRef = this;
     var args = arguments;
-    var table = O$(tableId)
+    var table = O$(tableId);
     var visibleParent = O$.isVisibleParentRecursive(table)
     O$.addLoadEvent(function () {
       if (!O$.isVisible(visibleParent) && visibleParent != null) {
@@ -3304,8 +3304,6 @@ O$.Table = {
 
       }
 
-      fixWidths();
-
       function updateResizeHandlePositions() {
         if (table._columns) {
           for (var i = 0, count = table._columns.length; i < count; i++) {
@@ -3349,6 +3347,8 @@ O$.Table = {
         O$.removeEventHandler(window, "resize", updateResizeHandlePositions);
         table.onscroll = null;
       });
+
+      fixWidths();
 
       table._fixFF3ColResizingIssue = function () { // See JSFC-3720
         if (!(O$.isMozillaFF3() && O$.isQuirksMode()))
