@@ -184,9 +184,7 @@ O$.Tables = {
     if (table._params.scrolling)
       O$.Tables._initScrolling(table);
 
-    var areas = [table.header, table.footer];
-    for (var i = 0; i < areas.length; i++) {
-      var area = areas[i];
+    [table.header, table.footer].forEach(function (area) {
       if (!area) return;
       function fixInputWidths(element) {
         if (element) O$.fixInputsWidthStrict(element);
@@ -196,7 +194,7 @@ O$.Tables = {
       fixInputWidths(area._leftScrollingArea && area._leftScrollingArea._rowContainer);
       fixInputWidths(area._centerScrollingArea && area._centerScrollingArea._rowContainer);
       fixInputWidths(area._rightScrollingArea && area._rightScrollingArea._rowContainer);
-    }
+    });
 
     table._insertRowsAfter = O$.Tables._insertRowsAfter;
     table._cellFromPoint = function (x, y, relativeToNearestContainingBlock, cachedDataContainer) {
@@ -336,7 +334,6 @@ O$.Tables = {
       else {
         var cells = [];
         var nodes = [newRow._leftRowNode, newRow._rowNode, newRow._rightRowNode];
-
         for (var k = 0; k < nodes.length; k++) {
           var rowNode = nodes[k];
           if (!rowNode) return;
@@ -458,12 +455,11 @@ O$.Tables = {
               }
               this._rows = this._tag ? O$.getChildNodesWithNames(this._tag, ["tr"]) : [];
               if (this._fakeRow) this._rows = this._rows.slice(1);
-              for (var i = 0; i < this._rows.length; i++) {
-                var row = this._rows[i];
+              this._rows.forEach(function (row) {
                 row._table = table;
                 row._index = i;
                 row._cells = row.cells;
-              }
+              });
               this._cellByCoords = function (coords) {
                 var row = this._rows[coords.row];
                 return row._cells[coords.cell];
@@ -680,13 +676,13 @@ O$.Tables = {
           var rows = this._getRows();
           for (var r = 0; r < rows.length; r++) {
             var row = rows[r];
-            function removeRow(row) {
-              if (row) row.parentNode.removeChild(row);
-            }
-
             removeRow(row._leftRowNode);
             removeRow(row._rowNode);
             removeRow(row._rightRowNode);
+
+            function removeRow(row) {
+              if (row) row.parentNode.removeChild(row);
+            }
           }
           this._rows = [];
 
@@ -695,9 +691,6 @@ O$.Tables = {
             table._params.cellStylesMap = {};
           }
         }
-
-
-
       };
       if (sectionTagName != "tbody" && section._getRows().length == 0)
         return null;
@@ -804,7 +797,6 @@ O$.Tables = {
         if (this._visible == visible)
           return;
         this._visible = visible;
-
         [this._leftRowNode, this._rowNode, this._rightRowNode].forEach(function (n) {
           if (!n) return;
           if (n.style.display) n.style.display = "";
@@ -2713,22 +2705,18 @@ O$.Tables = {
 
 
     function accountForScrollersWidth() {
-      var scrollingAreas = [table.header, table.footer].map(function (s) {
+      [table.header, table.footer].map(function (s) {
         return s && s._centerScrollingArea;
-      });
-      for (var i = 0; i < scrollingAreas.length; i++) {
-        var area = scrollingAreas[i];
-        if (!area) return;
-        if (area._spacer)
+      }).forEach(function (area) {
+                if (!area) return;
+                if (area._spacer)
           O$.setElementSize(area._spacer, {width: 30, height: 1});
-      }
-      var areas = [table.body._leftScrollingArea, table.body._rightScrollingArea];
-      for (var j = 0; j < areas.length; j++) {
-        var area = areas[j];
+              });
+      [table.body._leftScrollingArea, table.body._rightScrollingArea].forEach(function (area) {
         if (!area) return;
         O$.setElementSize(area._spacer, {width: 1, height: 30});
+      });
       }
-    }
 
     accountForScrollersWidth();
 
@@ -2740,19 +2728,15 @@ O$.Tables = {
 
 
     function markColumns() {
-      var sections = [table._leftArea, table._centerArea, table._rightArea];
-      for (var i = 0; i < sections.length; i++) {
-        var area = sections[i];
+      [table._leftArea, table._centerArea, table._rightArea].forEach(function (area) {
         if (!area) return;
-        var columns = area._columns;
-        for (var j = 0; j < columns.length; j++) {
-          var c = columns[j];
+        area._columns.forEach(function (c) {
           do {
             c._scrollingArea = area;
             c = c.parentColumn;
           } while (c);
-        }
-      }
+        });
+      });
     }
 
     markColumns();
@@ -2766,12 +2750,10 @@ O$.Tables = {
         if (width < 0)
           width = 0;
         table._topLevelScrollingDiv.style.width = width + "px";
-        var sections = [table.header, table.body, table.footer];
-        for (var i = 0; i < sections.length; i++) {
-          var section = sections[i];
+        [table.header, table.body, table.footer].forEach(function (section) {
           if (section && section._sectionTable)
             section._sectionTable.style.width = width + "px";
-        }
+        });
       }, [
         new O$.Timer("200"),
         resizeEventListener
@@ -2841,48 +2823,41 @@ O$.Tables = {
     if ((!scrolling || (!scrolling.horizontal && !scrolling._widthAlignmentDisabled))
             && (!(O$.isExplorer() && !tableWidth))) {
       var remainingWidth = tableWidth - nonRelativeWidth;
-      var relativeColumnsLength = relativeWidthColumns.length;
-      if (remainingWidth > 0 && relativeColumnsLength > 0) {
+      if (remainingWidth > 0 && relativeWidthColumns.length > 0) {
         var unspecifiedWidthColCount = 0;
         var totalSpecifiedWidth = 0;
-        for (var i = 0; i < relativeColumnsLength; i++) {
-          var c = relativeWidthColumns[i];
+        relativeWidthColumns.forEach(function (c) {
           if (!c._widthNotSpecified) {
             var relativeWidth = c.getDeclaredWidth(10000) / 100;
             c._tempWidth = relativeWidth;
             totalSpecifiedWidth += relativeWidth;
-          } else {
+          } else
             unspecifiedWidthColCount++;
-          }
-        }
-
+        });
         var unspecifiedWidth = 100 - totalSpecifiedWidth;
         var widthPerUnspecifiedWidthCol = unspecifiedWidthColCount ? (
                 unspecifiedWidth > 0
                         ? unspecifiedWidth / unspecifiedWidthColCount
                         : 20 / unspecifiedWidthColCount ) : 0;
         var relativeTotal = totalSpecifiedWidth + widthPerUnspecifiedWidthCol * unspecifiedWidthColCount;
-
-        for (var i = 0; i < relativeColumnsLength; i++) {
-          var c = relativeWidthColumns[i];
+        relativeWidthColumns.forEach(function (c) {
           c.setWidth(Math.floor(
-                  (c._widthNotSpecified ? widthPerUnspecifiedWidthCol : c._tempWidth) / relativeTotal * remainingWidth
+                  (c._widthNotSpecified ? widthPerUnspecifiedWidthCol : c._tempWidth)
+                  / relativeTotal * remainingWidth
           ));
-        }
+        });
       } else {
-        for (var i = 0; i < columns.length; i++) {
-          var c = columns[i];
+        columns.forEach(function (c) {
           var width = firstInitialization ? c._tempWidth : c._explicitWidth;
           c.setWidth(Math.floor((width / tblWidth) * tableWidth));
-        }
+        });
       }
       tblWidth = tableWidth;
     }
     if (firstInitialization) {
-      for (var i = 0; i < columns.length; i++) {
-        var column = columns[i];
+      columns.forEach(function (column) {
         if (!column._explicitWidth) column.setWidth(column._tempWidth);
-      }
+      });
     }
     return tblWidth;
   },
