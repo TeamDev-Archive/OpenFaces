@@ -67,9 +67,6 @@ O$.MultiPage = {
     });
 
     multiPage.doSetSelectedIndex = function(absoluteIndex) {
-      var timerName = "multiPage.doSetSelectedIndex clientId:" + clientId;
-      console.time(timerName);
-
       O$.setHiddenField(multiPage, clientId + "::index", absoluteIndex);
       var loadingMode = multiPage._loadingMode;
       var newPageContainer;
@@ -107,8 +104,6 @@ O$.MultiPage = {
         multiPage._changeCurrentPageContainer(newPageContainer);
       } else
         O$.assert(false, "tabSet.onchange - invalid loading mode: " + loadingMode);
-
-      console.timeEnd(timerName);
     };
 
     // relayout pane container

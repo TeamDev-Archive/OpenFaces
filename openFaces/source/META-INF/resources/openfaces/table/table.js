@@ -157,8 +157,6 @@ O$.Table = {
   },
 
   _init:function (tableId, initParams, useAjax, rolloverClass, apiInitializationFunctionName, deferredBodyLoading, rowMinHeight, focusable) {
-    var timerName = 'Init: ' + tableId;
-    console.time(timerName);
     var table = O$.initComponent(tableId, {rollover:rolloverClass}, {
       _useAjax:useAjax,
       _rowMinHeight: rowMinHeight,
@@ -167,13 +165,11 @@ O$.Table = {
         return this._showingMenuForColumn ? table._getColumn(this._showingMenuForColumn) : null;
       },
       _loadRows:function (completionCallback) {
-        console.time(timerName + " Load rows");
         O$.Ajax.requestComponentPortions(this.id, ["rows"], null, function (table, portionName, portionHTML, portionScripts, portionData) {
           if (portionName != "rows") throw "Unknown portionName: " + portionName;
           table.body._removeAllRows();
           O$.Table._acceptLoadedRows(table, portionName, portionHTML, portionScripts, portionData);
           if (completionCallback)
-            console.time(timerName + " Load rows");
             completionCallback();
         });
       },
@@ -281,8 +277,6 @@ O$.Table = {
       var focusControl = O$.createHiddenFocusElement(tableId, tabIndex);
       table.parentNode.insertBefore(focusControl, table);
     }
-
-    console.timeEnd(timerName);
   },
 
   _initApiFunctions:function (table) {

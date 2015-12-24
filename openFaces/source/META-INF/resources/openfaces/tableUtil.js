@@ -2361,8 +2361,6 @@ O$.Tables = {
   // -------------------------- TABLE SCROLLING
 
   _initScrolling:function (table) {
-
-    console.time("_initScrolling");
     var scrolling = table._params.scrolling;
     if (!scrolling)
       throw "O$.Tables._initScrolling can't be invoked on a non-scrollable table";
@@ -2637,8 +2635,6 @@ O$.Tables = {
 
     table._alignRowHeights = function () {
       if (!table._leftArea && !table._rightArea)  return;
-      var timerName = "table._alignRowHeights tableId=" + table.id;
-      console.time(timerName);
       O$.Tables._fixChromeCrashWithEmptyTR(table);
 
       var assignCellHeights = O$.isChrome() || O$.isSafari() || (O$.isExplorer() && O$.isStrictMode() && !O$.isExplorer8());
@@ -2696,7 +2692,6 @@ O$.Tables = {
           }
         }
       }
-      console.timeEnd(timerName);
     };
     var delayUnderIE = O$.isExplorer() && !(O$.isExplorer8() && O$.isStrictMode());
     if (!delayUnderIE)
@@ -2797,7 +2792,6 @@ O$.Tables = {
         });
       });
 
-    console.timeEnd("_initScrolling");
   },
 
   _alignTableColumns:function (colTags, table, firstInitialization, objectForSavingParams, scrolling, scrollerWidth) {

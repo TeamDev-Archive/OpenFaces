@@ -12,8 +12,6 @@
 
 O$.TabSet = {
   _init:function (tabSetId, tabIds, selectedIndex, placement, tabStylesParams, borderClassesParams, focusable, focusAreaClass, focusedClass, onchange) {
-    var timerName = "O$.TabSet._init " + tabSetId;
-    console.time(timerName);
     var tabSet = O$.initComponent(tabSetId, null, {
       _index:selectedIndex,
       _indexField:O$(tabSetId + "::selected"),
@@ -281,7 +279,5 @@ O$.TabSet = {
         O$.setStyleMappings(tab.childNodes[0], {focused:null});
       };
     }
-
-    console.timeEnd(timerName);
   }
 };
