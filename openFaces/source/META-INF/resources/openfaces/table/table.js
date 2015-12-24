@@ -157,6 +157,8 @@ O$.Table = {
   },
 
   _init:function (tableId, initParams, useAjax, rolloverClass, apiInitializationFunctionName, deferredBodyLoading, rowMinHeight, focusable) {
+    var timerName = 'Init: ' + tableId;
+    console.time(timerName);
     var table = O$.initComponent(tableId, {rollover:rolloverClass}, {
       _useAjax:useAjax,
       _rowMinHeight: rowMinHeight,
@@ -165,11 +167,13 @@ O$.Table = {
         return this._showingMenuForColumn ? table._getColumn(this._showingMenuForColumn) : null;
       },
       _loadRows:function (completionCallback) {
+        console.time(timerName + " Load rows");
         O$.Ajax.requestComponentPortions(this.id, ["rows"], null, function (table, portionName, portionHTML, portionScripts, portionData) {
           if (portionName != "rows") throw "Unknown portionName: " + portionName;
           table.body._removeAllRows();
           O$.Table._acceptLoadedRows(table, portionName, portionHTML, portionScripts, portionData);
           if (completionCallback)
+            console.time(timerName + " Load rows");
             completionCallback();
         });
       },
@@ -277,6 +281,8 @@ O$.Table = {
       var focusControl = O$.createHiddenFocusElement(tableId, tabIndex);
       table.parentNode.insertBefore(focusControl, table);
     }
+
+    console.timeEnd(timerName);
   },
 
   _initApiFunctions:function (table) {
@@ -437,11 +443,12 @@ O$.Table = {
         O$.extend(selectedItems, {
           _contains:function (anCellId) {
             var isContain = false;
-            selectedItems.forEach(function (cellId) {
+            for (var i = 0; i < selectedItems.length; i++) {
+              var cellId = selectedItems[i];
               if (anCellId[0] == cellId[0] && anCellId[1] == cellId[1]) {
                 isContain = true;
               }
-            });
+            }
             return isContain;
           }
         });
@@ -484,9 +491,9 @@ O$.Table = {
 
       getColumnsOrder:function () {
         var columnIds = [];
-        this._columns.forEach(function (column) {
-          columnIds.push(column.columnId);
-        });
+        for (var i = 0; i < this._columns.length; i++) {
+          columnIds.push(this._columns[i].columnId);
+        }
         return columnIds;
       },
 
@@ -2939,7 +2946,7 @@ O$.Table = {
   _initColumnResizing:function (tableId, retainTableWidth, minColWidth, resizeHandleWidth, columnParams, autoSaveState) {
     var thisRef = this;
     var args = arguments;
-    var table = O$(tableId);
+    var table = O$(tableId)
     var visibleParent = O$.isVisibleParentRecursive(table)
     O$.addLoadEvent(function () {
       if (!O$.isVisible(visibleParent) && visibleParent != null) {
@@ -3304,6 +3311,8 @@ O$.Table = {
 
       }
 
+      fixWidths();
+
       function updateResizeHandlePositions() {
         if (table._columns) {
           for (var i = 0, count = table._columns.length; i < count; i++) {
@@ -3347,8 +3356,6 @@ O$.Table = {
         O$.removeEventHandler(window, "resize", updateResizeHandlePositions);
         table.onscroll = null;
       });
-
-      fixWidths();
 
       table._fixFF3ColResizingIssue = function () { // See JSFC-3720
         if (!(O$.isMozillaFF3() && O$.isQuirksMode()))

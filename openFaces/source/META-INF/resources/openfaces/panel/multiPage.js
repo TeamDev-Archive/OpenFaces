@@ -67,6 +67,9 @@ O$.MultiPage = {
     });
 
     multiPage.doSetSelectedIndex = function(absoluteIndex) {
+      var timerName = "multiPage.doSetSelectedIndex clientId:" + clientId;
+      console.time(timerName);
+
       O$.setHiddenField(multiPage, clientId + "::index", absoluteIndex);
       var loadingMode = multiPage._loadingMode;
       var newPageContainer;
@@ -80,9 +83,12 @@ O$.MultiPage = {
             tempDiv.innerHTML = portionHTML;
             var newPageContainer = tempDiv.childNodes[0];
             var id = newPageContainer.id;
-            for (var i = 0; i < multiPageComponent._pagesContainer.childNodes.length; i++) {
-              if (multiPageComponent._pagesContainer.childNodes[i].id == id) {
-                multiPageComponent._pagesContainer.removeChild(multiPageComponent._pagesContainer.childNodes[i]);
+            var componentContainer = multiPageComponent._pagesContainer;
+            for (var i = 0; i < componentContainer.childNodes.length; i++) {
+              var childNode = componentContainer.childNodes[i];
+
+              if (childNode.id == id) {
+                componentContainer.removeChild(childNode);
               }
             }
             multiPageComponent._pagesContainer.appendChild(newPageContainer);
@@ -101,6 +107,8 @@ O$.MultiPage = {
         multiPage._changeCurrentPageContainer(newPageContainer);
       } else
         O$.assert(false, "tabSet.onchange - invalid loading mode: " + loadingMode);
+
+      console.timeEnd(timerName);
     };
 
     // relayout pane container
