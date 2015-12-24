@@ -1220,11 +1220,6 @@ if (!window.O$) {
   };
 
   O$.getChildNodesByClass = function (node, className, searchTopLevelOnly, excludeElementFromSearch) {
-    //var nodeList = node.querySelectorAll("." + className);
-    //if(nodeList && nodeList.length > 0){
-    //  return nodeList;
-    //}
-
     var result = [];
     var children = node.childNodes;
     for (var i = 0, count = children.length; i < count; i++) {
@@ -1243,11 +1238,6 @@ if (!window.O$) {
   };
 
   O$.getChildNodesWithNames = function (node, nodeNames) {
-    //var nodeList = node.querySelectorAll(nodeNames);
-    //if(nodeList && nodeList.length > 0){
-    //  return nodeList;
-    //}
-
     var selectedChildren = [];
     var children = node.childNodes;
     for (var i = 0, count = children.length; i < count; i++) {
@@ -3409,7 +3399,6 @@ if (!window.O$) {
         selector:resultSelector,
         declaration:resultDeclaration.cssText
       })
-
     }
 
   }
