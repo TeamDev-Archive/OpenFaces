@@ -17,6 +17,8 @@ O$.Window = {
   parent: "",
   
   _init: function (windowId, resizable, draggableByContent, minWidth, minHeight, desktopElementId, parentId) {
+    var  timerName = "O$.Window._init" + windowId;
+    console.time(timerName);
     var win = O$(windowId);
     
     if (!parentId) {
@@ -334,7 +336,7 @@ O$.Window = {
         else
           win.maximize();
       };
-
+    console.timeEnd(timerName);
   },
 
   _addStateChangeListener: function(win, listener) {
