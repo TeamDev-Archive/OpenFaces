@@ -4776,9 +4776,9 @@ if (!window.O$) {
   };
 
   O$.getNumericElementStyle = function (element, propertyName, enableValueCaching, hundredPercentValue) {
-    var borderWidthValue = O$._getComputedStyles(element).getPropertyValue(propertyName);
-    if(borderWidthValue){
-      return O$.calculateNumericCSSValue(borderWidthValue, hundredPercentValue);
+    var value = O$._getComputedStyles(element).getPropertyValue(propertyName);
+    if(value){
+      return O$.calculateNumericCSSValue(value, hundredPercentValue);
     }
 
     var capitalizedPropertyName = O$._capitalizeCssPropertyName(propertyName);
@@ -4815,19 +4815,24 @@ if (!window.O$) {
   };
 
   O$.calculateNumericCSSValue = function (value, hundredPercentValue) {
-    if (!value)
+    if (!value) {
       return 0;
-    if (!isNaN(1 * value))
+    }
+    if (!isNaN(1 * value)) {
       return 1 * value;
-    if (O$.stringEndsWith(value, "px"))
-      return 1 * value.substring(0, value.length - 2);
-    if (value == "auto")
-      return 0; // todo: can't calculate "auto" (e.g. from margin property) on a simulated border -- consider simulating such "non-border" values on other properties
+    }
     if (value.indexOf("%") == value.length - 1) {
-      var val = value.substring(0, value.length - 1);
+      var val = getNumericValue();
       if (typeof hundredPercentValue == "function")
         hundredPercentValue = hundredPercentValue();
+
       return val / 100.0 * hundredPercentValue;
+    }
+    if (value.indexOf("px") > 0) {
+      return getNumericValue(value);
+    }
+    if (value == "auto") {
+      return 0; // todo: can't calculate "auto" (e.g. from margin property) on a simulated border -- consider simulating such "non-border" values on other properties
     }
 
     if (!O$._nonPixelValueMeasurements)
@@ -4840,6 +4845,10 @@ if (!window.O$) {
     O$._nonPixelValueMeasurements[value] = pixelValue;
     return pixelValue;
   };
+
+  function getNumericValue(value) {
+    return value ? 1 * value.replace(/[^-\d\.]/g, '') : 0;
+  }
 
   O$.calculateLineWidth = function (lineStyleStr) {
     if (!lineStyleStr)
@@ -5089,7 +5098,6 @@ if (!window.O$) {
         var parentPaddingBottom = O$.getNumericElementStyle(parent, "padding-bottom");
         parent.style.paddingBottom = parentPaddingBottom + heightCorrection + "px";
       }
-
     }
 
     var inputs = container.getElementsByTagName("input");
@@ -5937,7 +5945,7 @@ if (!window.O$) {
       O$._popupVisionStateStorage = {};
     }
     return O$._popupVisionStateStorage;
-  }
+  };
 
 }
 
