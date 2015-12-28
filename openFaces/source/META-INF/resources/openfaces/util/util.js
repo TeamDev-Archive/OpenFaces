@@ -5071,6 +5071,8 @@ if (!window.O$) {
   O$.fixInputsWidthStrict = function (container) {
     if (!O$.isStrictMode())
       return;
+    var timerName = "DropDown O$.fixInputsWidthStrict, id:" + container.id;
+    console.time(timerName);
 
     function processInput(input) {
       if (input._strictWidthFixed || input.type == "hidden")
@@ -5109,6 +5111,7 @@ if (!window.O$) {
       processInput(textAreas[i]);
     }
 
+    console.timeEnd(timerName);
   };
 
   // ----------------- HIDE <SELECT> CONTROLS UNDER POPUP IN IE ---------------------------------------------------
