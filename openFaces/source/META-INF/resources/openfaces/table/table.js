@@ -206,6 +206,8 @@ O$.Table = {
       table.style.visibility = "visible";
       // can't just exclude the "o_initially_invisible" from table.className because of IE issue (JSFC-2337)
     }
+    table._initialized = true;
+
     O$.Table._initApiFunctions(table);
     O$.Table._initInnerFunctions(table);
     O$.addUnloadHandler(table, function () {
@@ -3200,6 +3202,7 @@ O$.Table = {
               totalWidth += colWidth;
             }
 
+            recalculateTableWidth(colWidths);
             colWidthsField.value = (O$.isOpera() ? table.style.width : totalWidth + "px") + ":" +
                     "[" + colWidths.join(",") + "]";
             if (autoSaveState) {

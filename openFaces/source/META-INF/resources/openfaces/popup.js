@@ -13,8 +13,6 @@
 O$.Popup = {
   PULLED_OUT_ID_SUFFIX: "_pulledOut",
   _init: function(popupId, useDisplayNoneByDefault) {
-    var  timerName = "O$.Popup._init" + popupId;
-    console.time(timerName);
     var popup = O$.initComponent(popupId, null, {
       _visibilityChangeListeners: null,
 
@@ -144,7 +142,6 @@ O$.Popup = {
         }
       }
     });
-    console.timeEnd(timerName);
   },
 
   _notifyVisibilityChangeListeners: function(popup) {

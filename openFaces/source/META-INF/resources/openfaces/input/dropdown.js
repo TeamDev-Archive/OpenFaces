@@ -11,8 +11,6 @@
  */
 O$.DropDown = {
   _initInput:function (dropDownId, initialText, containerClass, rolloverContainerClass, disabledClass, fieldClass, rolloverFieldClass, disabledFieldClass, focusedClass, promptText, promptTextClass) {
-    var timerName = "O$.DropDown._initInput, id:" + dropDownId;
-    console.time(timerName);
     var dropDown = O$.initComponent(dropDownId, null, {
       _field:O$(dropDownId + "::field"),
       _promptVisible:O$(dropDownId + "::field" + "::promptVisible"),
@@ -184,14 +182,13 @@ O$.DropDown = {
     field._o_zeroBorders = true;
     field._o_fullWidth = true;
     field._o_fullHeight = false;
-    O$.fixInputsWidthStrict(dropDown);
-    console.timeEnd(timerName);
+
+    if (!O$.isChrome()) {
+      O$.fixInputsWidthStrict(dropDown);
+    }
   },
 
   _init:function (dropDownId, parentId, initialText, containerClass, rolloverContainerClass, disabledClass, fieldClass, rolloverFieldClass, disabledFieldClass, focusedClass, buttonClass, rolloverButtonClass, pressedButtonClass, disabledButtonClass, disabledButtonImageUrl, popupClass, rolloverPopupClass, disabled, readOnly, promptText, promptTextClass, pullPopupFromContainer) {
-
-    var timerName = "O$.DropDown._init, id:" + dropDownId;
-    console.time(timerName);
     O$.DropDown._initInput(dropDownId,
             initialText,
             containerClass,
@@ -404,7 +401,6 @@ O$.DropDown = {
     O$.addUnloadHandler(popup, function () {
       O$.removeEventHandler(window, "resize", resizeHandlerOnWindow);
     });
-    console.timeEnd(timerName);
   },
 
   /*

@@ -2506,13 +2506,12 @@ O$.Tables = {
       function getBodyHeight(tableHeight) {
         var height = tableHeight;
         //recalculating cached section heights and store them
-        [table.header, table.footer].forEach(function (section) {
-          if (!section) return;
-          section._sectionTable._cahedSectionHeight = 0;
-        });
-        [table.header, table.footer].forEach(function (section) {
+        var areas = [table.header, table.footer];
+        areas.forEach(function (section) {
           if (!section) return;
           var sectionTable = section._sectionTable;
+          sectionTable._cahedSectionHeight = 0;
+
           if (!sectionTable._cahedSectionHeight)
             sectionTable._cahedSectionHeight = sectionTable.offsetHeight;
           height -= sectionTable._cahedSectionHeight;
@@ -2523,7 +2522,7 @@ O$.Tables = {
       var fixture = scrolling.vertical && !scrolling.minimizeHeight
               ? O$.fixElement(table.body._sectionTable, {
         height:function () {
-          var height = O$.getElementPaddingRectangle(table).height;
+          var height = O$.getHeightOfElementPaddingRectangle(table);
           var bodyHeight = getBodyHeight(height);
           return bodyHeight;
         }
@@ -2614,12 +2613,15 @@ O$.Tables = {
           return;
         }
         var correctScrollLeft = mainScrollingArea._scrollingDiv.scrollLeft;
-        [table.header, table.footer].forEach(function (section) {
+        var sections = [table.header, table.footer];
+
+        for (var i = 0; i < sections.length; i++) {
+          var section = sections[i];
           if (!section || !section._centerScrollingArea) return;
           var scrollingDiv = section._centerScrollingArea._scrollingDiv;
           if (scrollingDiv && scrollingDiv.scrollLeft != correctScrollLeft)
             scrollingDiv.scrollLeft = correctScrollLeft;
-        });
+        }
       }, 250);
     }
 

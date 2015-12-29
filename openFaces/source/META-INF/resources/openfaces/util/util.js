@@ -643,6 +643,10 @@ if (!window.O$) {
     return O$.ltrim(O$.rtrim(value));
   };
 
+  String.prototype.endWith = function(suffix){
+    return suffix && this.lastIndexOf(suffix) == this.length - suffix.length;
+  };
+
   O$.stringEndsWith = function (str, ending) {
     if (!str || !ending)
       return false;
@@ -1328,6 +1332,11 @@ if (!window.O$) {
       result = O$.isElementPresentInDocument(element.parentNode);
     }
     return result;
+  };
+
+  O$.isInitialized = function(element){
+    return element.tagName.toUpperCase() === "TABLE" ? element._initialized : true;
+
   };
 
   O$.removeAllChildNodes = function (element) {
@@ -3748,7 +3757,7 @@ if (!window.O$) {
   };
 
   O$._getComputedStyleValue = function(computedStyles, propertyName){
-    return computedStyles.getPropertyValue(propertyName) || computedStyles[propertyName]
+    return computedStyles[propertyName] || computedStyles.getPropertyValue(propertyName);
   };
 
   O$.getElementStyle = function (element, propertyNames, enableValueCaching) {
@@ -4396,20 +4405,27 @@ if (!window.O$) {
    See also: O$.setElementBorderRectangle, O$.getElementPos, O$.setElementPos.
    */
   O$.getElementBorderRectangle = function (element, relativeToContainingBlock, cachedDataContainer) {
+    var elementRectangle = element._of_getElementRectangle;
     if (cachedDataContainer) {
-      if (!element._of_getElementRectangle)
-        element._of_getElementRectangle = {};
-      if (element._of_getElementRectangle._currentCache == cachedDataContainer)
-        return element._of_getElementRectangle._cachedValue;
+      if (!elementRectangle) {
+        elementRectangle = {};
+      }
+      if (elementRectangle._currentCache == cachedDataContainer)
+        return elementRectangle._cachedValue;
     }
     var pos = O$.getElementPos(element, relativeToContainingBlock);
     var size = O$.getElementSize(element);
     var rect = new O$.Rectangle(pos.x, pos.y, size.width, size.height);
     if (cachedDataContainer) {
-      element._of_getElementRectangle._currentCache = cachedDataContainer;
-      element._of_getElementRectangle._cachedValue = rect;
+      elementRectangle._currentCache = cachedDataContainer;
+      elementRectangle._cachedValue = rect;
     }
+
     return rect;
+  };
+
+  O$.getHeightOfElementBorderRectangle = function (element, relativeToContainingBlock, cachedDataContainer) {
+    return O$.getElementHeight(element);
   };
 
   O$.getElementSize = function (element) {
@@ -4454,6 +4470,14 @@ if (!window.O$) {
     rect.width -= borderLeftWidth + borderRightWidth;
     rect.height -= borderTopWidth + borderBottomWidth;
     return rect;
+  };
+
+  O$.getHeightOfElementPaddingRectangle = function (element, relativeToContainingBlock, cachedDataContainer) {
+    var rectHeight = O$.getHeightOfElementBorderRectangle(element, relativeToContainingBlock, cachedDataContainer);
+    var borderTopWidth = O$.getNumericElementStyle(element, "border-top-width");
+    var borderBottomWidth = O$.getNumericElementStyle(element, "border-bottom-width");
+    rectHeight -= borderTopWidth + borderBottomWidth;
+    return rectHeight;
   };
 
   O$.getElementClientRectangle = function (element, relativeToContainingBlock, cachedDataContainer) {
@@ -4821,18 +4845,19 @@ if (!window.O$) {
     if (!isNaN(1 * value)) {
       return 1 * value;
     }
-    if (value.indexOf("%") == value.length - 1) {
-      var val = getNumericValue();
-      if (typeof hundredPercentValue == "function")
-        hundredPercentValue = hundredPercentValue();
-
-      return val / 100.0 * hundredPercentValue;
-    }
-    if (value.indexOf("px") > 0) {
+    if (value.endWith("px")) {
       return getNumericValue(value);
     }
     if (value == "auto") {
       return 0; // todo: can't calculate "auto" (e.g. from margin property) on a simulated border -- consider simulating such "non-border" values on other properties
+    }
+    if (value.indexOf("%") == value.length - 1) {
+      var val = getNumericValue();
+      if (typeof hundredPercentValue == "function") {
+        hundredPercentValue = hundredPercentValue();
+      }
+
+      return val / 100.0 * hundredPercentValue;
     }
 
     if (!O$._nonPixelValueMeasurements)
@@ -5071,33 +5096,48 @@ if (!window.O$) {
   O$.fixInputsWidthStrict = function (container) {
     if (!O$.isStrictMode())
       return;
-    var timerName = "DropDown O$.fixInputsWidthStrict, id:" + container.id;
-    console.time(timerName);
+
+    function getWidthCorrection(input, computedStyles) {
+      var widthCorrection;
+      if (input._o_fullWidth || O$.getStyleClassProperty(input.className, "width") == "100%") {
+        var bordersX = input._o_zeroBorders ? 0 : calcNumeric(computedStyles, "border-left-width") + calcNumeric(computedStyles, "border-right-width");
+        var paddingsX = calcNumeric(computedStyles, "padding-left") + calcNumeric(computedStyles, "padding-right");
+        widthCorrection = bordersX + paddingsX;
+      }
+      return widthCorrection;
+    }
+
+    function getHeightCorrection(input, computedStyles) {
+      var heightCorrection;
+
+      if ((input._o_fullHeight == undefined && O$.getStyleClassProperty(input.className, "height") == "100%") || input._o_fullHeight) {
+        var bordersY = calcNumeric(computedStyles, "border-top-width") + calcNumeric(computedStyles, "border-bottom-width");
+        var paddingsY = calcNumeric(computedStyles, "padding-top") + calcNumeric(computedStyles, "padding-bottom");
+        heightCorrection = bordersY + paddingsY;
+      }
+      return heightCorrection;
+    }
+
+    function calcNumeric(computedStyles, props){
+      return O$.calculateNumericCSSValue(computedStyles.getPropertyValue(props));
+    }
 
     function processInput(input) {
       if (input._strictWidthFixed || input.type == "hidden")
         return;
       input._strictWidthFixed = true;
       var parent = input.parentNode;
-      var widthCorrection;
-      if ((input._o_fullWidth == undefined && O$.getStyleClassProperty(input.className, "width") == "100%") || input._o_fullWidth) {
-        var bordersX = input._o_zeroBorders ? 0 : O$.getNumericElementStyle(input, "border-left-width") + O$.getNumericElementStyle(input, "border-right-width");
-        var paddingsX = O$.getNumericElementStyle(input, "padding-left") + O$.getNumericElementStyle(input, "padding-right");
-        widthCorrection = bordersX + paddingsX;
-      }
-      var heightCorrection;
-      if ((input._o_fullHeight == undefined && O$.getStyleClassProperty(input.className, "height") == "100%") || input._o_fullHeight) {
-        var bordersY = O$.getNumericElementStyle(input, "border-top-width") + O$.getNumericElementStyle(input, "border-bottom-width");
-        var paddingsY = O$.getNumericElementStyle(input, "padding-top") + O$.getNumericElementStyle(input, "padding-bottom");
-        heightCorrection = bordersY + paddingsY;
-      }
+      var computedStyles = O$._getComputedStyles(input);
+      var widthCorrection = getWidthCorrection(input, computedStyles);
+      var heightCorrection = getHeightCorrection(input, computedStyles);
 
+      computedStyles = O$._getComputedStyles(parent);
       if (widthCorrection) {
-        var parentPaddingRight = O$.getNumericElementStyle(parent, "padding-right");
+        var parentPaddingRight = calcNumeric(computedStyles, "padding-right");
         parent.style.paddingRight = parentPaddingRight + widthCorrection + "px";
       }
       if (heightCorrection) {
-        var parentPaddingBottom = O$.getNumericElementStyle(parent, "padding-bottom");
+        var parentPaddingBottom = calcNumeric(computedStyles, "padding-bottom");
         parent.style.paddingBottom = parentPaddingBottom + heightCorrection + "px";
       }
     }
@@ -5111,7 +5151,6 @@ if (!window.O$) {
       processInput(textAreas[i]);
     }
 
-    console.timeEnd(timerName);
   };
 
   // ----------------- HIDE <SELECT> CONTROLS UNDER POPUP IN IE ---------------------------------------------------
@@ -5408,7 +5447,7 @@ if (!window.O$) {
 
   O$.fixElement = function (element, properties, workingCondition, events, interval) {
     if (!interval)
-      interval = 200;
+      interval = 500;
     var fixture = {
       values:{},
       update:function () {
@@ -5463,7 +5502,7 @@ if (!window.O$) {
     var listener = {
       values:{},
       update:function () {
-        if (!O$.isElementPresentInDocument(element)) {
+        if (!O$.isElementPresentInDocument(element) || !O$.isInitialized(element)) {
           this.release();
           return;
         }

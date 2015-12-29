@@ -20,8 +20,6 @@ O$.Calendar = {
   // ================================== INTERNAL FUNCTIONS
 
   _init:function (calendarId, selectedDate, todayDate, rolloverClass, focusable, focusedClass, dayClass, rolloverDayClass, inactiveMonthDayClass, rolloverInactiveMonthDayClass, selectedDayClass, rolloverSelectedDayClass, todayClass, rolloverTodayClass, weekendClass, rolloverWeekendClass, disabledDayClass, rolloverDisabledDayClass, firstDayOfWeek, headerClassName, dateRanges, showFooter, localeStr, required, disabled, isAuxiliaryTagsRenderedInFooter, VALUE_HOLDER, valueHold, bodyId) {
-    var timerName = "O$.Calendar._init, id:" + calendarId;
-    console.time(timerName);
     var cal = O$.initComponent(calendarId, {rollover:rolloverClass}, {
       _dayClass:dayClass,
       _rolloverDayClass:rolloverDayClass,
@@ -220,7 +218,6 @@ O$.Calendar = {
     cal.setSelectedDate = function (date) {
       O$.Calendar._setSelectedDate(cal.id, date);
     };
-    console.timeEnd(timerName);
   },
 
   _getSelectedDate:function (calendarId) {
@@ -887,6 +884,7 @@ O$.Calendar = {
       dropTable.removeChild(child);
     }
 
+    var docFragment = document.createDocumentFragment();
     var tbody = document.createElement("tbody");
     dropTable.appendChild(tbody);
 
@@ -935,8 +933,10 @@ O$.Calendar = {
         tr.style.cursor = "default";
       }
       tr._drop = dropTable;
-      tbody.appendChild(tr);
+      docFragment.appendChild(tr);
     }
+
+    tbody.appendChild(docFragment);
 
     dropTable.style.border = "1px solid black";
     dropTable.onmouseout = function () {
@@ -1217,7 +1217,7 @@ O$.Calendar = {
     } else {
       setTimeout(function () {
         O$.Calendar._adjustMonthAndYearSelectorWidth(calendar);
-      }, 40);
+      }, 100);
     }
   }
 };

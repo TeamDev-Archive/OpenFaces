@@ -520,8 +520,10 @@ O$._refreshLaterIfInvisible = function (borderLayoutPanel, restoreInitSize) {
         }
       }
     }
-    borderLayoutPanel.refresh();
+    if (borderLayoutPanel.refresh) {
+      borderLayoutPanel.refresh();
+    }
     borderLayoutPanel._waitForRefresh = false;
   }
 
-}
+};
