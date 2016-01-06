@@ -3753,7 +3753,7 @@ if (!window.O$) {
   };
 
   O$._getComputedStyles = function(element){
-    return document.defaultView && document.defaultView.getComputedStyle(element, null);
+      return document.defaultView && document.defaultView.getComputedStyle(element, null);
   };
 
   O$._getComputedStyleValue = function(computedStyles, propertyName){
@@ -3767,8 +3767,7 @@ if (!window.O$) {
     if (typeof propertyNames == "string") {
       if (!enableValueCaching) {
         var result = O$._getComputedStyleValue(computedStyle, propertyNames);
-        return result ? result
-                : (currentStyle = element.currentStyle)
+        return result ? result : (currentStyle = element.currentStyle)
                 ? currentStyle[O$._capitalizeCssPropertyName(propertyNames)] : computedStyle
                 ? computedStyle.getPropertyValue(O$._dashizeCssPropertyName(propertyNames)) : "";
       }
@@ -4448,7 +4447,7 @@ if (!window.O$) {
       width -= margins.marginLeft + margins.marginRight;
     }
     return width;
-  }
+  };
   //Added this methods according to slow calculating of offsetWidth and Height under IE 8
   O$.getElementHeight = function (element) {
     var height = element.offsetHeight;
@@ -4457,7 +4456,7 @@ if (!window.O$) {
       height -= margins.marginTop + margins.marginBottom;
     }
     return height;
-  }
+  };
 
   O$.getElementPaddingRectangle = function (element, relativeToContainingBlock, cachedDataContainer) {
     var rect = O$.getElementBorderRectangle(element, relativeToContainingBlock, cachedDataContainer);
@@ -4472,10 +4471,11 @@ if (!window.O$) {
     return rect;
   };
 
-  O$.getHeightOfElementPaddingRectangle = function (element, relativeToContainingBlock, cachedDataContainer) {
-    var rectHeight = O$.getHeightOfElementBorderRectangle(element, relativeToContainingBlock, cachedDataContainer);
-    var borderTopWidth = O$.getNumericElementStyle(element, "border-top-width");
-    var borderBottomWidth = O$.getNumericElementStyle(element, "border-bottom-width");
+  O$.getHeightOfElementRectangle = function (element) {
+    var computedStyles = O$._getComputedStyles(element);
+    var rectHeight = O$.getElementHeight(element);
+    var borderTopWidth = O$.calculateNumericCSSValue(O$._getComputedStyleValue(computedStyles, "border-top-width"));
+    var borderBottomWidth = O$.calculateNumericCSSValue(O$._getComputedStyleValue(computedStyles, "border-bottom-width"));
     rectHeight -= borderTopWidth + borderBottomWidth;
     return rectHeight;
   };
@@ -4589,7 +4589,7 @@ if (!window.O$) {
   O$.isContainingBlock = function (elt) {
     O$.assert(elt, "elt is null");
     if (elt._containingBlock != undefined) return elt._containingBlock;
-    if (elt == document) {
+    if (elt.nodeName === '#document-fragment' || elt == document) {
       // O$.calculateElementStyleProperty fails to determine position on the document element, and
       // document element can't have a non-static position
       return false;
@@ -4800,7 +4800,7 @@ if (!window.O$) {
   };
 
   O$.getNumericElementStyle = function (element, propertyName, enableValueCaching, hundredPercentValue) {
-    var value = O$._getComputedStyles(element).getPropertyValue(propertyName);
+    var value = O$._getComputedStyleValue(O$._getComputedStyles(element), propertyName);
     if(value){
       return O$.calculateNumericCSSValue(value, hundredPercentValue);
     }
@@ -4852,7 +4852,7 @@ if (!window.O$) {
       return 0; // todo: can't calculate "auto" (e.g. from margin property) on a simulated border -- consider simulating such "non-border" values on other properties
     }
     if (value.indexOf("%") == value.length - 1) {
-      var val = getNumericValue();
+      var val = getNumericValue(value);
       if (typeof hundredPercentValue == "function") {
         hundredPercentValue = hundredPercentValue();
       }
@@ -5447,17 +5447,15 @@ if (!window.O$) {
 
   O$.fixElement = function (element, properties, workingCondition, events, interval) {
     if (!interval)
-      interval = 500;
+      interval = 1000;
     var fixture = {
       values:{},
       update:function () {
         var elements = element instanceof Array ? element : [element];
-        if (
-                !elements.every(function (el) {
+        if (!elements.every(function (el) {
                   return O$.isElementPresentInDocument(el);
-                }) ||
-                        (workingCondition && !workingCondition())
-                ) {
+                }) || (workingCondition && !workingCondition())
+        ) {
           clearInterval(fixture.intervalId);
           return;
         }
