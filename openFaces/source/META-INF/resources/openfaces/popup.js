@@ -102,9 +102,11 @@ O$.Popup = {
       },
 
       isVisible: function() {
-        var style = O$.getElementStyle(this, ["visibility", "display"]);
-        var visible = (style.visibility != "hidden") && (style.display != "none");
-        return visible;
+        var computedStyles = O$._getComputedStyles(this);
+        var visible = O$._getComputedStyleValue(computedStyles, "visibility") != 'hidden';
+        var displayed = O$._getComputedStyleValue(computedStyles, "display") != 'none';
+
+        return visible && displayed;
       },
 
       _pullFromContainer: function() {
