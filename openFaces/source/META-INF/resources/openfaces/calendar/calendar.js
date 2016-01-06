@@ -62,10 +62,10 @@ O$.Calendar = {
     });
 
     var tbody = document.getElementById(bodyId);
-    for (row = 0; row < 6; row++) {
+    for (var row = 0; row < 6; row++) {
       var tr = document.createElement("tr");
       tr.className = "o_cal_week_row";
-      for (col = 0; col < 7; col++) {
+      for (var col = 0; col < 7; col++) {
         var td = document.createElement("td");
         var div = document.createElement("div");
         td.appendChild(div);
@@ -186,8 +186,6 @@ O$.Calendar = {
         O$.Calendar._showDrop(cal, this);
         O$.cancelEvent(e);
       };
-      O$.Calendar._initializeDrops(cal);
-      O$.Calendar._adjustMonthAndYearSelectorWidth(cal);
     }
 
     if (cal._showFooter) {
@@ -1011,6 +1009,7 @@ O$.Calendar = {
     var drop = selector._drop;
     O$.correctElementZIndex(drop, calendar);
     O$.Calendar._initializeDrops(calendar);
+    O$.Calendar._adjustMonthAndYearSelectorWidth(calendar);
     var selectorRect = O$.getElementBorderRectangle(selector, true);
     drop.showAtXY(selectorRect.x, selectorRect.getMaxY());
     O$.Calendar._operaStrictWorkaround();
