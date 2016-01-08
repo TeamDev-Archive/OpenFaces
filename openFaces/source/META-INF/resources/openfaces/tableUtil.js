@@ -294,6 +294,8 @@ O$.Tables = {
 
     var newVisibleRowsForNow = 0;
     var callbackIndex, callbackCount;
+    var _tag_docFragment = document.createDocumentFragment();
+
     for (i = 0, count = rowsToInsert.length; i < count; i++) {
       var newRow = rowsToInsert[i];
       if (rowKeys)
@@ -302,15 +304,16 @@ O$.Tables = {
         if (bodyRows.length > 0) {
           var nextRowIdx = afterIndex + 1 + addedRowCount;
           if (nextRowIdx < bodyRows.length)
-            this.body._tag.insertBefore(newRow, bodyRows[nextRowIdx]);
+            _tag_docFragment.insertBefore(newRow, bodyRows[nextRowIdx]);
           else
-            this.body._tag.appendChild(newRow);
+            _tag_docFragment.appendChild(newRow);
         }
         else
-          this.body._tag.appendChild(newRow);
+          _tag_docFragment.appendChild(newRow);
       } else {
         if (newRow instanceof Array)
           newRow = {_leftRowNode:newRow[0], _rowNode:newRow[1], _rightRowNode:newRow[2]};
+
         function addRow(area, rowNode) {
           if (!area || !rowNode) return;
           var nextRowIdx = afterIndex + 1 + i;
@@ -366,6 +369,7 @@ O$.Tables = {
       for (callbackIndex = 0, callbackCount = this._singleRowInsertionCallbacks.length; callbackIndex < callbackCount; i++)
         this._singleRowInsertionCallbacks[callbackIndex](newRow);
     }
+    this.body._tag.appendChild(_tag_docFragment);
 
     this._rowInsertionCallbacks.forEach(function (callback) {
       callback(this, afterIndex, rowsToInsert);
@@ -615,10 +619,14 @@ O$.Tables = {
           function createRow(colCount) {
             if (!colCount) return null;
             var newRow = document.createElement("tr");
+            var td_docFragment = document.createDocumentFragment();
+
             for (var i = 0; i < colCount; i++) {
               var newCell = document.createElement("td");
-              newRow.appendChild(newCell);
+              td_docFragment.appendChild(newCell);
             }
+
+            newRow.appendChild(td_docFragment);
             return newRow;
           }
 
@@ -2095,9 +2103,9 @@ O$.Tables = {
               : {};
       if (!noDataRowStyle.backgroundColor && !noDataRowStyle.background) {
         var bodySection = O$.getChildNodesWithNames(table, ["tbody"])[0];
-        var propertyValue = O$.getElementStyle(bodySection, "background-color");
+        var propertyValue = O$._getComputedStyleValue(O$._getComputedStyles(bodySection), "background-color");
         if (!propertyValue || propertyValue == "transparent") {
-          propertyValue = O$.getElementStyle(table, "background-color");
+          propertyValue = O$._getComputedStyleValue(O$._getComputedStyles(table), "background-color");
         }
         if (!propertyValue || propertyValue == "transparent")
           propertyValue = !O$.isSafari() ? "Window" : "white";
@@ -2109,7 +2117,6 @@ O$.Tables = {
   },
 
   _initColumnEvents:function (table) {
-
     function assignBodyCellEvents(cell, compoundBodyEvents, compoundGeneralEvents) {
       O$.Tables._assignColumnCellEvents(cell, compoundBodyEvents);
       O$.Tables._assignColumnCellEvents(cell, compoundGeneralEvents);
@@ -2153,7 +2160,6 @@ O$.Tables = {
     table._addCellInsertionCallback(function (cell, row, column) {
       assignBodyCellEvents(cell, column.body._getCompoundEventContainers(), column._getCompoundEventContainers());
     });
-
   },
 
   _initColumnStyles:function (table) {
@@ -2360,7 +2366,7 @@ O$.Tables = {
     var delayedInitFunctions = [];
     var mainScrollingArea = table.body._centerScrollingArea;
     var scrollingDiv = mainScrollingArea._scrollingDiv;
-    var autoVerticalScrollbar = O$.getElementStyle(scrollingDiv, "overflowY") == "auto";
+    var autoVerticalScrollbar = O$._getComputedStyleValue(O$._getComputedStyles(scrollingDiv), "overflowY") == "auto";
 
     function useWidthAttribute() {
       // .o_scrollable_table CSS class has width: 100%
@@ -2427,7 +2433,6 @@ O$.Tables = {
             scrollingAreaColTags.forEach(function (tagsForSection) {
               tagsForSection[areaIndex].style.width = width;
             });
-
           }
         }
       };
@@ -2522,9 +2527,8 @@ O$.Tables = {
       var fixture = scrolling.vertical && !scrolling.minimizeHeight
               ? O$.fixElement(table.body._sectionTable, {
         height:function () {
-          var height = O$.getHeightOfElementPaddingRectangle(table);
-          var bodyHeight = getBodyHeight(height);
-          return bodyHeight;
+		  var height = O$.getHeightOfElementRectangle(table);
+          return getBodyHeight(height);
         }
       }, null, {onchange:function () {
         setBodyHeight(this.values.height);
@@ -2607,13 +2611,15 @@ O$.Tables = {
       O$.addUnloadHandler(table, function () {
         mainScrollingArea._scrollingDiv.onscroll = null;
       });
+
+      var sections = [table.header, table.footer];
+
       var synchronizationCorrectionInterval = setInterval(function () {
         if (!O$.isElementPresentInDocument(table)) {
           clearInterval(synchronizationCorrectionInterval);
           return;
         }
         var correctScrollLeft = mainScrollingArea._scrollingDiv.scrollLeft;
-        var sections = [table.header, table.footer];
 
         for (var i = 0; i < sections.length; i++) {
           var section = sections[i];
@@ -2622,7 +2628,7 @@ O$.Tables = {
           if (scrollingDiv && scrollingDiv.scrollLeft != correctScrollLeft)
             scrollingDiv.scrollLeft = correctScrollLeft;
         }
-      }, 250);
+      }, 1000);
     }
 
     synchronizeAreaScrolling();

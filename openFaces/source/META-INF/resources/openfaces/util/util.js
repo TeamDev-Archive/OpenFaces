@@ -3753,7 +3753,7 @@ if (!window.O$) {
   };
 
   O$._getComputedStyles = function(element){
-      return document.defaultView && document.defaultView.getComputedStyle(element, null);
+    return document.defaultView && document.defaultView.getComputedStyle(element, null);
   };
 
   O$._getComputedStyleValue = function(computedStyles, propertyName){
@@ -4471,11 +4471,11 @@ if (!window.O$) {
     return rect;
   };
 
-  O$.getHeightOfElementRectangle = function (element) {
+  O$.getHeightOfElementRectangle = function (element, relativeToContainingBlock, cachedDataContainer) {
     var computedStyles = O$._getComputedStyles(element);
-    var rectHeight = O$.getElementHeight(element);
-    var borderTopWidth = O$.calculateNumericCSSValue(O$._getComputedStyleValue(computedStyles, "border-top-width"));
-    var borderBottomWidth = O$.calculateNumericCSSValue(O$._getComputedStyleValue(computedStyles, "border-bottom-width"));
+    var rectHeight = O$.getHeightOfElementBorderRectangle(element, relativeToContainingBlock, cachedDataContainer);
+    var borderTopWidth = O$.calculateNumericCSSValue(computedStyles["border-top-width"]);
+    var borderBottomWidth = O$.calculateNumericCSSValue(computedStyles["border-bottom-width"]);
     rectHeight -= borderTopWidth + borderBottomWidth;
     return rectHeight;
   };
@@ -4559,7 +4559,7 @@ if (!window.O$) {
       } catch (e) {
         alert("O$._setElementWidthOrHeight error. property = " + property + "; valueParam = " + valueParam + "; value = " + value);
         throw e;
-      }
+    }
   };
 
   O$.setElementWidth = function (element, value, hundredPercentValue) {
