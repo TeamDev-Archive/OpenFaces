@@ -31,6 +31,10 @@ public abstract class AbstractPanelWithCaptionJspTag extends AbstractComponentJs
         getDelegate().setPropertyValue("caption", caption);
     }
 
+    public void setHideOnLoad(ValueExpression hideOnLoadStyle) {
+        getDelegate().setPropertyValue("hideOnLoad", hideOnLoadStyle);
+    }
+
     public void setCaptionStyle(ValueExpression captionStyle) {
         getDelegate().setPropertyValue("captionStyle", captionStyle);
     }

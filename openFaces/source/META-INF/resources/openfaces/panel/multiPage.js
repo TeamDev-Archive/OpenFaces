@@ -41,7 +41,11 @@ O$.MultiPage = {
         O$.MultiPage._hideContainer(prevPageContainer);
 
         O$.MultiPage._getContianerStyleElement(newPageContainer).className = multiPage._containerClass;
-        O$.MultiPage._showContainer(newPageContainer);
+
+        O$.MultiPage._waitDOMContentLoaded(currentPageContainer, function(){
+          O$.MultiPage._showContainer(newPageContainer);
+        });
+
         multiPage._currentPageContainer = newPageContainer;
         O$.repaintAreaForOpera(multiPage);
       }
@@ -107,15 +111,52 @@ O$.MultiPage = {
     };
 
     // relayout pane container
-    O$.MultiPage._showContainer(currentPageContainer);
+    O$.MultiPage._waitDOMContentLoaded(currentPageContainer, function(){
+      O$.MultiPage._showContainer(currentPageContainer);
+    });
   },
 
   _hideContainer: function(paneContainer) {
     paneContainer.style.display = "none";
   },
 
+  _waitDOMContentLoaded: function(pane, callback){
+    var tid = setInterval(function(){
+      if(document.readyState !== 'complete') {
+        return;
+      }
+      O$.MultiPage._hideLoadingMessage(pane);
+      callback();
+      clearInterval(tid);
+    }, 100);
+  },
+
+  _hideLoadingMessage: function(pane){
+    var node = pane.querySelector(".o_sub_panel_loading");
+    if (node) {
+      node.parentNode.parentNode.remove();
+    }
+  },
+
+  _hideAllOpenedPanes: function(currentPane){
+    var attributeValue = currentPane.getAttribute('multipagecontainerid');
+    var nodes = document.querySelectorAll('[multipagecontainerid="' + attributeValue + '"]');
+    for (var i = 0; i < nodes.length; i++) {
+      var pane = nodes[i];
+      if (pane.style.display === '' || pane.style.display === 'block') {
+        O$.MultiPage._hideContainer(pane);
+      }
+    }
+  },
+
   _showContainer: function(paneContainer) {
-    paneContainer.style.display = "";
+    O$.MultiPage._hideAllOpenedPanes(paneContainer);
+
+    var containers = paneContainer.getElementsByClassName("o_tabbedpane_container");
+    if (containers.length > 0) {
+      containers[0].style.display = 'block';
+    }
+    paneContainer.style.display = "block";
     paneContainer.parentNode.style.height = "100%";
     paneContainer.parentNode.style.width = "100%";
     paneContainer.style.width = "100%";

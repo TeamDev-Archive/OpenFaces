@@ -26,6 +26,7 @@ public abstract class AbstractPanelWithCaption extends OUIPanel implements Compo
     private static final String CAPTION_FACET_NAME = "caption";
 
     private String caption;
+    private String hideOnLoad;
 
     private String captionStyle;
     private String captionClass;
@@ -40,7 +41,8 @@ public abstract class AbstractPanelWithCaption extends OUIPanel implements Compo
                 captionStyle,
                 captionClass,
                 contentStyle,
-                contentClass};
+                contentClass,
+                hideOnLoad};
     }
 
     @Override
@@ -53,6 +55,7 @@ public abstract class AbstractPanelWithCaption extends OUIPanel implements Compo
         captionClass = (String) values[i++];
         contentStyle = (String) values[i++];
         contentClass = (String) values[i++];
+        hideOnLoad = (String) values[i++];
     }
 
     public String getCaption() {
@@ -101,6 +104,14 @@ public abstract class AbstractPanelWithCaption extends OUIPanel implements Compo
 
     public void setContentClass(String contentClass) {
         this.contentClass = contentClass;
+    }
+
+    public void setHideOnLoad(String hideOnLoad) {
+        this.hideOnLoad = hideOnLoad;
+    }
+
+    public Boolean isHideOnLoad(){
+        return Boolean.valueOf(ValueBindings.get(this, "hideOnLoad", hideOnLoad));
     }
 
 

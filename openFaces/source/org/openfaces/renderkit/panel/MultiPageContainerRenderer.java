@@ -19,12 +19,14 @@ import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
 import org.openfaces.renderkit.select.BaseTabSetRenderer;
 import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.List;
 
@@ -74,18 +76,44 @@ public abstract class MultiPageContainerRenderer extends BaseTabSetRenderer impl
         if (!initiallyVisible) {
             writer.writeAttribute("style", "display: none;", null);
         }
+        SubPanel item = (SubPanel) allSubPanels.get(absolutePageIndex);
+        Boolean hideOnLoad = item.isHideOnLoad();
+
+        writer.writeAttribute("style", container.getStyle(), null);
+        if (hideOnLoad) {
+            composeSpinner(context, container, writer);
+        }
+
         writer.startElement("tr", container);
         writer.startElement("td", container);
+        if (hideOnLoad) {
+            writer.writeAttribute("style", "display: none;", null);
+        }
 
         writeAttribute(writer, "class", containerClass);
 
-        SubPanel item = (SubPanel) allSubPanels.get(absolutePageIndex);
         Collection<UIComponent> paneContent = item.getChildren();
         encodeComponents(context, paneContent);
 
         writer.endElement("td");
         writer.endElement("tr");
         writer.endElement("table");
+    }
+
+    private void composeSpinner(FacesContext context, MultiPageContainer container, ResponseWriter writer) throws IOException {
+        writer.startElement("tr", container);
+        writer.startElement("td", container);
+        writer.startElement("div", container);
+        writer.writeAttribute("class", "o_sub_panel_loading", null);
+        writer.append(getLoadingMessage(context));
+        writer.endElement("div");
+        writer.endElement("td");
+        writer.endElement("tr");
+    }
+
+    private String getLoadingMessage(FacesContext context) {
+        String imageUrl = Resources.internalURL(context, "loading_indicator.gif");
+        return MessageFormat.format("<img src=''{2}'' class=''{0}'' style=''{1}'' alt=''{3}'' title=''{3}'' />", "", "", imageUrl, "Loading...");
     }
 
     private void encodeComponents(FacesContext context, Collection<UIComponent> components) throws IOException {

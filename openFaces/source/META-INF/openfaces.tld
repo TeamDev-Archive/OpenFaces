@@ -19626,6 +19626,18 @@ on every switch to the tab.-->
     </attribute>
 
     <attribute>
+      <description>Show spinner on load sb-panel
+      </description>
+      <name>hideOnLoad</name>
+      <deferred-value>
+        <type>java.lang.Boolean</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
       <description>The text that should be displayed in the caption. This is a convenient alternative for using
         the "caption" facet. If both "caption" facet and "caption" attribute is specified, the content specified in the
         facet is used.

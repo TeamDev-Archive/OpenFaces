@@ -1207,6 +1207,7 @@
   border: 0 solid !important; /*"important" overrides RichFaces default skin's border */
   width: 100%;
   outline: none;
+  box-sizing: border-box;
 }
 
 .o_dropdown_list {
@@ -2271,4 +2272,10 @@ html>/**/body .o_selectonemenu_field_container_middle {
 }
 .o_folding_panel_caption_togglable_rollover {
     cursor: pointer;
+}
+
+.o_sub_panel_loading {
+  text-align: center;
+  vertical-align: middle;
+  margin: 10px 0 0 0;
 }
