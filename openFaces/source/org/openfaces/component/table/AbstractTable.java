@@ -178,6 +178,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     private Boolean unDisplayedSelectionAllowed;
 
+    private Boolean liveScroll;
+    private Integer scrollRows;
+    private Integer scrollOffset = 0;
+
 
     public AbstractTable() {
         super.setUiDataValue(new TableDataModel(this));
@@ -232,7 +236,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 noDataMessageAllowed, columnIndexVar, columnIdVar, saveAttachedState(context, columnsOrder),
                 sortedAscendingImageUrl, sortedDescendingImageUrl, cachedClientId,
                 autoFilterDelay, deferBodyLoading, totalRowCount, implicitFacetsCreated, unsortedStateAllowed,
-                keepSelectionVisible, onbeforeajaxreload, onafterajaxreload, unDisplayedSelectionAllowed, saveAttachedState(context, hiddenColumns), rowMinHeight};
+                keepSelectionVisible, onbeforeajaxreload, onafterajaxreload, unDisplayedSelectionAllowed, liveScroll, scrollRows, saveAttachedState(context, hiddenColumns), rowMinHeight};
     }
 
     @Override
@@ -329,6 +333,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         onafterajaxreload = (String) state[i++];
 
         unDisplayedSelectionAllowed = (Boolean) state[i++];
+
+        liveScroll = (Boolean) state[i++];
+        scrollRows = (Integer) state[i++];
+
         hiddenColumns = (Iterable<String>) restoreAttachedState(context, state[i++]);
 
         rowMinHeight = (String) state[i++];
@@ -2502,6 +2510,30 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     public void setTotalRowCount(Integer totalRowCount) {
         this.totalRowCount = totalRowCount;
+    }
+
+    public Boolean isLiveScroll() {
+        return ValueBindings.get(this, "liveScroll", liveScroll, false);
+    }
+
+    public void setLiveScroll(Boolean liveScroll) {
+        this.liveScroll = liveScroll;
+    }
+
+    public Integer getScrollRows() {
+        return ValueBindings.get(this, "scrollRows", scrollRows, 0);
+    }
+
+    public void setScrollRows(Integer scrollRows) {
+        this.scrollRows = scrollRows;
+    }
+
+    public void setScrollOffset(Integer scrollOffset){
+        this.scrollOffset = scrollOffset;
+    }
+
+    public int getScrollOffset(){
+        return this.scrollOffset;
     }
 
     public String getOnbeforeajaxreload() {

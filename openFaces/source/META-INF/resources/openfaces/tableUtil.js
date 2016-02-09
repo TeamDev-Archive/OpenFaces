@@ -52,9 +52,10 @@ O$.Tables = {
         for (cellIndex = 0, cellCount = cells.length; cellIndex < cellCount; cellIndex++) {
           cell = cells[cellIndex];
 
-          paddingNames.forEach(function (n) {
+          for (var i = 0; i < paddingNames.length; i++) {
+            var n = paddingNames[i];
             O$.Tables._setCellStyleProperty(cell, n, paddings[n]);
-          });
+          }
         }
         O$.Tables._setCellStyleProperty(cell, "line-height", lineHeight);
       }
@@ -69,9 +70,11 @@ O$.Tables = {
     })) {
       for (cellIndex = 0, cellCount = cells.length; cellIndex < cellCount; cellIndex++) {
         cell = cells[cellIndex];
-        borderNames.forEach(function (n) {
+
+        for (var i = 0; i < cells.length; i++) {
+          var n = cells[i];
           O$.Tables._setCellStyleProperty(cell, n, borders[n]);
-        });
+        }
       }
     }
   },
@@ -194,6 +197,7 @@ O$.Tables = {
     });
 
     table._insertRowsAfter = O$.Tables._insertRowsAfter;
+    table._appendRowsAfter = O$.Tables._appendRowsAfter;
     table._cellFromPoint = function (x, y, relativeToNearestContainingBlock, cachedDataContainer) {
       var row = table.body._rowFromPoint(x, y, relativeToNearestContainingBlock, cachedDataContainer);
       if (!row)
@@ -202,12 +206,140 @@ O$.Tables = {
     };
   },
 
-  _insertRowsAfter:function (afterIndex, rowsToInsert, newRowsToStylesMap, newRowCellsToStylesMap, rowKeys) {
+  _appendRowsAfter: function(rows){
+    var doc_fragment = document.createDocumentFragment();
+    var div = document.createElement("div");
+    div.innerHTML = rows;
+    doc_fragment.appendChild(div.firstChild);
+    var rowsToInsert = doc_fragment.querySelectorAll('tr');
+    var bodyRows = this.body._getRows();
+
+    for (var j = 0; j < rowsToInsert.length; j++) {
+      var f = rowsToInsert[j];
+      if (!f._rowNode && f.nodeName && f.nodeName.toUpperCase() == "TR") f._rowNode = f;
+    }
+
+    var visibleInsertedRows;
+    if (!this._params.invisibleRowsAllowed)
+      visibleInsertedRows = rowsToInsert.length;
+    else {
+      visibleInsertedRows = 0;
+      for (var j = 0; j < rowsToInsert.length; j++) {
+        var insertedRow = rowsToInsert[j];
+        insertedRow._visible = insertedRow._rowNode.className.indexOf("o_hiddenRow") == -1;
+        if (insertedRow._visible)
+          visibleInsertedRows++;
+      }
+    }
+
+    var newVisibleRowsForNow = 0;
+    var callbackIndex, callbackCount;
+    var _tag_docFragment = document.createDocumentFragment();
+
+    function appendScrollingAreaRows() {
+      var bodyRowsCount = bodyRows.length;
+      if (bodyRowsCount > 0) {
+        var nextRowIdx = bodyRowsCount + 1 + insertedRow.length;
+        if (nextRowIdx < bodyRowsCount)
+          _tag_docFragment.insertBefore(newRow, bodyRows[nextRowIdx]);
+        else
+          _tag_docFragment.appendChild(newRow);
+      }
+      else
+        _tag_docFragment.appendChild(newRow);
+      return {bodyRowsCount: bodyRowsCount, nextRowIdx: nextRowIdx};
+    }
+
+    var count = 0;
+    var scrollingAvailable = this._params.scrolling;
+    for (var i = 0, count = rowsToInsert.length; i < count; i++) {
+      var newRow = rowsToInsert[i];
+      if (!scrollingAvailable) {
+        appendScrollingAreaRows();
+      } else {
+        if (newRow instanceof Array)
+          newRow = {_leftRowNode: newRow[0], _rowNode: newRow[1], _rightRowNode: newRow[2]};
+
+        function addRow(area, rowNode) {
+          if (!area || !rowNode) return;
+          var nextRowIdx = bodyRows.length + 1 + i;
+          if (area._rowContainer.childNodes.length > 0 && area._rowContainer.childNodes[0]._fakeRow) nextRowIdx++;
+          if (nextRowIdx < area._rowContainer.childNodes.length)
+            area._rowContainer.insertBefore(rowNode, area._rowContainer.childNodes[nextRowIdx]);
+          else
+            area._rowContainer.appendChild(rowNode);
+        }
+
+        addRow(this.body._leftScrollingArea, newRow._leftRowNode);
+        addRow(this.body._centerScrollingArea, newRow._rowNode);
+        addRow(this.body._rightScrollingArea, newRow._rightRowNode);
+      }
+
+      var newRowIndex = bodyRows.length + 1 + i;
+      bodyRows[newRowIndex] = newRow;
+
+      if (!scrollingAvailable)
+        newRow._cells = newRow.cells;
+      else {
+        var cells = [];
+        var nodes = [newRow._leftRowNode, newRow._rowNode, newRow._rightRowNode];
+        for (var k = 0; k < nodes.length; k++) {
+          var rowNode = nodes[k];
+          if (rowNode) {
+            rowNode._row = newRow;
+            rowNode._cells = rowNode.cells;
+            for (var p = 0, count = rowNode.cells.length; p < count; p++) {
+              cells.push(rowNode._cells[i]);
+            }
+          }
+          newRow._cells = cells;
+        }
+      }
+
+      O$.Tables._initBodyRow(newRow, this, newRowIndex, bodyRows.length);
+      if (newRow._isVisible())
+        newVisibleRowsForNow++;
+
+      var columns = this._columns;
+      var colIndex, colCount, column, bodyCells;
+      for (colIndex = 0, colCount = columns.length; colIndex < colCount; colIndex++) {
+        column = columns[colIndex];
+        var cell = newRow._getCellByColIndex(colIndex);
+
+        bodyCells = column.body._cells;
+        bodyCells[newRowIndex] = cell;
+        if (cell)
+          for (callbackIndex = 0, callbackCount = this._cellInsertionCallbacks.length; callbackIndex < callbackCount; callbackIndex++)
+            this._cellInsertionCallbacks[callbackIndex](cell, newRow, column);
+      }
+
+      for (callbackIndex = 0, callbackCount = this._singleRowInsertionCallbacks.length; callbackIndex < callbackCount; i++)
+        this._singleRowInsertionCallbacks[callbackIndex](newRow);
+    }
+
+
+    if (!scrollingAvailable) {
+      this.body._tag.appendChild(_tag_docFragment);
+    }
+
+    // update body section style in case of the simulated sections mode
+    this.body._updateStyle();
+
+    if (scrollingAvailable) {
+      var tbl = this;
+      O$.invokeFunctionAfterDelay(function () {
+        if (tbl._alignRowHeights) tbl._alignRowHeights();
+        if (tbl._synchronizeVerticalAreaScrolling) tbl._synchronizeVerticalAreaScrolling();
+      }, 50);
+    }
+  },
+
+  _insertRowsAfter:function (afterIndex, rowsToInsert, newRowsToStylesMap, newRowCellsToStylesMap, rowKeys, isAppend) {
     if (rowsToInsert.length == 0) {
       return;
     }
 
-    if (this._params.body.noDataRows && this.body._getRows().length) {
+    if (this._params.body.noDataRows && this.body._getRows().length && !isAppend) {
       this._params.body.noDataRows = false;
       this.body._removeAllRows();
     }
@@ -216,11 +348,12 @@ O$.Tables = {
     var columns = this._columns;
 
     var visibleRowCount = 0;
-    bodyRows.forEach(function (row) {
+    for (var j = 0; j < bodyRows.length; j++) {
+      var row = bodyRows[j];
       row._visibleRowIndex = visibleRowCount;
-      if (row._isVisible())
+      if (row.isVisible && row._isVisible())
         visibleRowCount++;
-    });
+    }
 
     var i, count, row;
     var visibleRowsUpToReferenceRow; // visible rows including bodyRows[afterIndex]
@@ -230,25 +363,27 @@ O$.Tables = {
       visibleRowsUpToReferenceRow = 0;
       for (i = 0; i <= afterIndex; i++) {
         row = bodyRows[i];
-        if (row._isVisible())
+        if (row.isVisible && row._isVisible())
           visibleRowsUpToReferenceRow++;
       }
     }
 
-    rowsToInsert.forEach(function (f) {
+    for (var j = 0; j < rowsToInsert.length; j++) {
+      var f = rowsToInsert[j];
       if (!f._rowNode && f.nodeName && f.nodeName.toUpperCase() == "TR") f._rowNode = f;
-    });
+    }
 
     var visibleInsertedRows;
     if (!this._params.invisibleRowsAllowed)
       visibleInsertedRows = rowsToInsert.length;
     else {
       visibleInsertedRows = 0;
-      rowsToInsert.forEach(function (insertedRow) {
+      for (var j = 0; j < rowsToInsert.length; j++) {
+        var insertedRow = rowsToInsert[j];
         insertedRow._visible = insertedRow._rowNode.className.indexOf("o_hiddenRow") == -1;
         if (insertedRow._visible)
           visibleInsertedRows++;
-      });
+      }
     }
 
     var addedRowCount = rowsToInsert.length;
@@ -283,11 +418,15 @@ O$.Tables = {
         }
       }
 
-      movedRow._notifyRowMoved(moveRow ? movedRow._visibleRowIndex + visibleInsertedRows : movedRow._visibleRowIndex);
+      if (movedRow._notifyRowMoved) {
+        movedRow._notifyRowMoved(moveRow ? movedRow._visibleRowIndex + visibleInsertedRows : movedRow._visibleRowIndex);
+      }
     }
 
     var newVisibleRowsForNow = 0;
     var callbackIndex, callbackCount;
+    var _tag_docFragment = document.createDocumentFragment();
+
     for (i = 0, count = rowsToInsert.length; i < count; i++) {
       var newRow = rowsToInsert[i];
       if (rowKeys)
@@ -296,12 +435,12 @@ O$.Tables = {
         if (bodyRows.length > 0) {
           var nextRowIdx = afterIndex + 1 + addedRowCount;
           if (nextRowIdx < bodyRows.length)
-            this.body._tag.insertBefore(newRow, bodyRows[nextRowIdx]);
+            _tag_docFragment.insertBefore(newRow, bodyRows[nextRowIdx]);
           else
-            this.body._tag.appendChild(newRow);
+            _tag_docFragment.appendChild(newRow);
         }
         else
-          this.body._tag.appendChild(newRow);
+          _tag_docFragment.appendChild(newRow);
       } else {
         if (newRow instanceof Array)
           newRow = {_leftRowNode:newRow[0], _rowNode:newRow[1], _rightRowNode:newRow[2]};
@@ -327,14 +466,16 @@ O$.Tables = {
         newRow._cells = newRow.cells;
       else {
         var cells = [];
-        [newRow._leftRowNode, newRow._rowNode, newRow._rightRowNode].forEach(function (rowNode) {
-          if (!rowNode) return;
+        var nodes = [newRow._leftRowNode, newRow._rowNode, newRow._rightRowNode];
+        for (var k = 0; k < nodes.length; k++) {
+          var rowNode = nodes[k];
+          if (!rowNode) continue;
           rowNode._row = newRow;
           rowNode._cells = rowNode.cells;
           for (var i = 0, count = rowNode.cells.length; i < count; i++) {
             cells.push(rowNode._cells[i]);
           }
-        });
+        }
         newRow._cells = cells;
       }
 
@@ -357,6 +498,9 @@ O$.Tables = {
 
       for (callbackIndex = 0, callbackCount = this._singleRowInsertionCallbacks.length; callbackIndex < callbackCount; i++)
         this._singleRowInsertionCallbacks[callbackIndex](newRow);
+    }
+    if (!this._params.scrolling) {
+      this.body._tag.appendChild(_tag_docFragment);
     }
 
     this._rowInsertionCallbacks.forEach(function (callback) {
@@ -419,13 +563,15 @@ O$.Tables = {
           if (table._params.scrolling && O$.isQuirksMode()) {
             // allow header sections font-weight and other attributes to be passed onto actual header cells under
             // quirks mode
-            this._scrollingAreas.forEach(function (area) {
+            for (var c = 0; c < this._scrollingAreas.length; c++) {
+              var area = this._scrollingAreas[c];
               elements.push(area._table);
-            });
+            }
           }
-          elements.forEach(function (element) {
+          for (var i = 0; i < elements.length; i++) {
+            var element = elements[i];
             O$.setStyleMappings(element, {sectionStyle:sectionParams.className});
-          });
+          }
         },
         _getRows:function () {
           if (!this._rows) {
@@ -605,10 +751,14 @@ O$.Tables = {
           function createRow(colCount) {
             if (!colCount) return null;
             var newRow = document.createElement("tr");
+            var td_docFragment = document.createDocumentFragment();
+
             for (var i = 0; i < colCount; i++) {
               var newCell = document.createElement("td");
-              newRow.appendChild(newCell);
+              td_docFragment.appendChild(newCell);
             }
+
+            newRow.appendChild(td_docFragment);
             return newRow;
           }
 
@@ -664,15 +814,16 @@ O$.Tables = {
 
         _removeAllRows:function () {
           var rows = this._getRows();
-          rows.forEach(function (row) {
-            function removeRow(row) {
-              if (row) row.parentNode.removeChild(row);
-            }
-
+          for (var r = 0; r < rows.length; r++) {
+            var row = rows[r];
             removeRow(row._leftRowNode);
             removeRow(row._rowNode);
             removeRow(row._rightRowNode);
-          });
+
+            function removeRow(row) {
+              if (row) row.parentNode.removeChild(row);
+            }
+          }
           this._rows = [];
 
           if (sectionTagName == "tbody") {
@@ -680,9 +831,6 @@ O$.Tables = {
             table._params.cellStylesMap = {};
           }
         }
-
-
-
       };
       if (sectionTagName != "tbody" && section._getRows().length == 0)
         return null;
@@ -1173,7 +1321,7 @@ O$.Tables = {
           return;
         var commonHeaderRow = headRows[table._headRowsToSkip];
         var commonHeaderCell = commonHeaderRow._cells[0];
-        O$.Tables._setCellStyleProperty(commonHeaderCell, "borderBottom", table._gridLines.commonHeader);
+        O$.Tables._setCellStyleCapitalizedProperty(commonHeaderCell, "borderBottom", table._gridLines.commonHeader);
       };
 
       function getLastRowCells(lastBeforeSubHeader) {
@@ -1202,7 +1350,7 @@ O$.Tables = {
         var lastRowCells = getLastRowCells(false);
         for (var i = 0, count = lastRowCells.length; i < count; i++) {
           var cell = lastRowCells[i];
-          O$.Tables._setCellStyleProperty(cell, "borderBottom", table._gridLines.headerHoriz != null
+          O$.Tables._setCellStyleCapitalizedProperty(cell, "borderBottom", table._gridLines.headerHoriz != null
                   ? table._gridLines.headerHoriz
                   : table._gridLines.horizontal);
         }
@@ -1216,7 +1364,7 @@ O$.Tables = {
         var lastRowCells = getLastRowCells(true);
         for (var i = 0, count = lastRowCells.length; i < count; i++) {
           var cell = lastRowCells[i];
-          O$.Tables._setCellStyleProperty(cell, "borderBottom", table._gridLines.subHeaderRow);
+          O$.Tables._setCellStyleCapitalizedProperty(cell, "borderBottom", table._gridLines.subHeaderRow);
         }
       };
 
@@ -1247,7 +1395,7 @@ O$.Tables = {
             if (col.subColumns) {
               var cell = col.header ? col.header._cell : null;
               if (cell)
-                O$.Tables._setCellStyleProperty(cell, "borderBottom", separators.multiHeaderSeparator);
+                O$.Tables._setCellStyleCapitalizedProperty(cell, "borderBottom", separators.multiHeaderSeparator);
               setHeaderVerticalGridlines(col);
             }
           }
@@ -1272,7 +1420,7 @@ O$.Tables = {
         var rowCells = row._cells;
         for (var i = 0, count = rowCells.length; i < count; i++) {
           var cell = rowCells[i];
-          O$.Tables._setCellStyleProperty(cell, "borderTop", table._gridLines.footerHoriz != null
+          O$.Tables._setCellStyleCapitalizedProperty(cell, "borderTop", table._gridLines.footerHoriz != null
                   ? table._gridLines.footerHoriz
                   : table._gridLines.horizontal);
         }
@@ -1284,7 +1432,7 @@ O$.Tables = {
         var footerRows = table.footer._getRows();
         var commonFooterRow = footerRows[footerRows.length - 1];
         var commonFooterCell = commonFooterRow._cells[0];
-        O$.Tables._setCellStyleProperty(commonFooterCell, "borderTop", table._gridLines.commonFooter);
+        O$.Tables._setCellStyleCapitalizedProperty(commonFooterCell, "borderTop", table._gridLines.commonFooter);
       };
 
       tableFooter._updateColumnSeparatorStyles = function () {
@@ -1307,7 +1455,7 @@ O$.Tables = {
             if (col.subColumns) {
               var cell = col.footer ? col.footer._cell : null;
               if (cell) {
-                O$.Tables._setCellStyleProperty(cell, "borderTop", separators.multiFooterSeparator);
+                O$.Tables._setCellStyleCapitalizedProperty(cell, "borderTop", separators.multiFooterSeparator);
               }
               setFooterVerticalGridlines(col);
             }
@@ -1339,7 +1487,7 @@ O$.Tables = {
       var borderBottom = (correctedRowIndex < (displayGridLineUnderBottomRow ? rowCount : rowCount - 1))
               ? tableBody._getBorderBottomForCell(rowIndex, column._index, cell)
               : "0px none white";
-      O$.Tables._setCellStyleProperty(cell, "borderBottom", borderBottom);
+      O$.Tables._setCellStyleCapitalizedProperty(cell, "borderBottom", borderBottom);
       var cellSpan = cell.colSpan || 1;
       if (column._index + cellSpan - 1 != colCount - 1) {
         var rightBorder = column.body._rightBorder;
@@ -2087,21 +2235,20 @@ O$.Tables = {
               : {};
       if (!noDataRowStyle.backgroundColor && !noDataRowStyle.background) {
         var bodySection = O$.getChildNodesWithNames(table, ["tbody"])[0];
-        var propertyValue = O$.getElementStyle(bodySection, "background-color");
+        var propertyValue = O$._getComputedStyleValue(O$._getComputedStyles(bodySection), "background-color");
         if (!propertyValue || propertyValue == "transparent") {
-          propertyValue = O$.getElementStyle(table, "background-color");
+          propertyValue = O$._getComputedStyleValue(O$._getComputedStyles(table), "background-color");
         }
         if (!propertyValue || propertyValue == "transparent")
           propertyValue = !O$.isSafari() ? "Window" : "white";
         if (propertyValue)
-          O$.Tables._setCellStyleProperty(cell, "backgroundColor", propertyValue);
+          O$.Tables._setCellStyleCapitalizedProperty(cell, "backgroundColor", propertyValue);
       }
     }
 
   },
 
   _initColumnEvents:function (table) {
-
     function assignBodyCellEvents(cell, compoundBodyEvents, compoundGeneralEvents) {
       O$.Tables._assignColumnCellEvents(cell, compoundBodyEvents);
       O$.Tables._assignColumnCellEvents(cell, compoundGeneralEvents);
@@ -2145,7 +2292,6 @@ O$.Tables = {
     table._addCellInsertionCallback(function (cell, row, column) {
       assignBodyCellEvents(cell, column.body._getCompoundEventContainers(), column._getCompoundEventContainers());
     });
-
   },
 
   _initColumnStyles:function (table) {
@@ -2270,6 +2416,18 @@ O$.Tables = {
     }
   },
 
+  _setCellStyleCapitalizedProperty:function (cell, propertyName, propertyValue) {
+    if (!cell || !propertyValue)
+      return;
+
+    try {
+      cell.style[propertyName] = propertyValue;
+    } catch (e) {
+      O$.logError("O$.Tables._setCellStyleProperty: couldn't set style property \"" + propertyName + "\" to \"" + propertyValue + "\" ; original error: " + e.message);
+      throw e;
+    }
+  },
+
   _setCellRightBorder:function (cell, borderValue) {
     if (!cell || !borderValue)
       return;
@@ -2340,7 +2498,7 @@ O$.Tables = {
     var delayedInitFunctions = [];
     var mainScrollingArea = table.body._centerScrollingArea;
     var scrollingDiv = mainScrollingArea._scrollingDiv;
-    var autoVerticalScrollbar = O$.getElementStyle(scrollingDiv, "overflowY") == "auto";
+    var autoVerticalScrollbar = O$._getComputedStyleValue(O$._getComputedStyles(scrollingDiv), "overflowY") == "auto";
 
     function useWidthAttribute() {
       // .o_scrollable_table CSS class has width: 100%
@@ -2407,7 +2565,6 @@ O$.Tables = {
             scrollingAreaColTags.forEach(function (tagsForSection) {
               tagsForSection[areaIndex].style.width = width;
             });
-
           }
         }
       };
@@ -2486,13 +2643,12 @@ O$.Tables = {
       function getBodyHeight(tableHeight) {
         var height = tableHeight;
         //recalculating cached section heights and store them
-        [table.header, table.footer].forEach(function (section) {
-          if (!section) return;
-          section._sectionTable._cahedSectionHeight = 0;
-        });
-        [table.header, table.footer].forEach(function (section) {
+        var areas = [table.header, table.footer];
+        areas.forEach(function (section) {
           if (!section) return;
           var sectionTable = section._sectionTable;
+          sectionTable._cahedSectionHeight = 0;
+
           if (!sectionTable._cahedSectionHeight)
             sectionTable._cahedSectionHeight = sectionTable.offsetHeight;
           height -= sectionTable._cahedSectionHeight;
@@ -2503,9 +2659,8 @@ O$.Tables = {
       var fixture = scrolling.vertical && !scrolling.minimizeHeight
               ? O$.fixElement(table.body._sectionTable, {
         height:function () {
-          var height = O$.getElementPaddingRectangle(table).height;
-          var bodyHeight = getBodyHeight(height);
-          return bodyHeight;
+		  var height = O$.getHeightOfElementRectangle(table);
+          return getBodyHeight(height);
         }
       }, null, {onchange:function () {
         setBodyHeight(this.values.height);
@@ -2588,86 +2743,87 @@ O$.Tables = {
       O$.addUnloadHandler(table, function () {
         mainScrollingArea._scrollingDiv.onscroll = null;
       });
+
+      var sections = [table.header, table.footer];
+
       var synchronizationCorrectionInterval = setInterval(function () {
         if (!O$.isElementPresentInDocument(table)) {
           clearInterval(synchronizationCorrectionInterval);
           return;
         }
         var correctScrollLeft = mainScrollingArea._scrollingDiv.scrollLeft;
-        [table.header, table.footer].forEach(function (section) {
+
+        for (var i = 0; i < sections.length; i++) {
+          var section = sections[i];
           if (!section || !section._centerScrollingArea) return;
           var scrollingDiv = section._centerScrollingArea._scrollingDiv;
           if (scrollingDiv && scrollingDiv.scrollLeft != correctScrollLeft)
             scrollingDiv.scrollLeft = correctScrollLeft;
-        });
-      }, 250);
+        }
+      }, 1000);
     }
 
     synchronizeAreaScrolling();
 
     table._alignRowHeights = function () {
-      var __minHeight = table._rowMinHeight ? parseInt(table._rowMinHeight) : 0;
-      if (!table._leftArea && !table._rightArea)
-        return;
+      if (!table._leftArea && !table._rightArea)  return;
       O$.Tables._fixChromeCrashWithEmptyTR(table);
-      [table.header, table.body, table.footer].forEach(function (section) {
-        if (!section) return;
-        var assignCellHeights = O$.isChrome() || O$.isSafari() || (O$.isExplorer() && O$.isStrictMode() && !O$.isExplorer8());
 
-        var areaHeight = 0;
-        var rows = section._getRows();
-        rows.forEach(function (row) {
-          if (row.nodeName && row.nodeName.toUpperCase() === "TR") { return; }
-          if (section != table.body) { return; }
+      var assignCellHeights = O$.isChrome() || O$.isSafari() || (O$.isExplorer() && O$.isStrictMode() && !O$.isExplorer8());
+      var quirksMode = (O$.isChrome() || O$.isSafari()) && O$.isQuirksMode();
 
-          var rowNodes = [row._leftRowNode, row._rowNode, row._rightRowNode];
-          var height = getMaxRowHeight(rowNodes);
+      var areaHeight = 0;
+      var section = table.body;
+      var __minHeight = table._rowMinHeight ? parseInt(table._rowMinHeight) : 0;
 
-          rowNodes.forEach(function (rowNode) {
-            if (rowNode){
-              setRowHeight(rowNode, height, true);
+      var rows = section._getRows();
+      var height = getRowHeight(rows[0], rows[0]._rowNode);
 
-              for (var i = 0; i < rowNode._cells.length; i++) {
-                var cell = rowNode._cells[i];
-                  cell.style.paddingTop = "0px";
-                  cell.style.paddingBottom = "0px";
-              }
-            }
+      for (var c = 0; c < rows.length; c++) {
+        var row = rows[c];
+        if (row.nodeName && row.nodeName.toUpperCase() === "TR") { break; }
+
+        var rowNodes = [row._leftRowNode, row._rowNode, row._rightRowNode];
+        for (var j = 0; j < rowNodes.length; j++) {
+          var rowNode = rowNodes[j];
+          if (rowNode){
+            setRowHeight(row, rowNode, height);
+          }
+        }
+        areaHeight += height;
+
+        if (quirksMode) {
+          section._scrollingAreas.forEach(function (area) {
+            O$.setElementHeight(area._table, areaHeight);
           });
-          areaHeight += height;
+        }
+      }
 
-          if ((O$.isChrome() || O$.isSafari()) && O$.isQuirksMode()) {
-            section._scrollingAreas.forEach(function (area) {
-              O$.setElementHeight(area._table, areaHeight);
-            });
-          }
+      function getRowHeight(row, node) {
+        var maxNodesHeight = 0;
 
-          function getMaxRowHeight(nodes) {
-            var maxNodesHeight = 0;
+        if (node) {
+          setRowHeight(row, node, __minHeight);
+          maxNodesHeight = maxNodesHeight < node.offsetHeight ? node.offsetHeight : maxNodesHeight;
+        }
 
-            nodes.forEach(function (node) {
-              if (node) {
-                if (section == table.body) {
-                  setRowHeight(node, __minHeight, true);
-                  maxNodesHeight = maxNodesHeight < node.offsetHeight ? node.offsetHeight : maxNodesHeight;
-                } else {
-                  setRowHeight(node, 0, true);
-                }
-              }
-            });
-            return maxNodesHeight;
+        return maxNodesHeight;
+      }
+
+      function setRowHeight(row, rowNode, height) {
+        rowNode.style.height = height;
+        row.__height = height;
+
+        if (assignCellHeights) {
+          var cells = rowNode._cells;
+          for(var i = 0; i < cells.length; i++){
+            var cell = rowNode._cells[i];
+            cell.style.paddingTop = "0px";
+            cell.style.paddingBottom = "0px";
+            cell.style.height = height + "px";
           }
-          function setRowHeight(rowNode, height, trim) {
-            row.__height = height;
-            rowNode.style.height = height;
-            if (assignCellHeights && trim) {
-              for(var i = 0; i < rowNode._cells.length; i++){
-                rowNode._cells[i].style.height = height + "px";
-              }
-            }
-          }
-        });
-      });
+        }
+      }
     };
     var delayUnderIE = O$.isExplorer() && !(O$.isExplorer8() && O$.isStrictMode());
     if (!delayUnderIE)
@@ -2694,17 +2850,15 @@ O$.Tables = {
       }).forEach(function (area) {
                 if (!area) return;
                 if (area._spacer)
-                  O$.setElementSize(area._spacer, {width:0, height:1});
+          O$.setElementSize(area._spacer, {width: 30, height: 1});
               });
       [table.body._leftScrollingArea, table.body._rightScrollingArea].forEach(function (area) {
         if (!area) return;
-        O$.setElementSize(area._spacer, {width:1, height:30});
+        O$.setElementSize(area._spacer, {width: 1, height: 30});
       });
-    }
+      }
 
-    if (scrollingDiv.scrollHeight > scrollingDiv.clientHeight) {
-      accountForScrollersWidth();
-    }
+    accountForScrollersWidth();
 
     function scrollToPosition() {
       var scrollPos = scrolling.position;
@@ -2778,7 +2932,8 @@ O$.Tables = {
     var relativeWidthColumns = [];
     var thereAreRelativeWidthColumns = false;
     var nonRelativeWidth = 0;
-    colTags.forEach(function (colTag) {
+    for (var i = 0; i < colTags.length; i++) {
+      var colTag = colTags[i];
       var column = colTag._column;
       columns.push(column);
       var colWidth = firstInitialization ? column.getDeclaredWidth(tableWidth) : column._explicitWidth;
@@ -2789,7 +2944,7 @@ O$.Tables = {
         }
         column._tempWidth = colWidth;
       }
-      if (!scrolling || scrolling.horizontal && firstInitialization) {
+      if (!scrolling || !scrolling.horizontal) {
         if (column._relativeWidth || column._widthNotSpecified)
           relativeWidthColumns.push(column);
         else
@@ -2799,13 +2954,14 @@ O$.Tables = {
       }
 
       tblWidth += colWidth;
-    });
+    }
     if (thereAreRelativeWidthColumns && tableWidth == 0 && (O$.isExplorer() && !(O$.isExplorer8() && O$.isStrictMode()))) {
       // table width is not know in the initialization stage under IE (except IE8/strict) so postponed relayout is
       // required to calculate relative width columns properly
       table._relayoutRelativeWidthColumns = true;
     }
-    if ((!scrolling || scrolling.horizontal && firstInitialization || !scrolling._widthAlignmentDisabled) && (!(O$.isExplorer() && !tableWidth))) {
+    if ((!scrolling || (!scrolling.horizontal && !scrolling._widthAlignmentDisabled))
+            && (!(O$.isExplorer() && !tableWidth))) {
       var remainingWidth = tableWidth - nonRelativeWidth;
       if (remainingWidth > 0 && relativeWidthColumns.length > 0) {
         var unspecifiedWidthColCount = 0;
@@ -2827,21 +2983,23 @@ O$.Tables = {
         relativeWidthColumns.forEach(function (c) {
           c.setWidth(Math.floor(
                   (c._widthNotSpecified ? widthPerUnspecifiedWidthCol : c._tempWidth)
-                          / relativeTotal * remainingWidth
+                  / relativeTotal * remainingWidth
           ));
         });
       } else {
-        columns.forEach(function (c) {
+        for (var i = 0; i < columns.length; i++) {
+          var c = columns[i];
           var width = firstInitialization ? c._tempWidth : c._explicitWidth;
           c.setWidth(Math.floor((width / tblWidth) * tableWidth));
-        });
+        }
       }
       tblWidth = tableWidth;
     }
     if (firstInitialization) {
-      columns.forEach(function (column) {
-        if (!column._explicitWidth) column.setWidth(column._tempWidth);
-      });
+      for (var i = 0; i < columns.length; i++) {
+        var c = columns[i];
+        if (!c._explicitWidth) c.setWidth(c._tempWidth);
+      }
     }
     return tblWidth;
   },

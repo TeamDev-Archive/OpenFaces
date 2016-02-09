@@ -86,13 +86,6 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
 
         if (table.getUseAjax())
             AjaxUtil.prepareComponentForAjax(context, component);
-        /*List<BaseColumn> columns = table.getRenderedColumns();
-        for (BaseColumn column : columns) {
-            context.getApplication().publishEvent(context,
-                    PreRenderComponentEvent.class,
-                    column);
-        }*/
-//        getPublishEventForAllChildren(context, component);
         table.clearRenderedColumnCache();
         TableStructure tableStructure = createTableStructure(table);
         table.getAttributes().put(TableStructure.TABLE_STRUCTURE_ATTR, tableStructure);
@@ -369,7 +362,9 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
                 getInitJsAPIFunctionName(),
                 table.getDeferBodyLoading(),
                 table.getRowMinHeight(),
-                focusable);
+                focusable,
+                table.isLiveScroll(),
+                table.getScrollRows());
     }
 
     protected String getInitJsAPIFunctionName() {
@@ -708,8 +703,10 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             scrolling.processUpdates(context);
             return null;
         }
+        if("liveScroll".equals(portionName)){
+            return loadRowsLazy(context, jsonParam, table);
+        }
         if ("rows".equals(portionName)) {
-            beforeReloadingAllRows(context, table);
             JSONObject result = serveDynamicRowsRequest(context, table, 0, Integer.MAX_VALUE);
 
             ScriptBuilder sb = new ScriptBuilder();
@@ -720,6 +717,62 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         } else {
             throw new FacesException("Unknown portion name: " + portionName);
         }
+    }
+
+    private JSONObject loadRowsLazy(FacesContext context, JSONObject jsonParam, AbstractTable table) throws IOException {
+        int scrollOffset = 0;
+        ScriptBuilder sb = new ScriptBuilder();
+        beforeReloadingAllRows(context, table);
+
+        try {
+            scrollOffset = (Integer) jsonParam.get("_scrollOffset");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        table.setLiveScroll(true);
+        table.setScrollOffset(scrollOffset);
+
+        JSONObject result = new JSONObject();
+        try {
+            result = rowsToJSON(context, table, table.getScrollRows(), scrollOffset);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Rendering.renderInitScript(context, sb);
+        return result;
+    }
+
+    @SuppressWarnings(value="unchecked")
+    private JSONObject rowsToJSON( FacesContext context,
+                                   AbstractTable table,
+                                   int rowIndex,
+                                   int rowCount) throws IOException, JSONException {
+        TableStructure tableStructure = createTableStructure(table);
+        table.getAttributes().put(TableStructure.TABLE_STRUCTURE_ATTR, tableStructure);
+
+        ResponseWriter originalResponseWriter = context.getResponseWriter();
+        Writer writer = new StringWriter();
+
+        List<BaseColumn> columns = table.getRenderedColumns();
+        List<BodyRow> rows = tableStructure.getBody().createRows(context, table.getScrollOffset(), table.getScrollRows(), columns);
+
+        JSONObject rowsInfo = new JSONObject();
+
+        try {
+            context.setResponseWriter(context.getRenderKit().createResponseWriter(writer, "text/html", "UTF-8"));
+            for (BodyRow row : rows) {
+                row.render(context, null);
+            }
+            rowsInfo.append("rows", writer.toString());
+        } finally {
+            context.setResponseWriter(originalResponseWriter);
+            table.getAttributes().remove(TableStructure.TABLE_STRUCTURE_ATTR);
+
+        }
+
+        return rowsInfo;
     }
 
     protected void beforeReloadingAllRows(FacesContext context, AbstractTable table) {

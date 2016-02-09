@@ -5158,8 +5158,13 @@ if (!window.O$) {
   };
 
   O$.isVisible = function (element) {
-    return element && O$.getElementStyle(element, "display") != "none" && O$.getElementStyle(element, "visibility") != "hidden";
-    // todo: check floatingIconMessage behavior in different browsers before reusing this function for O$.isInvisible implementation
+    if(!element) return false;
+
+    var computedStyles = O$._getComputedStyles(element);
+    var visible = O$._getComputedStyleValue(computedStyles, "visibility") != 'hidden';
+    var displayed = O$._getComputedStyleValue(computedStyles, "display") != 'none';
+
+    return visible && displayed;
   };
 
 

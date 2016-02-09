@@ -129,5 +129,8 @@ public abstract class AbstractTableTag extends AbstractComponentTag {
 
         setBooleanProperty(component, "unDisplayedSelectionAllowed");
         setLiteralCollectionProperty(component, "hiddenColumns");
+
+        setBooleanProperty(component, "liveScroll");
+        setIntProperty(component, "scrollRows");
     }
 }

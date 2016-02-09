@@ -11,6 +11,7 @@
  */
 package org.openfaces.renderkit.table;
 
+import org.jboss.tm.recovery.LogRecord;
 import org.openfaces.component.ContextDependentComponent;
 import org.openfaces.component.TableStyles;
 import org.openfaces.component.table.*;
@@ -116,16 +117,29 @@ public class TableBody extends TableSection {
 
         int rowCount = table.getRowCount();
         int rows = (rowCount != -1) ? rowCount : Integer.MAX_VALUE;
-        if (rows == 0)
-            noDataRows = true;
-        if (table.getDeferBodyLoading()) {
-            rows = 0;
+        boolean liveScroll = false;
+        int scrollRows = 0;
+        int scrollOffset = 0;
+
+        if(table instanceof DataTable){
+            liveScroll = ((DataTable) table).isLiveScroll();
+            scrollRows = ((DataTable) table).getScrollRows();
+            scrollOffset = ((DataTable) table).getScrollOffset();
         }
 
-        List<BodyRow> bodyRows = createRows(context, first, rows, columns);
+        int firstIndex = liveScroll ? scrollOffset : 0;
+        int rowsToRender = rows > 0 ? (liveScroll ? (scrollRows + scrollOffset) : rows) : rows;
+
+        if (rowsToRender == 0)
+            noDataRows = true;
+        if (table.getDeferBodyLoading()) {
+            rowsToRender = 0;
+        }
+
+        List<BodyRow> bodyRows = createRows(context, first, (first + rowsToRender), columns);
         TableFooter footer = tableStructure.getFooter();
         boolean hasFooter = footer != null && footer.isContentSpecified();
-        for (int i = 0, count = bodyRows.size(); i < count; i++) {
+        for (int i = firstIndex, count = bodyRows.size(); i < count; i++) {
             BodyRow row = bodyRows.get(i);
             row.render(context, (!hasFooter && i == count - 1) ? additionalContentWriter : null);
         }
@@ -151,10 +165,12 @@ public class TableBody extends TableSection {
         stringWriter.getBuffer().setLength(0);
         context.setResponseWriter(responseWriter);
         try {
-            if (tableStructure.getScrolling() == null)
+            if (tableStructure.getScrolling() == null) {
                 rows = createNonScrollableRows(context, stringWriter, firstRowIndex, rowCount, columns);
-            else
+            }
+            else {
                 rows = createScrollableRows(context, stringWriter, firstRowIndex, rowCount, columns);
+            }
         } finally {
             if (AjaxUtil.isAjaxRequest(context))
                 responseWriter.endCDATA();

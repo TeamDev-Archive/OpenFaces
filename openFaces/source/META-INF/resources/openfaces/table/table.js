@@ -156,10 +156,13 @@ O$.Table = {
     });
   },
 
-  _init:function (tableId, initParams, useAjax, rolloverClass, apiInitializationFunctionName, deferredBodyLoading, rowMinHeight, focusable) {
+  _init:function (tableId, initParams, useAjax, rolloverClass, apiInitializationFunctionName, deferredBodyLoading, rowMinHeight, focusable, liveScroll, scrollStep) {
     var table = O$.initComponent(tableId, {rollover:rolloverClass}, {
       _useAjax:useAjax,
       _rowMinHeight: rowMinHeight,
+      _liveScroll: liveScroll,
+      _scrollStep: scrollStep,
+      _scrollOffset: 0,
 
       getCurrentColumn:function () {
         return this._showingMenuForColumn ? table._getColumn(this._showingMenuForColumn) : null;
@@ -173,6 +176,26 @@ O$.Table = {
             completionCallback();
         });
       },
+
+      /*Loads rows on the fly when scroll hit the bottom*/
+      _loadLiveRows:function(completionCallback){
+        table._scrollOffset += table._scrollStep;
+        var $this = this;
+
+        O$.Ajax.requestComponentPortions(this.id, ["liveScroll"], JSON.stringify({_scrollOffset: table._scrollOffset}),
+                function (table, portionName, portionHTML, portionScripts, portionData) {
+
+          var doc_fragment = document.createDocumentFragment();
+          var div = document.createElement("div");
+          div.innerHTML = portionData.rows;
+          doc_fragment.appendChild(div.firstChild);
+          var newRows = doc_fragment.querySelectorAll('tr');
+          for (var i = 0; i < newRows.length - 1; i ++) {
+            table._insertRowsAfter(table.body._getRows().length - 1, [newRows[i]], null, null, null, true);
+          }
+        }, null, true);
+      },
+
       _addLoadedRows:function (rowsData) {
         var newRows = this.__newRows;
         var afterRowIndex = this.__afterRowIndex;
@@ -3332,6 +3355,13 @@ O$.Table = {
       }
       var prevOnscroll = table.onscroll;
       table.onscroll = function (e) {
+        var viewportHeight = e.target.offsetHeight;
+        var scrollTop = e.target.scrollTop;
+        var scrollHeight = e.target.scrollHeight;
+        if(scrollHeight - 30 <= (scrollTop + viewportHeight) && this._liveScroll){
+          this._loadLiveRows();
+          return false;
+        }
         if (prevOnscroll) prevOnscroll.call(table, e);
         setTimeout(updateResizeHandlePositions, 10);
         if (table._params.scrolling && table._params.scrolling.autoSaveState) {
