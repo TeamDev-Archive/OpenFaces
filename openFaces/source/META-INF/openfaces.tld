@@ -203,6 +203,29 @@
       <!-- @default true -->
       <!-- @el true -->
     </attribute>
+
+    <attribute>
+      <description>The Identifier of a Lazy Loading of the DataTable allows to load rows by scroll event</description>
+      <name>liveScroll</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>The Identifier of a row number for one portion of the Lazy Loading</description>
+      <name>scrollRows</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+
     <attribute>
       <description>The identifier of a column by which the DataTable component is sorted.
       </description>
