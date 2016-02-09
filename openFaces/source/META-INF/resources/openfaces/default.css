@@ -1207,6 +1207,7 @@
   border: 0 solid !important; /*"important" overrides RichFaces default skin's border */
   width: 100%;
   outline: none;
+  box-sizing: border-box;
 }
 
 .o_dropdown_list {
