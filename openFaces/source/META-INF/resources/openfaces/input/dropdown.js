@@ -182,11 +182,13 @@ O$.DropDown = {
     field._o_zeroBorders = true;
     field._o_fullWidth = true;
     field._o_fullHeight = false;
-    O$.fixInputsWidthStrict(dropDown);
+
+    if (!O$.isChrome()) {
+      O$.fixInputsWidthStrict(dropDown);
+    }
   },
 
   _init:function (dropDownId, parentId, initialText, containerClass, rolloverContainerClass, disabledClass, fieldClass, rolloverFieldClass, disabledFieldClass, focusedClass, buttonClass, rolloverButtonClass, pressedButtonClass, disabledButtonClass, disabledButtonImageUrl, popupClass, rolloverPopupClass, disabled, readOnly, promptText, promptTextClass, pullPopupFromContainer) {
-
     O$.DropDown._initInput(dropDownId,
             initialText,
             containerClass,
@@ -482,8 +484,9 @@ O$.DropDown = {
             repaintDropDown = true;
           }
         }
-        if (popup.offsetWidth > O$.getNumericElementStyle(popup, "width", true) && !popup._widthCorrection) {
-          popup._widthCorrection = popup.offsetWidth - O$.getNumericElementStyle(popup, "width", true);
+        var numericElementStyle = O$.getNumericElementStyle(popup, "width", true);
+        if (popup.offsetWidth > numericElementStyle && !popup._widthCorrection) {
+          popup._widthCorrection = popup.offsetWidth - numericElementStyle;
         }
 
         if (popup.offsetWidth < minWidth) {

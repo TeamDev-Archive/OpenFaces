@@ -643,6 +643,10 @@ if (!window.O$) {
     return O$.ltrim(O$.rtrim(value));
   };
 
+  String.prototype.endWith = function(suffix){
+    return suffix && this.lastIndexOf(suffix) == this.length - suffix.length;
+  };
+
   O$.stringEndsWith = function (str, ending) {
     if (!str || !ending)
       return false;
@@ -1226,9 +1230,6 @@ if (!window.O$) {
       var child = children[i];
       if (child.className == className)
         result.push(child);
-      //    var childClass = child.className;
-      //    var childClassNames = childClass ? childClass.split(" ") : [];
-      //    if (childClassNames.O$.indexOf(className))
       if (child == excludeElementFromSearch)
         continue;
       var subResult = !searchTopLevelOnly && O$.getChildNodesByClass(child, className, false, excludeElementFromSearch);
@@ -1321,10 +1322,21 @@ if (!window.O$) {
     if (element == document) {
       return true;
     }
+
+    var id = element.id;
+    if(id && document.getElementById(id)){
+      return true;
+    }
+
     if (element.parentNode != null) {
       result = O$.isElementPresentInDocument(element.parentNode);
     }
     return result;
+  };
+
+  O$.isInitialized = function(element){
+    return element.tagName.toUpperCase() === "TABLE" ? element._initialized : true;
+
   };
 
   O$.removeAllChildNodes = function (element) {
@@ -2707,7 +2719,7 @@ if (!window.O$) {
             : containment == "viewport" ? O$.getVisibleAreaRectangle()
             : containment == "document" ? O$.getDocumentRectangle()
             : containment == "containingBlock" ? O$.getElementBorderRectangle(containingBlock)
-            : containment.substring(0, 1) == "#" ? function () {
+            : containment.charAt(0) == "#" ? function () {
       var id = containment.substring(1);
       var c = O$(id);
       if (!c) throw "Couldn't find containment by id: \"" + id + "\"";
@@ -3396,7 +3408,6 @@ if (!window.O$) {
         selector:resultSelector,
         declaration:resultDeclaration.cssText
       })
-
     }
 
   }
@@ -3741,52 +3752,69 @@ if (!window.O$) {
     }
   };
 
+  O$._getComputedStyles = function(element){
+    return document.defaultView && document.defaultView.getComputedStyle(element, null);
+  };
+
+  O$._getComputedStyleValue = function(computedStyles, propertyName){
+    return computedStyles[propertyName] || computedStyles.getPropertyValue(propertyName);
+  };
+
   O$.getElementStyle = function (element, propertyNames, enableValueCaching) {
+    var currentStyle;
+    var computedStyle = O$._getComputedStyles(element);
+
     if (typeof propertyNames == "string") {
       if (!enableValueCaching) {
-        var currentStyle, computedStyle;
-        var result = (currentStyle = element.currentStyle)
-                ? currentStyle[O$._capitalizeCssPropertyName(propertyNames)]
-                : (computedStyle = !currentStyle && document.defaultView && document.defaultView.getComputedStyle(element, ""))
+        var result = O$._getComputedStyleValue(computedStyle, propertyNames);
+        return result ? result : (currentStyle = element.currentStyle)
+                ? currentStyle[O$._capitalizeCssPropertyName(propertyNames)] : computedStyle
                 ? computedStyle.getPropertyValue(O$._dashizeCssPropertyName(propertyNames)) : "";
-        return result ? result : "";
       }
       return O$.getElementStyle(element, [propertyNames], enableValueCaching)[propertyNames];
     }
+
     if (enableValueCaching) {
       if (!element._cachedStyleValues)
         element._cachedStyleValues = {};
     }
+
     var propertyValues = {};
     currentStyle = element.currentStyle;
-    computedStyle = !currentStyle && document.defaultView && document.defaultView.getComputedStyle(element, "");
+    computedStyle = !currentStyle && computedStyle;
     for (var i = 0, count = propertyNames.length; i < count; i++) {
       var propertyName = propertyNames[i];
-      var capitalizedPropertyName = O$._capitalizeCssPropertyName(propertyName);
-      var dashizedPropertyName = O$._dashizeCssPropertyName(capitalizedPropertyName);
+      var foundPropertyValue = O$._getComputedStyleValue(computedStyle, propertyName);
 
-      var propertyValue = undefined;
-      if (enableValueCaching) {
-        propertyValue = element._cachedStyleValues[dashizedPropertyName];
-        if (propertyValue != undefined) {
-          propertyValues[dashizedPropertyName] = propertyValue;
-          propertyValues[capitalizedPropertyName] = propertyValue;
-          continue;
+      if(foundPropertyValue){
+        propertyValues[propertyName] = foundPropertyValue;
+      } else {
+        var capitalizedPropertyName = O$._capitalizeCssPropertyName(propertyName);
+        var dashizedPropertyName = O$._dashizeCssPropertyName(capitalizedPropertyName);
+
+        var propertyValue = undefined;
+        if (enableValueCaching) {
+          propertyValue = element._cachedStyleValues[dashizedPropertyName];
+          if (propertyValue != undefined) {
+            propertyValues[dashizedPropertyName] = propertyValue;
+            propertyValues[capitalizedPropertyName] = propertyValue;
+            continue;
+          }
         }
-      }
 
-      if (currentStyle) {
-        propertyValue = currentStyle[capitalizedPropertyName];
-      } else if (computedStyle) {
-        propertyValue = computedStyle.getPropertyValue(dashizedPropertyName);
+        if (currentStyle) {
+          propertyValue = currentStyle[capitalizedPropertyName];
+        } else if (computedStyle) {
+          propertyValue = computedStyle.getPropertyValue(dashizedPropertyName);
+        }
+        if (!propertyValue)
+          propertyValue = "";
+        if (enableValueCaching) {
+          element._cachedStyleValues[dashizedPropertyName] = propertyValue;
+        }
+        propertyValues[dashizedPropertyName] = propertyValue;
+        propertyValues[capitalizedPropertyName] = propertyValue;
       }
-      if (!propertyValue)
-        propertyValue = "";
-      if (enableValueCaching) {
-        element._cachedStyleValues[dashizedPropertyName] = propertyValue;
-      }
-      propertyValues[dashizedPropertyName] = propertyValue;
-      propertyValues[capitalizedPropertyName] = propertyValue;
     }
 
     return propertyValues;
@@ -3806,7 +3834,7 @@ if (!window.O$) {
       var firstPart = _propertyName.substring(0, idx);
       var secondPart = _propertyName.substring(idx + 1);
       if (secondPart.length > 0) {
-        var firstChar = secondPart.substring(0, 1);
+        var firstChar = secondPart.charAt(0);
         firstChar = firstChar.toUpperCase();
         var otherChars = secondPart.substring(1);
         secondPart = firstChar + otherChars;
@@ -4376,20 +4404,27 @@ if (!window.O$) {
    See also: O$.setElementBorderRectangle, O$.getElementPos, O$.setElementPos.
    */
   O$.getElementBorderRectangle = function (element, relativeToContainingBlock, cachedDataContainer) {
+    var elementRectangle = element._of_getElementRectangle;
     if (cachedDataContainer) {
-      if (!element._of_getElementRectangle)
-        element._of_getElementRectangle = {};
-      if (element._of_getElementRectangle._currentCache == cachedDataContainer)
-        return element._of_getElementRectangle._cachedValue;
+      if (!elementRectangle) {
+        elementRectangle = {};
+      }
+      if (elementRectangle._currentCache == cachedDataContainer)
+        return elementRectangle._cachedValue;
     }
     var pos = O$.getElementPos(element, relativeToContainingBlock);
     var size = O$.getElementSize(element);
     var rect = new O$.Rectangle(pos.x, pos.y, size.width, size.height);
     if (cachedDataContainer) {
-      element._of_getElementRectangle._currentCache = cachedDataContainer;
-      element._of_getElementRectangle._cachedValue = rect;
+      elementRectangle._currentCache = cachedDataContainer;
+      elementRectangle._cachedValue = rect;
     }
+
     return rect;
+  };
+
+  O$.getHeightOfElementBorderRectangle = function (element, relativeToContainingBlock, cachedDataContainer) {
+    return O$.getElementHeight(element);
   };
 
   O$.getElementSize = function (element) {
@@ -4412,7 +4447,7 @@ if (!window.O$) {
       width -= margins.marginLeft + margins.marginRight;
     }
     return width;
-  }
+  };
   //Added this methods according to slow calculating of offsetWidth and Height under IE 8
   O$.getElementHeight = function (element) {
     var height = element.offsetHeight;
@@ -4421,7 +4456,7 @@ if (!window.O$) {
       height -= margins.marginTop + margins.marginBottom;
     }
     return height;
-  }
+  };
 
   O$.getElementPaddingRectangle = function (element, relativeToContainingBlock, cachedDataContainer) {
     var rect = O$.getElementBorderRectangle(element, relativeToContainingBlock, cachedDataContainer);
@@ -4434,6 +4469,15 @@ if (!window.O$) {
     rect.width -= borderLeftWidth + borderRightWidth;
     rect.height -= borderTopWidth + borderBottomWidth;
     return rect;
+  };
+
+  O$.getHeightOfElementRectangle = function (element, relativeToContainingBlock, cachedDataContainer) {
+    var computedStyles = O$._getComputedStyles(element);
+    var rectHeight = O$.getHeightOfElementBorderRectangle(element, relativeToContainingBlock, cachedDataContainer);
+    var borderTopWidth = O$.calculateNumericCSSValue(computedStyles["border-top-width"]);
+    var borderBottomWidth = O$.calculateNumericCSSValue(computedStyles["border-bottom-width"]);
+    rectHeight -= borderTopWidth + borderBottomWidth;
+    return rectHeight;
   };
 
   O$.getElementClientRectangle = function (element, relativeToContainingBlock, cachedDataContainer) {
@@ -4515,7 +4559,7 @@ if (!window.O$) {
       } catch (e) {
         alert("O$._setElementWidthOrHeight error. property = " + property + "; valueParam = " + valueParam + "; value = " + value);
         throw e;
-      }
+    }
   };
 
   O$.setElementWidth = function (element, value, hundredPercentValue) {
@@ -4545,7 +4589,7 @@ if (!window.O$) {
   O$.isContainingBlock = function (elt) {
     O$.assert(elt, "elt is null");
     if (elt._containingBlock != undefined) return elt._containingBlock;
-    if (elt == document) {
+    if (elt.nodeName === '#document-fragment' || elt == document) {
       // O$.calculateElementStyleProperty fails to determine position on the document element, and
       // document element can't have a non-static position
       return false;
@@ -4756,6 +4800,11 @@ if (!window.O$) {
   };
 
   O$.getNumericElementStyle = function (element, propertyName, enableValueCaching, hundredPercentValue) {
+    var value = O$._getComputedStyleValue(O$._getComputedStyles(element), propertyName);
+    if(value){
+      return O$.calculateNumericCSSValue(value, hundredPercentValue);
+    }
+
     var capitalizedPropertyName = O$._capitalizeCssPropertyName(propertyName);
     if (O$.stringStartsWith(capitalizedPropertyName, "border") && O$.stringEndsWith(capitalizedPropertyName, "Width")) {
       var borderName = capitalizedPropertyName.substring(0, capitalizedPropertyName.length - "Width".length);
@@ -4771,8 +4820,7 @@ if (!window.O$) {
       }
     }
     var str = O$.getElementStyle(element, propertyName, enableValueCaching);
-    var result = O$.calculateNumericCSSValue(str, hundredPercentValue);
-    return result;
+    return O$.calculateNumericCSSValue(str, hundredPercentValue);
   };
 
   O$.getIndentData = function (element, indentDelta) {
@@ -4791,18 +4839,24 @@ if (!window.O$) {
   };
 
   O$.calculateNumericCSSValue = function (value, hundredPercentValue) {
-    if (!value)
+    if (!value) {
       return 0;
-    if (!isNaN(1 * value))
+    }
+    if (!isNaN(1 * value)) {
       return 1 * value;
-    if (O$.stringEndsWith(value, "px"))
-      return 1 * value.substring(0, value.length - 2);
-    if (value == "auto")
+    }
+    if (value.endWith("px")) {
+      return getNumericValue(value);
+    }
+    if (value == "auto") {
       return 0; // todo: can't calculate "auto" (e.g. from margin property) on a simulated border -- consider simulating such "non-border" values on other properties
+    }
     if (value.indexOf("%") == value.length - 1) {
-      var val = value.substring(0, value.length - 1);
-      if (typeof hundredPercentValue == "function")
+      var val = getNumericValue(value);
+      if (typeof hundredPercentValue == "function") {
         hundredPercentValue = hundredPercentValue();
+      }
+
       return val / 100.0 * hundredPercentValue;
     }
 
@@ -4816,6 +4870,10 @@ if (!window.O$) {
     O$._nonPixelValueMeasurements[value] = pixelValue;
     return pixelValue;
   };
+
+  function getNumericValue(value) {
+    return value ? 1 * value.replace(/[^-\d\.]/g, '') : 0;
+  }
 
   O$.calculateLineWidth = function (lineStyleStr) {
     if (!lineStyleStr)
@@ -5039,33 +5097,49 @@ if (!window.O$) {
     if (!O$.isStrictMode())
       return;
 
+    function getWidthCorrection(input, computedStyles) {
+      var widthCorrection;
+      if (input._o_fullWidth || O$.getStyleClassProperty(input.className, "width") == "100%") {
+        var bordersX = input._o_zeroBorders ? 0 : calcNumeric(computedStyles, "border-left-width") + calcNumeric(computedStyles, "border-right-width");
+        var paddingsX = calcNumeric(computedStyles, "padding-left") + calcNumeric(computedStyles, "padding-right");
+        widthCorrection = bordersX + paddingsX;
+      }
+      return widthCorrection;
+    }
+
+    function getHeightCorrection(input, computedStyles) {
+      var heightCorrection;
+
+      if ((input._o_fullHeight == undefined && O$.getStyleClassProperty(input.className, "height") == "100%") || input._o_fullHeight) {
+        var bordersY = calcNumeric(computedStyles, "border-top-width") + calcNumeric(computedStyles, "border-bottom-width");
+        var paddingsY = calcNumeric(computedStyles, "padding-top") + calcNumeric(computedStyles, "padding-bottom");
+        heightCorrection = bordersY + paddingsY;
+      }
+      return heightCorrection;
+    }
+
+    function calcNumeric(computedStyles, props){
+      return O$.calculateNumericCSSValue(computedStyles.getPropertyValue(props));
+    }
+
     function processInput(input) {
       if (input._strictWidthFixed || input.type == "hidden")
         return;
       input._strictWidthFixed = true;
       var parent = input.parentNode;
-      var widthCorrection;
-      if ((input._o_fullWidth == undefined && O$.getStyleClassProperty(input.className, "width") == "100%") || input._o_fullWidth) {
-        var bordersX = input._o_zeroBorders ? 0 : O$.getNumericElementStyle(input, "border-left-width") + O$.getNumericElementStyle(input, "border-right-width");
-        var paddingsX = O$.getNumericElementStyle(input, "padding-left") + O$.getNumericElementStyle(input, "padding-right");
-        widthCorrection = bordersX + paddingsX;
-      }
-      var heightCorrection;
-      if ((input._o_fullHeight == undefined && O$.getStyleClassProperty(input.className, "height") == "100%") || input._o_fullHeight) {
-        var bordersY = O$.getNumericElementStyle(input, "border-top-width") + O$.getNumericElementStyle(input, "border-bottom-width");
-        var paddingsY = O$.getNumericElementStyle(input, "padding-top") + O$.getNumericElementStyle(input, "padding-bottom");
-        heightCorrection = bordersY + paddingsY;
-      }
+      var computedStyles = O$._getComputedStyles(input);
+      var widthCorrection = getWidthCorrection(input, computedStyles);
+      var heightCorrection = getHeightCorrection(input, computedStyles);
 
+      computedStyles = O$._getComputedStyles(parent);
       if (widthCorrection) {
-        var parentPaddingRight = O$.getNumericElementStyle(parent, "padding-right");
+        var parentPaddingRight = calcNumeric(computedStyles, "padding-right");
         parent.style.paddingRight = parentPaddingRight + widthCorrection + "px";
       }
       if (heightCorrection) {
-        var parentPaddingBottom = O$.getNumericElementStyle(parent, "padding-bottom");
+        var parentPaddingBottom = calcNumeric(computedStyles, "padding-bottom");
         parent.style.paddingBottom = parentPaddingBottom + heightCorrection + "px";
       }
-
     }
 
     var inputs = container.getElementsByTagName("input");
@@ -5378,17 +5452,15 @@ if (!window.O$) {
 
   O$.fixElement = function (element, properties, workingCondition, events, interval) {
     if (!interval)
-      interval = 200;
+      interval = 1000;
     var fixture = {
       values:{},
       update:function () {
         var elements = element instanceof Array ? element : [element];
-        if (
-                !elements.every(function (el) {
+        if (!elements.every(function (el) {
                   return O$.isElementPresentInDocument(el);
-                }) ||
-                        (workingCondition && !workingCondition())
-                ) {
+                }) || (workingCondition && !workingCondition())
+        ) {
           clearInterval(fixture.intervalId);
           return;
         }
@@ -5433,7 +5505,7 @@ if (!window.O$) {
     var listener = {
       values:{},
       update:function () {
-        if (!O$.isElementPresentInDocument(element)) {
+        if (!O$.isElementPresentInDocument(element) || !O$.isInitialized(element)) {
           this.release();
           return;
         }
@@ -5918,7 +5990,7 @@ if (!window.O$) {
       O$._popupVisionStateStorage = {};
     }
     return O$._popupVisionStateStorage;
-  }
+  };
 
 }
 

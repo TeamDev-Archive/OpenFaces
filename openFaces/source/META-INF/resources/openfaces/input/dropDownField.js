@@ -124,7 +124,7 @@ O$.DropDownField = {
         }
 
         var item = dropDown._items[dropDown._highlightedItemIndex];
-        if (!item._isVisible())
+        if (!item || !item._isVisible())
           return;
         if (O$.isSafari2()) {
           function scrollPopupProportionally() {

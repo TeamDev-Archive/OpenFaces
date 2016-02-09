@@ -229,6 +229,8 @@ O$.Table = {
       table.style.visibility = "visible";
       // can't just exclude the "o_initially_invisible" from table.className because of IE issue (JSFC-2337)
     }
+    table._initialized = true;
+
     O$.Table._initApiFunctions(table);
     O$.Table._initInnerFunctions(table);
     O$.addUnloadHandler(table, function () {
@@ -460,11 +462,12 @@ O$.Table = {
         O$.extend(selectedItems, {
           _contains:function (anCellId) {
             var isContain = false;
-            selectedItems.forEach(function (cellId) {
+            for (var i = 0; i < selectedItems.length; i++) {
+              var cellId = selectedItems[i];
               if (anCellId[0] == cellId[0] && anCellId[1] == cellId[1]) {
                 isContain = true;
               }
-            });
+            }
             return isContain;
           }
         });
@@ -507,9 +510,9 @@ O$.Table = {
 
       getColumnsOrder:function () {
         var columnIds = [];
-        this._columns.forEach(function (column) {
-          columnIds.push(column.columnId);
-        });
+        for (var i = 0; i < this._columns.length; i++) {
+          columnIds.push(this._columns[i].columnId);
+        }
         return columnIds;
       },
 
@@ -2962,7 +2965,7 @@ O$.Table = {
   _initColumnResizing:function (tableId, retainTableWidth, minColWidth, resizeHandleWidth, columnParams, autoSaveState) {
     var thisRef = this;
     var args = arguments;
-    var table = O$(tableId);
+    var table = O$(tableId)
     var visibleParent = O$.isVisibleParentRecursive(table)
     O$.addLoadEvent(function () {
       if (!O$.isVisible(visibleParent) && visibleParent != null) {
@@ -3222,6 +3225,7 @@ O$.Table = {
               totalWidth += colWidth;
             }
 
+            recalculateTableWidth(colWidths);
             colWidthsField.value = (O$.isOpera() ? table.style.width : totalWidth + "px") + ":" +
                     "[" + colWidths.join(",") + "]";
             if (autoSaveState) {
@@ -3327,6 +3331,8 @@ O$.Table = {
 
       }
 
+      fixWidths();
+
       function updateResizeHandlePositions() {
         if (table._columns) {
           for (var i = 0, count = table._columns.length; i < count; i++) {
@@ -3377,8 +3383,6 @@ O$.Table = {
         O$.removeEventHandler(window, "resize", updateResizeHandlePositions);
         table.onscroll = null;
       });
-
-      fixWidths();
 
       table._fixFF3ColResizingIssue = function () { // See JSFC-3720
         if (!(O$.isMozillaFF3() && O$.isQuirksMode()))

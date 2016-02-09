@@ -444,6 +444,7 @@ O$.Tables = {
       } else {
         if (newRow instanceof Array)
           newRow = {_leftRowNode:newRow[0], _rowNode:newRow[1], _rightRowNode:newRow[2]};
+
         function addRow(area, rowNode) {
           if (!area || !rowNode) return;
           var nextRowIdx = afterIndex + 1 + i;

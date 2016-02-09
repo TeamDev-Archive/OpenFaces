@@ -547,7 +547,7 @@ O$.PopupLayer = {
       popup._blockingLayer = blockingLayer;
     }
 
-    popup.style.display = O$.getElementStyle(popup, "display");
+    popup.style.display = O$._getComputedStyleValue(O$._getComputedStyles(popup), "display");
 
     if (left != null)
       try {
