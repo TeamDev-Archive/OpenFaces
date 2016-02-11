@@ -178,22 +178,22 @@ O$.Table = {
       },
 
       /*Loads rows on the fly when scroll hit the bottom*/
-      _loadLiveRows:function(completionCallback){
-        table._scrollOffset += table._scrollStep;
+      _loadLiveRows: function (completionCallback) {
         var $this = this;
+        var count = 0;
 
-        O$.Ajax.requestComponentPortions(this.id, ["liveScroll"], JSON.stringify({_scrollOffset: table._scrollOffset}),
-                function (table, portionName, portionHTML, portionScripts, portionData) {
-
-          var doc_fragment = document.createDocumentFragment();
-          var div = document.createElement("div");
-          div.innerHTML = portionData.rows;
-          doc_fragment.appendChild(div.firstChild);
-          var newRows = doc_fragment.querySelectorAll('tr');
-          for (var i = 0; i < newRows.length - 1; i ++) {
-            table._insertRowsAfter(table.body._getRows().length - 1, [newRows[i]], null, null, null, true);
-          }
-        }, null, true);
+        var liveLoadTimeout = setInterval(function () {
+          table._scrollOffset += table._scrollStep;
+          O$.Ajax.requestComponentPortions($this.id, ["liveScroll"], JSON.stringify({_scrollOffset: table._scrollOffset}),
+                  function (table, portionName, portionHTML, portionScripts, portionData) {
+                    if (!portionData.rows || portionData.rows.length === 0 || portionData.rows.indexOf("{}") == 0) {
+                      clearInterval(liveLoadTimeout);
+                    } else {
+                      console.log("portion number: " + (count ++) + ", Already loaded: " + table._scrollOffset);
+                      table._appendRowsAfter(portionData);
+                    }
+                  }, null, true);
+        }, 1000);
       },
 
       _addLoadedRows:function (rowsData) {
@@ -210,6 +210,10 @@ O$.Table = {
       onbeforeajaxreload:initParams.onbeforeajaxreload,
       onafterajaxreload:initParams.onafterajaxreload
     });
+
+    if(table._liveScroll) {
+      table._loadLiveRows();
+    }
 
     //check if the table is using ajax
     if (O$._addComponentAjaxReloadHandler && (table.onbeforeajaxreload || table.onafterajaxreload)) {
@@ -3361,13 +3365,6 @@ O$.Table = {
       }
       var prevOnscroll = table.onscroll;
       table.onscroll = function (e) {
-        var viewportHeight = e.target.offsetHeight;
-        var scrollTop = e.target.scrollTop;
-        var scrollHeight = e.target.scrollHeight;
-        if(scrollHeight - 30 <= (scrollTop + viewportHeight) && this._liveScroll){
-          this._loadLiveRows();
-          return false;
-        }
         if (prevOnscroll) prevOnscroll.call(table, e);
         setTimeout(updateResizeHandlePositions, 10);
         if (table._params.scrolling && table._params.scrolling.autoSaveState) {

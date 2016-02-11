@@ -48,7 +48,8 @@ public class InGroupHeaderOrFooterCell extends GroupHeaderOrFooterCell {
 
     public InGroupHeaderOrFooterCell(DataTable dataTable, String facetName) {
         super(dataTable, getEmptyTextChildList(), facetName);
-        tableBody = TableStructure.getCurrentInstance(getDataTable()).getBody();
+        final TableStructure currentInstance = TableStructure.getCurrentInstance(getDataTable());
+        tableBody = currentInstance != null ? currentInstance.getBody() : null;
     }
 
     @Override

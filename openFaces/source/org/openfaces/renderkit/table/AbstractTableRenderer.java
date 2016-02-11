@@ -754,22 +754,26 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
 
         ResponseWriter originalResponseWriter = context.getResponseWriter();
         Writer writer = new StringWriter();
-
-        List<BaseColumn> columns = table.getRenderedColumns();
-        List<BodyRow> rows = tableStructure.getBody().createRows(context, table.getScrollOffset(), table.getScrollRows(), columns);
-
         JSONObject rowsInfo = new JSONObject();
 
         try {
+            List<BaseColumn> columns = table.getRenderedColumns();
+            List<BodyRow> rows = tableStructure.getBody().createRows(context, table.getScrollOffset(), table.getScrollRows(), columns);
             context.setResponseWriter(context.getRenderKit().createResponseWriter(writer, "text/html", "UTF-8"));
+
+            final TableScrollingArea content = (TableScrollingArea) rows.get(0).getCells().get(0).getContent();
+            if(content == null || content.getRows().size() < 1){
+                return rowsInfo;
+            }
+
             for (BodyRow row : rows) {
                 row.render(context, null);
             }
+
             rowsInfo.append("rows", writer.toString());
         } finally {
             context.setResponseWriter(originalResponseWriter);
             table.getAttributes().remove(TableStructure.TABLE_STRUCTURE_ATTR);
-
         }
 
         return rowsInfo;

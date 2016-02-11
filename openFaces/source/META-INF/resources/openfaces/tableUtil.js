@@ -206,131 +206,112 @@ O$.Tables = {
     };
   },
 
-  _appendRowsAfter: function(rows){
+  _appendRowsAfter: function(data){
+    var $table = this;
+    var bodyRows = this.body._getRows();
+    var bodyRow = bodyRows[0];
+    var originalBodySize = this.body._getRows().length - 1;
+    var scrollingAvailable = this._params.scrolling;
+
     var doc_fragment = document.createDocumentFragment();
     var div = document.createElement("div");
-    div.innerHTML = rows;
-    doc_fragment.appendChild(div.firstChild);
-    var rowsToInsert = doc_fragment.querySelectorAll('tr');
-    var bodyRows = this.body._getRows();
-
-    for (var j = 0; j < rowsToInsert.length; j++) {
-      var f = rowsToInsert[j];
-      if (!f._rowNode && f.nodeName && f.nodeName.toUpperCase() == "TR") f._rowNode = f;
+    div.innerHTML = data.rows;
+    if(div.childNodes.length == 1){
+      $table._insertRowsAfter(bodyRows.length, doc_fragment.querySelectorAll('tr'), null, null, null, true);
+      return;
     }
 
-    var visibleInsertedRows;
-    if (!this._params.invisibleRowsAllowed)
-      visibleInsertedRows = rowsToInsert.length;
-    else {
-      visibleInsertedRows = 0;
-      for (var j = 0; j < rowsToInsert.length; j++) {
-        var insertedRow = rowsToInsert[j];
-        insertedRow._visible = insertedRow._rowNode.className.indexOf("o_hiddenRow") == -1;
-        if (insertedRow._visible)
-          visibleInsertedRows++;
+    appendRows(applyRows(getSectionRows(div), false));
+    appendRows(applyRows(getSectionRows(div), true));
+
+    function getSectionRows(fakeDiv){
+      if(fakeDiv.childNodes.length < 1){
+        return [];
       }
+
+      doc_fragment = document.createDocumentFragment();
+      doc_fragment.appendChild(fakeDiv.firstChild);
+      var element = doc_fragment.querySelector('.o_scrolling_area_table');
+      return element ? element.querySelectorAll('tr') : [];
     }
+    function applyRows(section, center) {
+      var newRows = [];
 
-    var newVisibleRowsForNow = 0;
-    var callbackIndex, callbackCount;
-    var _tag_docFragment = document.createDocumentFragment();
-
-    function appendScrollingAreaRows() {
-      var bodyRowsCount = bodyRows.length;
-      if (bodyRowsCount > 0) {
-        var nextRowIdx = bodyRowsCount + 1 + insertedRow.length;
-        if (nextRowIdx < bodyRowsCount)
-          _tag_docFragment.insertBefore(newRow, bodyRows[nextRowIdx]);
-        else
-          _tag_docFragment.appendChild(newRow);
-      }
-      else
-        _tag_docFragment.appendChild(newRow);
-      return {bodyRowsCount: bodyRowsCount, nextRowIdx: nextRowIdx};
-    }
-
-    var count = 0;
-    var scrollingAvailable = this._params.scrolling;
-    for (var i = 0, count = rowsToInsert.length; i < count; i++) {
-      var newRow = rowsToInsert[i];
-      if (!scrollingAvailable) {
-        appendScrollingAreaRows();
-      } else {
-        if (newRow instanceof Array)
-          newRow = {_leftRowNode: newRow[0], _rowNode: newRow[1], _rightRowNode: newRow[2]};
-
-        function addRow(area, rowNode) {
-          if (!area || !rowNode) return;
-          var nextRowIdx = bodyRows.length + 1 + i;
-          if (area._rowContainer.childNodes.length > 0 && area._rowContainer.childNodes[0]._fakeRow) nextRowIdx++;
-          if (nextRowIdx < area._rowContainer.childNodes.length)
-            area._rowContainer.insertBefore(rowNode, area._rowContainer.childNodes[nextRowIdx]);
-          else
-            area._rowContainer.appendChild(rowNode);
-        }
-
-        addRow(this.body._leftScrollingArea, newRow._leftRowNode);
-        addRow(this.body._centerScrollingArea, newRow._rowNode);
-        addRow(this.body._rightScrollingArea, newRow._rightRowNode);
-      }
-
-      var newRowIndex = bodyRows.length + 1 + i;
-      bodyRows[newRowIndex] = newRow;
-
-      if (!scrollingAvailable)
-        newRow._cells = newRow.cells;
-      else {
-        var cells = [];
-        var nodes = [newRow._leftRowNode, newRow._rowNode, newRow._rightRowNode];
-        for (var k = 0; k < nodes.length; k++) {
-          var rowNode = nodes[k];
-          if (rowNode) {
-            rowNode._row = newRow;
-            rowNode._cells = rowNode.cells;
-            for (var p = 0, count = rowNode.cells.length; p < count; p++) {
-              cells.push(rowNode._cells[i]);
-            }
+      for (var j = 0; j < section.length; j++) {
+        var f = section[j];
+        if (f.nodeName && f.nodeName.toUpperCase() == "TR") {
+          if (center) {
+            f._rowNode = f;
+          } else {
+            f._leftRowNode = f;
           }
-          newRow._cells = cells;
         }
+
+        var rowNode = center ? bodyRow._rowNode : bodyRow._leftRowNode;
+        f.style.cssText = O$._getComputedStyles(rowNode).cssText;
+
+        for (var t = 0; t < rowNode.cells.length; t++) {
+          f.cells[t].className = rowNode.cells[t].className;
+          f.cells[t].style.cssText = O$._getComputedStyles(rowNode.cells[t]).cssText;
+        }
+
+        newRows.push(f);
+      }
+      return newRows;
+    }
+    function appendRows(rowsToInsert){
+      var _center_docFragment = document.createDocumentFragment();
+
+      function appendRowForNotFixedTable(insertedRow) {
+        var bodyRowsCount = bodyRows.length;
+        if (bodyRowsCount > 0) {
+          var nextRowIdx = bodyRowsCount + 1 + insertedRow.length;
+          if (nextRowIdx < bodyRowsCount)
+            _center_docFragment.insertBefore(newRow, bodyRows[nextRowIdx]);
+          else
+            _center_docFragment.appendChild(newRow);
+        }
+        else
+          _center_docFragment.appendChild(newRow);
+        return {bodyRowsCount: bodyRowsCount, nextRowIdx: nextRowIdx};
       }
 
-      O$.Tables._initBodyRow(newRow, this, newRowIndex, bodyRows.length);
-      if (newRow._isVisible())
-        newVisibleRowsForNow++;
-
-      var columns = this._columns;
-      var colIndex, colCount, column, bodyCells;
-      for (colIndex = 0, colCount = columns.length; colIndex < colCount; colIndex++) {
-        column = columns[colIndex];
-        var cell = newRow._getCellByColIndex(colIndex);
-
-        bodyCells = column.body._cells;
-        bodyCells[newRowIndex] = cell;
-        if (cell)
-          for (callbackIndex = 0, callbackCount = this._cellInsertionCallbacks.length; callbackIndex < callbackCount; callbackIndex++)
-            this._cellInsertionCallbacks[callbackIndex](cell, newRow, column);
+      function appendRow(area, rowNode) {
+        if (!area || !rowNode) return;
+        area._rowContainer.appendChild(rowNode);
       }
 
-      for (callbackIndex = 0, callbackCount = this._singleRowInsertionCallbacks.length; callbackIndex < callbackCount; i++)
-        this._singleRowInsertionCallbacks[callbackIndex](newRow);
-    }
+      for (var i = 0, count = rowsToInsert.length; i < count; i++) {
+        var newRow = rowsToInsert[i];
 
+        if (!scrollingAvailable) {
+          appendRowForNotFixedTable(newRow);
+        } else {
+          appendRow($table.body._leftScrollingArea, newRow._leftRowNode);
+          appendRow($table.body._centerScrollingArea, newRow._rowNode);
+          appendRow($table.body._rightScrollingArea, newRow._rightRowNode);
+        }
 
-    if (!scrollingAvailable) {
-      this.body._tag.appendChild(_tag_docFragment);
-    }
+        bodyRows.push(newRow);
+        newRow._cells = newRow.cells;
 
-    // update body section style in case of the simulated sections mode
-    this.body._updateStyle();
+        O$.Tables._initBodyRow(newRow, $table, bodyRows.length-1, originalBodySize);
+      }
 
-    if (scrollingAvailable) {
-      var tbl = this;
-      O$.invokeFunctionAfterDelay(function () {
-        if (tbl._alignRowHeights) tbl._alignRowHeights();
-        if (tbl._synchronizeVerticalAreaScrolling) tbl._synchronizeVerticalAreaScrolling();
-      }, 50);
+      if (!scrollingAvailable) {
+        $table.body._tag.appendChild(_center_docFragment);
+      }
+
+      // update body section style in case of the simulated sections mode
+      $table.body._updateStyle();
+
+      if (scrollingAvailable) {
+        var tbl = $table;
+        O$.invokeFunctionAfterDelay(function () {
+          if (tbl._alignRowHeights) tbl._alignRowHeights();
+          if (tbl._synchronizeVerticalAreaScrolling) tbl._synchronizeVerticalAreaScrolling();
+        }, 50);
+      }
     }
   },
 
@@ -2767,64 +2748,74 @@ O$.Tables = {
     synchronizeAreaScrolling();
 
     table._alignRowHeights = function () {
-      if (!table._leftArea && !table._rightArea)  return;
-      O$.Tables._fixChromeCrashWithEmptyTR(table);
-
-      var assignCellHeights = O$.isChrome() || O$.isSafari() || (O$.isExplorer() && O$.isStrictMode() && !O$.isExplorer8());
-      var quirksMode = (O$.isChrome() || O$.isSafari()) && O$.isQuirksMode();
-
-      var areaHeight = 0;
-      var section = table.body;
       var __minHeight = table._rowMinHeight ? parseInt(table._rowMinHeight) : 0;
+      if (!table._leftArea && !table._rightArea)
+        return;
+      O$.Tables._fixChromeCrashWithEmptyTR(table);
+      [table.header, table.body, table.footer].forEach(function (section) {
+        if (!section) return;
+        var assignCellHeights = O$.isChrome() || O$.isSafari() || (O$.isExplorer() && O$.isStrictMode() && !O$.isExplorer8());
 
-      var rows = section._getRows();
-      var height = getRowHeight(rows[0], rows[0]._rowNode);
-
-      for (var c = 0; c < rows.length; c++) {
-        var row = rows[c];
-        if (row.nodeName && row.nodeName.toUpperCase() === "TR") { break; }
-
-        var rowNodes = [row._leftRowNode, row._rowNode, row._rightRowNode];
-        for (var j = 0; j < rowNodes.length; j++) {
-          var rowNode = rowNodes[j];
-          if (rowNode){
-            setRowHeight(row, rowNode, height);
+        var areaHeight = 0;
+        var rows = section._getRows();
+        rows.forEach(function (row) {
+          if (row.nodeName && row.nodeName.toUpperCase() === "TR") {
+            return;
           }
-        }
-        areaHeight += height;
+          if (section != table.body) {
+            return;
+          }
 
-        if (quirksMode) {
-          section._scrollingAreas.forEach(function (area) {
-            O$.setElementHeight(area._table, areaHeight);
+          var rowNodes = [row._leftRowNode, row._rowNode, row._rightRowNode];
+          var height = getMaxRowHeight(rowNodes);
+
+          rowNodes.forEach(function (rowNode) {
+            if (rowNode) {
+              setRowHeight(rowNode, height, true);
+
+              for (var i = 0; i < rowNode._cells.length; i++) {
+                var cell = rowNode._cells[i];
+                cell.style.paddingTop = "0px";
+                cell.style.paddingBottom = "0px";
+                cell.style.whiteSpace = "nowrap";
+              }
+            }
           });
-        }
-      }
+          areaHeight += height;
 
-      function getRowHeight(row, node) {
-        var maxNodesHeight = 0;
-
-        if (node) {
-          setRowHeight(row, node, __minHeight);
-          maxNodesHeight = maxNodesHeight < node.offsetHeight ? node.offsetHeight : maxNodesHeight;
-        }
-
-        return maxNodesHeight;
-      }
-
-      function setRowHeight(row, rowNode, height) {
-        rowNode.style.height = height;
-        row.__height = height;
-
-        if (assignCellHeights) {
-          var cells = rowNode._cells;
-          for(var i = 0; i < cells.length; i++){
-            var cell = rowNode._cells[i];
-            cell.style.paddingTop = "0px";
-            cell.style.paddingBottom = "0px";
-            cell.style.height = height + "px";
+          if ((O$.isChrome() || O$.isSafari()) && O$.isQuirksMode()) {
+            section._scrollingAreas.forEach(function (area) {
+              O$.setElementHeight(area._table, areaHeight);
+            });
           }
-        }
-      }
+
+          function getMaxRowHeight(nodes) {
+            var maxNodesHeight = 0;
+
+            nodes.forEach(function (node) {
+              if (node) {
+                if (section == table.body) {
+                  setRowHeight(node, __minHeight, true);
+                  maxNodesHeight = maxNodesHeight < node.offsetHeight ? node.offsetHeight : maxNodesHeight;
+                } else {
+                  setRowHeight(node, 0, true);
+                }
+              }
+            });
+            return maxNodesHeight;
+          }
+
+          function setRowHeight(rowNode, height, trim) {
+            row.__height = height;
+            rowNode.style.height = height;
+            if (assignCellHeights && trim) {
+              for (var i = 0; i < rowNode._cells.length; i++) {
+                rowNode._cells[i].style.height = height + "px";
+              }
+            }
+          }
+        });
+      });
     };
     var delayUnderIE = O$.isExplorer() && !(O$.isExplorer8() && O$.isStrictMode());
     if (!delayUnderIE)

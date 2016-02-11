@@ -11,7 +11,6 @@
  */
 package org.openfaces.renderkit.table;
 
-import org.jboss.tm.recovery.LogRecord;
 import org.openfaces.component.ContextDependentComponent;
 import org.openfaces.component.TableStyles;
 import org.openfaces.component.table.*;
