@@ -707,6 +707,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             return loadRowsLazy(context, jsonParam, table);
         }
         if ("rows".equals(portionName)) {
+            beforeReloadingAllRows(context, table);
             JSONObject result = serveDynamicRowsRequest(context, table, 0, Integer.MAX_VALUE);
 
             ScriptBuilder sb = new ScriptBuilder();
@@ -771,6 +772,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             }
 
             rowsInfo.append("rows", writer.toString());
+            rowsInfo.put("rowsCount", content.getRows().size());
         } finally {
             context.setResponseWriter(originalResponseWriter);
             table.getAttributes().remove(TableStructure.TABLE_STRUCTURE_ATTR);

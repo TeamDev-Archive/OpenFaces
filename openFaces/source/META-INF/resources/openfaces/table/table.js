@@ -161,7 +161,7 @@ O$.Table = {
       _useAjax:useAjax,
       _rowMinHeight: rowMinHeight,
       _liveScroll: liveScroll,
-      _scrollStep: scrollStep,
+      _loadedRowsByDefault: scrollStep,
       _scrollOffset: 0,
 
       getCurrentColumn:function () {
@@ -181,19 +181,50 @@ O$.Table = {
       _loadLiveRows: function (completionCallback) {
         var $this = this;
         var count = 0;
+        var loadedRows = 0;
 
         var liveLoadTimeout = setInterval(function () {
-          table._scrollOffset += table._scrollStep;
+
+          table._scrollOffset += table._loadedRowsByDefault;
+          console.time("load");
           O$.Ajax.requestComponentPortions($this.id, ["liveScroll"], JSON.stringify({_scrollOffset: table._scrollOffset}),
                   function (table, portionName, portionHTML, portionScripts, portionData) {
                     if (!portionData.rows || portionData.rows.length === 0 || portionData.rows.indexOf("{}") == 0) {
-                      clearInterval(liveLoadTimeout);
+                      stopLoading(loadedRows);
                     } else {
-                      console.log("portion number: " + (count ++) + ", Already loaded: " + table._scrollOffset);
+                      loadedRows += portionData.rowsCount || loadedRows;
+
+                      console.log("portion number: " + (++count) + ", Already loaded: " + (loadedRows + $this._loadedRowsByDefault));
+
                       table._appendRowsAfter(portionData);
                     }
                   }, null, true);
-        }, 1000);
+        }, 100);
+
+        function stopLoading(loadedRows) {
+          clearInterval(liveLoadTimeout);
+
+          (function makeRowsVisible() {
+            for (var i = 0; i < $this.body._scrollingAreas.length; i++) {
+              var area = $this.body._scrollingAreas[i];
+              var areaChildNodes = area._rowContainer.childNodes;
+
+              for (var j = 0; j < areaChildNodes.length; j++) {
+                var rowNode = areaChildNodes[j];
+
+                if (rowNode && rowNode.style.display === 'none') {
+                  rowNode.style.display = 'table-row';
+                  for (var c = 0; c < rowNode.childNodes.length; c++) {
+                    var cell = rowNode.childNodes[c];
+                    cell.style.display = 'table-cell';
+                  }
+                }
+              }
+            }
+          })();
+
+          console.timeEnd("load");
+        }
       },
 
       _addLoadedRows:function (rowsData) {
@@ -3229,7 +3260,6 @@ O$.Table = {
               totalWidth += colWidth;
             }
 
-            recalculateTableWidth(colWidths);
             colWidthsField.value = (O$.isOpera() ? table.style.width : totalWidth + "px") + ":" +
                     "[" + colWidths.join(",") + "]";
             if (autoSaveState) {
@@ -3335,8 +3365,6 @@ O$.Table = {
 
       }
 
-      fixWidths();
-
       function updateResizeHandlePositions() {
         if (table._columns) {
           for (var i = 0, count = table._columns.length; i < count; i++) {
@@ -3380,6 +3408,8 @@ O$.Table = {
         O$.removeEventHandler(window, "resize", updateResizeHandlePositions);
         table.onscroll = null;
       });
+
+      fixWidths();
 
       table._fixFF3ColResizingIssue = function () { // See JSFC-3720
         if (!(O$.isMozillaFF3() && O$.isQuirksMode()))

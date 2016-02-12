@@ -212,6 +212,7 @@ O$.Tables = {
     var bodyRow = bodyRows[0];
     var originalBodySize = this.body._getRows().length - 1;
     var scrollingAvailable = this._params.scrolling;
+    var totalRowCount = data.totalRowCount;
 
     var doc_fragment = document.createDocumentFragment();
     var div = document.createElement("div");
@@ -249,10 +250,12 @@ O$.Tables = {
 
         var rowNode = center ? bodyRow._rowNode : bodyRow._leftRowNode;
         f.style.cssText = O$._getComputedStyles(rowNode).cssText;
+        rowNode.style.display = 'none';
 
         for (var t = 0; t < rowNode.cells.length; t++) {
           f.cells[t].className = rowNode.cells[t].className;
           f.cells[t].style.cssText = O$._getComputedStyles(rowNode.cells[t]).cssText;
+          f.style.display = 'none';
         }
 
         newRows.push(f);
@@ -279,6 +282,7 @@ O$.Tables = {
       function appendRow(area, rowNode) {
         if (!area || !rowNode) return;
         area._rowContainer.appendChild(rowNode);
+        area._rows.push(rowNode);
       }
 
       for (var i = 0, count = rowsToInsert.length; i < count; i++) {
@@ -406,8 +410,6 @@ O$.Tables = {
 
     var newVisibleRowsForNow = 0;
     var callbackIndex, callbackCount;
-    var _tag_docFragment = document.createDocumentFragment();
-
     for (i = 0, count = rowsToInsert.length; i < count; i++) {
       var newRow = rowsToInsert[i];
       if (rowKeys)
@@ -416,12 +418,12 @@ O$.Tables = {
         if (bodyRows.length > 0) {
           var nextRowIdx = afterIndex + 1 + addedRowCount;
           if (nextRowIdx < bodyRows.length)
-            _tag_docFragment.insertBefore(newRow, bodyRows[nextRowIdx]);
+            this.body._tag.insertBefore(newRow, bodyRows[nextRowIdx]);
           else
-            _tag_docFragment.appendChild(newRow);
+            this.body._tag.appendChild(newRow);
         }
         else
-          _tag_docFragment.appendChild(newRow);
+          this.body._tag.appendChild(newRow);
       } else {
         if (newRow instanceof Array)
           newRow = {_leftRowNode:newRow[0], _rowNode:newRow[1], _rightRowNode:newRow[2]};
@@ -448,16 +450,14 @@ O$.Tables = {
         newRow._cells = newRow.cells;
       else {
         var cells = [];
-        var nodes = [newRow._leftRowNode, newRow._rowNode, newRow._rightRowNode];
-        for (var k = 0; k < nodes.length; k++) {
-          var rowNode = nodes[k];
-          if (!rowNode) continue;
+        [newRow._leftRowNode, newRow._rowNode, newRow._rightRowNode].forEach(function (rowNode) {
+          if (!rowNode) return;
           rowNode._row = newRow;
           rowNode._cells = rowNode.cells;
           for (var i = 0, count = rowNode.cells.length; i < count; i++) {
             cells.push(rowNode._cells[i]);
           }
-        }
+        });
         newRow._cells = cells;
       }
 
@@ -480,9 +480,6 @@ O$.Tables = {
 
       for (callbackIndex = 0, callbackCount = this._singleRowInsertionCallbacks.length; callbackIndex < callbackCount; i++)
         this._singleRowInsertionCallbacks[callbackIndex](newRow);
-    }
-    if (!this._params.scrolling) {
-      this.body._tag.appendChild(_tag_docFragment);
     }
 
     this._rowInsertionCallbacks.forEach(function (callback) {
@@ -2625,12 +2622,13 @@ O$.Tables = {
       function getBodyHeight(tableHeight) {
         var height = tableHeight;
         //recalculating cached section heights and store them
-        var areas = [table.header, table.footer];
-        areas.forEach(function (section) {
+        [table.header, table.footer].forEach(function (section) {
+          if (!section) return;
+          section._sectionTable._cahedSectionHeight = 0;
+        });
+        [table.header, table.footer].forEach(function (section) {
           if (!section) return;
           var sectionTable = section._sectionTable;
-          sectionTable._cahedSectionHeight = 0;
-
           if (!sectionTable._cahedSectionHeight)
             sectionTable._cahedSectionHeight = sectionTable.offsetHeight;
           height -= sectionTable._cahedSectionHeight;
@@ -2742,7 +2740,7 @@ O$.Tables = {
           if (scrollingDiv && scrollingDiv.scrollLeft != correctScrollLeft)
             scrollingDiv.scrollLeft = correctScrollLeft;
         }
-      }, 1000);
+      }, 250);
     }
 
     synchronizeAreaScrolling();
@@ -2759,12 +2757,8 @@ O$.Tables = {
         var areaHeight = 0;
         var rows = section._getRows();
         rows.forEach(function (row) {
-          if (row.nodeName && row.nodeName.toUpperCase() === "TR") {
-            return;
-          }
-          if (section != table.body) {
-            return;
-          }
+          if (row.nodeName && row.nodeName.toUpperCase() === "TR") { return; }
+          if (section != table.body) { return; }
 
           var rowNodes = [row._leftRowNode, row._rowNode, row._rightRowNode];
           var height = getMaxRowHeight(rowNodes);
@@ -2804,7 +2798,6 @@ O$.Tables = {
             });
             return maxNodesHeight;
           }
-
           function setRowHeight(rowNode, height, trim) {
             row.__height = height;
             rowNode.style.height = height;
