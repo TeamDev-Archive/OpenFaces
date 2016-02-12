@@ -218,7 +218,8 @@ O$.Tables = {
     var div = document.createElement("div");
     div.innerHTML = data.rows;
     if(div.childNodes.length == 1){
-      $table._insertRowsAfter(bodyRows.length, doc_fragment.querySelectorAll('tr'), null, null, null, true);
+      doc_fragment = div.firstChild;
+      appendRows(applyRows(getSectionRows(div), true));
       return;
     }
 
@@ -235,20 +236,20 @@ O$.Tables = {
       var element = doc_fragment.querySelector('.o_scrolling_area_table');
       return element ? element.querySelectorAll('tr') : [];
     }
-    function applyRows(section, center) {
+    function applyRows(section, centerSection) {
       var newRows = [];
 
       for (var j = 0; j < section.length; j++) {
         var f = section[j];
         if (f.nodeName && f.nodeName.toUpperCase() == "TR") {
-          if (center) {
+          if (centerSection) {
             f._rowNode = f;
           } else {
             f._leftRowNode = f;
           }
         }
 
-        var rowNode = center ? bodyRow._rowNode : bodyRow._leftRowNode;
+        var rowNode = centerSection ? bodyRow._rowNode : bodyRow._leftRowNode;
         f.style.cssText = O$._getComputedStyles(rowNode).cssText;
         rowNode.style.display = 'none';
 
