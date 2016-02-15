@@ -233,8 +233,8 @@ O$.Tables = {
 
       doc_fragment = document.createDocumentFragment();
       doc_fragment.appendChild(fakeDiv.firstChild);
-      var element = doc_fragment.querySelector('.o_scrolling_area_table');
-      return element ? element.querySelectorAll('tr') : [];
+      var tableBody = doc_fragment.querySelector('table').tBodies[0];
+      return tableBody ? tableBody.rows : [];
     }
     function applyRows(section, centerSection) {
       var newRows = [];
@@ -253,7 +253,7 @@ O$.Tables = {
         f.style.cssText = O$._getComputedStyles(rowNode).cssText;
         f.style.display = 'none';
 
-        for (var t = 0; t < rowNode.cells.length; t++) {
+        for (var t = 0; t < f.cells.length; t++) {
           f.cells[t].className = rowNode.cells[t].className;
           f.cells[t].style.cssText = O$._getComputedStyles(rowNode.cells[t]).cssText;
           f.style.display = 'none';
