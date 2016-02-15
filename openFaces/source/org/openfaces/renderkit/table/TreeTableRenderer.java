@@ -81,6 +81,7 @@ public class TreeTableRenderer extends AbstractTableRenderer {
         TreeTable treeTable = (TreeTable) table;
         boolean foldingEnabled = treeTable.isFoldingEnabled();
         if (foldingEnabled) {
+            treeTable.setLiveScroll(false);
             encodeFoldingSupport(context, buf, treeTable);
         }
 

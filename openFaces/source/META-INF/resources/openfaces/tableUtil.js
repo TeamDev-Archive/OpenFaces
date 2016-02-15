@@ -251,7 +251,7 @@ O$.Tables = {
 
         var rowNode = centerSection ? bodyRow._rowNode : bodyRow._leftRowNode;
         f.style.cssText = O$._getComputedStyles(rowNode).cssText;
-        rowNode.style.display = 'none';
+        f.style.display = 'none';
 
         for (var t = 0; t < rowNode.cells.length; t++) {
           f.cells[t].className = rowNode.cells[t].className;

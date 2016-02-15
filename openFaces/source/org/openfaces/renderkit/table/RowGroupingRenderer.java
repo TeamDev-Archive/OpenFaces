@@ -43,6 +43,7 @@ public class RowGroupingRenderer extends RendererBase {
                     "a <o:dataTable> component. Though the following parent component has been encountered: " +
                     parent.getClass().getName());
         DataTable table = (DataTable) rowGrouping.getParent();
+        table.setLiveScroll(false);
 
         TableStructure tableStructure = TableStructure.getCurrentInstance(table);
         Set<BaseColumn> visibleAndGroupedColumns = new LinkedHashSet<BaseColumn>(tableStructure.getColumns());

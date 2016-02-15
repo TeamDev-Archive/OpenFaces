@@ -183,45 +183,46 @@ O$.Table = {
         var count = 0;
         var loadedRows = 0;
 
-        var liveLoadTimeout = setInterval(function () {
-
+        console.time("load");
+        var liveLoadTimeout = window.setInterval(function () {
           table._scrollOffset += table._loadedRowsByDefault;
-          console.time("load");
           O$.Ajax.requestComponentPortions($this.id, ["liveScroll"], JSON.stringify({_scrollOffset: table._scrollOffset}),
                   function (table, portionName, portionHTML, portionScripts, portionData) {
                     if (!portionData.rows || portionData.rows.length === 0 || portionData.rows.indexOf("{}") == 0) {
-                      stopLoading(loadedRows);
+                      stopInterval()
+                      makeRowsVisible(loadedRows);
+                      return;
                     } else {
                       loadedRows += portionData.rowsCount || loadedRows;
 
-                      console.log("portion number: " + (++count) + ", Already loaded: " + (loadedRows + $this._loadedRowsByDefault));
+                      //console.log("portion number: " + (++count) + ", Already loaded: " + (loadedRows + $this._loadedRowsByDefault));
 
                       table._appendRowsAfter(portionData);
                     }
                   }, null, true);
-        }, 100);
+        }, 250);
 
-        function stopLoading(loadedRows) {
-          clearInterval(liveLoadTimeout);
+        function stopInterval(){
+          window.clearInterval(liveLoadTimeout);
+        }
 
-          (function makeRowsVisible() {
-            for (var i = 0; i < $this.body._scrollingAreas.length; i++) {
-              var area = $this.body._scrollingAreas[i];
-              var areaChildNodes = area._rowContainer.childNodes;
+        function makeRowsVisible() {
+          for (var i = 0; i < $this.body._scrollingAreas.length; i++) {
+            var area = $this.body._scrollingAreas[i];
+            var areaChildNodes = area._rowContainer.childNodes;
 
-              for (var j = 0; j < areaChildNodes.length; j++) {
-                var rowNode = areaChildNodes[j];
+            for (var j = 0; j < areaChildNodes.length; j++) {
+              var rowNode = areaChildNodes[j];
 
-                if (rowNode && rowNode.style.display === 'none') {
-                  rowNode.style.display = 'table-row';
-                  for (var c = 0; c < rowNode.childNodes.length; c++) {
-                    var cell = rowNode.childNodes[c];
-                    cell.style.display = 'table-cell';
-                  }
+              if (rowNode && rowNode.style.display === 'none') {
+                rowNode.style.display = 'table-row';
+                for (var c = 0; c < rowNode.childNodes.length; c++) {
+                  var cell = rowNode.childNodes[c];
+                  cell.style.display = 'table-cell';
                 }
               }
             }
-          })();
+          }
 
           console.timeEnd("load");
         }
@@ -556,9 +557,13 @@ O$.Table = {
         var prevColumnIdsStr = this.getColumnsOrder().join(",");
         if (columnIdsStr == prevColumnIdsStr) return;
 
-        O$._submitInternal(table, null, [
-          [table.id + "::columnsOrder", columnIdsStr]
-        ]);
+        var params = [[table.id + "::columnsOrder", columnIdsStr]];
+
+        if(table._liveScroll){
+          params.push(["_liveScroll", "false"]);
+        }
+
+        O$._submitInternal(table, null, params);
       },
 
       isColumnVisible:function (columnId) {
