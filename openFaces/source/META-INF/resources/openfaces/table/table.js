@@ -190,7 +190,7 @@ O$.Table = {
                   function (table, portionName, portionHTML, portionScripts, portionData) {
                     if (!portionData.rows || portionData.rows.length === 0 || portionData.rows.indexOf("{}") == 0) {
                       stopInterval()
-                      makeRowsVisible(loadedRows);
+
                       return;
                     } else {
                       loadedRows += portionData.rowsCount || loadedRows;
@@ -198,20 +198,28 @@ O$.Table = {
                       //console.log("portion number: " + (++count) + ", Already loaded: " + (loadedRows + $this._loadedRowsByDefault));
 
                       table._appendRowsAfter(portionData);
+                      makeRowsVisible(loadedRows);
                     }
                   }, null, true);
-        }, 250);
+        }, 3000);
 
         function stopInterval(){
           window.clearInterval(liveLoadTimeout);
         }
 
-        function makeRowsVisible() {
+        //This solution needed for displaing loaded rows avoid normal browser rendering.
+        //Just browser parsed rows and then we diplaying them.
+        function makeRowsVisible(loadedRows) {
           for (var i = 0; i < $this.body._scrollingAreas.length; i++) {
             var area = $this.body._scrollingAreas[i];
             var areaChildNodes = area._rowContainer.childNodes;
 
-            for (var j = 0; j < areaChildNodes.length; j++) {
+            var areaSize = areaChildNodes.length;
+            var loadedOnly = areaSize - loadedRows;
+
+            for (var j = 0; j < areaSize; j++) {
+              if(j < loadedOnly) continue;
+
               var rowNode = areaChildNodes[j];
 
               if (rowNode && rowNode.style.display === 'none') {

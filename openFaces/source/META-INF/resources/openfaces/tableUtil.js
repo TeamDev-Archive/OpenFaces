@@ -209,7 +209,7 @@ O$.Tables = {
   _appendRowsAfter: function(data){
     var $table = this;
     var bodyRows = this.body._getRows();
-    var bodyRow = bodyRows[0];
+    var bodyRow = bodyRows[bodyRows.length - 1];
     var originalBodySize = this.body._getRows().length - 1;
     var scrollingAvailable = this._params.scrolling;
     var totalRowCount = data.totalRowCount;
@@ -233,7 +233,8 @@ O$.Tables = {
 
       doc_fragment = document.createDocumentFragment();
       doc_fragment.appendChild(fakeDiv.firstChild);
-      var tableBody = doc_fragment.querySelector('table').tBodies[0];
+
+      var tableBody = doc_fragment.querySelector('.o_scrolling_area_table');
       return tableBody ? tableBody.rows : [];
     }
     function applyRows(section, centerSection) {
@@ -250,13 +251,21 @@ O$.Tables = {
         }
 
         var rowNode = centerSection ? bodyRow._rowNode : bodyRow._leftRowNode;
-        f.style.cssText = O$._getComputedStyles(rowNode).cssText;
+        f.className = rowNode.className || "";
+        f.style.cssText = rowNode.style.cssText || "";
+
+        f.style.height = O$._getComputedStyles(rowNode).height;
         f.style.display = 'none';
 
         for (var t = 0; t < f.cells.length; t++) {
-          f.cells[t].className = rowNode.cells[t].className;
-          f.cells[t].style.cssText = O$._getComputedStyles(rowNode.cells[t]).cssText;
-          f.style.display = 'none';
+          var existCell = rowNode.cells[t];
+          var newCell = f.cells[t];
+
+          newCell.className = existCell.className || "";
+          newCell.style.cssText = existCell.style.cssText || "";
+          newCell._styleMappings = existCell._styleMappings || "";
+
+          newCell.style.height = O$._getComputedStyles(newCell).height;
         }
 
         newRows.push(f);
