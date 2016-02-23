@@ -121,7 +121,7 @@ public class TableBody extends TableSection {
         int scrollOffset = 0;
 
         if(table instanceof DataTable){
-            liveScroll = ((DataTable) table).isLiveScroll() && isLiveScrollAllowed(context);
+            liveScroll = ((DataTable) table).isLiveScroll();
             scrollRows = ((DataTable) table).getScrollRows();
             scrollOffset = ((DataTable) table).getScrollOffset();
         }
@@ -143,12 +143,6 @@ public class TableBody extends TableSection {
             row.render(context, (!hasFooter && i == count - 1) ? additionalContentWriter : null);
         }
         table.setRowIndex(-1);
-    }
-
-    private boolean isLiveScrollAllowed(FacesContext context){
-        final FacesContext currentInstance = FacesContext.getCurrentInstance();
-        final String liveScroll = currentInstance.getExternalContext().getRequestParameterMap().get("_liveScroll");
-        return liveScroll == null || "true".equals(liveScroll);
     }
 
     protected String getSectionName() {

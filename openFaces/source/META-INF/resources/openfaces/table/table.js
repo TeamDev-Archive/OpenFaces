@@ -180,34 +180,71 @@ O$.Table = {
       /*Loads rows on the fly when scroll hit the bottom*/
       _loadLiveRows: function (completionCallback) {
         var $this = this;
-        var count = 0;
-        var loadedRows = 0;
+        var threadsCount = 0;
+        var defaultRowsAmount = table._loadedRowsByDefault;
+        var loadedRows = defaultRowsAmount;
+        var totalRowsCount = 0;
+        var loadingFinished = false;
 
+        //this workaround needed for tables with huge amount of data
+        var intervalTime = defaultRowsAmount <= 5 ? 10000 : 300;
         console.time("load");
-        var liveLoadTimeout = window.setInterval(function () {
+
+        var interval = setInterval(function () {
+          var newTimeout = setTimeout(function () {}, 200);
+
+          loadingFinished = loadedRows == totalRowsCount
+                  || threadsCount >= totalRowsCount / defaultRowsAmount;
+
+          if (totalRowsCount > 0 && loadingFinished) {
+            clearInterval(interval);
+
+            table._alignRowHeights();
+            O$.Tables._initColumnEvents(table);
+
+            console.info("totalRowsCount: ", totalRowsCount);
+            console.info("threadsCount: ", threadsCount);
+            console.timeEnd("load");
+            return false;
+          }
+
+          console.info("Thread:", threadsCount);
+          threadsCount ++;
+
+          //Load Data
+          loadContent();
+        }, intervalTime);
+
+        function loadContent(){
           table._scrollOffset += table._loadedRowsByDefault;
           O$.Ajax.requestComponentPortions($this.id, ["liveScroll"], JSON.stringify({_scrollOffset: table._scrollOffset}),
                   function (table, portionName, portionHTML, portionScripts, portionData) {
                     if (!portionData.rows || portionData.rows.length === 0 || portionData.rows.indexOf("{}") == 0) {
-                      stopInterval()
-
                       return;
                     } else {
-                      loadedRows += portionData.rowsCount || loadedRows;
+                      loadedRows += parseInt(portionData.rowsCount, 10);
+                      totalRowsCount = parseInt(portionData.totalRowsCount, 10);
 
-                      //console.log("portion number: " + (++count) + ", Already loaded: " + (loadedRows + $this._loadedRowsByDefault));
+                      var responseSize = parseInt(portionData.responseSize, 10);
+                      intervalTime = responseSize > 1000000 ? 12000
+                              : responseSize > 500000 ? 10000
+                              : responseSize > 200000 ? 7000
+                              : responseSize > 100000 ? 5000
+                              : responseSize > 50000 ? 3000
+                              : responseSize > 20000 ? 1000
+                              : 300;
 
+                      //Append Rows into Table after last row
                       table._appendRowsAfter(portionData);
                       makeRowsVisible(loadedRows);
+
+                      console.info('Loaded: ' + loadedRows + ', from: ' + totalRowsCount);
+                      return window.performance.now();
                     }
                   }, null, true);
-        }, 3000);
-
-        function stopInterval(){
-          window.clearInterval(liveLoadTimeout);
         }
 
-        //This solution needed for displaing loaded rows avoid normal browser rendering.
+        //This method needed for displaing loaded rows avoid normal browser rendering.
         //Just browser parsed rows and then we diplaying them.
         function makeRowsVisible(loadedRows) {
           for (var i = 0; i < $this.body._scrollingAreas.length; i++) {
@@ -221,7 +258,7 @@ O$.Table = {
               if(j < loadedOnly) continue;
 
               var rowNode = areaChildNodes[j];
-
+              rowNode._selectionEnabled = true;
               if (rowNode && rowNode.style.display === 'none') {
                 rowNode.style.display = 'table-row';
                 for (var c = 0; c < rowNode.childNodes.length; c++) {
@@ -231,8 +268,6 @@ O$.Table = {
               }
             }
           }
-
-          console.timeEnd("load");
         }
       },
 
@@ -250,10 +285,6 @@ O$.Table = {
       onbeforeajaxreload:initParams.onbeforeajaxreload,
       onafterajaxreload:initParams.onafterajaxreload
     });
-
-    if(table._liveScroll) {
-      table._loadLiveRows();
-    }
 
     //check if the table is using ajax
     if (O$._addComponentAjaxReloadHandler && (table.onbeforeajaxreload || table.onafterajaxreload)) {
@@ -345,6 +376,10 @@ O$.Table = {
       var tabIndex = -1;
       var focusControl = O$.createHiddenFocusElement(tableId, tabIndex);
       table.parentNode.insertBefore(focusControl, table);
+    }
+
+    if(table._liveScroll) {
+      table._loadLiveRows();
     }
   },
 
@@ -3273,6 +3308,7 @@ O$.Table = {
               totalWidth += colWidth;
             }
 
+            recalculateTableWidth(colWidths);
             colWidthsField.value = (O$.isOpera() ? table.style.width : totalWidth + "px") + ":" +
                     "[" + colWidths.join(",") + "]";
             if (autoSaveState) {
@@ -3377,6 +3413,8 @@ O$.Table = {
         }
 
       }
+
+      fixWidths();
 
       function updateResizeHandlePositions() {
         if (table._columns) {

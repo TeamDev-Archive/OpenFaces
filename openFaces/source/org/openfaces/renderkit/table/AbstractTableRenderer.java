@@ -45,6 +45,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -83,6 +84,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             return;
 
         final AbstractTable table = (AbstractTable) component;
+        table.setLiveScroll(isLiveScrollAllowed(table));
 
         if (table.getUseAjax())
             AjaxUtil.prepareComponentForAjax(context, component);
@@ -737,11 +739,13 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         JSONObject result = new JSONObject();
         try {
             result = rowsToJSON(context, table, table.getScrollRows(), scrollOffset);
+            Rendering.renderInitScript(context, sb);
+
+            result.put("responseSize", result.toString().getBytes().length);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        Rendering.renderInitScript(context, sb);
         return result;
     }
 
@@ -771,8 +775,9 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
                 row.render(context, null);
             }
 
-            rowsInfo.append("rows", writer.toString());
-            rowsInfo.put("rowsCount", content.getRows().size());
+            Rendering.addJsonParam(rowsInfo, "rows", writer.toString());
+            Rendering.addJsonParam(rowsInfo, "rowsCount", content.getRows().size());
+            Rendering.addJsonParam(rowsInfo, "totalRowsCount", table.getTotalRowCount());
         } finally {
             context.setResponseWriter(originalResponseWriter);
             table.getAttributes().remove(TableStructure.TABLE_STRUCTURE_ATTR);
@@ -976,5 +981,10 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         return isAjaxPortionRequestInProgress(context, SUB_ROWS_PORTION);
     }
 
+    private boolean isLiveScrollAllowed(AbstractTable table){
+        final FacesContext currentInstance = FacesContext.getCurrentInstance();
+        final String liveScroll = currentInstance.getExternalContext().getRequestParameterMap().get("_liveScroll");
+        return table.isLiveScroll() && (liveScroll == null ||  "true".equals(liveScroll));
+    }
 
 }
