@@ -182,10 +182,7 @@ O$.DropDown = {
     field._o_zeroBorders = true;
     field._o_fullWidth = true;
     field._o_fullHeight = false;
-
-    if (!O$.isChrome()) {
       O$.fixInputsWidthStrict(dropDown);
-    }
   },
 
   _init:function (dropDownId, parentId, initialText, containerClass, rolloverContainerClass, disabledClass, fieldClass, rolloverFieldClass, disabledFieldClass, focusedClass, buttonClass, rolloverButtonClass, pressedButtonClass, disabledButtonClass, disabledButtonImageUrl, popupClass, rolloverPopupClass, disabled, readOnly, promptText, promptTextClass, pullPopupFromContainer) {

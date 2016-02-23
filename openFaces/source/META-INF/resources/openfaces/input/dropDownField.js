@@ -31,7 +31,7 @@ O$.DropDownField = {
 
       _showPresentationPromptText:function (promptText) {
         var td = document.createElement("td");
-        td.innerHTML = dropDown._promptText || "&nbsp;";
+        td.innerHTML = dropDown._promptText || "";
         while (itemPresentation.hasChildNodes()) {
           itemPresentation.removeChild(itemPresentation.childNodes[0]);
         }
@@ -124,7 +124,7 @@ O$.DropDownField = {
         }
 
         var item = dropDown._items[dropDown._highlightedItemIndex];
-        if (!item || !item._isVisible())
+        if (!item._isVisible())
           return;
         if (O$.isSafari2()) {
           function scrollPopupProportionally() {
@@ -726,8 +726,8 @@ O$.DropDownField = {
         _hide:function (doNotClearList) {
           field._hidden = true;
           dropDown._field._oldValue = dropDown._selectedItemValue;
-          dropDown._fieldContainer.style.display = "";
-          dropDown._itemPresentationContainer.style.display = "";
+          dropDown._fieldContainer.style.display = "block";
+          dropDown._itemPresentationContainer.style.display = "block";
           dropDown._fieldContainer.style.height = "0";
           if (!doNotClearList)
             dropDown._setFilterCriterion(null);
@@ -784,6 +784,7 @@ O$.DropDownField = {
         field.select();
       };
 
+      dropDown._itemPresentationContainer.style.display = "none";
       field._hide();
     }
 

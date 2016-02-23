@@ -62,10 +62,10 @@ O$.Calendar = {
     });
 
     var tbody = document.getElementById(bodyId);
-    for (row = 0; row < 6; row++) {
+    for (var row = 0; row < 6; row++) {
       var tr = document.createElement("tr");
       tr.className = "o_cal_week_row";
-      for (col = 0; col < 7; col++) {
+      for (var col = 0; col < 7; col++) {
         var td = document.createElement("td");
         var div = document.createElement("div");
         td.appendChild(div);
@@ -884,6 +884,7 @@ O$.Calendar = {
       dropTable.removeChild(child);
     }
 
+    var docFragment = document.createDocumentFragment();
     var tbody = document.createElement("tbody");
     dropTable.appendChild(tbody);
 
@@ -932,8 +933,10 @@ O$.Calendar = {
         tr.style.cursor = "default";
       }
       tr._drop = dropTable;
-      tbody.appendChild(tr);
+      docFragment.appendChild(tr);
     }
+
+    tbody.appendChild(docFragment);
 
     dropTable.style.border = "1px solid black";
     dropTable.onmouseout = function () {
@@ -1008,6 +1011,7 @@ O$.Calendar = {
     var drop = selector._drop;
     O$.correctElementZIndex(drop, calendar);
     O$.Calendar._initializeDrops(calendar);
+    O$.Calendar._adjustMonthAndYearSelectorWidth(calendar);
     var selectorRect = O$.getElementBorderRectangle(selector, true);
     drop.showAtXY(selectorRect.x, selectorRect.getMaxY());
     O$.Calendar._operaStrictWorkaround();

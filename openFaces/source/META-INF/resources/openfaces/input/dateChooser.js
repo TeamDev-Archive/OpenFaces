@@ -143,11 +143,15 @@ O$.DateChooser = {
       };
     }
 
-    // Sometimes date chooser may be placed into container with "display: none;".
-    // We have to catch the moment when container becomes to displayable one and set the date chooser width
-    var timeoutID = setTimeout(function() {
-      O$.DateChooser._checkCalendarWidth(dc);
-    }, 100);
+    if (!O$.isElementPresentInDocument(dc)) {
+      // Sometimes date chooser may be placed into container with "display: none;".
+      // We have to catch the moment when container becomes to displayable one and set the date chooser width
+      var timeoutID = setTimeout(function () {
+        O$.DateChooser._checkCalendarWidth(dc);
+      }, 100);
+    } else {
+      dc.style.visibility = "visible";
+    }
 
     if (!O$._dateChooserTimerID) {
       O$._dateChooserTimerID = timeoutID;
