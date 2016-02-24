@@ -264,9 +264,6 @@ O$.Tables = {
         cell._column = existCell._column;
 
         cells.push(cell);
-
-        O$.Tables._assignColumnCellEvents(cell, existColumnBody._getCompoundEventContainers());
-        O$.Tables._assignColumnCellEvents(cell, existCell._column._getCompoundEventContainers());
       }
 
       return cells;
@@ -322,6 +319,8 @@ O$.Tables = {
     }
     function appendRows(newRows){
       var _center_docFragment = document.createDocumentFragment();
+      var _left_docFragment = document.createDocumentFragment();
+      var _center_scrolling_docFragment = document.createDocumentFragment();
 
       var rowsToInsert = applyRows(newRows);
 
@@ -332,8 +331,11 @@ O$.Tables = {
         if (!scrollingAvailable) {
           appendRowForNotFixedTable(newRow);
         } else {
-          appendRow($table.body._leftScrollingArea, newRow._leftRowNode, newRowIndex);
-          appendRow($table.body._centerScrollingArea, newRow._rowNode, newRowIndex);
+          $table.body._leftScrollingArea._rows.push(newRow._leftRowNode);
+          $table.body._centerScrollingArea._rows.push(newRow._rowNode);
+
+          appendRow(_left_docFragment, newRow._leftRowNode, newRowIndex);
+          appendRow(_center_scrolling_docFragment, newRow._rowNode, newRowIndex);
         }
 
         newRow._table = bodyRow._table;
@@ -346,6 +348,9 @@ O$.Tables = {
 
       if (!scrollingAvailable) {
         $table.body._tag.appendChild(_center_docFragment);
+      } else {
+        $table.body._leftScrollingArea._rowContainer.appendChild(_left_docFragment);
+        $table.body._centerScrollingArea._rowContainer.appendChild(_center_scrolling_docFragment);
       }
 
       // update body section style in case of the simulated sections mode
@@ -353,7 +358,7 @@ O$.Tables = {
 
       if (scrollingAvailable) {
         O$.invokeFunctionAfterDelay(function () {
-          if ($table._alignRowHeights) $table._alignRowHeights();
+          //if ($table._alignRowHeights) $table._alignRowHeights();
           if ($table._synchronizeVerticalAreaScrolling) $table._synchronizeVerticalAreaScrolling();
         }, 1000);
       }
@@ -375,8 +380,7 @@ O$.Tables = {
       function appendRow(area, rowNode, index) {
         if (!area || !rowNode) return;
         rowNode._index = index;
-        area._rowContainer.appendChild(rowNode);
-        area._rows.push(rowNode);
+        area.appendChild(rowNode);
       }
     }
     function nonRecursiveExecuteScripts (source) {

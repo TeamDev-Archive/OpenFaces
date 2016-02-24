@@ -187,11 +187,11 @@ O$.Table = {
         var loadingFinished = false;
 
         //this workaround needed for tables with huge amount of data
-        var intervalTime = defaultRowsAmount <= 5 ? 10000 : 300;
+        var intervalTime = defaultRowsAmount <= 5 ? 10000 : 1000;
         console.time("load");
 
         var interval = setInterval(function () {
-          var newTimeout = setTimeout(function () {}, 200);
+          var newTimeout = setTimeout(function () {}, 500);
 
           loadingFinished = loadedRows == totalRowsCount
                   || threadsCount >= totalRowsCount / defaultRowsAmount;
@@ -208,7 +208,7 @@ O$.Table = {
             return false;
           }
 
-          console.info("Thread:", threadsCount);
+          console.info("Thread: %s, intervalTime: %s", threadsCount, intervalTime);
           threadsCount ++;
 
           //Load Data
@@ -228,7 +228,7 @@ O$.Table = {
                       var responseSize = parseInt(portionData.responseSize, 10);
                       intervalTime = responseSize > 1000000 ? 12000
                               : responseSize > 500000 ? 10000
-                              : responseSize > 200000 ? 7000
+                              : responseSize > 200000 ? 8000
                               : responseSize > 100000 ? 5000
                               : responseSize > 50000 ? 3000
                               : responseSize > 20000 ? 1000

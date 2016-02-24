@@ -45,6 +45,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -766,7 +767,10 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             List<BodyRow> rows = tableStructure.getBody().createRows(context, table.getScrollOffset(), table.getScrollRows(), columns);
             context.setResponseWriter(context.getRenderKit().createResponseWriter(writer, "text/html", "UTF-8"));
 
-            final TableScrollingArea content = (TableScrollingArea) rows.get(0).getCells().get(0).getContent();
+            final BodyRow bodyRow = rows.isEmpty() ? null :  rows.get(0);
+            final Object areaContent = bodyRow == null ? null : bodyRow.getCells().get(0).getContent();
+            final TableScrollingArea content = areaContent == null || !(areaContent instanceof TableScrollingArea)
+                    ? null : (TableScrollingArea) areaContent;
             if(content == null || content.getRows().size() < 1){
                 return rowsInfo;
             }
