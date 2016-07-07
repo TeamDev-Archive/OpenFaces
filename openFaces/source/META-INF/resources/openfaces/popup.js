@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 3.0
- * Copyright (C) 2007-2012, TeamDev Ltd.
+ * Copyright (C) 2007-2016, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -47,10 +47,12 @@ O$.Popup = {
         if (this.isVisible())
           return;
         var style = O$.getElementStyle(this, ["display"]);
-        if (style.display == "none")
+        if (style.display == "none") {
           this.style.display = this._originalStyleDisplay;
-        if(this.isVisible())
+        }
+        if(this.isVisible()) {
           this.hidden = false;
+        }
       },
 
       showAtXY: function(x, y) {

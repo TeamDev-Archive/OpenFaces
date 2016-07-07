@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 3.0
- * Copyright (C) 2007-2012, TeamDev Ltd.
+ * Copyright (C) 2007-2016, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -5232,8 +5232,13 @@ if (!window.O$) {
   };
 
   O$.isVisible = function (element) {
-    return element && O$.getElementStyle(element, "display") != "none" && O$.getElementStyle(element, "visibility") != "hidden";
-    // todo: check floatingIconMessage behavior in different browsers before reusing this function for O$.isInvisible implementation
+    if(!element) return false;
+
+    var computedStyles = O$._getComputedStyles(element);
+    var visible = O$._getComputedStyleValue(computedStyles, "visibility") != 'hidden';
+    var displayed = O$._getComputedStyleValue(computedStyles, "display") != 'none';
+
+    return visible && displayed;
   };
 
 

@@ -1,6 +1,6 @@
 /*
- * OpenFaces - JSF Component Library 2.0
- * Copyright (C) 2007-2012, TeamDev Ltd.
+ * OpenFaces - JSF Component Library 3.0
+ * Copyright (C) 2007-2016, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -41,11 +41,7 @@ O$.MultiPage = {
         O$.MultiPage._hideContainer(prevPageContainer);
 
         O$.MultiPage._getContianerStyleElement(newPageContainer).className = multiPage._containerClass;
-
-        O$.MultiPage._waitDOMContentLoaded(currentPageContainer, function(){
-          O$.MultiPage._showContainer(newPageContainer);
-        });
-
+        O$.MultiPage._showContainer(newPageContainer);
         multiPage._currentPageContainer = newPageContainer;
         O$.repaintAreaForOpera(multiPage);
       }
@@ -111,52 +107,15 @@ O$.MultiPage = {
     };
 
     // relayout pane container
-    O$.MultiPage._waitDOMContentLoaded(currentPageContainer, function(){
       O$.MultiPage._showContainer(currentPageContainer);
-    });
   },
 
   _hideContainer: function(paneContainer) {
     paneContainer.style.display = "none";
   },
 
-  _waitDOMContentLoaded: function(pane, callback){
-    var tid = setInterval(function(){
-      if(document.readyState !== 'complete') {
-        return;
-      }
-      O$.MultiPage._hideLoadingMessage(pane);
-      callback();
-      clearInterval(tid);
-    }, 100);
-  },
-
-  _hideLoadingMessage: function(pane){
-    var node = pane.querySelector(".o_sub_panel_loading");
-    if (node) {
-      node.parentNode.parentNode.remove();
-    }
-  },
-
-  _hideAllOpenedPanes: function(currentPane){
-    var attributeValue = currentPane.getAttribute('multipagecontainerid');
-    var nodes = document.querySelectorAll('[multipagecontainerid="' + attributeValue + '"]');
-    for (var i = 0; i < nodes.length; i++) {
-      var pane = nodes[i];
-      if (pane.style.display === '' || pane.style.display === 'block') {
-        O$.MultiPage._hideContainer(pane);
-      }
-    }
-  },
-
   _showContainer: function(paneContainer) {
-    O$.MultiPage._hideAllOpenedPanes(paneContainer);
-
-    var containers = paneContainer.getElementsByClassName("o_tabbedpane_container");
-    if (containers.length > 0) {
-      containers[0].style.display = 'block';
-    }
-    paneContainer.style.display = "block";
+    paneContainer.style.display = "";
     paneContainer.parentNode.style.height = "100%";
     paneContainer.parentNode.style.width = "100%";
     paneContainer.style.width = "100%";
