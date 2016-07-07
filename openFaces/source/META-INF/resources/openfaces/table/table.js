@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 3.0
- * Copyright (C) 2007-2012, TeamDev Ltd.
+ * Copyright (C) 2007-2016, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -3077,7 +3077,7 @@ O$.Table = {
           }
         }
         var width = totalWidth + borderLeft + borderRight;
-        table.style.width = width + "px";
+        table.style.width = width ? width + "px" : "100%";
         return width;
       }
 
@@ -3260,7 +3260,7 @@ O$.Table = {
               if (!retainTableWidth)
                 recalculateTableWidth(colWidths);
               else
-                table.style.width = table._originalWidth + "px";
+                table.style.width = table._originalWidth ? table._originalWidth + "px" : "100%";
             } else {
               table._params.scrolling._widthAlignmentDisabled = true;
               try {
@@ -3464,7 +3464,6 @@ O$.Table = {
       };
 
       if (table._alignRowHeights) {
-        //table._alignRowHeights();
         O$.invokeFunctionAfterDelay(table._alignRowHeights, 0);
       }
 

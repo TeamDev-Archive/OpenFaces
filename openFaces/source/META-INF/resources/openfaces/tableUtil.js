@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 3.0
- * Copyright (C) 2007-2012, TeamDev Ltd.
+ * Copyright (C) 2007-2016, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -377,10 +377,13 @@ O$.Tables = {
     // update body section style in case of the simulated sections mode
     this.body._updateStyle();
 
+    var tbl = this;
+    O$.invokeFunctionAfterDelay(function(){
+      if (tbl._alignRowHeights) tbl._alignRowHeights();
+    }, 50);
+
     if (this._params.scrolling) {
-      var tbl = this;
       O$.invokeFunctionAfterDelay(function () {
-        if (tbl._alignRowHeights) tbl._alignRowHeights();
         if (tbl._synchronizeVerticalAreaScrolling) tbl._synchronizeVerticalAreaScrolling();
       }, 50);
     }
@@ -420,6 +423,8 @@ O$.Tables = {
       applyStyle(headTable, table._params.header.className);
       applyStyle(bodyTable, table._params.body.className);
       applyStyle(footTable, table._params.footer.className);
+
+      tableContainer.style.visibility = "visible";
     }
     function initTableSection(table, sectionParams, sectionTagName, commonRowAbove) {
       var section = {
@@ -2414,7 +2419,7 @@ O$.Tables = {
       if (explicitWidth) {
         var intValue = parseInt(explicitWidth);
         if (!isNaN(intValue))
-          explicitWidth = intValue + "px";
+          explicitWidth = intValue ? intValue + "px" : "100%";
         table.style.width = explicitWidth;
       }
     }
@@ -2440,8 +2445,7 @@ O$.Tables = {
         verticalAreaForInitialization._columns.forEach(function (c) {
           c._verticalArea = verticalAreaForInitialization;
         });
-        if (areaWidth < 0) areaWidth = 0;
-        var width = areaWidth + "px";
+        var width = areaWidth <= 0 ? "100%" : areaWidth + "px";
         verticalAreaForInitialization._areas = [];
         [table.header, table.body, table.footer].forEach(function (section) {
           if (!section) return;
@@ -2754,11 +2758,11 @@ O$.Tables = {
       }).forEach(function (area) {
                 if (!area) return;
                 if (area._spacer)
-          O$.setElementSize(area._spacer, {width: 30, height: 1});
+          O$.setElementSize(area._spacer, {width: 18, height: 1});
               });
       [table.body._leftScrollingArea, table.body._rightScrollingArea].forEach(function (area) {
         if (!area) return;
-        O$.setElementSize(area._spacer, {width: 1, height: 30});
+        O$.setElementSize(area._spacer, {width: 1, height: 18});
       });
       }
 
@@ -2792,10 +2796,10 @@ O$.Tables = {
         width -= O$.getNumericElementStyle(table, "border-right-width", true);
         if (width < 0)
           width = 0;
-        table._topLevelScrollingDiv.style.width = width + "px";
+        table._topLevelScrollingDiv.style.width = width ? width + "px" : "auto";
         [table.header, table.body, table.footer].forEach(function (section) {
           if (section && section._sectionTable)
-            section._sectionTable.style.width = width + "px";
+            section._sectionTable.style.width = width ? width + "px" : "auto";
         });
       }
 
@@ -2907,17 +2911,19 @@ O$.Tables = {
           ));
         });
       } else {
-        columns.forEach(function (c) {
+        for (var i = 0; i < columns.length; i++) {
+          var c = columns[i];
           var width = firstInitialization ? c._tempWidth : c._explicitWidth;
           c.setWidth(Math.floor((width / tblWidth) * tableWidth));
-        });
+      }
       }
       tblWidth = tableWidth;
     }
     if (firstInitialization) {
-      columns.forEach(function (column) {
-        if (!column._explicitWidth) column.setWidth(column._tempWidth);
-      });
+      for (var i = 0; i < columns.length; i++) {
+        var c = columns[i];
+        if (!c._explicitWidth) c.setWidth(c._tempWidth);
+      }
     }
     return tblWidth;
   },
