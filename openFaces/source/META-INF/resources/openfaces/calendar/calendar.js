@@ -74,6 +74,19 @@ O$.Calendar = {
       tbody.appendChild(tr);
     }
 
+    O$.initUnloadableComponent(tbody);
+    O$.addUnloadHandler(tbody, function(){
+      if(tbody) {
+        for(var i=0; i< tbody.childNodes; i++){
+          var node = tbody.childNodes[i];
+          tbody.removeChild(node);
+        }
+        if (tbody.parentNode) {
+          tbody.parentNode.removeChild(tbody);
+        }
+      }
+    });
+
 
     if (focusable) {
       O$.setupArtificialFocus(cal, focusedClass);
@@ -216,6 +229,11 @@ O$.Calendar = {
     cal.setSelectedDate = function (date) {
       O$.Calendar._setSelectedDate(cal.id, date);
     };
+
+    O$.initUnloadableComponent(cal);
+    O$.addUnloadHandler(cal, function (){
+
+    });
   },
 
   _getSelectedDate:function (calendarId) {
@@ -551,10 +569,18 @@ O$.Calendar = {
         }
         cell.className = cell._className;
         cell._className = undefined;
+        O$.initUnloadableComponent(cell);
+        O$.addUnloadHandler(cell,  function (){
+          var parentNode = cell.parentNode;
+          if(cell && parentNode){
+            parentNode.removeChild(cell);
+          }
+        });
       }
     }
     if (O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/) {
-      O$.addUnloadEvent(function () {
+      O$.addUnloadEvent(calendar, function () {
+        O$.removeAllChildNodes(calendar);
         // work around Mozilla problems firing old events when new page is loading (JSFC-2276)
         for (var i = 0, count = allCells.length; i < count; i++) {
           var cell = allCells[i];

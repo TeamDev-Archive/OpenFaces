@@ -211,8 +211,25 @@ O$.Table = {
     O$.Table._initApiFunctions(table);
     O$.Table._initInnerFunctions(table);
     O$.addUnloadHandler(table, function () {
+      O$.removeAllChildNodes(table);
+
       table._cellInsertionCallbacks = [];
       table._cellMoveCallbacks = [];
+      table._insertRowsAfter = null;
+      table._columnMenuId = null;
+      table._originalClassName = null;
+      table._selectionClass = null;
+      table._sortableHeaderRolloverClass = null;
+      table._selectableItems = null;
+      table._selectionMode = null;
+      table._columnMenuButtonTable = null;
+      table._topLevelScrollingDiv = null;
+      table._columns = [];
+      table._rowGroupingBox = null;
+      table._columnHeadersRowIndexRange = [];
+      table._deepestColumnHierarchyLevel = null;
+      table.rightAutoScrollArea = null;
+      table.leftAutoScrollArea = null;
     });
     O$.addThisComponentToAllParents(table);
     O$.extend(table, {
@@ -2153,8 +2170,18 @@ O$.Table = {
           O$.logError("O$.Table._initSelection: row click handler already initialized");
         rowNode._originalClickHandler = rowNode.onclick;
         rowNode.onclick = O$.Table._row_handleSelectionOnClick;
-        O$.addUnloadHandler(table, function () {
+
+        var $this = this;
+        O$.addUnloadHandler(rowNode, function () {
           rowNode.onclick = null;
+          rowNode.initialClass = null;
+          rowNode._itemLabel = null;
+          rowNode._itemValue = null;
+          rowNode._table = null;
+          rowNode._cells = [];
+
+          O$.Table._row_handleSelectionOnClick = null;
+          console.log('remove _row_handleSelectionOnClick', rowNode);
         });
       });
     }
@@ -2178,6 +2205,10 @@ O$.Table = {
         for (var i = 0, count = elements.length; i < count; i++) {
           inputs.push(elements[i]);
         }
+
+        O$.addUnloadHandler(rowNode, function(){
+          O$.removeAllChildNodes(rowNode);
+        });
       });
     }
 
@@ -2720,9 +2751,14 @@ O$.Table = {
               col._fireOnChange();
             }
           });
-          O$.addUnloadHandler(table, function () {
+          O$.addUnloadHandler(cell, function () {
             cell.onclick = null;
             cell.ondblclick = null;
+            cell.columnId = null;
+            cell._column = null;
+            cell._row = null;
+
+            cell = null;
           });
 
           O$.extend(checkBox, {
@@ -2740,7 +2776,7 @@ O$.Table = {
               O$.stopEvent(e);
             }
           });
-          O$.addUnloadHandler(table, function () {
+          O$.addUnloadHandler(checkBox, function () {
             checkBox.onclick = null;
             checkBox.ondblclick = null;
           });
@@ -3447,6 +3483,8 @@ O$.Table = {
     };
 
     var dropTargetMark = table._dropTargetMark(true);
+    O$.initUnloadableComponent(dropTargetMark);
+
     var parentColumn = [];
     table._columns.forEach(function (sourceColumn) {
       if (!interGroupDraggingAllowed && sourceColumn.parentColumn) {
@@ -3537,6 +3575,13 @@ O$.Table = {
           }
           return null;
         });
+
+        if (table._rowGroupingBox) {
+          O$.initUnloadableComponent(table._rowGroupingBox);
+          O$.addUnloadHandler(table._rowGroupingBox, function() {
+            O$.removeAllChildNodes(table._rowGroupingBox);
+          });
+        }
       }();
       var additionalAreaListener;
 
@@ -4763,6 +4808,12 @@ O$.ColumnMenu = {
       }
 
     });
+
+    O$.initUnloadableComponent(cell);
+    O$.addUnloadHandler(cell, function(){
+      O$.removeAllChildNodes(cell);
+      cell.columnId = null;
+    });
   },
 
   _currentColumnId:null,
@@ -4869,6 +4920,14 @@ O$.ColumnMenu = {
     O$.initUnloadableComponent(columnMenuButton);
     O$.addUnloadHandler(columnMenuButton, function () {
       columnMenuButton.onclick = null;
+      columnMenuButton = null;
+    });
+
+    O$.initUnloadableComponent(table._columnMenuButtonTable);
+    O$.addUnloadHandler(table._columnMenuButtonTable, function () {
+      table._columnMenuButtonTable.onclick = null;
+      O$.removeAllChildNodes(table._columnMenuButtonTable);
+      table._columnMenuButtonTable = null;
     });
     O$.addEventHandler(columnMenuButton, "mousedown", function (evt) {
       O$.cancelEvent(evt);
@@ -4907,6 +4966,7 @@ O$.ColumnMenu = {
       };
       O$.addUnloadHandler(table, function () {
         columnMenu.onhide = null;
+        columnMenu = null;
       });
     });
   },

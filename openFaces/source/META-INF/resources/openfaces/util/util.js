@@ -145,6 +145,17 @@ if (!window.O$) {
         }
       }
     }
+    O$.addUnloadHandler(component, function(){
+      for (var i = 0; i < O$.events.length; i++) {
+        for (var eventName in O$.events) {
+          if (component.hasOwnProperty(eventName)) {
+            component[eventName] = null;
+          }
+        }
+      }
+      component.style = null;
+      component = null;
+    });
     return component;
   };
 
@@ -1342,6 +1353,24 @@ if (!window.O$) {
   O$.removeAllChildNodes = function (element) {
     while (element.childNodes.length > 0)
       element.removeChild(element.childNodes[0]);
+  };
+
+  O$.clearAllProperties = function (component) {
+    if (component) {
+      var ownPropertyNames = Object.getOwnPropertyNames(component);
+      var length = ownPropertyNames.length;
+
+      for (var i = 0; i < length; i++) {
+        var name = ownPropertyNames[i];
+        if (component.hasOwnProperty(name)) {
+          if (component[name] && Array.isArray(component[name])) {
+            component[name] = [];
+          } else {
+            component[name] = null;
+          }
+        }
+      }
+    }
   };
 
   O$.setInnerText = function (element, text, escapeHtml) {
@@ -3218,6 +3247,9 @@ if (!window.O$) {
 
       if (component._focusOutline)
         component._focusOutline.remove();
+      if(component._focusControl) {
+        component._focusControl = null;
+      }
     };
   };
 
@@ -5452,7 +5484,7 @@ if (!window.O$) {
 
   O$.fixElement = function (element, properties, workingCondition, events, interval) {
     if (!interval)
-      interval = 1000;
+      interval = 200;
     var fixture = {
       values:{},
       update:function () {
@@ -5856,6 +5888,10 @@ if (!window.O$) {
   };
 
   O$.addUnloadHandler = function (component, func) {
+    if(!component) {
+      return;
+    }
+
     if (!component._unloadHandlers) {
       component._unloadHandlers = [];
     }
@@ -5878,6 +5914,14 @@ if (!window.O$) {
       }
       component._unloadHandlers = [];
     }
+
+    component.blur = null;
+    component.click = null;
+    component.focus = null;
+    component.focus = null;
+    component._handleKeyUp = null;
+    component._handleKeyDown = null;
+    component._handleKeyPress = null;
   };
 
   O$.addThisComponentToAllParents = function (component) {

@@ -398,37 +398,20 @@ window.OpenFaces.Ajax = {
       ajaxendEvent.validationError = validationError;
       ajaxendEvent.data = data;
       fireEvent("onajaxend", ajaxendEvent);
+
       function destroyMemoryLeaks() {
         if (!(options._of_skipExecute || options._of_ajax_portions)) {
           for (var render in parentOfReloadedComponents) {
             var parentOfReloadedComponent = parentOfReloadedComponents[render];
             var reloadedComponent = getNotDomComponentById(render, parentOfReloadedComponent);
             if (reloadedComponent != null) {
-              if (reloadedComponent._unloadableComponents) {
-                var componentNotInDOM = (reloadedComponent.parentNode != parentOfReloadedComponent);
-                var length = reloadedComponent._unloadableComponents.length;
-                for (var index = 0; index < length; index++) {
-                  if (reloadedComponent._unloadableComponents[0].onComponentUnload) {
-                    reloadedComponent._unloadableComponents[0].onComponentUnload()
-                  }
-                  var tempEl = reloadedComponent._unloadableComponents[0];
-                  if (!O$.removeThisComponentFromAllDocument(tempEl)) {
-                    O$.removeThisComponentFromParentsAbove(tempEl, reloadedComponent);
-                    if (componentNotInDOM) {
-                      O$.removeThisComponentFromParentsAbove(tempEl, parentOfReloadedComponent);
-                    }
-                  }
-                  if (tempEl == reloadedComponent._unloadableComponents[0]) {
-                    O$.removeThisComponentFromParentsAbove(tempEl, reloadedComponent);
-                    if (componentNotInDOM) {
-                      O$.removeThisComponentFromParentsAbove(tempEl, parentOfReloadedComponent);
-                    }
-                  }
-                }
-              }
+              unloadComponent(reloadedComponent, parentOfReloadedComponent);
               if (reloadedComponent.onComponentUnload) {
                 reloadedComponent.onComponentUnload();
                 O$.removeThisComponentFromParentsAbove(reloadedComponent, parentOfReloadedComponent);
+
+                removeComponentFromAllParents(reloadedComponent, parentOfReloadedComponent, true);
+                clearUnloadableComponentsCollection(reloadedComponent);
               }
 
               if (O$.isExplorer()) {
@@ -436,23 +419,133 @@ window.OpenFaces.Ajax = {
                   O$.destroyAllFunctions(reloadedComponent);
               }
             }
+
+            reloadedComponent = null;
+          }
+          if (parentOfReloadedComponent) {
+            parentOfReloadedComponent._unloadableComponents = [];
           }
         }
-        function getNotDomComponentById(idOfElement, parentOfElementInDom) {
-          if (!parentOfElementInDom._unloadableComponents)
-            return null;
-          var elementsWithSameId = [];
-          parentOfElementInDom._unloadableComponents.forEach(function (comp) {
-            if (comp.id == idOfElement) {
-              elementsWithSameId.push(comp);
-            }
-          });
-          var components = elementsWithSameId.filter(function (element) {
-            return (element.parentNode != parentOfElementInDom);
-          });
-          return (components.length == 0) ? null : components[0];
+      }
+    }
+
+    function removeComponentFromAllParents(component, parentComponent, componentNotInDOM) {
+      var tempEl = component;
+      if (!O$.removeThisComponentFromAllDocument(tempEl)) {
+        O$.removeThisComponentFromParentsAbove(tempEl, component);
+        if (componentNotInDOM) {
+          O$.removeThisComponentFromParentsAbove(tempEl, component);
         }
       }
+      if (tempEl == component) {
+        O$.removeThisComponentFromParentsAbove(tempEl, component);
+        if (componentNotInDOM) {
+          O$.removeThisComponentFromParentsAbove(tempEl, parentComponent);
+        }
+      }
+    }
+    function removeAttributes(component) {
+      var attributes = component.attributes;
+      if (attributes) {
+        for (var j = attributes.length - 1; j >= 0; j -= 1) {
+          var name = attributes[j].name;
+          if (Array.isArray(component[name])) {
+            component[name] = [];
+          } else {
+            component[name] = null;
+          }
+        }
+      }
+
+      var childNodes = component.childNodes;
+      if (childNodes) {
+        for (var i = 0; i < childNodes.length; i++) {
+          removeAttributes(childNodes[i]);
+        }
+      }
+    }
+    function detachChildrenAndProps(component) {
+      jQuery(component).detach();
+      clearInner(component);
+
+      console.info("Unload: ", component);
+
+      function clearInner(node) {
+        while (node.hasChildNodes()) {
+          clear(node.firstChild);
+        }
+        O$.clearAllProperties(node);
+      }
+
+      function clear(node) {
+        while (node.hasChildNodes()) {
+          O$.clearAllProperties(node);
+          clear(node.firstChild);
+        }
+        node.parentNode.removeChild(node);
+        console.log(node, "cleared!");
+      }
+    }
+    function unloadComponent(component, parentComponent) {
+      if (component._unloadableComponents) {
+        var componentNotInDOM = (component.parentNode != parentComponent);
+        var length = component._unloadableComponents.length;
+        for (var index = 0; index < length; index++) {
+          var unloadableComponent = component._unloadableComponents[0];
+          if (unloadableComponent.onComponentUnload) {
+            unloadableComponent.onComponentUnload();
+            unloadableComponent.onLoadHandler = null;
+          }
+          removeComponentFromAllParents(unloadableComponent, parentComponent, componentNotInDOM);
+
+          removeAttributes(unloadableComponent);
+          detachChildrenAndProps(unloadableComponent);
+          unloadableComponent = null;
+        }
+
+        removeComponentFromAllParents(component, parentComponent, true);
+        detachChildrenAndProps(component);
+      }
+    }
+    function clearUnloadableComponentsCollection(component) {
+      var parentNode = component.parentNode;
+      if (parentNode) {
+        if (parentNode._unloadableComponents && parentNode._unloadableComponents.length > 0) {
+          console.info("Component in parent parentNode._unloadableComponents", parentNode._unloadableComponents);
+
+          for (var i = 0; i < parentNode._unloadableComponents.length; i++) {
+            var node = parentNode._unloadableComponents[i];
+            if (node == component) {
+              parentNode._unloadableComponents.splice(i, 1, node);
+              console.info("Delete element from parent node:", node);
+            }
+          }
+
+          console.info("Component in parent parentNode._unloadableComponents", parentNode._unloadableComponents);
+        }
+
+        parentNode.removeChild(component);
+      }
+
+      if (component._unloadableComponents) {
+        for (var o = 0; o < component._unloadableComponents.length; o++) {
+          component._unloadableComponents.splice(o, 1);
+        }
+      }
+    }
+    function getNotDomComponentById(idOfElement, parentOfElementInDom) {
+      if (!parentOfElementInDom._unloadableComponents)
+        return null;
+      var elementsWithSameId = [];
+      parentOfElementInDom._unloadableComponents.forEach(function (comp) {
+        if (comp.id == idOfElement) {
+          elementsWithSameId.push(comp);
+        }
+      });
+      var components = elementsWithSameId.filter(function (element) {
+        return (element.parentNode && element.parentNode != parentOfElementInDom);
+      });
+      return (components.length == 0) ? null : components[0];
     }
 
     function eventHandler(data) {

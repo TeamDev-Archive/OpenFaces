@@ -145,6 +145,10 @@ O$.Popup = {
           O$._popupsOnPage.splice(index, 1);
         }
       }
+
+      popup.defaultDisabledClass = null;
+      popup._originalStyleDisplay = null;
+
     });
   },
 

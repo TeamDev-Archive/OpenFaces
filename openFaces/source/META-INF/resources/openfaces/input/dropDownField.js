@@ -790,8 +790,43 @@ O$.DropDownField = {
     popup.onscroll = function () {
       dropDown._checkAdditionalPageNeeded()
     };
+
+    O$.initUnloadableComponent(dropDown);
     O$.addUnloadHandler(dropDown, function () {
+      O$.removeAllChildNodes(dropDown);
       popup.onscroll = null;
+      popup = null;
+
+      dropDown._button = null;
+      dropDown._popup = null;
+      dropDown._field = null;
+      dropDown._dependedFieldId = null;
+      dropDown._originalStyleDisplay = null;
+      dropDown._originalSize = null;
+      dropDown._buttonClass = null;
+      dropDown._containerClass = null;
+      dropDown._fieldClass = null;
+      dropDown._fieldContainer = null;
+      dropDown._popupClass = null;
+      dropDown._promptTextClass = null;
+      dropDown._rolloverContainerClass = null;
+      dropDown._rolloverFieldClass = null;
+      dropDown._rolloverPopupClass = null;
+      dropDown._listAlignment = null;
+      dropDown._focusedClass = null;
+      dropDown._focusControl = null;
+      dropDown._initialText = null;
+      dropDown._lastOnchangeItemLabel = null;
+      dropDown._lastOnchangeItemValue = null;
+      dropDown.value = null;
+      dropDown._valueField = null;
+      dropDown.onchange_adapted = null;
+      dropDown._addCachedSuggestions = null;
+      dropDown._cachedSuggestionLists = [];
+      dropDown._items = [];
+
+      jQuery(dropDown).detach();
+      dropDown = null;
     });
 
     dropDown.value = field.value;
@@ -1327,6 +1362,14 @@ O$.DropDownField = {
         document.body.removeChild(tempDiv);
     }
 
+    O$.initUnloadableComponent(dropDownField);
+    O$.addUnloadHandler(dropDownField, function(){
+      O$.removeAllChildNodes(dropDownField);
+      dropDownField.onfocus = null;
+      dropDownField.onblur = null;
+      dropDownField.onkeypress = null;
+      dropDownField.onkeydown = null;
+    })
   },
 
   _acceptLoadedItems:function (dropDownFieldId, newItemParams) {

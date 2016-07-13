@@ -352,6 +352,14 @@ O$.FileUploadUtil = {
         fileUpload.removeAttribute("onfocus");
         fileUpload.onfocus = null;
 
+        O$.initUnloadableComponent(fileUpload);
+        O$.addUnloadHandler(fileUpload, function () {
+          fileUpload.onclick = null;
+          fileUpload.onblur = null;
+          fileUpload._events = [];
+          fileUpload._statuses = [];
+        });
+
       },
       _sendInformThatRequestFailed:function (fileId) {
         O$.requestComponentPortions(fileUpload.id, ["nothing"],

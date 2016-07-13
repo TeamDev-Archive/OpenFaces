@@ -203,6 +203,31 @@ O$.Tables = {
         return null;
       return row._cellFromPoint(x, y, relativeToNearestContainingBlock, cachedDataContainer);
     };
+
+    O$.initUnloadableComponent(table);
+    O$.addUnloadHandler(table, function(){
+      O$.removeAllChildNodes(table);
+      table._params = null;
+      table._cellsByColumns = null;
+      table._cellInsertionCallbacks = [];
+      table._cellMoveCallbacks = [];
+      table._insertRowsAfter = null;
+      table._columnMenuId = null;
+      table._originalClassName = null;
+      table._selectionClass = null;
+      table._sortableHeaderRolloverClass = null;
+      table._selectableItems = null;
+      table._selectionMode = null;
+      table._columnMenuButtonTable = null;
+      table._topLevelScrollingDiv = null;
+      table.header = null;
+      table.body = null;
+      table.footer = null;
+      table._columns = [];
+      table._rowGroupingBox = null;
+      table._columnHeadersRowIndexRange = [];
+      table._deepestColumnHierarchyLevel = null;
+    });
   },
 
   _insertRowsAfter:function (afterIndex, rowsToInsert, newRowsToStylesMap, newRowCellsToStylesMap, rowKeys) {
@@ -420,6 +445,34 @@ O$.Tables = {
       applyStyle(headTable, table._params.header.className);
       applyStyle(bodyTable, table._params.body.className);
       applyStyle(footTable, table._params.footer.className);
+
+      if (headTable) {
+        O$.addUnloadHandler(headTable, function () {
+          table._params.header = null;
+          headTable = null;
+          headRows = [];
+          rows = [];
+          console.info("Unload _initRows.headTable");
+        });
+      }
+
+      O$.addUnloadHandler(bodyTable, function(){
+        table._params.body = null;
+        bodyTable = null;
+        bodyRows = [];
+        rows = [];
+        console.info("Unload _initRows.bodyTable");
+      });
+
+      if (footTable) {
+        O$.addUnloadHandler(footTable, function () {
+          table._params.footer = null;
+          footTable = null;
+          footRows = [];
+          rows = [];
+          console.info("Unload _initRows.footTable");
+        });
+      }
     }
     function initTableSection(table, sectionParams, sectionTagName, commonRowAbove) {
       var section = {
@@ -1026,6 +1079,14 @@ O$.Tables = {
       colIndex += cellColSpan;
       if (cell.innerHTML == "")
         cell.innerHTML = "&#160;";
+
+      O$.initUnloadableComponent(cell);
+      O$.addUnloadHandler(cell, function () {
+        cell._row = null;
+        cell._column = null;
+        cell._styleMappings = null;
+        cell._updateStyle = null;
+      });
     }
     row._getCellByColIndex = function (index) {
       var cell = this._cellsByColumns[index];
@@ -1541,6 +1602,14 @@ O$.Tables = {
       O$.Tables._initBodyCell(cell, column);
       cell._updateStyle();
     });
+
+    O$.addUnloadHandler(column, function () {
+      column.onclick = null;
+      column.ondblclick = null;
+      column.columnId = null;
+      column._column = null;
+      column._row = null;
+    });
   },
 
   _initColumnOrGroup:function (column, table) {
@@ -1908,6 +1977,13 @@ O$.Tables = {
         colHeaderStyle:column.header ? column.header.className : null});
     };
 
+    O$.initUnloadableComponent(cell);
+    O$.addUnloadHandler(cell, function () {
+      cell._row = null;
+      cell._column = null;
+      cell._styleMappings = null;
+      cell._updateStyle = null;
+    });
   },
 
   _assignHeaderBoxStyle:function (headerBox, table, columnId, additionalClassName) {
@@ -1945,6 +2021,13 @@ O$.Tables = {
       });
     };
 
+    O$.initUnloadableComponent(cell);
+    O$.addUnloadHandler(cell, function () {
+      cell._row = null;
+      cell._column = null;
+      cell._styleMappings = null;
+      cell._updateStyle = null;
+    });
   },
 
   _initFooterCell:function (cell, column) {
@@ -1959,6 +2042,14 @@ O$.Tables = {
         colFooterStyle:column.footer ? column.footer.className : null
       });
     };
+
+    O$.initUnloadableComponent(cell);
+    O$.addUnloadHandler(cell, function () {
+      cell._row = null;
+      cell._column = null;
+      cell._styleMappings = null;
+      cell._updateStyle = null;
+    });
   },
 
   _initBodyCell:function (cell, column) {
@@ -2628,7 +2719,7 @@ O$.Tables = {
           if (scrollingDiv && scrollingDiv.scrollLeft != correctScrollLeft)
             scrollingDiv.scrollLeft = correctScrollLeft;
         }
-      }, 1000);
+      }, 250);
     }
 
     synchronizeAreaScrolling();

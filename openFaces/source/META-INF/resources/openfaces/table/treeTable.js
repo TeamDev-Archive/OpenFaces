@@ -327,6 +327,16 @@ O$.TreeTable = {
 
     table._updateRowTreeStructure();
     table._updateExpandedNodesField();
+
+    O$.initUnloadableComponent(table);
+    O$.addUnloadHandler(table, function () {
+      var childNodes = table.childNodes;
+      if(childNodes) {
+        for(var i = 0; i< childNodes.length; i++){
+          table.removeChild(childNodes[i]);
+        }
+      }
+    });
   },
 
   /*
@@ -507,6 +517,11 @@ O$.TreeTable = {
 
     updateExpansionStateClass();
     row._updateStructureLine();
+
+    O$.initUnloadableComponent(row);
+    O$.addUnloadHandler(row, function () {
+      //
+    });
   }
 
 
