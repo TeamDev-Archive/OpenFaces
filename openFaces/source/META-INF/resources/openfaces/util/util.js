@@ -282,7 +282,7 @@ if (!window.O$) {
       delete component;
       O$.Destroy.detached = [];
 
-      console.info("Destroyed components: ", O$.Destroy.counter);
+      console.log("Destroyed components: ", O$.Destroy.counter);
     },
 
     _findComponent: function(component){
@@ -320,7 +320,7 @@ if (!window.O$) {
       O$.Destroy.counter ++;
       jQuery(foundComponent).remove();
 
-      console.info("Destroyed component", foundComponent);
+      console.log("Destroyed component", foundComponent);
       foundComponent = null;
       delete foundComponent;
     },
@@ -347,7 +347,7 @@ if (!window.O$) {
         jQuery(node).remove();
 
         jQuery(node).unbind();
-        console.info("Clear node", node);
+        console.log("Clear node", node);
         node = null;
         delete node;
 
@@ -2423,10 +2423,6 @@ if (!window.O$) {
         if (O$.onfocuschange)
           O$.onfocuschange(e);
       };
-      O$.addUnloadHandler(element, function () {
-        element.onfocus = null;
-        element.onblur = null;
-      });
       element._of_prevOnBlurHandler = element.onblur;
       element.onblur = function (e) {
         if (O$._activeElement == this) {
