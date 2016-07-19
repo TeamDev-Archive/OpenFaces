@@ -382,16 +382,6 @@ if (!window.O$) {
       }
 
       jQuery(node).unbind();
-
-      O$.removeEventHandler(node, "blur", null);
-      O$.removeEventHandler(node, "focus", null);
-      O$.removeEventHandler(node, "click", null);
-      O$.removeEventHandler(node, "onclick", node._row_handleSelectionOnClick);
-
-      node.onclick = undefined;
-      node.onblur = undefined;
-      node.onfocus = undefined;
-      node._row_handleSelectionOnClick = null;
     },
 
     _destroyProperties: function(component){
@@ -1761,14 +1751,16 @@ if (!window.O$) {
   };
 
   O$.addEvent = function (componentClientId, eventName, functionScript) {
-    var element = O$.byIdOrName(componentClientId);
+    jQuery(componentClientId).bind(eventName,functionScript);
+ /*   var element = O$.byIdOrName(componentClientId);
     if (element) {
       O$.addEventHandler(element, eventName, functionScript);
-    }
+    }*/
   };
 
   O$.addEventHandler = function (elt, evtName, evtScript, useCapture) {
-    if (!elt._attachedEvents)
+    jQuery(elt).bind(evtName,evtScript);
+/*    if (!elt._attachedEvents)
       elt._attachedEvents = [];
 
     var eventToAttach = {
@@ -1782,7 +1774,7 @@ if (!window.O$) {
       elt.attachEvent("on" + evtName, evtScript);
       eventToAttach.eventName = "on" + evtName;
     }
-    elt._attachedEvents.push(eventToAttach);
+    elt._attachedEvents.push(eventToAttach);*/
   };
 
   O$.removeEventHandler = function (elt, evtName, evtScript, useCapture) {
