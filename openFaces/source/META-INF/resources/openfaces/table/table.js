@@ -214,21 +214,6 @@ O$.Table = {
     O$.extend(table, {
       _originalClassName:table.className,
 
-      onComponentUnload:function () {
-        var i, count;
-        //O$.unloadAllHandlersAndEvents(table);
-
-        var filtersToHide = this._filtersToHide;
-        if (!O$.isExplorer6() || !filtersToHide)
-          return false;
-
-        for (i = 0, count = filtersToHide.length; i < count; i++) {
-          var filter = filtersToHide[i];
-          filter.style.visibility = "hidden";
-        }
-        return true;
-      },
-
       _cleanUp:function () {
         [table.header, table.body, table.footer].forEach(function (section) {
           if (section) section._rows = [];
@@ -268,18 +253,24 @@ O$.Table = {
             O$.Destroy._clear(table.footer);
             O$.Destroy._clear(table.footer._scrollingAreas);
           }
-          O$.Destroy._clear(table._columnMenuButtonTable);
+          O$.Destroy._destroyEvents(table._columnMenuButtonTable);
           O$.Destroy._clear(table.body);
           O$.Destroy._clear(table.body._scrollingAreas);
 
           O$.Destroy._clear(table._columns);
           O$.Destroy._clear(table._sortableColumnsIds);
-          O$.Destroy._clear(table._params);
         }
 
+        if(table._dropTargetMark) {
+          table._dropTargetMark.dropTarget = undefined;
+          table._dropTargetMark = undefined;
+        }
+
+        O$.removeEventHandler(window, "resize", null);
         table.onfocus = null;
         table.onclick = null;
         table.onblur = null;
+        table.onchange = null;
 
         delete table.onfocus;
         delete table.onclick;
@@ -3194,6 +3185,17 @@ O$.Table = {
             table._fixFF3ColResizingIssue();
             if (table._params.scrolling)
               O$.invokeFunctionAfterDelay(table._alignRowHeights, 10);
+
+            O$.Destroy.init(scrollingDiv, function(){
+              if(!table || !scrollingDiv) return;
+
+              table.body._centerScrollingArea._scrollingDiv = undefined;
+              table.body._centerScrollingArea = undefined;
+              table.body = undefined;
+              scrollingDiv.scrollLeft = undefined;
+              scrollingDiv.scrollTop = undefined;
+              scrollingDiv = undefined;
+            });
           },
           setTop:function (top) {
             this.style.top = top + "px";
@@ -3279,6 +3281,16 @@ O$.Table = {
             }
           }
         });
+
+        O$.Destroy.init(column._resizeHandle, function(){
+          jQuery(column._resizeHandle).remove();
+          column._resizeHandle = undefined;
+        });
+
+        O$.Destroy.init(resizeHandle, function(){
+          jQuery(resizeHandle).remove();
+          resizeHandle = undefined;
+        })
       });
 
       function fixWidths() {
@@ -3441,6 +3453,14 @@ O$.Table = {
           if (bottomImage.parentNode) bottomImage.parentNode.removeChild(bottomImage);
         };
         O$.correctElementZIndex(dropTarget, table, 1);
+
+        O$.Destroy.init(dropTarget, function(){
+          jQuery(bottomImage).remove();
+          jQuery(topImage).remove();
+          O$.Destroy._destroyEvents(topImage);
+          O$.Destroy._destroyEvents(bottomImage);
+          O$.Destroy._destroyEvents(dropTarget);
+        });
         return dropTarget;
       }();
     };
@@ -3816,6 +3836,11 @@ O$.Table = {
               } else {
                 dropTargetMark.hide();
               }
+
+              O$.Destroy.init(dropTargetMark, function(){
+                jQuery(dropTargetMark).remove();
+                dropTargetMark = undefined;
+              })
             },
             acceptDraggable:function (cellHeader) {
               var col = columnOrGroup;
@@ -4744,6 +4769,12 @@ O$.ColumnMenu = {
           table._hideMenuIdx = -1;
         }
       }
+
+      O$.Destroy.init(table._columnMenuButtonTable, function(){
+        if (table) {
+          O$.Destroy._destroyEvents(table._columnMenuButtonTable)
+        }
+      });
     }
 
     O$.setupHoverStateFunction(cell, function (mouseOver) {
@@ -4899,6 +4930,10 @@ O$.ColumnMenu = {
 //        headerCell.setForceHover(null);
         O$.ColumnMenu._menuOpened = false;
       };
+    });
+
+    O$.Destroy.init(columnMenuButton, function(){
+      O$.Destroy._destroyEvents(columnMenuButton)
     });
   },
 

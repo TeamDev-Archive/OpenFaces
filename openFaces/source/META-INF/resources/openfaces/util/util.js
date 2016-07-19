@@ -246,12 +246,14 @@ if (!window.O$) {
         return;
       }
 
-      this.detached = this.detached || [];
-      //component._unloadHandlers = component._unloadHandlers || [];
-      //
-      //if(func){
-      //  component._unloadHandlers.push(func)
-      //}
+      this.detached = ( typeof this.detached != 'undefined' && this.detached instanceof Array )
+              ? this.detached : [];
+      component.handlers = ( typeof component.handlers != 'undefined' && component.handlers instanceof Array )
+              ? component.handlers : [];
+
+      if(func){
+        component.handlers.push(func);
+      }
 
       if(this.detached.indexOf(component) < 0) {
         this.detached.push(component);
@@ -277,12 +279,24 @@ if (!window.O$) {
         }
       }
 
-      console.info("Detached component", component);
-      component = null;
-      delete component;
-      O$.Destroy.detached = [];
+      var j = 0;
+      for (var i = 0; i < this.detached.length; i++) {
+        var c = this.detached[i];
+        if (Array.isArray(c.handlers) && typeof c.handlers != 'undefined') {
+          j = 0;
+          for (; j < c.handlers.length; j++) {
+            c.handlers[j]();
+          }
+          c.handlers.length = 0;
+        }
+      }
 
-      console.log("Destroyed components: ", O$.Destroy.counter);
+      console.info("Detached component", component);
+      O$.Destroy.detached = [];
+      O$.Destroy._destroyEvents(O$.ColumnMenu._menuFixer);
+      O$.Destroy._destroyEvents(O$._elementUnderMouse);
+
+      console.info("Destroyed components: ", O$.Destroy.counter);
     },
 
     _findComponent: function(component){
@@ -310,17 +324,19 @@ if (!window.O$) {
     _destroyComponent: function(foundComponent){
       this._destroyChildren(foundComponent);
 
+      O$.Destroy._destroyEvents(foundComponent);
       O$.Destroy._clearCachedStyles(foundComponent);
       O$.Destroy._clearTable(foundComponent);
-      O$.Destroy._destroyEvents(foundComponent);
       O$.Destroy._destroyAttributes(foundComponent);
       O$.Destroy._destroyProperties(foundComponent);
       O$.Destroy._clearUnloadableCollections(foundComponent);
 
+      O$._elementUnderMouse = undefined;
       O$.Destroy.counter ++;
+      jQuery(foundComponent).empty();
       jQuery(foundComponent).remove();
 
-      console.log("Destroyed component", foundComponent);
+      //console.log("Destroyed component", foundComponent);
       foundComponent = null;
       delete foundComponent;
     },
@@ -339,7 +355,6 @@ if (!window.O$) {
 
         O$.Destroy._clearCachedStyles(node);
         O$.Destroy._clearTable(node);
-        O$.Destroy._destroyEvents(node);
         O$.Destroy._destroyAttributes(node);
         O$.Destroy._destroyProperties(node);
         O$.Destroy._clearUnloadableCollections(node);
@@ -347,7 +362,7 @@ if (!window.O$) {
         jQuery(node).remove();
 
         jQuery(node).unbind();
-        console.log("Clear node", node);
+        //console.log("Clear node", node);
         node = null;
         delete node;
 
@@ -363,25 +378,12 @@ if (!window.O$) {
     },
 
     _destroyEvents: function(node){
-      for (var i = 0; i < O$.events.length; i++) {
-        var eventName = O$.events[i];
-        if (node.hasOwnProperty(eventName)) {
-          O$.Destroy._clear(node[eventName]);
-        }
+      if (node && node.nodeType == 1 && node.parentNode) {
+        var docFrag = document.createDocumentFragment();
+        var newNode = node.cloneNode(true);
+        docFrag.appendChild(newNode);
+        node.parentNode.replaceChild(docFrag, node);
       }
-
-      var attachedEvents = node._attachedEvents;
-      if (attachedEvents) {
-        var length = attachedEvents.length;
-        for (var eventsIndex = 0; eventsIndex < length; eventsIndex++) {
-          var attachedEvent = attachedEvents[0];
-          if (attachedEvent != null)
-            O$.removeEventHandler(node, attachedEvent.eventName, attachedEvent.functionScript);
-        }
-        O$.Destroy._clear(node._attachedEvents);
-      }
-
-      jQuery(node).unbind();
     },
 
     _destroyProperties: function(component){
@@ -408,9 +410,7 @@ if (!window.O$) {
 
     _clearUnloadableCollections: function(component) {
       O$.Destroy._clear(component._attachedEvents);
-      O$.Destroy._clear(component._unloadHandlers);
       O$.Destroy._clear(component._hoverListeners);
-      O$.Destroy._clear(component._unloadableComponents);
       O$.Destroy._clear(component._of_mouseOutListeners);
       O$.Destroy._clear(component._of_mouseOverListeners);
       O$.Destroy._clear(component._styleMappings);
@@ -1743,24 +1743,23 @@ if (!window.O$) {
   // ----------------- EVENT UTILITIES ---------------------------------------------------
 
   O$.getEventHandlerFunction = function (handlerName, handlerArgs, mainObj) { // todo: rework usages of this function with explicit closure creation
-    var argString = handlerArgs ? ("[" + handlerArgs + "]") : "arguments";
-    var handlerFunction;
-    eval("handlerFunction = function() { return arguments.callee.prototype._ownObj." + handlerName + ".apply(arguments.callee.prototype._ownObj," + argString + "); }");
-    handlerFunction.prototype._ownObj = mainObj;
-    return handlerFunction;
+    //var argString = handlerArgs ? ("[" + handlerArgs + "]") : "arguments";
+    //var handlerFunction = arguments.callee.prototype._ownObj[handlerName].apply(arguments.callee.prototype._ownObj[argString]);
+    //eval("handlerFunction = function() { return arguments.callee.prototype._ownObj." + handlerName + ".apply(arguments.callee.prototype._ownObj," + argString + "); }");
+    //handlerFunction.prototype._ownObj = mainObj;
+    var ownPropertyNames = Object.getOwnPropertyNames(mainObj);
+    return ownPropertyNames[handlerName];
   };
 
   O$.addEvent = function (componentClientId, eventName, functionScript) {
-    jQuery(componentClientId).bind(eventName,functionScript);
- /*   var element = O$.byIdOrName(componentClientId);
+    var element = O$.byIdOrName(componentClientId);
     if (element) {
       O$.addEventHandler(element, eventName, functionScript);
-    }*/
+    }
   };
 
   O$.addEventHandler = function (elt, evtName, evtScript, useCapture) {
-    jQuery(elt).bind(evtName,evtScript);
-/*    if (!elt._attachedEvents)
+    if (!elt._attachedEvents)
       elt._attachedEvents = [];
 
     var eventToAttach = {
@@ -1774,7 +1773,7 @@ if (!window.O$) {
       elt.attachEvent("on" + evtName, evtScript);
       eventToAttach.eventName = "on" + evtName;
     }
-    elt._attachedEvents.push(eventToAttach);*/
+    elt._attachedEvents.push(eventToAttach);
   };
 
   O$.removeEventHandler = function (elt, evtName, evtScript, useCapture) {
@@ -1795,8 +1794,7 @@ if (!window.O$) {
     }
     if (elt._attachedEvents) {
       for (var index = 0; index < elt._attachedEvents.length; index++) {
-        if (elt._attachedEvents[index] != null && elt._attachedEvents[index].eventName == eventToDetach.eventName
-                && elt._attachedEvents[index].functionScript == eventToDetach.functionScript) {
+        if (elt._attachedEvents[index] != null && elt._attachedEvents[index].eventName == eventToDetach.eventName) {
           elt._attachedEvents.splice(index, 1);
           break;
         }
@@ -2950,6 +2948,11 @@ if (!window.O$) {
     draggable._lastDragOffsetTop = draggable._getPositionTop();
 
     O$._draggedElement = draggable;
+
+    O$.Destroy.init(draggable, function(){
+      draggable = null;
+      O$._draggedElement = null;
+    });
     O$.cancelEvent(evt);
     if (document._fireDocumentClicked)
       document._fireDocumentClicked(evt);
@@ -3389,23 +3392,6 @@ if (!window.O$) {
     O$.addEventHandler(component, "mouseout", unblockOutlineUpdate);
 
     component.parentNode.insertBefore(focusControl, component);
-
-    var oldUnloadHandler = component.onComponentUnload;
-    if (!oldUnloadHandler) {
-      O$.addThisComponentToAllParents(component);
-    }
-    component.onComponentUnload = function () {
-      if (oldUnloadHandler)
-        oldUnloadHandler();
-      else
-        O$.unloadAllHandlersAndEvents(component);
-
-      if (component._focusOutline)
-        component._focusOutline.remove();
-      if(component._focusControl) {
-        component._focusControl = null;
-      }
-    };
   };
 
   // ----------------- STYLE UTILITIES ---------------------------------------------------
@@ -6037,12 +6023,6 @@ if (!window.O$) {
       }
       component._attachedEvents = [];
     }
-    //if (component._unloadHandlers && component._unloadHandlers != null) {
-    //  for (var i = 0, count = component._unloadHandlers.length; i < count; i++) {
-    //    component._unloadHandlers[i]();
-    //  }
-    //  component._unloadHandlers = [];
-    //}
 
     component.blur = null;
     component.click = null;
@@ -6051,52 +6031,6 @@ if (!window.O$) {
     component._handleKeyUp = null;
     component._handleKeyDown = null;
     component._handleKeyPress = null;
-  };
-
-  O$.addThisComponentToAllParents = function (component) {
-    var parent = component.parentNode;
-
-    function isAlreadyInArray(component) {
-      var parent = component.parentNode;
-      if (parent != null && parent._unloadableComponents) {
-        for (var i = 0; i < parent._unloadableComponents.length; i++) {
-          if (parent._unloadableComponents[i] == component) {
-            return true;
-          }
-        }
-      }
-      return false;
-    }
-
-    if (!isAlreadyInArray(component)) {
-      while (parent != document && parent != null) {
-        if (!parent._unloadableComponents) {
-          parent._unloadableComponents = [];
-        }
-        parent._unloadableComponents.push(component);
-        parent = parent.parentNode;
-      }
-    }
-  };
-
-  O$.removeThisComponentFromAllDocument = function (component) {
-    var parent = O$.removeThisComponentFromParentsAbove(component, component.parentNode);
-    return parent == document;
-  };
-
-  O$.removeThisComponentFromParentsAbove = function (component, parent) {
-    while (parent != document && parent != null) {
-      if (parent._unloadableComponents) {
-        for (var index = 0; index < parent._unloadableComponents.length; index++) {
-          if (parent._unloadableComponents[index] == component) {
-            parent._unloadableComponents.splice(index, 1);
-            break;
-          }
-        }
-      }
-      parent = parent.parentNode;
-    }
-    return parent;
   };
 
   O$.invokeWhenVisible = function (element, func) {

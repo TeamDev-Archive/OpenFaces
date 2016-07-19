@@ -524,6 +524,18 @@ O$.Tables = {
                       rowContainer.insertBefore(rowContainer._fakeRow, rowContainer.firstChild);
                     }
                   }
+
+                  O$.Destroy.init(scrollingDivContainer, function(){
+                    jQuery(scrollingDivContainer).remove();
+                    jQuery(scrollingDivContainer).empty();
+                    scrollingDivContainer = null;
+                  });
+
+                  O$.Destroy.init(scrollingDiv, function(){
+                    jQuery(scrollingDiv).remove();
+                    jQuery(scrollingDiv).empty();
+                    scrollingDiv = null;
+                  });
                 }
 
                 var area = {
@@ -1267,6 +1279,12 @@ O$.Tables = {
               setHeaderVerticalGridlines(col);
             }
           }
+          O$.Destroy.init(parentGroup, function(){
+            if(parentGroup) {
+              O$.Destroy._clear(parentGroup.subColumn);
+              O$.Destroy._clear(columns);
+            }
+          });
         }
 
         setHeaderVerticalGridlines(table);
@@ -1276,6 +1294,16 @@ O$.Tables = {
       tableHeader._updateSubHeaderRowSeparatorStyle();
       tableHeader._updateColumnSeparatorStyles();
       tableHeader._updateSeparatorStyle();
+
+      O$.Destroy.init(tableHeader, function(){
+        if(tableHeader){
+          tableHeader._updateSeparatorStyle = undefined;
+          tableHeader._updateColumnSeparatorStyles = undefined;
+          tableHeader._updateCommonHeaderSeparator = undefined;
+          tableHeader._updateSubHeaderRowSeparatorStyle = undefined;
+          tableHeader = undefined;
+        }
+      })
     }
 
     var tableFooter = table.footer;
@@ -2606,7 +2634,6 @@ O$.Tables = {
           table.onscroll(e);
       };
       var sections = [table.header, table.footer];
-
       var synchronizationCorrectionInterval = setInterval(function () {
         if (!O$.isElementPresentInDocument(table)) {
           clearInterval(synchronizationCorrectionInterval);
@@ -2745,7 +2772,7 @@ O$.Tables = {
     var resizeEventListener = new O$.EventListener(window, "resize");
 
     function fixTopLevelScrollingDivWidth() {
-      O$.listenProperty(table, "width", function (width) {
+      function resizeTableWidth (width) {
         width -= O$.getNumericElementStyle(table, "border-left-width", true);
         width -= O$.getNumericElementStyle(table, "border-right-width", true);
         if (width < 0)
@@ -2755,17 +2782,41 @@ O$.Tables = {
           if (section && section._sectionTable)
             section._sectionTable.style.width = width + "px";
         });
-      }, [
+      }
+
+      O$.listenProperty(table, "width", resizeTableWidth , [
         new O$.Timer("200"),
         resizeEventListener
       ]);
       table._topLevelScrollingDiv.style.visibility = "visible";
+
+      O$.Destroy.init(table, function(){
+        O$.removeEventHandler(window, "resize", resizeTableWidth);
+      });
     }
 
     fixTopLevelScrollingDivWidth();
 
     O$.Destroy.init(table, function () {
       resizeEventListener.release();
+      resizeEventListener = undefined;
+    });
+
+    O$.Destroy.init(table.body, function () {
+      O$.Destroy._destroyProperties(table.body);
+      jQuery(table.body).remove();
+      jQuery(table.body).empty();
+      table.body = null;
+    });
+
+    O$.Destroy.init(mainScrollingArea, function () {
+      O$.Destroy._destroyEvents(mainScrollingArea);
+      O$.Destroy._destroyEvents(mainScrollingArea._scrollingDiv);
+      O$.Destroy._clear(mainScrollingArea._colTags);
+      jQuery(mainScrollingArea._scrollingDiv).remove();
+      jQuery(mainScrollingArea._scrollingDiv).empty();
+      jQuery(mainScrollingArea).remove();
+      jQuery(mainScrollingArea).empty();
     });
 
     if (delayedInitFunctions.length)

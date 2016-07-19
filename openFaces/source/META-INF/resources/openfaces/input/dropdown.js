@@ -391,6 +391,9 @@ O$.DropDown = {
 
     //add function to change popup position if window is resized and layout is changed
     O$.addEventHandler(window, "resize", resizeHandlerOnWindow);
+    O$.Destroy.init(popup, function(){
+      O$.removeEventHandler(window, "resize", resizeHandlerOnWindow);
+    });
   },
 
   /*

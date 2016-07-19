@@ -868,7 +868,7 @@ O$.DropDownField = {
         clearTimeout(dropDown._blurWaiter);
       }
     };
-    
+
 
     field.onblur = function (e) {
       if (itemPresentation)
@@ -1030,6 +1030,10 @@ O$.DropDownField = {
 
       setTimeout(dropDown._initListStyles, 10);
     };
+
+    O$.Destroy.init(popupTableStructureAndStyleParams, function(){
+      popupTableStructureAndStyleParams = undefined;
+    })
   },
 
   _onLoadHandler:function (controlId) {

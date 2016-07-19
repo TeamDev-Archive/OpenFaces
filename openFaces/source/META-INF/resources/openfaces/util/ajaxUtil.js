@@ -508,9 +508,8 @@ window.OpenFaces.Ajax = {
                 processExtension(change);
               } else if(change.nodeName == "update") {
                 var element = document.getElementById(change.id);
-                var parent = element && element.parentNode;
                 destroyMemoryLeaks();
-                updateNode(parent, change.textContent);
+                updateNode(element, change.textContent);
               }
             }
         }
@@ -530,7 +529,8 @@ window.OpenFaces.Ajax = {
       }
     }
 
-    function updateNode(parent, text){
+    function updateNode(element, text){
+      var parent = element && element.parentNode;
       if(parent && text) {
         var documentFragment = document.createDocumentFragment();
 
@@ -538,7 +538,7 @@ window.OpenFaces.Ajax = {
         temp.innerHTML = text;
         documentFragment.appendChild(temp.firstChild);
 
-        parent.appendChild(documentFragment);
+        parent.replaceChild(element, documentFragment);
       }
     }
 

@@ -518,11 +518,6 @@ O$.FileUpload = {
             },
             show:function () {
               area.style.display = "block";
-            },
-            onComponentUnload:function(){
-              O$.unloadAllHandlersAndEvents(fileUpload);
-              fileUpload._events = [];
-              fileUpload.remove
             }
           });
           if (!O$._dropAreas) {
