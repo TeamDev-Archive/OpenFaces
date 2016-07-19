@@ -57,10 +57,6 @@ O$._initCaptionButton = function(componentId,
       btn._prevOnmousedown(e);
     O$.cancelEvent(e);
   };
-  O$.addUnloadHandler(btn, function () {
-    btn.onmousedown = null;
-  });
-  O$.initUnloadableComponent(btn);
   if (supportActionAttribute)
     O$.addEventHandler(btn, "click", function() {
       O$.submitWithParam(btn, componentId + "::clicked", "true");

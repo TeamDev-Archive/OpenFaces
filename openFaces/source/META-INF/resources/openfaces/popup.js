@@ -138,8 +138,7 @@ O$.Popup = {
         popup._originalStyleDisplay = popup.style.display;
       popup.style.display = "none";
     }
-    O$.initUnloadableComponent(popup);
-    O$.addUnloadHandler(popup, function () {
+    O$.Destroy.init(popup, function () {
       for (var index = 0; index < O$._popupsOnPage.length; index++) {
         if (O$(O$._popupsOnPage[index]) == popup) {
           O$._popupsOnPage.splice(index, 1);

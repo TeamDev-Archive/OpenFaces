@@ -386,7 +386,6 @@ window.OpenFaces.Ajax = {
     }
 
     function ajaxEnd(data) {
-      setTimeout(destroyMemoryLeaks, 1);
       if (O$.Ajax._currentlyScheduledScript) {
         O$.Ajax._currentlyScheduledScript.postExecuteHandler(function () {
           ajaxEnd(data)
@@ -398,154 +397,22 @@ window.OpenFaces.Ajax = {
       ajaxendEvent.validationError = validationError;
       ajaxendEvent.data = data;
       fireEvent("onajaxend", ajaxendEvent);
-
-      function destroyMemoryLeaks() {
-        if (!(options._of_skipExecute || options._of_ajax_portions)) {
-          for (var render in parentOfReloadedComponents) {
-            var parentOfReloadedComponent = parentOfReloadedComponents[render];
-            var reloadedComponent = getNotDomComponentById(render, parentOfReloadedComponent);
-            if (reloadedComponent != null) {
-              unloadComponent(reloadedComponent, parentOfReloadedComponent);
-              if (reloadedComponent.onComponentUnload) {
-                reloadedComponent.onComponentUnload();
-                O$.removeThisComponentFromParentsAbove(reloadedComponent, parentOfReloadedComponent);
-
-                removeComponentFromAllParents(reloadedComponent, parentOfReloadedComponent, true);
-                clearUnloadableComponentsCollection(reloadedComponent);
-              }
-
-              if (O$.isExplorer()) {
-                if (document._ajaxCleanupRequired)
-                  O$.destroyAllFunctions(reloadedComponent);
-              }
-            }
-
-            reloadedComponent = null;
-          }
-          if (parentOfReloadedComponent) {
-            parentOfReloadedComponent._unloadableComponents = [];
-          }
-        }
-      }
     }
 
-    function removeComponentFromAllParents(component, parentComponent, componentNotInDOM) {
-      var tempEl = component;
-      if (!O$.removeThisComponentFromAllDocument(tempEl)) {
-        O$.removeThisComponentFromParentsAbove(tempEl, component);
-        if (componentNotInDOM) {
-          O$.removeThisComponentFromParentsAbove(tempEl, component);
-        }
-      }
-      if (tempEl == component) {
-        O$.removeThisComponentFromParentsAbove(tempEl, component);
-        if (componentNotInDOM) {
-          O$.removeThisComponentFromParentsAbove(tempEl, parentComponent);
-        }
-      }
-    }
-    function removeAttributes(component) {
-      var attributes = component.attributes;
-      if (attributes) {
-        for (var j = attributes.length - 1; j >= 0; j -= 1) {
-          var name = attributes[j].name;
-          if (Array.isArray(component[name])) {
-            component[name] = [];
-          } else {
-            component[name] = null;
-          }
-        }
-      }
+    function destroyMemoryLeaks() {
+      if (!(options._of_skipExecute || options._of_ajax_portions)) {
+        for (var render in parentOfReloadedComponents) {
+          var start = new Date().getMilliseconds();
+          var parentOfReloadedComponent = parentOfReloadedComponents[render];
 
-      var childNodes = component.childNodes;
-      if (childNodes) {
-        for (var i = 0; i < childNodes.length; i++) {
-          removeAttributes(childNodes[i]);
-        }
-      }
-    }
-    function detachChildrenAndProps(component) {
-      jQuery(component).detach();
-      clearInner(component);
-
-      console.info("Unload: ", component);
-
-      function clearInner(node) {
-        while (node.hasChildNodes()) {
-          clear(node.firstChild);
-        }
-        O$.clearAllProperties(node);
-      }
-
-      function clear(node) {
-        while (node.hasChildNodes()) {
-          O$.clearAllProperties(node);
-          clear(node.firstChild);
-        }
-        node.parentNode.removeChild(node);
-        console.log(node, "cleared!");
-      }
-    }
-    function unloadComponent(component, parentComponent) {
-      if (component._unloadableComponents) {
-        var componentNotInDOM = (component.parentNode != parentComponent);
-        var length = component._unloadableComponents.length;
-        for (var index = 0; index < length; index++) {
-          var unloadableComponent = component._unloadableComponents[0];
-          if (unloadableComponent.onComponentUnload) {
-            unloadableComponent.onComponentUnload();
-            unloadableComponent.onLoadHandler = null;
-          }
-          removeComponentFromAllParents(unloadableComponent, parentComponent, componentNotInDOM);
-
-          removeAttributes(unloadableComponent);
-          detachChildrenAndProps(unloadableComponent);
-          unloadableComponent = null;
-        }
-
-        removeComponentFromAllParents(component, parentComponent, true);
-        detachChildrenAndProps(component);
-      }
-    }
-    function clearUnloadableComponentsCollection(component) {
-      var parentNode = component.parentNode;
-      if (parentNode) {
-        if (parentNode._unloadableComponents && parentNode._unloadableComponents.length > 0) {
-          console.info("Component in parent parentNode._unloadableComponents", parentNode._unloadableComponents);
-
-          for (var i = 0; i < parentNode._unloadableComponents.length; i++) {
-            var node = parentNode._unloadableComponents[i];
-            if (node == component) {
-              parentNode._unloadableComponents.splice(i, 1, node);
-              console.info("Delete element from parent node:", node);
-            }
+          if(parentOfReloadedComponent) {
+            O$.Destroy.apply(parentOfReloadedComponent);
           }
 
-          console.info("Component in parent parentNode._unloadableComponents", parentNode._unloadableComponents);
-        }
-
-        parentNode.removeChild(component);
-      }
-
-      if (component._unloadableComponents) {
-        for (var o = 0; o < component._unloadableComponents.length; o++) {
-          component._unloadableComponents.splice(o, 1);
+          var stop = new Date().getMilliseconds();
+          console.info("Destroy memory leaks worked: ", stop - start);
         }
       }
-    }
-    function getNotDomComponentById(idOfElement, parentOfElementInDom) {
-      if (!parentOfElementInDom._unloadableComponents)
-        return null;
-      var elementsWithSameId = [];
-      parentOfElementInDom._unloadableComponents.forEach(function (comp) {
-        if (comp.id == idOfElement) {
-          elementsWithSameId.push(comp);
-        }
-      });
-      var components = elementsWithSameId.filter(function (element) {
-        return (element.parentNode && element.parentNode != parentOfElementInDom);
-      });
-      return (components.length == 0) ? null : components[0];
     }
 
     function eventHandler(data) {
@@ -577,44 +444,57 @@ window.OpenFaces.Ajax = {
           atLeastOnePortionProcessed = true;
           var extensionType = extensionNode.getAttribute("type");
 
-          if (extensionType == "portionData") {
-            var portionName = extensionNode.getAttribute("portion");
-            var portionText = extensionNode.getAttribute("text");
-            var portionDataStr = extensionNode.getAttribute("data");
-            var jsLibsStr = extensionNode.getAttribute("jsLibs");
-            var portionScripts = extensionNode.getAttribute("scripts");
-            var jsLibs = eval(jsLibsStr);
-            var portionData = portionDataStr ? eval("(" + portionDataStr + ")") : null;
-            var component = O$(render);
-            O$.Ajax._runScript(function () {
-              if (!args.portionProcessor) throw "OpenFaces Ajax portion node received but no portionProcessor was specified by the request invoker";
-              args.portionProcessor(component, portionName, portionText, portionScripts, portionData);
-            }, jsLibs);
-          } else if (extensionType == "sessionExpiration") {
-            window._of_ajax_onsessionexpired = true;
-            var html = extensionNode.getAttribute("text");
-            jsLibsStr = extensionNode.getAttribute("jsLibs");
-            portionScripts = extensionNode.getAttribute("scripts");
-            jsLibs = eval(jsLibsStr);
-            O$.Ajax._runScript(function () {
-              O$.Ajax._processUpdateOnExpirationOrError(html, portionScripts);
-              if (OpenFaces.Ajax.Page.onsessionexpired) {
-                var sessionExpiredEvent = O$.createEvent("sessionexpired");
-                OpenFaces.Ajax.Page.onsessionexpired(sessionExpiredEvent);
+          switch (extensionType) {
+            case "portionData":
+              var portionName = extensionNode.getAttribute("portion");
+              var portionText = extensionNode.getAttribute("text");
+              var portionDataStr = extensionNode.getAttribute("data");
+              var jsLibsStr = extensionNode.getAttribute("jsLibs");
+              var portionScripts = extensionNode.getAttribute("scripts");
+              var jsLibs = eval(jsLibsStr);
+              var portionData = portionDataStr ? eval("(" + portionDataStr + ")") : null;
+              var component = O$(render);
+              O$.Ajax._runScript(function () {
+                if (!args.portionProcessor) throw "OpenFaces Ajax portion node received but no portionProcessor was specified by the request invoker";
+                args.portionProcessor(component, portionName, portionText, portionScripts, portionData);
+              }, jsLibs);
+
+              break;
+
+            case "sessionExpiration":
+              window._of_ajax_onsessionexpired = true;
+              var html = extensionNode.getAttribute("text");
+              jsLibsStr = extensionNode.getAttribute("jsLibs");
+              portionScripts = extensionNode.getAttribute("scripts");
+              jsLibs = eval(jsLibsStr);
+              O$.Ajax._runScript(function () {
+                O$.Ajax._processUpdateOnExpirationOrError(html, portionScripts);
+                if (OpenFaces.Ajax.Page.onsessionexpired) {
+                  var sessionExpiredEvent = O$.createEvent("sessionexpired");
+                  OpenFaces.Ajax.Page.onsessionexpired(sessionExpiredEvent);
+                }
+              }, jsLibs);
+
+              break;
+
+            case "ajaxResult":
+              var ajaxResultStr = extensionNode.getAttribute("ajaxResult");
+              try {
+                eval("ajaxResult = " + ajaxResultStr);
+              } catch (e) {
+                ajaxResult = ajaxResultStr;
               }
-            }, jsLibs);
-          } else if (extensionType == "ajaxResult") {
-            var ajaxResultStr = extensionNode.getAttribute("ajaxResult");
-            try {
-              eval("ajaxResult = " + ajaxResultStr);
-            } catch (e) {
-              ajaxResult = ajaxResultStr;
-            }
-          } else if (extensionType == "validationError") {
-            var validationErrorStr = extensionNode.getAttribute("validationError");
-            validationError = (validationErrorStr == "true");
-          } else
-            throw "Unknown OpenFaces Ajax extension node type: " + extensionType;
+
+              break;
+
+            case "validationError":
+              var validationErrorStr = extensionNode.getAttribute("validationError");
+              validationError = (validationErrorStr == "true");
+
+              break;
+            default:
+              throw "Unknown OpenFaces Ajax extension node type: " + extensionType;
+          }
         }
 
         for (var i = 0, count = childNodes.length; i < count; i++) {
@@ -624,8 +504,14 @@ window.OpenFaces.Ajax = {
           if (childNode.nodeName == "changes")
             for (var j = 0, jCount = childNode.childNodes.length; j < jCount; j++) {
               var change = childNode.childNodes[j];
-              if (change.nodeName == "extension")
+              if (change.nodeName == "extension") {
                 processExtension(change);
+              } else if(change.nodeName == "update") {
+                var element = document.getElementById(change.id);
+                var parent = element && element.parentNode;
+                destroyMemoryLeaks();
+                updateNode(parent, change.textContent);
+              }
             }
         }
 
@@ -641,6 +527,18 @@ window.OpenFaces.Ajax = {
         }
 
         ajaxEnd(data);
+      }
+    }
+
+    function updateNode(parent, text){
+      if(parent && text) {
+        var documentFragment = document.createDocumentFragment();
+
+        var temp = document.createElement("div");
+        temp.innerHTML = text;
+        documentFragment.appendChild(temp.firstChild);
+
+        parent.appendChild(documentFragment);
       }
     }
 

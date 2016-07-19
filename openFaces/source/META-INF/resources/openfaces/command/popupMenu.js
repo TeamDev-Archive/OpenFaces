@@ -199,11 +199,6 @@ O$.PopupMenu = {
         } else {
           menuItem._separator = O$(menuItem.id + "::separator");
         }
-
-        O$.addUnloadHandler(anchor, function(){
-
-        })
-
       }
 
       if (popupMenu._deferredInitializers && popupMenu._deferredInitializers.length > 0) {
@@ -319,11 +314,6 @@ O$.PopupMenu = {
     }
 
     popupMenu.defaultDisabledClass = defaultDisabledClass;
-
-    O$.initUnloadableComponent(popupMenu);
-    O$.addUnloadEvent(popupMenu, function(){
-
-    });
   },
 
   setMenuItemEnabled:function (menuItemId, enabled, selectDisabledItems) {
@@ -1006,8 +996,6 @@ O$.PopupMenu = {
 
       };
 
-      O$.initUnloadableComponent(menuItem);
-      O$.initUnloadableComponent(menuItem._anchor);
       O$.addEventHandler(menuItem._anchor, "click", function (evt) {
         menuItem._click(evt);
       });
@@ -1021,20 +1009,8 @@ O$.PopupMenu = {
           popupMenu.closed = true;
           clickHandler.call(menuItem._anchor, evt);
           popupMenu.closed = false;
-        }
-        O$.addUnloadHandler(menuItem._anchor, function () {
-          menuItem._anchor.onclick = null;
-        });
+        };
       }
-
-      O$.addUnloadHandler(menuItem, function(){
-        menuItem._menuItem = null;
-        menuItem._anchor = null;
-        menuItem._originalStyleDisplay = null;
-        menuItem.defaultDisabledClass  = null;
-
-        menuItem = null;
-      });
     }
   },
 

@@ -203,31 +203,6 @@ O$.Tables = {
         return null;
       return row._cellFromPoint(x, y, relativeToNearestContainingBlock, cachedDataContainer);
     };
-
-    O$.initUnloadableComponent(table);
-    O$.addUnloadHandler(table, function(){
-      O$.removeAllChildNodes(table);
-      table._params = null;
-      table._cellsByColumns = null;
-      table._cellInsertionCallbacks = [];
-      table._cellMoveCallbacks = [];
-      table._insertRowsAfter = null;
-      table._columnMenuId = null;
-      table._originalClassName = null;
-      table._selectionClass = null;
-      table._sortableHeaderRolloverClass = null;
-      table._selectableItems = null;
-      table._selectionMode = null;
-      table._columnMenuButtonTable = null;
-      table._topLevelScrollingDiv = null;
-      table.header = null;
-      table.body = null;
-      table.footer = null;
-      table._columns = [];
-      table._rowGroupingBox = null;
-      table._columnHeadersRowIndexRange = [];
-      table._deepestColumnHierarchyLevel = null;
-    });
   },
 
   _insertRowsAfter:function (afterIndex, rowsToInsert, newRowsToStylesMap, newRowCellsToStylesMap, rowKeys) {
@@ -445,34 +420,6 @@ O$.Tables = {
       applyStyle(headTable, table._params.header.className);
       applyStyle(bodyTable, table._params.body.className);
       applyStyle(footTable, table._params.footer.className);
-
-      if (headTable) {
-        O$.addUnloadHandler(headTable, function () {
-          table._params.header = null;
-          headTable = null;
-          headRows = [];
-          rows = [];
-          console.info("Unload _initRows.headTable");
-        });
-      }
-
-      O$.addUnloadHandler(bodyTable, function(){
-        table._params.body = null;
-        bodyTable = null;
-        bodyRows = [];
-        rows = [];
-        console.info("Unload _initRows.bodyTable");
-      });
-
-      if (footTable) {
-        O$.addUnloadHandler(footTable, function () {
-          table._params.footer = null;
-          footTable = null;
-          footRows = [];
-          rows = [];
-          console.info("Unload _initRows.footTable");
-        });
-      }
     }
     function initTableSection(table, sectionParams, sectionTagName, commonRowAbove) {
       var section = {
@@ -828,7 +775,7 @@ O$.Tables = {
       }
       O$.setStyleMappings(row._rowNode, styleMappings);
       O$.Tables._handleUnsupportedRowStyleProperties(row._rowNode);
-      O$.addUnloadHandler(table, function () {
+      O$.Destroy.init(table, function () {
         var classes = row._rowNode.className.split(" ");
         var name = "." + classes[0];
         for (var index = 1; index < classes.length; index++) {
@@ -1079,14 +1026,6 @@ O$.Tables = {
       colIndex += cellColSpan;
       if (cell.innerHTML == "")
         cell.innerHTML = "&#160;";
-
-      O$.initUnloadableComponent(cell);
-      O$.addUnloadHandler(cell, function () {
-        cell._row = null;
-        cell._column = null;
-        cell._styleMappings = null;
-        cell._updateStyle = null;
-      });
     }
     row._getCellByColIndex = function (index) {
       var cell = this._cellsByColumns[index];
@@ -1602,14 +1541,6 @@ O$.Tables = {
       O$.Tables._initBodyCell(cell, column);
       cell._updateStyle();
     });
-
-    O$.addUnloadHandler(column, function () {
-      column.onclick = null;
-      column.ondblclick = null;
-      column.columnId = null;
-      column._column = null;
-      column._row = null;
-    });
   },
 
   _initColumnOrGroup:function (column, table) {
@@ -1689,16 +1620,15 @@ O$.Tables = {
     if (column.footer) {
       column._footerCellsClass = table._params.columnWidthControlRequired ? newClass("overflow: hidden", false) : defaultSharedColumnStyle;
       if (table._params.columnWidthControlRequired) {
-        O$.addUnloadHandler(table, function () {
+        O$.Destroy.init(table, function () {
           O$.removeCssRule(column._footerCellsClass.classObj.selectorText, column._footerCellsClass._iePredefClasses);
         });
       }
     }
     if (table._params.columnWidthControlRequired) {
-      O$.addUnloadHandler(table, function () {
+      O$.Destroy.init(table, function () {
         O$.removeCssRule(column._headerCellsClass.classObj.selectorText, column._headerCellsClass._iePredefClasses);
         O$.removeCssRule(column._bodyCellsClass.classObj.selectorText, column._bodyCellsClass._iePredefClasses);
-        //        O$.removeCssRule(column._colClass.classObj.selectorText);
       });
     }
     column._table = table;
@@ -1976,14 +1906,6 @@ O$.Tables = {
         compoundColumnStyle:column._getCompoundClassName(),
         colHeaderStyle:column.header ? column.header.className : null});
     };
-
-    O$.initUnloadableComponent(cell);
-    O$.addUnloadHandler(cell, function () {
-      cell._row = null;
-      cell._column = null;
-      cell._styleMappings = null;
-      cell._updateStyle = null;
-    });
   },
 
   _assignHeaderBoxStyle:function (headerBox, table, columnId, additionalClassName) {
@@ -2020,14 +1942,6 @@ O$.Tables = {
         colSubHeaderStyle:column.subHeader ? column.subHeader.className : null
       });
     };
-
-    O$.initUnloadableComponent(cell);
-    O$.addUnloadHandler(cell, function () {
-      cell._row = null;
-      cell._column = null;
-      cell._styleMappings = null;
-      cell._updateStyle = null;
-    });
   },
 
   _initFooterCell:function (cell, column) {
@@ -2042,14 +1956,6 @@ O$.Tables = {
         colFooterStyle:column.footer ? column.footer.className : null
       });
     };
-
-    O$.initUnloadableComponent(cell);
-    O$.addUnloadHandler(cell, function () {
-      cell._row = null;
-      cell._column = null;
-      cell._styleMappings = null;
-      cell._updateStyle = null;
-    });
   },
 
   _initBodyCell:function (cell, column) {
@@ -2699,10 +2605,6 @@ O$.Tables = {
         if (table.onscroll)
           table.onscroll(e);
       };
-      O$.addUnloadHandler(table, function () {
-        mainScrollingArea._scrollingDiv.onscroll = null;
-      });
-
       var sections = [table.header, table.footer];
 
       var synchronizationCorrectionInterval = setInterval(function () {
@@ -2862,7 +2764,7 @@ O$.Tables = {
 
     fixTopLevelScrollingDivWidth();
 
-    O$.addUnloadHandler(table, function () {
+    O$.Destroy.init(table, function () {
       resizeEventListener.release();
     });
 

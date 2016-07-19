@@ -174,8 +174,6 @@ O$.InputSecret = {
       });
     }
 
-    O$.initUnloadableComponent(substitutionalElement);
-
     var setPassword = function (id, str) {
       var tmp = "";
       for (var i = 0; i < str.length; i++) {

@@ -103,12 +103,6 @@ O$.DropDown = {
       }
     };
     O$.addEventHandler(field, "focus", dropDown._focusHandler);
-    O$.initUnloadableComponent(field);
-    O$.addUnloadHandler(field, function(){
-      O$.removeAllChildNodes(field);
-      field._valueField = null;
-      jQuery(field).detach();
-    });
 
     dropDown._onblur = dropDown.onblur;
 
@@ -156,7 +150,6 @@ O$.DropDown = {
           }
         }
       });
-      O$.initUnloadableComponent(dropDown);
     }
 
     setTimeout(function () {
@@ -272,8 +265,6 @@ O$.DropDown = {
     O$.addEventHandler(popup, "mousedown", function (e) {
       O$.stopEvent(e);
     });
-    O$.initUnloadableComponent(popup);
-
     dropDown._buttonClass = O$.DropDown._getClassName(buttonClass);
     if (button)
       button.className = dropDown._buttonClass;
@@ -353,9 +344,6 @@ O$.DropDown = {
     popup.onmousemove = function (e) {
       O$.cancelEvent(e);
     };
-    O$.addUnloadHandler(popup, function () {
-      popup.onmousemove = null;
-    });
 
     popupClass = O$.combineClassNames([popupClass, popup.className]);
     dropDown._popupClass = O$.DropDown._getClassName(popupClass);
@@ -401,83 +389,8 @@ O$.DropDown = {
       }
     }
 
-    if(dropDown._o_inputField) {
-      O$.initUnloadableComponent(dropDown._o_inputField);
-      O$.addUnloadHandler(dropDown._o_inputField, function(){
-        if (dropDown._o_inputField) {
-          dropDown._o_inputField._oldValue = null;
-        }
-
-        dropDown._o_inputField = null;
-      });
-    }
-
-    O$.initUnloadableComponent(field);
-    O$.addUnloadHandler(field, function(){
-      field._oldValue = null;
-
-      field = null;
-    });
-
     //add function to change popup position if window is resized and layout is changed
     O$.addEventHandler(window, "resize", resizeHandlerOnWindow);
-    O$.initUnloadableComponent(popup);
-    O$.addUnloadHandler(popup, function () {
-      O$.removeEventHandler(window, "resize", resizeHandlerOnWindow);
-      O$.removeEventHandler(window, "blur", resizeHandlerOnWindow);
-      O$.removeEventHandler(window, "focus", resizeHandlerOnWindow);
-      O$.removeEventHandler(window, "click", resizeHandlerOnWindow);
-      popup._dependedFieldId = null;
-      popup._originalStyleDisplay = null;
-      popup._originalSize = null;
-      popup._buttonClass = null;
-      popup._containerClass = null;
-      popup._fieldClass = null;
-      popup._popupClass = null;
-      popup._promptTextClass = null;
-      popup._rolloverContainerClass = null;
-      popup._rolloverFieldClass = null;
-      popup._rolloverPopupClass = null;
-      popup._listAlignment = null;
-      popup._focusedClass = null;
-      popup._focusControl = null;
-      popup._initialText = null;
-      popup._lastOnchangeItemLabel = null;
-      popup._lastOnchangeItemValue = null;
-      popup.value = null;
-
-      popup.onmousemove = null;
-
-      popup = null;
-    });
-
-    O$.initUnloadableComponent(dropDown);
-    O$.addUnloadEvent(dropDown, function(){
-      O$.removeAllChildNodes(dropDown);
-      dropDown._button = null;
-      dropDown._popup = null;
-      dropDown._field = null;
-      dropDown._dependedFieldId = null;
-      dropDown._originalStyleDisplay = null;
-      dropDown._originalSize = null;
-      dropDown._buttonClass = null;
-      dropDown._containerClass = null;
-      dropDown._fieldClass = null;
-      dropDown._popupClass = null;
-      dropDown._promptTextClass = null;
-      dropDown._rolloverContainerClass = null;
-      dropDown._rolloverFieldClass = null;
-      dropDown._rolloverPopupClass = null;
-      dropDown._listAlignment = null;
-      dropDown._focusedClass = null;
-      dropDown._focusControl = null;
-      dropDown._initialText = null;
-      dropDown._lastOnchangeItemLabel = null;
-      dropDown._lastOnchangeItemValue = null;
-      dropDown.value = null;
-
-      dropDown = null;
-    });
   },
 
   /*

@@ -195,8 +195,8 @@ O$.FileUpload = {
       },
       _setClearBtnAndEventHandler:function (infoDiv, infoId) {
         infoDiv.childNodes[3].removeChild(infoDiv.childNodes[3].firstChild);
-        var clearFileDiv = fileUpload._buttons.clear.cloneNode(true);
-        clearFileDiv.setAttribute("id", fileUpload._buttons.clear.id + infoId);
+        var clearFileDiv = fileUpload._buttons._clear.cloneNode(true);
+        clearFileDiv.setAttribute("id", fileUpload._buttons._clear.id + infoId);
         infoDiv.childNodes[3].appendChild(clearFileDiv);
         O$.addEventHandler(clearFileDiv, "focus", fileUpload._focusHandler);
         O$.addEventHandler(clearFileDiv, "blur", fileUpload._blurHandler);
@@ -556,7 +556,7 @@ O$.FileUpload = {
     //getting clear,stop,cancel, progressBar facet for each info window
     fileUpload._elementsCont = O$(componentId + "::elements");
 
-    fileUpload._buttons.clear = fileUpload._getFacet("::clearFacet");
+    fileUpload._buttons._clear = fileUpload._getFacet("::clearFacet");
     fileUpload._buttons.cancel = fileUpload._getFacet("::removeFacet");
     fileUpload._buttons.stop = fileUpload._getFacet("::stopFacet");
 
@@ -1000,7 +1000,7 @@ O$.FileUpload = {
 
     function setTabIndexForAllButtons(tabIndex) {
       if (tabIndex != -1) {
-        var buttons = [fileUpload._buttons.upload,fileUpload._buttons.removeAll,fileUpload._buttons.stopAll,fileUpload._buttons.clear,fileUpload._buttons.stop,fileUpload._buttons.cancel];
+        var buttons = [fileUpload._buttons.upload,fileUpload._buttons.removeAll,fileUpload._buttons.stopAll,fileUpload._buttons._clear,fileUpload._buttons.stop,fileUpload._buttons.cancel];
         buttons.forEach(function(button) {
           button.setAttribute("tabindex", tabIndex);
         });

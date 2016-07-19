@@ -85,14 +85,6 @@ if (!window.O$) {
     O$.originalEventHandlers[eventName] = element[eventName];
 
   });
-  O$._setOriginalEventHandler = function () {
-
-  }
-
-  O$._getOriginalEventHandler = function () {
-
-  }
-
 
   O$.initComponent = function (clientId, styles, properties, events) {
     O$._checkDefaultCssPresence();
@@ -145,17 +137,7 @@ if (!window.O$) {
         }
       }
     }
-    O$.addUnloadHandler(component, function(){
-      for (var i = 0; i < O$.events.length; i++) {
-        for (var eventName in O$.events) {
-          if (component.hasOwnProperty(eventName)) {
-            component[eventName] = null;
-          }
-        }
-      }
-      component.style = null;
-      component = null;
-    });
+    O$.Destroy.init(component);
     return component;
   };
 
@@ -254,6 +236,211 @@ if (!window.O$) {
       }
     })
   });
+
+  O$.Destroy = {
+    detached: [],
+    counter: 0,
+
+    init: function(component, func){
+      if(!component) {
+        return;
+      }
+
+      this.detached = this.detached || [];
+      //component._unloadHandlers = component._unloadHandlers || [];
+      //
+      //if(func){
+      //  component._unloadHandlers.push(func)
+      //}
+
+      if(this.detached.indexOf(component) < 0) {
+        this.detached.push(component);
+      }
+    },
+
+    apply: function (component) {
+      var componentIndex = this.detached.indexOf(component);
+
+      if(componentIndex != -1) {
+        O$.Destroy._destroyComponent(component);
+        O$.Destroy._removeFromList(node, componentIndex);
+      } else {
+        for (var i = 0; i < component.childNodes.length; i++) {
+          var node = component.childNodes[i];
+
+          componentIndex = this.detached.indexOf(node);
+          if (componentIndex != -1) {
+            O$.Destroy._destroyComponent(node);
+            O$.Destroy._removeFromList(node, componentIndex);
+            return;
+          }
+        }
+      }
+
+      console.info("Detached component", component);
+      component = null;
+      delete component;
+      O$.Destroy.detached = [];
+
+      console.info("Destroyed components: ", O$.Destroy.counter);
+    },
+
+    _findComponent: function(component){
+      for(var i = 0; i < this.detached.length; i++){
+        var node = this.detached[i];
+        if(node == component) {
+          return node;
+        }
+      }
+
+      return null;
+    },
+
+    _removeFromList: function(node, index) {
+      if(!index){
+        index = this.detached.indexOf(node);
+        index = index == -1 && node.parentNode ? this.detached.indexOf(node.parentNode) : index;
+      }
+
+      if(index != -1) {
+        this.detached.splice(index, 1, node);
+      }
+    },
+
+    _destroyComponent: function(foundComponent){
+      this._destroyChildren(foundComponent);
+
+      O$.Destroy._clearCachedStyles(foundComponent);
+      O$.Destroy._clearTable(foundComponent);
+      O$.Destroy._destroyEvents(foundComponent);
+      O$.Destroy._destroyAttributes(foundComponent);
+      O$.Destroy._destroyProperties(foundComponent);
+      O$.Destroy._clearUnloadableCollections(foundComponent);
+
+      O$.Destroy.counter ++;
+      jQuery(foundComponent).remove();
+
+      console.info("Destroyed component", foundComponent);
+      foundComponent = null;
+      delete foundComponent;
+    },
+
+    _destroyChildren: function (component) {
+      while (component.hasChildNodes()) {
+        clear(component.firstChild);
+      }
+
+      delete O$.Table.table;
+
+      function clear(node) {
+        while (node.hasChildNodes()) {
+          clear(node.firstChild);
+        }
+
+        O$.Destroy._clearCachedStyles(node);
+        O$.Destroy._clearTable(node);
+        O$.Destroy._destroyEvents(node);
+        O$.Destroy._destroyAttributes(node);
+        O$.Destroy._destroyProperties(node);
+        O$.Destroy._clearUnloadableCollections(node);
+        O$.Destroy._removeFromList(node);
+        jQuery(node).remove();
+
+        jQuery(node).unbind();
+        console.info("Clear node", node);
+        node = null;
+        delete node;
+
+        O$.Destroy.counter ++;
+      }
+    },
+
+    _clearTable:function(component) {
+      if(component._cleanUp) { //DataTable only
+        component._cleanUp();
+        component._cleanAll();
+      }
+    },
+
+    _destroyEvents: function(node){
+      for (var i = 0; i < O$.events.length; i++) {
+        var eventName = O$.events[i];
+        if (node.hasOwnProperty(eventName)) {
+          O$.Destroy._clear(node[eventName]);
+        }
+      }
+
+      var attachedEvents = node._attachedEvents;
+      if (attachedEvents) {
+        var length = attachedEvents.length;
+        for (var eventsIndex = 0; eventsIndex < length; eventsIndex++) {
+          var attachedEvent = attachedEvents[0];
+          if (attachedEvent != null)
+            O$.removeEventHandler(node, attachedEvent.eventName, attachedEvent.functionScript);
+        }
+        O$.Destroy._clear(node._attachedEvents);
+      }
+
+      jQuery(node).unbind();
+
+      O$.removeEventHandler(node, "blur", null);
+      O$.removeEventHandler(node, "focus", null);
+      O$.removeEventHandler(node, "click", null);
+      O$.removeEventHandler(node, "onclick", node._row_handleSelectionOnClick);
+
+      node.onclick = undefined;
+      node.onblur = undefined;
+      node.onfocus = undefined;
+      node._row_handleSelectionOnClick = null;
+    },
+
+    _destroyProperties: function(component){
+      if (component) {
+        var ownPropertyNames = Object.getOwnPropertyNames(component);
+        var length = ownPropertyNames.length;
+
+        for (var i = 0; i < length; i++) {
+          var name = ownPropertyNames[i];
+          component[name] = undefined;
+        }
+      }
+    },
+
+    _destroyAttributes: function(component){
+      var attributes = component.attributes;
+      if (attributes) {
+        for (var j = attributes.length - 1; j >= 0; j -= 1) {
+          var name = attributes[j].name;
+          O$.Destroy._clear(component[name]);
+        }
+      }
+    },
+
+    _clearUnloadableCollections: function(component) {
+      O$.Destroy._clear(component._attachedEvents);
+      O$.Destroy._clear(component._unloadHandlers);
+      O$.Destroy._clear(component._hoverListeners);
+      O$.Destroy._clear(component._unloadableComponents);
+      O$.Destroy._clear(component._of_mouseOutListeners);
+      O$.Destroy._clear(component._of_mouseOverListeners);
+      O$.Destroy._clear(component._styleMappings);
+      O$.Destroy._clear(component._image);
+    },
+
+    _clearCachedStyles: function(component){
+      O$.Destroy._clear(O$._cachedDynamicCssRules);
+      O$.Destroy._clear(component.cssRules);
+      O$.Destroy._clear(component.className)
+    },
+
+    _clear: function(obj) {
+      if(Array.isArray(obj)) {
+        obj.splice(0, obj.length);
+      } else {
+        obj = undefined;
+      }
+    }
+  };
 
   /* GraphicLine class -- displays a horizontal or vertical line on the specified element. */
   O$.GraphicLine = O$.createClass({
@@ -1353,24 +1540,6 @@ if (!window.O$) {
   O$.removeAllChildNodes = function (element) {
     while (element.childNodes.length > 0)
       element.removeChild(element.childNodes[0]);
-  };
-
-  O$.clearAllProperties = function (component) {
-    if (component) {
-      var ownPropertyNames = Object.getOwnPropertyNames(component);
-      var length = ownPropertyNames.length;
-
-      for (var i = 0; i < length; i++) {
-        var name = ownPropertyNames[i];
-        if (component.hasOwnProperty(name)) {
-          if (component[name] && Array.isArray(component[name])) {
-            component[name] = [];
-          } else {
-            component[name] = null;
-          }
-        }
-      }
-    }
   };
 
   O$.setInnerText = function (element, text, escapeHtml) {
@@ -2568,7 +2737,6 @@ if (!window.O$) {
     O$.addEventHandler(element, "mouseup", function () {
       fn.call(element, false, element);
     });
-    O$.initUnloadableComponent(element);
   };
 
   O$.addMouseOverListener = function (element, listener) {
@@ -2664,7 +2832,6 @@ if (!window.O$) {
 
   O$.makeDraggable = function (element, dropTargetLocator) {
     var startPos = null;
-    O$.initUnloadableComponent(element);
     O$.addEventHandler(element, "mousedown", function (evt) {
       startPos = O$.getEventPoint(evt);
       O$.cancelEvent(evt);
@@ -3269,15 +3436,9 @@ if (!window.O$) {
         return fullRule.substring(0, fullRule.indexOf("{"));
       }
 
-      O$.initUnloadableComponent(element);
       for (var i = 0, count = ruleArray.length; i < count; i++) {
         O$.addCssRule(ruleArray[i]);
       }
-      O$.addUnloadHandler(element, function () {
-        for (var i = 0, count = ruleArray.length; i < count; i++) {
-          O$.removeCssRule(getNameOfCssClass(ruleArray[i]));
-        }
-      });
     } else {
       O$.addCssRules(ruleArray);
     }
@@ -5878,26 +6039,6 @@ if (!window.O$) {
       }, 1);
   };
 
-  O$.initUnloadableComponent = function (component) {
-    if (!component.onComponentUnload) {
-      O$.addThisComponentToAllParents(component);
-      component.onComponentUnload = function () {
-        O$.unloadAllHandlersAndEvents(component);
-      }
-    }
-  };
-
-  O$.addUnloadHandler = function (component, func) {
-    if(!component) {
-      return;
-    }
-
-    if (!component._unloadHandlers) {
-      component._unloadHandlers = [];
-    }
-    component._unloadHandlers.push(func);
-  };
-
   O$.unloadAllHandlersAndEvents = function (component) {
     var attachedEvents = component._attachedEvents;
     if (attachedEvents) {
@@ -5908,12 +6049,12 @@ if (!window.O$) {
       }
       component._attachedEvents = [];
     }
-    if (component._unloadHandlers && component._unloadHandlers != null) {
-      for (var i = 0, count = component._unloadHandlers.length; i < count; i++) {
-        component._unloadHandlers[i]();
-      }
-      component._unloadHandlers = [];
-    }
+    //if (component._unloadHandlers && component._unloadHandlers != null) {
+    //  for (var i = 0, count = component._unloadHandlers.length; i < count; i++) {
+    //    component._unloadHandlers[i]();
+    //  }
+    //  component._unloadHandlers = [];
+    //}
 
     component.blur = null;
     component.click = null;
@@ -5952,11 +6093,7 @@ if (!window.O$) {
 
   O$.removeThisComponentFromAllDocument = function (component) {
     var parent = O$.removeThisComponentFromParentsAbove(component, component.parentNode);
-    if (parent != document) {
-      return false;
-    } else {
-      return true;
-    }
+    return parent == document;
   };
 
   O$.removeThisComponentFromParentsAbove = function (component, parent) {
