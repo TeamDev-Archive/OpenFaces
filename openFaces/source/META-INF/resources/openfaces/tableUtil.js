@@ -2811,7 +2811,7 @@ O$.Tables = {
     });
 
     O$.Destroy.init(table.body, function () {
-      O$.Destroy._destroyProperties(table.body);
+      O$.Destroy._clearProperties(table.body);
       jQuery(table.body).remove();
       jQuery(table.body).empty();
       table.body = null;

@@ -230,7 +230,7 @@ O$.Table = {
           for(var j = 0; j < table._columns.length; j++){
             var column = table._columns[j];
 
-            O$.Destroy._destroyAttributes(column);
+            O$.Destroy._clearAttributes(column);
             O$.Destroy._clear(column._colTags);
             column._scrollingArea = null;
             column._table = null;
@@ -254,8 +254,10 @@ O$.Table = {
             O$.Destroy._clear(table.footer._scrollingAreas);
           }
           O$.Destroy._destroyEvents(table._columnMenuButtonTable);
-          O$.Destroy._clear(table.body);
+          O$.Destroy._clear(table._leftArea);
+          O$.Destroy._clear(table._rightArea);
           O$.Destroy._clear(table.body._scrollingAreas);
+          O$.Destroy._destroyEvents(table.body);
 
           O$.Destroy._clear(table._columns);
           O$.Destroy._clear(table._sortableColumnsIds);
@@ -266,7 +268,7 @@ O$.Table = {
           table._dropTargetMark = undefined;
         }
 
-        O$.removeEventHandler(window, "resize", null);
+        jQuery(table).unbind("mouseover");
         table.onfocus = null;
         table.onclick = null;
         table.onblur = null;
@@ -1879,8 +1881,7 @@ O$.Table = {
       },
 
       _isItemSelected:function (itemIndex) {
-        var result = this._selectedItems.indexOf(itemIndex) != -1;
-        return result;
+        return this._selectedItems.indexOf(itemIndex) != -1;
       },
 
       _toggleItemSelected:function (itemIndex) {
@@ -2180,7 +2181,6 @@ O$.Table = {
       _isSelected:function () {
         return table._isItemSelected(this._index);
       }
-
     });
 
     if (table._selectionEnabled) {
@@ -2190,6 +2190,16 @@ O$.Table = {
           O$.logError("O$.Table._initSelection: row click handler already initialized");
         rowNode._originalClickHandler = rowNode.onclick;
         rowNode.onclick = O$.Table._row_handleSelectionOnClick;
+
+        O$.Destroy.init(rowNode, function(){
+          O$.Destroy._clearProperties(rowNode);
+          O$.Destroy._destroyEvents(rowNode);
+        });
+      });
+
+      O$.Destroy.init(row, function(){
+        O$.Destroy._clearProperties(row);
+        O$.Destroy._destroyEvents(row);
       });
     }
     var cells = row._cells;
@@ -2364,6 +2374,16 @@ O$.Table = {
     if (!cellRow._selectionCheckBoxes)
       cellRow._selectionCheckBoxes = [];
     cellRow._selectionCheckBoxes.push(checkBox);
+
+    O$.Destroy.init(checkBox, function(){
+      O$.Destroy._destroyEvents(checkBox);
+    });
+    O$.Destroy.init(cell, function(){
+      O$.Destroy._destroyEvents(cell);
+    });
+    O$.Destroy.init(row, function(){
+      O$.Destroy._clear(row._cellsByColumns);
+    });
   },
 
   _row_handleSelectionOnClick:function (evt) {
@@ -3191,7 +3211,7 @@ O$.Table = {
 
               table.body._centerScrollingArea._scrollingDiv = undefined;
               table.body._centerScrollingArea = undefined;
-              table.body = undefined;
+              O$.Destroy._destroyEvents(table.body);
               scrollingDiv.scrollLeft = undefined;
               scrollingDiv.scrollTop = undefined;
               scrollingDiv = undefined;
@@ -3203,7 +3223,7 @@ O$.Table = {
           ondragend:function () {
             table._columnResizingInProgress = false;
             //            this._column._resizeDecorator.parentNode.removeChild(this._column._resizeDecorator);
-            updateResizeHandlePositions();
+            //updateResizeHandlePositions();
 
             var totalWidth = 0;
             var colWidths = [];
@@ -3323,20 +3343,28 @@ O$.Table = {
       fixWidths();
 
       function updateResizeHandlePositions() {
+        var _table = document.getElementById(table.id);
         if (table._columns) {
-          for (var i = 0, count = table._columns.length; i < count; i++) {
-            var column = table._columns[i];
+          for (var i = 0, count = _table._columns.length; i < count; i++) {
+            var column = _table._columns[i];
             if (column._resizeHandle && column._resizeHandle.parentNode)
               column._resizeHandle._updatePos();
           }
         }
       }
 
-      O$.addEventHandler(window, "resize", updateResizeHandlePositions);
-      O$.addEventHandler(table, "mouseover", function () {
-        if (!table._columnResizingInProgress)
+      jQuery(window).bind("resize", updateResizeHandlePositions);
+      jQuery(table).bind("mouseover", function(){
+        if (!table._columnResizingInProgress) {
           updateResizeHandlePositions();
+        }
       });
+
+      //O$.addEventHandler(window, "resize", updateResizeHandlePositions);
+      //O$.addEventHandler(table, "mouseover", function () {
+      //  if (!table._columnResizingInProgress)
+      //    updateResizeHandlePositions();
+      //});
       if (table._params.scrolling && (O$.isExplorer6() || O$.isExplorer7())) {
         // mouseover can't be handled in these circumstances for some reason
         var updateIntervalId = setInterval(function () {
@@ -3344,14 +3372,14 @@ O$.Table = {
             clearInterval(updateIntervalId);
             return;
           }
-          if (!table._columnResizingInProgress)
-            updateResizeHandlePositions();
+          //if (!table._columnResizingInProgress)
+          //  updateResizeHandlePositions();
         }, 1000);
       }
       var prevOnscroll = table.onscroll;
       table.onscroll = function (e) {
         if (prevOnscroll) prevOnscroll.call(table, e);
-        setTimeout(updateResizeHandlePositions, 10);
+        //setTimeout(updateResizeHandlePositions, 10);
         if (table._params.scrolling && table._params.scrolling.autoSaveState) {
           O$.invokeFunctionAfterDelay(function () {
             O$.Ajax.requestComponentPortions(table.id, ["scrollingState"], null, function () {
@@ -3361,9 +3389,9 @@ O$.Table = {
         }
       };
 
-      O$.Destroy.init(table, function () {
-        O$.removeEventHandler(window, "resize", updateResizeHandlePositions);
-      });
+      /*O$.Destroy.init(table, function () {
+        O$.removeEventHandler(table, "resize", updateResizeHandlePositions);
+      });*/
 
       table._fixFF3ColResizingIssue = function () { // See JSFC-3720
         if (!(O$.isMozillaFF3() && O$.isQuirksMode()))
@@ -3421,6 +3449,11 @@ O$.Table = {
         this.style.visibility = mainScroller.scrollLeft < mainScroller.scrollWidth - mainScroller.clientWidth ? "visible" : "hidden";
       };
 
+      O$.Destroy.init(leftAutoScrollArea, function(){
+        jQuery(headerScroller).remove();
+        jQuery(leftAutoScrollArea).remove();
+        jQuery(rightAutoScrollArea).remove();
+      });
     }
 
     table._dropTargetMark = function (withVerticalDelimiter) {
