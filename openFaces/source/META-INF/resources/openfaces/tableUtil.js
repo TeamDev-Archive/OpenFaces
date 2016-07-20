@@ -564,6 +564,13 @@ O$.Tables = {
                       throw "initTableSection/scrollingArea: unknown scrollingKind: " + scrollingKind;
                   }
                 }
+                O$.Destroy.init(scrollingDiv, function () {
+                  jQuery(scrollingDiv).remove();
+                  jQuery(scrollingDiv).empty();
+                });
+
+                jQuery(scrollingDivContainer).remove();
+                jQuery(scrollingDivContainer).empty();
                 return area;
               }
 
