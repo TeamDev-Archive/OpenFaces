@@ -568,9 +568,10 @@ O$.Tables = {
                   jQuery(scrollingDiv).remove();
                   jQuery(scrollingDiv).empty();
                 });
-
+                O$.Destroy.init(scrollingDivContainer, function(){
                 jQuery(scrollingDivContainer).remove();
                 jQuery(scrollingDivContainer).empty();
+                });
                 return area;
               }
 
