@@ -402,15 +402,11 @@ window.OpenFaces.Ajax = {
     function destroyMemoryLeaks() {
       if (!(options._of_skipExecute || options._of_ajax_portions)) {
         for (var render in parentOfReloadedComponents) {
-          var start = new Date().getMilliseconds();
           var parentOfReloadedComponent = parentOfReloadedComponents[render];
 
           if(parentOfReloadedComponent) {
             O$.Destroy.apply(parentOfReloadedComponent);
           }
-
-          var stop = new Date().getMilliseconds();
-          console.info("Destroy memory leaks worked: ", stop - start);
         }
       }
     }
@@ -538,7 +534,8 @@ window.OpenFaces.Ajax = {
         temp.innerHTML = text;
         documentFragment.appendChild(temp.firstChild);
 
-        parent.replaceChild(element, documentFragment);
+        parent.removeChild(element);
+        parent.appendChild(documentFragment);
       }
     }
 
