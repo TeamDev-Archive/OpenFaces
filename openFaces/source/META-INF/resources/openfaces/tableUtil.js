@@ -2757,9 +2757,8 @@ O$.Tables = {
     accountForScrollersWidth();
 
     function scrollToPosition() {
-      var scrollPos = scrolling.position;
-      mainScrollingArea._scrollingDiv.scrollLeft = scrollPos[0];
-      mainScrollingArea._scrollingDiv.scrollTop = scrollPos[1];
+      mainScrollingArea._scrollingDiv.scrollLeft = scrolling.position[0];
+      mainScrollingArea._scrollingDiv.scrollTop = scrolling.position[1];
     }
 
 
