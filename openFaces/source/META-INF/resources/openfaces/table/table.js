@@ -2376,13 +2376,13 @@ O$.Table = {
       cellRow._selectionCheckBoxes = [];
     cellRow._selectionCheckBoxes.push(checkBox);
 
-    O$.Destroy.init(checkBox, function(){
+    O$.Destroy.init(table, function(){
       O$.Destroy._destroyEvents(checkBox);
     });
-    O$.Destroy.init(cell, function(){
+    O$.Destroy.init(table, function(){
       O$.Destroy._destroyEvents(cell);
     });
-    O$.Destroy.init(row, function(){
+    O$.Destroy.init(table, function(){
       O$.Destroy._clear(row._cellsByColumns);
     });
   },
@@ -3438,10 +3438,14 @@ O$.Table = {
         this.style.visibility = mainScroller.scrollLeft < mainScroller.scrollWidth - mainScroller.clientWidth ? "visible" : "hidden";
       };
 
-      O$.Destroy.init(leftAutoScrollArea, function(){
+      O$.Destroy.init(table, function(){
         jQuery(headerScroller).remove();
         jQuery(leftAutoScrollArea).remove();
         jQuery(rightAutoScrollArea).remove();
+
+        O$.Destroy._clearProperties(additionalAreaContainer);
+        O$.Destroy._clearProperties(leftAutoScrollArea);
+        O$.Destroy._clearProperties(rightAutoScrollArea);
       });
     }
 
@@ -3938,22 +3942,18 @@ O$.Table = {
     };
     //todo: move it out of here
     table._getHeaderCell = function (columnId) {
-      function retrieveAllCells() {
-        var candidates = table._columns.slice(0);
-        var allCells = [];
-        while (candidates.length > 0) {
-          var current = candidates.pop();
-          allCells.push(current);
-          if (current._parentColumn) {
-            candidates.push(current._parentColumn);
-          }
+      var candidates = table._columns.slice(0);
+      while (candidates.length > 0) {
+        var current = candidates.pop();
+        if (current.columnId == columnId) {
+          return current;
         }
-        return allCells;
+        if (current._parentColumn) {
+          candidates.push(current._parentColumn);
+        }
       }
 
-      return retrieveAllCells().filter(function (column) {
-        return column.columnId == columnId;
-      })[0];
+      return null;
     };
 
     if (table._alignRowHeights) {

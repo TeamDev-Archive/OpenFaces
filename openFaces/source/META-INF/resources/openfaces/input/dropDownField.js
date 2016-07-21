@@ -838,15 +838,25 @@ O$.DropDownField = {
     // Add close on timeout behavior
     if (dropDown._popupTimeout > 0) {
       dropDown._timeOutClose = O$.DropDownField._closeOnTimeout;
-      var closeOnTimeout = O$.getEventHandlerFunction("_timeOutClose", "'" + dropDownId + "'", dropDown);
+      var closeOnTimeout = O$.getEventHandlerFunction("_timeOutClose", dropDownId, dropDown);
       O$.addEventHandler(dropDown, "mouseout", closeOnTimeout);
       O$.addEventHandler(popup, "mouseout", closeOnTimeout);
     }
 
     // Set handler that closes popup list on click out of popup
     dropDown.onLoadHandler = O$.DropDownField._onLoadHandler;
-    var bodyOnLoadHandler = O$.getEventHandlerFunction("onLoadHandler", "'" + dropDownId + "'", dropDown);
+    var bodyOnLoadHandler = O$.getEventHandlerFunction("onLoadHandler", dropDownId, dropDown);
     O$.addEventHandler(window, "load", bodyOnLoadHandler);
+
+    O$.Destroy.init(dropDown, function(){
+      O$.removeEventHandler(dropDown, "mouseout", closeOnTimeout);
+      O$.removeEventHandler(popup, "mouseout", closeOnTimeout);
+      O$.removeEventHandler(window, "load", bodyOnLoadHandler);
+      O$.Destroy._destroyEvents(dropDown);
+      O$.Destroy._destroyEvents(popup);
+
+      closeOnTimeout = undefined;
+    });
 
     function clearSuggestionTimer() {
       if (dropDown._currentSuggestionTimeoutId) {

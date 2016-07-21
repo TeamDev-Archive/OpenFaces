@@ -57,10 +57,16 @@ O$._initCaptionButton = function(componentId,
       btn._prevOnmousedown(e);
     O$.cancelEvent(e);
   };
-  if (supportActionAttribute)
-    O$.addEventHandler(btn, "click", function() {
+  if (supportActionAttribute) {
+    O$.addEventHandler(btn, "click", function () {
       O$.submitWithParam(btn, componentId + "::clicked", "true");
     });
+  }
+  O$.Destroy.init(btn, function(){
+    O$.Destroy._destroyEvents(btn);
+    btn._prevOnmousedown = null;
+    btn._updateImage = null;
+  });
 };
 
 O$._initToggleCaptionButton = function(controlId,
