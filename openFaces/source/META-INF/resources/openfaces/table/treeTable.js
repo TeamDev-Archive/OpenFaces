@@ -142,7 +142,7 @@ O$.TreeTable = {
             O$.assert(row, "processRowVisibility: rowIndex == " + firstRowIndex);
             row._level = level;
             row._setVisible(thisLevelVisible);
-            if (!row._table._styleRecalculationOnNodeExpansionNeeded) {
+            if (!O$(row._tableId)._styleRecalculationOnNodeExpansionNeeded) {
               if (thisLevelVisible && O$.isExplorer()) { // workaround for IE issue: when custom row style is applied to
                             // parent rows and a node is expanded, spacing between cells becomes white after node expansion
                 row._updateStyle();
@@ -335,7 +335,7 @@ O$.TreeTable = {
     Introduces row expansion API
    */
   _initRow: function(row) {
-    var table = row._table;
+    var table = O$(row._tableId);
 
     var expandedToggles = [];
     var collapsedToggles = [];
@@ -347,7 +347,7 @@ O$.TreeTable = {
     var expanded = expandedToggles && expandedToggles.length > 0;
     O$.assert(expandedToggles.length == 0 || collapsedToggles.length == 0,
             "A row can't contain both expanded and collapsed nodes. row._index = " + row._index +
-            "; table id = " + row._table.id);
+            "; table id = " + row._tableId);
     var toggles = expanded ? expandedToggles : collapsedToggles;
 
     var hasChildren = toggles && toggles.length > 0;

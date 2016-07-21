@@ -64,7 +64,7 @@ O$.Tables = {
     var borderNames = ["border-left", "border-right", "border-top", "border-bottom"];
     var borders = O$.Tables._evaluateStyleClassProperties_cached(
             row.className, borderNames,
-            row._row ? row._row._table : row._table);
+            row._row ? O$(row._row._tableId): O$(row._table));
     if (borderNames.some(function (n) {
       return borders[n];
     })) {
@@ -460,7 +460,7 @@ O$.Tables = {
               this._rows = this._tag ? O$.getChildNodesWithNames(this._tag, ["tr"]) : [];
               if (this._fakeRow) this._rows = this._rows.slice(1);
               this._rows.forEach(function (row) {
-                row._table = table;
+                row._tableId = table.id;
                 row._index = i;
                 row._cells = row.cells;
               });
@@ -488,7 +488,7 @@ O$.Tables = {
                       ) : null;
               if (commonRow) {
                 commonRow._cells = commonRow.cells;
-                commonRow._table = table;
+                commonRow._tableId = table.id;
               }
               var containerRowIndex = commonRowAbove != undefined
                       ? (commonRowAbove ? 1 : sectionParams.rowCount - 2)
@@ -588,7 +588,7 @@ O$.Tables = {
                   _leftRowNode:this._leftScrollingArea ? this._leftScrollingArea._rows[areaRowIndex] : null,
                   _rowNode:this._centerScrollingArea._rows[areaRowIndex],
                   _rightRowNode:this._rightScrollingArea ? this._rightScrollingArea._rows[areaRowIndex] : null,
-                  _table:table,
+                  _tableId:table.id,
                   _index:rowIndex
                 };
                 if (sectionParams.rowKeys)
@@ -767,7 +767,7 @@ O$.Tables = {
   },
 
   _setRowStyle:function (row, styleMappings) {
-    var table = row._table;
+    var table = O$(row._tableId);
     if (table._params.forceUsingCellStyles) {
       var cells = row._cells;
       for (var i = 0, count = cells.length; i < count; i++) {
@@ -800,7 +800,7 @@ O$.Tables = {
 
   _initBodyRow:function (row, table, rowIndex, visibleRowsBefore) {
     O$.extend(row, {
-      _table:table,
+      _tableId:table.id,
       _index:rowIndex,
       _selected:false,
 
@@ -935,7 +935,7 @@ O$.Tables = {
     });
 
     row._updateStyle = function () {
-      var rowTable = this._table;
+      var rowTable = O$(this._tableId);
       var addedRawClassName = O$.combineClassNames([
         this._selected ? rowTable._rawSelectionClass : null
       ]);
@@ -1105,7 +1105,7 @@ O$.Tables = {
     var newWrapperClass = O$.combineClassNames([
       cell.className,
       cell._row.className,
-      cell._row._table._params.additionalCellWrapperStyle]);
+      O$(cell._row._tableId)._params.additionalCellWrapperStyle]);
     if (cellWrapper.className != newWrapperClass)
       cellWrapper.className = newWrapperClass;
     cellWrapper.style.tableLayout = "fixed";
@@ -1985,7 +1985,7 @@ O$.Tables = {
 
     cell._setAsCursor = function (forceUpdate) {
       var row = cell._row;
-      var table = row._table;
+      var table = O$(row._tableId);
       if (table._cursor != null || forceUpdate) {
         function addCursorForCell(cell) {
           //if not already a cursor
@@ -2037,7 +2037,7 @@ O$.Tables = {
     cell._updateStyle = function () {
       var column = cell._column;
       var row = cell._row;
-      var table = row._table;
+      var table = O$(row._tableId);;
       var rowIndex = row._index;
       var colIndex = column._index;
 
@@ -2112,7 +2112,7 @@ O$.Tables = {
   _assignNoDataCellStyle:function (cell) {
     var column = cell._column;
     var row = cell._row;
-    var table = row._table;
+    var table = O$(row._tableId);
     if (!(table._params.forceUsingCellStyles || column._useCellStyles)) {
       // first column style shouldn't be applied to the no-data-row
       // no-data row should derive unspecified properties from body section instead

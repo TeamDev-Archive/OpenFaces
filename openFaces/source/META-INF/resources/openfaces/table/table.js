@@ -2177,7 +2177,7 @@ O$.Table = {
   },
 
   _initRowForSelection:function (row) {
-    var table = row._table;
+    var table = O$(row._tableId);
     O$.extend(row, {
       _isSelected:function () {
         return table._isItemSelected(this._index);
@@ -2262,7 +2262,7 @@ O$.Table = {
   },
 
   _initSelectRowCheckbox:function (checkBox, row) {
-    var table = row._table;
+    var table = O$(row._tableId);
     checkBox.setSelected(false);
     checkBox.setDisabled(!table._selectionEnabled);
     O$.extend(checkBox, {
@@ -2296,14 +2296,14 @@ O$.Table = {
     if (!checkBox)
       return;
     var row = cell._row;
-    var table = row._table;
+    var table = O$(row._tableId);
     O$.extend(cell, {
       _selectionCheckBox:checkBox,
       onclick:function (evt) {
         cell._handlingClick = true;
         try {
           var cellRow = this._row;
-          var cellTable = cellRow._table;
+          var cellTable = O$(cellRow._tableId);
           if (!cellTable._selectionEnabled)
             return;
           if (cellTable._multipleSelectionAllowed) {
@@ -2347,7 +2347,7 @@ O$.Table = {
         if (!checkBoxCell._handlingClick)
           return;
         var checkBoxRow = checkBoxCell._row;
-        var checkBoxTable = checkBoxRow._table;
+        var checkBoxTable = O$(checkBoxRow._tableId);
         if (!checkBoxTable._selectionEnabled)
           return;
         if (checkBoxTable._selectableItems != "rows")
@@ -2393,7 +2393,7 @@ O$.Table = {
 
     var e = O$.getEvent(evt);
     var row = this._row ? this._row : this;
-    var table = row._table;
+    var table = O$(row._tableId);
     if (!table._selectionMouseSupport)
       return;
     if (table._selectableItems == "rows") {
@@ -2440,7 +2440,7 @@ O$.Table = {
     var e = O$.getEvent(evt);
     var cell = (e.target) ? e.target : e.srcElement;
     cell = (cell._row) ? cell : cell.parentNode;
-    var table = cell._row._table;
+    var table = O$(cell._row._tableId);
     if (!table._selectionMouseSupport)
       return;
     if (table._selectableItems == "cells") {
