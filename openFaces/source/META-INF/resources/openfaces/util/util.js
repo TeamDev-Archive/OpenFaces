@@ -1548,14 +1548,16 @@ if (!window.O$) {
   };
 
   // ----------------- EVENT UTILITIES ---------------------------------------------------
+  //TODO:Max.Yurin:16/7/21: Consider to remove mainObj from the function, because it leads to memory leak
+  O$.getEventHandlerFunction = function (handlerName, handlerArgs, mainObj) {
+    var args = handlerArgs ? (Array.isArray(handlerArgs) ? handlerArgs : [handlerArgs]) : [];
+    var handlerFunction = function() {
+      return mainObj[handlerName].apply(mainObj, (args || arguments));
+    }
 
-  O$.getEventHandlerFunction = function (handlerName, handlerArgs, mainObj) { // todo: rework usages of this function with explicit closure creation
-    var argString = handlerArgs ? ("[" + handlerArgs + "]") : "arguments";
-    var handlerFunction;
-    eval("handlerFunction = function() { return arguments.callee.prototype._ownObj." + handlerName + ".apply(arguments.callee.prototype._ownObj," + argString + "); }");
-    handlerFunction.prototype._ownObj = mainObj;
     return handlerFunction;
   };
+
 
   O$.addEvent = function (componentClientId, eventName, functionScript) {
     var element = O$.byIdOrName(componentClientId);
