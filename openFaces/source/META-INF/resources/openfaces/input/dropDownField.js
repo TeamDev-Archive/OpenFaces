@@ -1031,8 +1031,8 @@ O$.DropDownField = {
       setTimeout(dropDown._initListStyles, 10);
     };
 
-    O$.Destroy.init(popupTableStructureAndStyleParams, function(){
-      popupTableStructureAndStyleParams = undefined;
+    O$.Destroy.init(dropDown, function(){
+      popupTableStructureAndStyleParams = null;
     })
   },
 

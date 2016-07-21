@@ -405,7 +405,7 @@ window.OpenFaces.Ajax = {
           var parentOfReloadedComponent = parentOfReloadedComponents[render];
 
           if(parentOfReloadedComponent) {
-            O$.Destroy.apply(parentOfReloadedComponent);
+            O$.Destroy.apply(parentOfReloadedComponent, render);
           }
         }
       }
@@ -502,9 +502,9 @@ window.OpenFaces.Ajax = {
               var change = childNode.childNodes[j];
               if (change.nodeName == "extension") {
                 processExtension(change);
-              } else if(change.nodeName == "update") {
+              } else if(change.nodeName == "update" && change.id != "javax.faces.ViewState") {
                 var element = document.getElementById(change.id);
-                destroyMemoryLeaks();
+                destroyMemoryLeaks(element);
                 updateNode(element, change.textContent);
               }
             }
@@ -534,8 +534,7 @@ window.OpenFaces.Ajax = {
         temp.innerHTML = text;
         documentFragment.appendChild(temp.firstChild);
 
-        parent.removeChild(element);
-        parent.appendChild(documentFragment);
+        jQuery(element).replaceWith(jQuery(documentFragment));
       }
     }
 

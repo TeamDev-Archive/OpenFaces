@@ -137,7 +137,9 @@ if (!window.O$) {
         }
       }
     }
-    O$.Destroy.init(component);
+    O$.Destroy.init(component, function(){
+      O$.Destroy._destroyEvents(component);
+    });
     return component;
   };
 
@@ -236,232 +238,6 @@ if (!window.O$) {
       }
     })
   });
-
-  O$.Destroy = {
-    detached: [],
-    counter: 0,
-
-    init: function(component, func){
-      if(!component) {
-        return;
-      }
-
-      this.detached = ( typeof this.detached != 'undefined' && this.detached instanceof Array )
-              ? this.detached : [];
-      component.__handlers = ( typeof component.__handlers != 'undefined' && component.__handlers instanceof Array )
-              ? component.__handlers : [];
-
-      if(func){
-        component.__handlers.push(func);
-      }
-
-      if(this.detached.indexOf(component) < 0) {
-        this.detached.push(component);
-      }
-    },
-
-    apply: function (component) {
-      var componentIndex = this.detached.indexOf(component);
-
-      if(componentIndex != -1) {
-        O$.Destroy._destroyNode(component);
-        O$.Destroy._removeFromList(node, componentIndex);
-      } else {
-        for (var i = 0; i < component.childNodes.length; i++) {
-          var node = component.childNodes[i];
-
-          componentIndex = this.detached.indexOf(node);
-          if (componentIndex != -1) {
-            O$.Destroy._destroyNode(node);
-            O$.Destroy._removeFromList(node, componentIndex);
-            return;
-          }
-        }
-      }
-
-      for (var i = 0; i < this.detached.length; i++) {
-        var c = this.detached[i];
-        if (Array.isArray(c.__handlers) && this.isDefined(c.__handlers)) {
-          for(var t in c.__handlers) {
-            var handler = c.__handlers[t];
-            if(this.isDefined(handler)) {
-              handler();
-              handler = null;
-            }
-          }
-        }
-        if(c.parentNode) {
-          jQuery(c).remove();
-        }
-      }
-
-      console.info("Detached component", component);
-      O$.Destroy.detached = [];
-      O$.Destroy._destroyObject(O$.ColumnMenu);
-
-      if(this.isDefined(O$._activeElement)) {
-        O$.Destroy._destroyNode(O$._activeElement);
-      }
-      O$.Destroy._destroyEvents(O$._elementUnderMouse);
-      O$._elementUnderMouse = undefined;
-
-      jQuery(window).unbind("resize");
-
-      console.info("Destroyed components: ", O$.Destroy.counter);
-    },
-
-    isDefined: function (obj) {
-      return obj && typeof obj != 'undefined' && obj != null;
-    },
-
-    _findNode: function(component){
-      for(var i = 0; i < this.detached.length; i++){
-        var node = this.detached[i];
-        if(node == component) {
-          return node;
-        }
-      }
-
-      return null;
-    },
-
-    _removeFromList: function(node, index) {
-      if(!index){
-        index = this.detached.indexOf(node);
-        index = index == -1 && node.parentNode ? this.detached.indexOf(node.parentNode) : index;
-      }
-
-      if(index != -1) {
-        this.detached.splice(index, 1, node);
-      }
-    },
-
-    _destroyObject: function(obj){
-      if(!this.isDefined(obj)) return;
-
-      O$.Destroy._clearAttributes(obj);
-      O$.Destroy._clearProperties(obj);
-      O$.Destroy._clearUnloadableCollections(obj);
-
-      O$.Destroy.counter ++;
-    },
-
-    _destroyNode: function(foundComponent){
-      if(!this.isDefined(foundComponent) || !foundComponent.nodeType) return;
-
-      this._destroyChildren(foundComponent);
-
-      O$.Destroy._destroyEvents(foundComponent);
-      O$.Destroy._clearCachedStyles(foundComponent);
-      O$.Destroy._clearTable(foundComponent);
-      O$.Destroy._clearAttributes(foundComponent);
-      O$.Destroy._clearProperties(foundComponent);
-      O$.Destroy._clearUnloadableCollections(foundComponent);
-
-      O$.Destroy.counter ++;
-      jQuery(foundComponent).empty();
-      jQuery(foundComponent).remove();
-
-      //foundComponent = undefined;
-    },
-
-    _destroyChildren: function (component) {
-      if(!this.isDefined(component)) return;
-
-      while (component.hasChildNodes()) {
-        clear(component.firstChild);
-      }
-
-      delete O$.Table.table;
-
-      function clear(node) {
-        while (node.hasChildNodes()) {
-          clear(node.firstChild);
-        }
-
-        O$.Destroy._clearCachedStyles(node);
-        O$.Destroy._clearTable(node);
-        O$.Destroy._clearAttributes(node);
-        O$.Destroy._clearProperties(node);
-        O$.Destroy._clearUnloadableCollections(node);
-        O$.Destroy._removeFromList(node);
-        jQuery(node).remove();
-
-        jQuery(node).unbind();
-        //console.log("Clear node", node);
-        //node = undefined;
-
-        O$.Destroy.counter ++;
-      }
-    },
-
-    _clearTable:function(component) {
-      if(this.isDefined(component) && component._cleanUp) { //DataTable only
-        component._cleanUp();
-        component._cleanAll();
-      }
-    },
-
-    _destroyEvents: function(node){
-      if (this.isDefined(node) && node.nodeType == 1 && node.parentNode) {
-        var docFrag = document.createDocumentFragment();
-        var newNode = node.cloneNode(true);
-        docFrag.appendChild(newNode);
-        node.parentNode.replaceChild(docFrag, node);
-      }
-    },
-
-    _clearProperties: function(component){
-      if (this.isDefined(component)) {
-        var ownPropertyNames = Object.getOwnPropertyNames(component);
-        var length = ownPropertyNames.length;
-
-        for (var i = 0; i < length; i++) {
-          var name = ownPropertyNames[i];
-          this._clear(component[name]);
-        }
-      }
-    },
-
-    _clearAttributes: function(component){
-      var attributes = this.isDefined(component) && component.attributes;
-      if (attributes) {
-        for (var j = attributes.length - 1; j >= 0; j -= 1) {
-          var name = attributes[j].name;
-          O$.Destroy._clear(component[name]);
-        }
-      }
-    },
-
-    _clearUnloadableCollections: function(component) {
-      if(!this.isDefined(component)) return;
-
-      O$.Destroy._clear(component._attachedEvents);
-      O$.Destroy._clear(component._hoverListeners);
-      O$.Destroy._clear(component._of_mouseOutListeners);
-      O$.Destroy._clear(component._of_mouseOverListeners);
-      O$.Destroy._clear(component._styleMappings);
-      O$.Destroy._clear(component._image);
-    },
-
-    _clearCachedStyles: function(component){
-      if(!this.isDefined(component)) return;
-
-      O$.Destroy._clear(O$._cachedDynamicCssRules);
-      O$.Destroy._clear(component.cssRules);
-      O$.Destroy._clear(component.className)
-    },
-
-    _clear: function(obj) {
-      if(Array.isArray(obj)) {
-        obj.splice(0, obj.length);
-      } else if (typeof obj == 'string') {
-        obj = '';
-      } else {
-        obj = undefined;
-      }
-    }
-  };
 
   /* GraphicLine class -- displays a horizontal or vertical line on the specified element. */
   O$.GraphicLine = O$.createClass({
@@ -1774,12 +1550,11 @@ if (!window.O$) {
   // ----------------- EVENT UTILITIES ---------------------------------------------------
 
   O$.getEventHandlerFunction = function (handlerName, handlerArgs, mainObj) { // todo: rework usages of this function with explicit closure creation
-    //var argString = handlerArgs ? ("[" + handlerArgs + "]") : "arguments";
-    //var handlerFunction = arguments.callee.prototype._ownObj[handlerName].apply(arguments.callee.prototype._ownObj[argString]);
-    //eval("handlerFunction = function() { return arguments.callee.prototype._ownObj." + handlerName + ".apply(arguments.callee.prototype._ownObj," + argString + "); }");
-    //handlerFunction.prototype._ownObj = mainObj;
-    var ownPropertyNames = Object.getOwnPropertyNames(mainObj);
-    return ownPropertyNames[handlerName];
+    var argString = handlerArgs ? ("[" + handlerArgs + "]") : "arguments";
+    var handlerFunction;
+    eval("handlerFunction = function() { return arguments.callee.prototype._ownObj." + handlerName + ".apply(arguments.callee.prototype._ownObj," + argString + "); }");
+    handlerFunction.prototype._ownObj = mainObj;
+    return handlerFunction;
   };
 
   O$.addEvent = function (componentClientId, eventName, functionScript) {
@@ -2980,10 +2755,6 @@ if (!window.O$) {
 
     O$._draggedElement = draggable;
 
-    O$.Destroy.init(draggable, function(){
-      draggable = null;
-      O$._draggedElement = null;
-    });
     O$.cancelEvent(evt);
     if (document._fireDocumentClicked)
       document._fireDocumentClicked(evt);
@@ -6126,6 +5897,237 @@ if (!window.O$) {
     return O$._popupVisionStateStorage;
   };
 
+  O$.Destroy = {
+    detached: [],
+    counter: 0,
+
+    init: function(component, func){
+      if(!component) {
+        return;
+      }
+
+      this.detached = ( typeof this.detached != 'undefined' && this.detached instanceof Array )
+              ? this.detached : [];
+      component._unloadHandlers = ( typeof component._unloadHandlers != 'undefined' && component._unloadHandlers instanceof Array )
+              ? component._unloadHandlers : [];
+
+      if(func){
+        component._unloadHandlers.push(func);
+      }
+
+      if(this.detached.indexOf(component) < 0) {
+        this.detached.push(component);
+      }
+    }, apply: function (parent, renderId) {
+      var node = this._findNode(parent, renderId);
+      var componentIndex = this.detached.indexOf(node);
+
+      if(node) {
+        this._destroyNode(node);
+        this._removeFromList(node, componentIndex);
+      } else {
+        for (var i = 0; i < parent.childNodes.length; i++) {
+          componentIndex = this.detached.indexOf(node);
+          if (componentIndex != -1) {
+            this._destroyNode(node);
+            this._removeFromList(node, componentIndex);
+            return;
+          }
+        }
+      }
+
+      this._destroyObject(O$.ColumnMenu);
+      if(this.isDefined(O$._activeElement)) {
+        this._destroyNode(O$._activeElement);
+      }
+      if(window._attachedEvents) {
+        this._clear(window._attachedEvents);
+      }
+
+      this._clear(this.detached);
+      this._destroyEvents(O$._elementUnderMouse);
+      O$._elementUnderMouse = undefined;
+
+      jQuery(window).unbind("resize");
+    },
+
+    isDefined: function (obj) {
+      return obj && typeof obj != 'undefined' && obj != null;
+    },
+
+    _findNode: function(parent, render){
+      for(var n = 0; n < parent.childNodes.length; n ++){
+        var childNode = parent.childNodes[n];
+        if(childNode.id == render) {
+          node = childNode;
+          return node;
+        }
+      }
+
+      return null;
+    },
+
+    _removeFromList: function(node, index) {
+      if(!index){
+        index = this.detached.indexOf(node);
+        index = index == -1 && node.parentNode ? this.detached.indexOf(node.parentNode) : index;
+      }
+
+      if(index != -1) {
+        this.detached.splice(index, 1, node);
+      }
+    },
+
+    _destroyObject: function(obj){
+      if(!this.isDefined(obj)) return;
+
+      O$.Destroy._clearAttributes(obj);
+      O$.Destroy._clearProperties(obj);
+      O$.Destroy._clearUnloadableCollections(obj);
+
+      O$.Destroy.counter ++;
+    },
+
+    _destroyNode: function(foundComponent){
+      if(!this.isDefined(foundComponent) || !foundComponent.nodeType) return;
+
+      this._destroyChildren(foundComponent);
+
+      O$.Destroy._destroyEvents(foundComponent);
+      O$.Destroy._clearCachedStyles(foundComponent);
+      O$.Destroy._clearTable(foundComponent);
+      O$.Destroy._clearAttributes(foundComponent);
+      O$.Destroy._clearProperties(foundComponent);
+      O$.Destroy._clearUnloadableCollections(foundComponent);
+
+      O$.Destroy.counter ++;
+      jQuery(foundComponent).empty();
+      jQuery(foundComponent).remove();
+
+      //foundComponent = undefined;
+    },
+
+    _destroyChildren: function (component) {
+      if(!this.isDefined(component)) return;
+
+      while (component.hasChildNodes()) {
+        clear(component.firstChild);
+      }
+
+      function clear(node) {
+        while (node.hasChildNodes()) {
+          if (node.firstChild) {
+            clear(node.firstChild);
+          }
+        }
+
+        O$.Destroy._clearDetachedNodes(node);
+        O$.Destroy._clearCachedStyles(node);
+        O$.Destroy._clearTable(node);
+        O$.Destroy._clearAttributes(node);
+        O$.Destroy._clearProperties(node);
+        O$.Destroy._clearUnloadableCollections(node);
+        O$.Destroy._removeFromList(node);
+        jQuery(node).remove();
+
+        jQuery(node).unbind();
+        //console.log("Clear node", node);
+        node = null;
+
+        O$.Destroy.counter ++;
+      }
+    },
+
+    _clearDetachedNodes: function(node){
+      var nodeIndex = this.detached.indexOf(node);
+
+      if(nodeIndex >= 0) {
+        var detached = this.detached[nodeIndex];
+
+        if (this.isDefined(detached)) {
+          var unloadHandlers = detached._unloadHandlers;
+          for (var t in unloadHandlers) {
+            var handler = unloadHandlers[t];
+            if (this.isDefined(handler)) {
+              handler();
+              handler = null;
+            }
+          }
+
+          this._destroyEvents(node);
+          this._clear(detached._table);
+          this._clear(detached._unloadHandlers);
+        }
+      }
+    },
+
+    _clearTable:function(component) {
+      if(this.isDefined(component) && component._cleanUp) { //DataTable only
+        component._cleanUp();
+        component._cleanAll();
+      }
+    },
+
+    _destroyEvents: function(node){
+      if (this.isDefined(node) && node.nodeType == 1 && node.parentNode) {
+        var docFrag = document.createDocumentFragment();
+        var newNode = node.cloneNode(true);
+        docFrag.appendChild(newNode);
+        node.parentNode.replaceChild(docFrag, node);
+      }
+    },
+
+    _clearProperties: function(component){
+      if (this.isDefined(component)) {
+        var ownPropertyNames = Object.getOwnPropertyNames(component);
+        var length = ownPropertyNames.length;
+
+        for (var i = 0; i < length; i++) {
+          var name = ownPropertyNames[i];
+          this._clear(component[name]);
+        }
+      }
+    },
+
+    _clearAttributes: function(component){
+      var attributes = this.isDefined(component) && component.attributes;
+      if (attributes) {
+        for (var j = attributes.length - 1; j >= 0; j -= 1) {
+          var name = attributes[j].name;
+          O$.Destroy._clear(component[name]);
+        }
+      }
+    },
+
+    _clearUnloadableCollections: function(component) {
+      if(!this.isDefined(component)) return;
+
+      O$.Destroy._clear(component._attachedEvents);
+      O$.Destroy._clear(component._hoverListeners);
+      O$.Destroy._clear(component._of_mouseOutListeners);
+      O$.Destroy._clear(component._of_mouseOverListeners);
+      O$.Destroy._clear(component._styleMappings);
+      O$.Destroy._clear(component._image);
+    },
+
+    _clearCachedStyles: function(component){
+      if(!this.isDefined(component)) return;
+
+      O$.Destroy._clear(O$._cachedDynamicCssRules);
+      O$.Destroy._clear(component.cssRules);
+      O$.Destroy._clear(component.className)
+    },
+
+    _clear: function(obj) {
+      if(Array.isArray(obj)) {
+        obj.splice(0, obj.length);
+      } else if (typeof obj == 'string') {
+        obj = '';
+      } else {
+        obj = null;
+      }
+    }
+  };
 }
 
 

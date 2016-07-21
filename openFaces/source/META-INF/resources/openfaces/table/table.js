@@ -269,6 +269,7 @@ O$.Table = {
         }
 
         jQuery(table).unbind("mouseover");
+        O$.removeEventHandler(window, "resize", null);
         table.onfocus = null;
         table.onclick = null;
         table.onblur = null;
@@ -2916,6 +2917,7 @@ O$.Table = {
         }
       });
 
+
       O$.setupHoverStateFunction(colHeader, function (mouseInside) {
         O$.setStyleMappings(colHeader, {
           sortableHeaderRolloverClass:mouseInside ? sortableHeaderRolloverClass : null});
@@ -3223,7 +3225,7 @@ O$.Table = {
           ondragend:function () {
             table._columnResizingInProgress = false;
             //            this._column._resizeDecorator.parentNode.removeChild(this._column._resizeDecorator);
-            //updateResizeHandlePositions();
+            updateResizeHandlePositions();
 
             var totalWidth = 0;
             var colWidths = [];
@@ -3302,12 +3304,11 @@ O$.Table = {
           }
         });
 
-        O$.Destroy.init(column._resizeHandle, function(){
+        O$.Destroy.init(column, function(){
           jQuery(column._resizeHandle).remove();
+          O$.Destroy._clearProperties(column._resizeHandle);
           column._resizeHandle = undefined;
-        });
 
-        O$.Destroy.init(resizeHandle, function(){
           jQuery(resizeHandle).remove();
           resizeHandle = undefined;
         })
@@ -3343,28 +3344,20 @@ O$.Table = {
       fixWidths();
 
       function updateResizeHandlePositions() {
-        var _table = document.getElementById(table.id);
         if (table._columns) {
-          for (var i = 0, count = _table._columns.length; i < count; i++) {
-            var column = _table._columns[i];
+          for (var i = 0, count = table._columns.length; i < count; i++) {
+            var column = table._columns[i];
             if (column._resizeHandle && column._resizeHandle.parentNode)
               column._resizeHandle._updatePos();
           }
         }
       }
 
-      jQuery(window).bind("resize", updateResizeHandlePositions);
-      jQuery(table).bind("mouseover", function(){
-        if (!table._columnResizingInProgress) {
+      O$.addEventHandler(window, "resize", updateResizeHandlePositions);
+      O$.addEventHandler(table, "mouseover", function () {
+        if (!table._columnResizingInProgress)
           updateResizeHandlePositions();
-        }
       });
-
-      //O$.addEventHandler(window, "resize", updateResizeHandlePositions);
-      //O$.addEventHandler(table, "mouseover", function () {
-      //  if (!table._columnResizingInProgress)
-      //    updateResizeHandlePositions();
-      //});
       if (table._params.scrolling && (O$.isExplorer6() || O$.isExplorer7())) {
         // mouseover can't be handled in these circumstances for some reason
         var updateIntervalId = setInterval(function () {
@@ -3372,14 +3365,14 @@ O$.Table = {
             clearInterval(updateIntervalId);
             return;
           }
-          //if (!table._columnResizingInProgress)
-          //  updateResizeHandlePositions();
+          if (!table._columnResizingInProgress)
+            updateResizeHandlePositions();
         }, 1000);
       }
       var prevOnscroll = table.onscroll;
       table.onscroll = function (e) {
         if (prevOnscroll) prevOnscroll.call(table, e);
-        //setTimeout(updateResizeHandlePositions, 10);
+        setTimeout(updateResizeHandlePositions, 10);
         if (table._params.scrolling && table._params.scrolling.autoSaveState) {
           O$.invokeFunctionAfterDelay(function () {
             O$.Ajax.requestComponentPortions(table.id, ["scrollingState"], null, function () {
@@ -3388,10 +3381,6 @@ O$.Table = {
           }, table._params.scrolling.autoSaveStateDelay, table.id + "::scrollingStateSaving")
         }
       };
-
-      /*O$.Destroy.init(table, function () {
-        O$.removeEventHandler(table, "resize", updateResizeHandlePositions);
-      });*/
 
       table._fixFF3ColResizingIssue = function () { // See JSFC-3720
         if (!(O$.isMozillaFF3() && O$.isQuirksMode()))
@@ -3869,7 +3858,6 @@ O$.Table = {
               } else {
                 dropTargetMark.hide();
               }
-
               O$.Destroy.init(dropTargetMark, function(){
                 jQuery(dropTargetMark).remove();
                 dropTargetMark = undefined;
@@ -4802,8 +4790,7 @@ O$.ColumnMenu = {
           table._hideMenuIdx = -1;
         }
       }
-
-      O$.Destroy.init(table._columnMenuButtonTable, function(){
+      O$.Destroy.init(table, function(){
         if (table) {
           O$.Destroy._destroyEvents(table._columnMenuButtonTable)
         }

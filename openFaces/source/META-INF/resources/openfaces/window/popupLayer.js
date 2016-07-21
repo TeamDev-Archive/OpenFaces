@@ -406,10 +406,6 @@ O$.PopupLayer = {
         if (popup.hideTimer) {
           clearTimeout(popup.hideTimer);
         }
-        //TODO: PrimeFaces select...Menu components needed only!!!
-        // Should be remove after creating <o:selectCheckboxMenu component
-        O$.Popup.__hideAllOpenedPanels();
-
         popup._visibleField.value = "false";
         O$._getPopupVisionStateStorage()[popup.id] = false;
         if (popup._blockingLayer) {

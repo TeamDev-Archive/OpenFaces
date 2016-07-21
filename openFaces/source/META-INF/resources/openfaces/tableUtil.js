@@ -524,18 +524,6 @@ O$.Tables = {
                       rowContainer.insertBefore(rowContainer._fakeRow, rowContainer.firstChild);
                     }
                   }
-
-                  O$.Destroy.init(scrollingDivContainer, function(){
-                    jQuery(scrollingDivContainer).remove();
-                    jQuery(scrollingDivContainer).empty();
-                    scrollingDivContainer = null;
-                  });
-
-                  O$.Destroy.init(scrollingDiv, function(){
-                    jQuery(scrollingDiv).remove();
-                    jQuery(scrollingDiv).empty();
-                    scrollingDiv = null;
-                  });
                 }
 
                 var area = {
@@ -564,13 +552,11 @@ O$.Tables = {
                       throw "initTableSection/scrollingArea: unknown scrollingKind: " + scrollingKind;
                   }
                 }
-                O$.Destroy.init(scrollingDiv, function () {
+                O$.Destroy.init(table, function () {
                   jQuery(scrollingDiv).remove();
                   jQuery(scrollingDiv).empty();
-                });
-                O$.Destroy.init(scrollingDivContainer, function(){
-                jQuery(scrollingDivContainer).remove();
-                jQuery(scrollingDivContainer).empty();
+                  jQuery(scrollingDivContainer).remove();
+                  jQuery(scrollingDivContainer).empty();
                 });
                 return area;
               }
@@ -2807,14 +2793,11 @@ O$.Tables = {
 
     O$.Destroy.init(table, function () {
       resizeEventListener.release();
-      resizeEventListener = undefined;
     });
 
-    O$.Destroy.init(table.body, function () {
-      O$.Destroy._clearProperties(table.body);
+    O$.Destroy.init(table, function () {
       jQuery(table.body).remove();
       jQuery(table.body).empty();
-      table.body = null;
     });
 
     O$.Destroy.init(mainScrollingArea, function () {
