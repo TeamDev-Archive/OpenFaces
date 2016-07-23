@@ -1674,10 +1674,9 @@ O$.Tables = {
     }
 
     column._getCompoundClassName = function () {
-      var className = column.className;
       if (column._parentColumn)
-        className = O$.combineClassNames([className, column._parentColumn._getCompoundClassName()]);
-      return className;
+        return O$.combineClassNames([column.className, column._parentColumn._getCompoundClassName()]);
+      return column.className;
     };
 
     if (!column.body)
@@ -2645,7 +2644,7 @@ O$.Tables = {
       }, 250);
     }
 
-    synchronizeAreaScrolling();
+    //synchronizeAreaScrolling();
 
     table._alignRowHeights = function () {
       if (!table._leftArea && !table._rightArea)  return;
@@ -2799,14 +2798,9 @@ O$.Tables = {
       jQuery(table.body).empty();
     });
 
-    O$.Destroy.init(mainScrollingArea, function () {
+    O$.Destroy.init(table, function () {
       O$.Destroy._destroyEvents(mainScrollingArea);
-      O$.Destroy._destroyEvents(mainScrollingArea._scrollingDiv);
-      O$.Destroy._clear(mainScrollingArea._colTags);
-      jQuery(mainScrollingArea._scrollingDiv).remove();
-      jQuery(mainScrollingArea._scrollingDiv).empty();
-      jQuery(mainScrollingArea).remove();
-      jQuery(mainScrollingArea).empty();
+      O$.Destroy._clearProperties(mainScrollingArea);
     });
 
     if (delayedInitFunctions.length)

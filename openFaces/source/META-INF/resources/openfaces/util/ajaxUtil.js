@@ -504,8 +504,10 @@ window.OpenFaces.Ajax = {
                 processExtension(change);
               } else if(change.nodeName == "update" && change.id != "javax.faces.ViewState") {
                 var element = document.getElementById(change.id);
+                var parent = element && element.parentNode;
+
                 destroyMemoryLeaks(element);
-                updateNode(element, change.textContent);
+                updateNode(element, parent, change.textContent);
               }
             }
         }
@@ -525,8 +527,7 @@ window.OpenFaces.Ajax = {
       }
     }
 
-    function updateNode(element, text){
-      var parent = element && element.parentNode;
+    function updateNode(element, parent, text){
       if(parent && text) {
         var documentFragment = document.createDocumentFragment();
 

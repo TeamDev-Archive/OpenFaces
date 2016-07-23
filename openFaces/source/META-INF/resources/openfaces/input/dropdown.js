@@ -382,10 +382,9 @@ O$.DropDown = {
       O$.addMouseOutListener(popup, dropDown._dropDownMouseOut);
     }
     function resizeHandlerOnWindow() {
-      var dropDownPopup = dropDown._popup;
       // drop-down can be removed from the page using Ajax, so we need to check its presence
-      if (dropDownPopup && dropDownPopup.isVisible()) {
-        O$.DropDown._alignPopup(dropDown);
+      if (dropDown._popup && dropDown._popup.isVisible()) {
+        O$.DropDown._alignPopup(dropDown, dropDown._popup);
       }
     }
 
@@ -545,14 +544,13 @@ O$.DropDown = {
     }
 
     if (repaintDropDown && O$.isMozillaFF())
-      O$.DropDown._alignPopup(dropDown);
-    O$.DropDown._alignPopup(dropDown, calendar);
+      O$.DropDown._alignPopup(dropDown, dropDown._popup);
+    O$.DropDown._alignPopup(dropDown, dropDown._popup, calendar);
     if (popup._ieTransparencyControl)
       popup._ieTransparencyControl._updatePositionAndSize();
   },
 
-  _alignPopup:function (dropDown, calendar) {
-    var popup = dropDown._popup;
+  _alignPopup:function (dropDown, popup, calendar) {
     if (dropDown._listAlignment == "right" || calendar) { // align by the right edge
       O$.alignPopupByElement(popup, dropDown, O$.RIGHT, O$.BELOW);
     } else if (dropDown._listAlignment == "justified") { // bind drop list to the left border

@@ -2922,6 +2922,8 @@ O$.Table = {
         O$.setStyleMappings(colHeader, {
           sortableHeaderRolloverClass:mouseInside ? sortableHeaderRolloverClass : null});
       });
+      //
+      //colHeader = null;
     });
 
     if (sortedColIndex != -1) {
@@ -3114,6 +3116,7 @@ O$.Table = {
                 table._columns.forEach(function (c) {
                   var headerCell = c.header && c.header._cell;
                   if (headerCell && headerCell.setForceHover) headerCell.setForceHover(null);
+                  //headerCell = null;
                 });
               }, 1);
           },
@@ -3225,7 +3228,7 @@ O$.Table = {
           ondragend:function () {
             table._columnResizingInProgress = false;
             //            this._column._resizeDecorator.parentNode.removeChild(this._column._resizeDecorator);
-            updateResizeHandlePositions();
+            updateResizeHandlePositions(table);
 
             var totalWidth = 0;
             var colWidths = [];
@@ -3343,21 +3346,25 @@ O$.Table = {
 
       fixWidths();
 
-      function updateResizeHandlePositions() {
+      function updateResizeHandlePositions(table) {
         if (table._columns) {
           for (var i = 0, count = table._columns.length; i < count; i++) {
             var column = table._columns[i];
-            if (column._resizeHandle && column._resizeHandle.parentNode)
-              column._resizeHandle._updatePos();
+            if (column._resizeHandle && column._resizeHandle.parentNode) {
+              table._columns[i]._resizeHandle._updatePos();
+            }
           }
         }
       }
 
+      function mouseOverHandler(table) {
+        if (!table._columnResizingInProgress) {
+          updateResizeHandlePositions(table);
+        }
+      }
+
       O$.addEventHandler(window, "resize", updateResizeHandlePositions);
-      O$.addEventHandler(table, "mouseover", function () {
-        if (!table._columnResizingInProgress)
-          updateResizeHandlePositions();
-      });
+      //O$.addEventHandler(table, "mouseover", mouseOverHandler);
       if (table._params.scrolling && (O$.isExplorer6() || O$.isExplorer7())) {
         // mouseover can't be handled in these circumstances for some reason
         var updateIntervalId = setInterval(function () {
@@ -3365,14 +3372,15 @@ O$.Table = {
             clearInterval(updateIntervalId);
             return;
           }
-          if (!table._columnResizingInProgress)
-            updateResizeHandlePositions();
+          if (!table._columnResizingInProgress) {
+            updateResizeHandlePositions(table);
+          }
         }, 1000);
       }
       var prevOnscroll = table.onscroll;
       table.onscroll = function (e) {
         if (prevOnscroll) prevOnscroll.call(table, e);
-        setTimeout(updateResizeHandlePositions, 10);
+        //setTimeout(updateResizeHandlePositions, 10);
         if (table._params.scrolling && table._params.scrolling.autoSaveState) {
           O$.invokeFunctionAfterDelay(function () {
             O$.Ajax.requestComponentPortions(table.id, ["scrollingState"], null, function () {
@@ -3396,6 +3404,11 @@ O$.Table = {
         //table._alignRowHeights();
         O$.invokeFunctionAfterDelay(table._alignRowHeights, 0);
       }
+
+      O$.Destroy.init(table, function(){
+        O$.removeEventHandler(window, "resize", updateResizeHandlePositions);
+        O$.removeEventHandler(table, "mouseover", mouseOverHandler);
+      });
     });
 
   },
@@ -3480,12 +3493,13 @@ O$.Table = {
         };
         O$.correctElementZIndex(dropTarget, table, 1);
 
-        O$.Destroy.init(dropTarget, function(){
+        O$.Destroy.init(table, function(){
           jQuery(bottomImage).remove();
           jQuery(topImage).remove();
-          O$.Destroy._destroyEvents(topImage);
-          O$.Destroy._destroyEvents(bottomImage);
-          O$.Destroy._destroyEvents(dropTarget);
+          jQuery(dropTarget).remove();
+          O$.Destroy._clearProperties(topImage);
+          O$.Destroy._clearProperties(bottomImage);
+          O$.Destroy._clearProperties(dropTarget);
         });
         return dropTarget;
       }();

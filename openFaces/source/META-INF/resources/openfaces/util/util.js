@@ -1551,11 +1551,9 @@ if (!window.O$) {
   //TODO:Max.Yurin:16/7/21: Consider to remove mainObj from the function, because it leads to memory leak
   O$.getEventHandlerFunction = function (handlerName, handlerArgs, mainObj) {
     var args = handlerArgs ? (Array.isArray(handlerArgs) ? handlerArgs : [handlerArgs]) : [];
-    var handlerFunction = function() {
+    return function () {
       return mainObj[handlerName].apply(mainObj, (args || arguments));
-    }
-
-    return handlerFunction;
+    };
   };
 
 
@@ -3691,9 +3689,9 @@ if (!window.O$) {
   };
 
   O$.setStyleMappings = function (element, styleMappings) {
-    if (!element._styleMappings)
+    if (element && !element._styleMappings)
       element._styleMappings = {__initialStyle:element.className};
-    var elementStyleMappings = element._styleMappings;
+    var elementStyleMappings = element ? element._styleMappings : [];
     var styleName, styleValue;
     for (styleName in styleMappings) {
       if (!styleName)
@@ -5920,7 +5918,9 @@ if (!window.O$) {
       if(this.detached.indexOf(component) < 0) {
         this.detached.push(component);
       }
-    }, apply: function (parent, renderId) {
+    },
+
+    apply: function (parent, renderId) {
       var node = this._findNode(parent, renderId);
       var componentIndex = this.detached.indexOf(node);
 
@@ -5943,13 +5943,14 @@ if (!window.O$) {
         this._destroyNode(O$._activeElement);
       }
       if(window._attachedEvents) {
-        this._clear(window._attachedEvents);
+        window._attachedEvents.length = 0;
+      }
+      if(this.detached) {
+        this.detached.length = 0;
       }
 
-      this._clear(this.detached);
-      this._destroyEvents(O$._elementUnderMouse);
+      //this._destroyEvents(O$._elementUnderMouse);
       O$._elementUnderMouse = undefined;
-
       jQuery(window).unbind("resize");
     },
 
@@ -5961,8 +5962,7 @@ if (!window.O$) {
       for(var n = 0; n < parent.childNodes.length; n ++){
         var childNode = parent.childNodes[n];
         if(childNode.id == render) {
-          node = childNode;
-          return node;
+          return childNode;
         }
       }
 
@@ -5995,7 +5995,10 @@ if (!window.O$) {
 
       this._destroyChildren(foundComponent);
 
+      O$.Destroy._clearDetachedNodes(foundComponent);
       O$.Destroy._destroyEvents(foundComponent);
+      O$.unloadAllHandlersAndEvents(foundComponent);
+      O$.Destroy._destroyKnownEventHandlers(foundComponent);
       O$.Destroy._clearCachedStyles(foundComponent);
       O$.Destroy._clearTable(foundComponent);
       O$.Destroy._clearAttributes(foundComponent);
@@ -6003,10 +6006,7 @@ if (!window.O$) {
       O$.Destroy._clearUnloadableCollections(foundComponent);
 
       O$.Destroy.counter ++;
-      jQuery(foundComponent).empty();
       jQuery(foundComponent).remove();
-
-      //foundComponent = undefined;
     },
 
     _destroyChildren: function (component) {
@@ -6025,11 +6025,12 @@ if (!window.O$) {
 
         O$.Destroy._clearDetachedNodes(node);
         O$.Destroy._clearCachedStyles(node);
-        O$.Destroy._clearTable(node);
         O$.Destroy._clearAttributes(node);
         O$.Destroy._clearProperties(node);
+        O$.unloadAllHandlersAndEvents(node);
+        O$.Destroy._destroyKnownEventHandlers(node);
         O$.Destroy._clearUnloadableCollections(node);
-        O$.Destroy._removeFromList(node);
+        //O$.Destroy._removeFromList(node);
         jQuery(node).remove();
 
         jQuery(node).unbind();
@@ -6048,17 +6049,15 @@ if (!window.O$) {
 
         if (this.isDefined(detached)) {
           var unloadHandlers = detached._unloadHandlers;
-          for (var t in unloadHandlers) {
+          for (var t =0; t < unloadHandlers.length; t++) {
             var handler = unloadHandlers[t];
             if (this.isDefined(handler)) {
               handler();
-              handler = null;
             }
+            unloadHandlers.splice(t, 1, detached);
           }
 
-          this._destroyEvents(node);
-          this._clear(detached._table);
-          this._clear(detached._unloadHandlers);
+          if(this.isDefined(detached._unloadHandlers)) detached._unloadHandlers.length = 0;
         }
       }
     },
@@ -6079,6 +6078,18 @@ if (!window.O$) {
       }
     },
 
+    _destroyKnownEventHandlers: function(component){
+      var events = ["onblur", "onkeyup", "onkeydown", "onkeypress",
+        "onfocus", "onscroll", "onmouseover", "onmousemove", "onclick", "ondragstart", "ondragend"];
+
+      for(var i=0; i < events.length; i ++){
+        var eventName = events[i];
+        if(this.isDefined(component[eventName])) {
+          component[eventName] = null;
+        }
+      }
+    },
+
     _clearProperties: function(component){
       if (this.isDefined(component)) {
         var ownPropertyNames = Object.getOwnPropertyNames(component);
@@ -6086,7 +6097,18 @@ if (!window.O$) {
 
         for (var i = 0; i < length; i++) {
           var name = ownPropertyNames[i];
-          this._clear(component[name]);
+          var property = component[name];
+          if (typeof property == 'object') {
+            component[name] = undefined;
+          } else if(typeof property == 'string') {
+            component[name] = '';
+          } else if(Array.isArray(property)) {
+            component[name].splice(0, property.length);
+          } else {
+            component[name] = null;
+          }
+
+          console.log("Property "  + name + (property ? " was REMOVED" : " DONT removed"));
         }
       }
     },
@@ -6096,7 +6118,18 @@ if (!window.O$) {
       if (attributes) {
         for (var j = attributes.length - 1; j >= 0; j -= 1) {
           var name = attributes[j].name;
-          O$.Destroy._clear(component[name]);
+          var attribute = attributes[name];
+          if (typeof attribute == 'object') {
+            attributes[name] = undefined;
+          } else if(typeof attribute == 'string') {
+            attributes[name] = '';
+          } else if(Array.isArray(attribute)) {
+            attributes[name].splice(0, attribute.length);
+          } else {
+            attributes[name] = null;
+          }
+
+          console.log("Attribute "  + name + (attribute ? " was REMOVED" : " DONT removed"));
         }
       }
     },
@@ -6104,20 +6137,16 @@ if (!window.O$) {
     _clearUnloadableCollections: function(component) {
       if(!this.isDefined(component)) return;
 
-      O$.Destroy._clear(component._attachedEvents);
-      O$.Destroy._clear(component._hoverListeners);
-      O$.Destroy._clear(component._of_mouseOutListeners);
-      O$.Destroy._clear(component._of_mouseOverListeners);
-      O$.Destroy._clear(component._styleMappings);
-      O$.Destroy._clear(component._image);
+      if(component._attachedEvents)         component._attachedEvents.length = 0;
+      if(component._hoverListeners)         component._hoverListeners.length = 0;
+      if(component._of_mouseOutListeners)   component._of_mouseOutListeners.length = 0;
+      if(component._of_mouseOverListeners)  component._of_mouseOverListeners.length = 0;
+      if(component._styleMappings)          component._styleMappings.length = 0;
+      if(component._image)                  component._image = undefined;
     },
 
     _clearCachedStyles: function(component){
-      if(!this.isDefined(component)) return;
-
-      O$.Destroy._clear(O$._cachedDynamicCssRules);
-      O$.Destroy._clear(component.cssRules);
-      O$.Destroy._clear(component.className)
+      if(this.isDefined(O$._cachedDynamicCssRules)) O$._cachedDynamicCssRules.length = 0;
     },
 
     _clear: function(obj) {
