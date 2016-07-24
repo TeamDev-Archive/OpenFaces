@@ -594,7 +594,7 @@ O$.PopupLayer = {
     if (popup._blockingLayer)
       popup._blockingLayer.onclick = function() {
         var focusable = popup._getDefaultFocusComponent();
-        if (focusable) {
+          if (focusable) {
           try {
             focusable.focus();
           } catch (e) {
@@ -615,6 +615,14 @@ O$.PopupLayer = {
       popup._onmousedown = popup.onmousedown;
     }, false);
 
+
+    O$.Destroy.init(popup, function(){
+      O$.Destroy._clearProperties(popup._blockingLayer);
+      O$.Destroy._destroyEvents(popup);
+      jQuery(popup).remove();
+
+      popup._blockingLayer = null;
+    });
   },
 
 

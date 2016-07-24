@@ -334,6 +334,11 @@ O$.Window = {
         else
           win.maximize();
       };
+
+    O$.Destroy.init(win, function(){
+      O$.Destroy._clearProperties(win._form);
+      win._resizeFunction = null;
+    });
   },
 
   _addStateChangeListener: function(win, listener) {

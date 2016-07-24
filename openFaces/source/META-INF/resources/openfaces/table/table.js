@@ -2889,7 +2889,7 @@ O$.Table = {
 
       O$.setStyleMappings(colHeader, {sortableHeaderClass:sortableHeaderClass});
 
-      O$.addEventHandler(colHeader, "click", function () {
+      O$.addEventHandler(colHeader, "click", function focusedHeader () {
         if (table.isEnabledSorting()) {
           var focusField = O$(table.id + "::focused");
           if (focusField)
@@ -2915,6 +2915,8 @@ O$.Table = {
             }
           });
         }
+
+        O$.removeEventHandler(colHeader, "click", focusedHeader);
       });
 
 
@@ -3228,7 +3230,7 @@ O$.Table = {
           ondragend:function () {
             table._columnResizingInProgress = false;
             //            this._column._resizeDecorator.parentNode.removeChild(this._column._resizeDecorator);
-            updateResizeHandlePositions(table);
+            //updateResizeHandlePositions(table);
 
             var totalWidth = 0;
             var colWidths = [];
@@ -3359,11 +3361,11 @@ O$.Table = {
 
       function mouseOverHandler(table) {
         if (!table._columnResizingInProgress) {
-          updateResizeHandlePositions(table);
+          //updateResizeHandlePositions(table);
         }
       }
 
-      O$.addEventHandler(window, "resize", updateResizeHandlePositions);
+      //O$.addEventHandler(window, "resize", updateResizeHandlePositions);
       //O$.addEventHandler(table, "mouseover", mouseOverHandler);
       if (table._params.scrolling && (O$.isExplorer6() || O$.isExplorer7())) {
         // mouseover can't be handled in these circumstances for some reason
@@ -3373,7 +3375,7 @@ O$.Table = {
             return;
           }
           if (!table._columnResizingInProgress) {
-            updateResizeHandlePositions(table);
+            //updateResizeHandlePositions(table);
           }
         }, 1000);
       }
@@ -3453,8 +3455,11 @@ O$.Table = {
 
       O$.Destroy.init(table, function(){
         jQuery(headerScroller).remove();
+        jQuery(headerScroller).empty();
         jQuery(leftAutoScrollArea).remove();
+        jQuery(leftAutoScrollArea).empty();
         jQuery(rightAutoScrollArea).remove();
+        jQuery(rightAutoScrollArea).empty();
 
         O$.Destroy._clearProperties(additionalAreaContainer);
         O$.Destroy._clearProperties(leftAutoScrollArea);
@@ -3956,7 +3961,7 @@ O$.Table = {
     };
     //todo: move it out of here
     table._getHeaderCell = function (columnId) {
-      var candidates = table._columns.slice(0);
+      var candidates = this._columns.slice(0);
       while (candidates.length > 0) {
         var current = candidates.pop();
         if (current.columnId == columnId) {

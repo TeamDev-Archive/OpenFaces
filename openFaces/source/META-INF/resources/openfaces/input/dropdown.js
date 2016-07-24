@@ -381,19 +381,16 @@ O$.DropDown = {
       O$.addMouseOutListener(dropDown, dropDown._dropDownMouseOut);
       O$.addMouseOutListener(popup, dropDown._dropDownMouseOut);
     }
-    function resizeHandlerOnWindow() {
+
+    //add function to change popup position if window is resized and layout is changed
+/*    O$.addEventHandler(window, "resize", function resizeHandlerOnWindow() {
       // drop-down can be removed from the page using Ajax, so we need to check its presence
       if (dropDown._popup && dropDown._popup.isVisible()) {
         O$.DropDown._alignPopup(dropDown, dropDown._popup);
       }
-    }
 
-    //add function to change popup position if window is resized and layout is changed
-    O$.addEventHandler(window, "resize", resizeHandlerOnWindow);
-
-    O$.Destroy.init(dropDown, function(){
       O$.removeEventHandler(window, "resize", resizeHandlerOnWindow);
-    });
+    });*/
   },
 
   /*

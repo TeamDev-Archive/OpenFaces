@@ -844,14 +844,22 @@ O$.DropDownField = {
     }
 
     // Set handler that closes popup list on click out of popup
-    dropDown.onLoadHandler = O$.DropDownField._onLoadHandler;
-    var bodyOnLoadHandler = O$.getEventHandlerFunction("onLoadHandler", dropDownId, dropDown);
-    O$.addEventHandler(window, "load", bodyOnLoadHandler);
+    //dropDown.onLoadHandler = O$.DropDownField._onLoadHandler;
+    //var bodyOnLoadHandler = O$.getEventHandlerFunction("onLoadHandler", dropDownId, dropDown);
+
+
+
+    jQuery(window).bind("load", function (){
+      O$.DropDownField._onLoadHandler(dropDownId);
+
+      jQuery(window).unbind("load");
+    });
 
     O$.Destroy.init(dropDown, function(){
       O$.removeEventHandler(dropDown, "mouseout", closeOnTimeout);
       O$.removeEventHandler(popup, "mouseout", closeOnTimeout);
-      O$.removeEventHandler(window, "load", bodyOnLoadHandler);
+      O$.Destroy._destroyEvents(dropDown);
+      O$.Destroy._destroyEvents(popup);
       O$.Destroy._destroyEvents(dropDown);
       O$.Destroy._destroyEvents(popup);
 

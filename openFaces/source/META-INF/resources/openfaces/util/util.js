@@ -1091,7 +1091,7 @@ if (!window.O$) {
 
   O$.isChrome = function () {
     if (O$._chrome == undefined)
-      O$._chrome = O$.userAgentContains("Chrome");
+      O$._chrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
     return O$._chrome;
   };
 
@@ -1121,7 +1121,7 @@ if (!window.O$) {
 
   O$.isSafari = function () { // todo: returns true for Chrome as well -- fix this and update usages to account Chrome
     if (O$._safari == undefined)
-      O$._safari = O$.userAgentContains("safari");
+      O$._safari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
     return O$._safari;
   };
 
@@ -1551,9 +1551,7 @@ if (!window.O$) {
   //TODO:Max.Yurin:16/7/21: Consider to remove mainObj from the function, because it leads to memory leak
   O$.getEventHandlerFunction = function (handlerName, handlerArgs, mainObj) {
     var args = handlerArgs ? (Array.isArray(handlerArgs) ? handlerArgs : [handlerArgs]) : [];
-    return function () {
-      return mainObj[handlerName].apply(mainObj, (args || arguments));
-    };
+    return mainObj[handlerName].apply(mainObj, (args || arguments))
   };
 
 
@@ -3143,7 +3141,7 @@ if (!window.O$) {
       this._focusControl.blur();
     };
 
-    O$.addEventHandler(component, "click", function (evt) {
+    O$.addEventHandler(component, "click", function clickEventHandler (evt) {
       var selectedText = window.getSelection
               ? window.getSelection() :
               (document.selection && document.selection.createRange) ? document.selection.createRange().text : "";
@@ -3194,6 +3192,13 @@ if (!window.O$) {
     O$.addEventHandler(component, "mouseout", unblockOutlineUpdate);
 
     component.parentNode.insertBefore(focusControl, component);
+
+    O$.Destroy.init(component, function(){
+      component._focusControl = undefined;
+      O$.removeEventHandler(component, "mouseup", unblockOutlineUpdate);
+      O$.removeEventHandler(component, "mousedown", blockOutlineUpdate);
+      O$.removeEventHandler(component, "mouseout", unblockOutlineUpdate);
+    })
   };
 
   // ----------------- STYLE UTILITIES ---------------------------------------------------
@@ -5938,7 +5943,7 @@ if (!window.O$) {
         }
       }
 
-      this._destroyObject(O$.ColumnMenu);
+      if(O$.ColumnMenu) O$.ColumnMenu._menuFixer = null;
       if(this.isDefined(O$._activeElement)) {
         this._destroyNode(O$._activeElement);
       }
@@ -5952,10 +5957,11 @@ if (!window.O$) {
       //this._destroyEvents(O$._elementUnderMouse);
       O$._elementUnderMouse = undefined;
       jQuery(window).unbind("resize");
+      jQuery(window).unbind("load");
     },
 
     isDefined: function (obj) {
-      return obj && typeof obj != 'undefined' && obj != null;
+      return typeof obj != 'undefined' && obj != null;
     },
 
     _findNode: function(parent, render){
@@ -5995,72 +6001,90 @@ if (!window.O$) {
 
       this._destroyChildren(foundComponent);
 
-      O$.Destroy._clearDetachedNodes(foundComponent);
+      O$.Destroy._clearAllDetachedNodes(foundComponent);
       O$.Destroy._destroyEvents(foundComponent);
       O$.unloadAllHandlersAndEvents(foundComponent);
       O$.Destroy._destroyKnownEventHandlers(foundComponent);
       O$.Destroy._clearCachedStyles(foundComponent);
-      O$.Destroy._clearTable(foundComponent);
-      O$.Destroy._clearAttributes(foundComponent);
-      O$.Destroy._clearProperties(foundComponent);
       O$.Destroy._clearUnloadableCollections(foundComponent);
 
       O$.Destroy.counter ++;
-      jQuery(foundComponent).remove();
     },
 
     _destroyChildren: function (component) {
       if(!this.isDefined(component)) return;
 
-      while (component.hasChildNodes()) {
-        clear(component.firstChild);
-      }
+      allDescendants(component);
 
-      function clear(node) {
-        while (node.hasChildNodes()) {
-          if (node.firstChild) {
-            clear(node.firstChild);
-          }
+      function allDescendants (node) {
+        for (var i = 0; i < node.childNodes.length; i++) {
+          var child = node.childNodes[i];
+          allDescendants(child);
+          clear(child);
         }
+      }
+      function clear(node) {
 
-        O$.Destroy._clearDetachedNodes(node);
         O$.Destroy._clearCachedStyles(node);
-        O$.Destroy._clearAttributes(node);
         O$.Destroy._clearProperties(node);
         O$.unloadAllHandlersAndEvents(node);
         O$.Destroy._destroyKnownEventHandlers(node);
         O$.Destroy._clearUnloadableCollections(node);
-        //O$.Destroy._removeFromList(node);
         jQuery(node).remove();
-
-        jQuery(node).unbind();
-        //console.log("Clear node", node);
-        node = null;
 
         O$.Destroy.counter ++;
       }
     },
 
-    _clearDetachedNodes: function(node){
-      var nodeIndex = this.detached.indexOf(node);
-
-      if(nodeIndex >= 0) {
-        var detached = this.detached[nodeIndex];
+    _clearAllDetachedNodes: function(parent){
+      for(var i = 0; i< this.detached.length; i++) {
+        var detached = this.detached[i];
 
         if (this.isDefined(detached)) {
-          var unloadHandlers = detached._unloadHandlers;
-          for (var t =0; t < unloadHandlers.length; t++) {
-            var handler = unloadHandlers[t];
-            if (this.isDefined(handler)) {
-              handler();
-            }
-            unloadHandlers.splice(t, 1, detached);
-          }
+          var containssNode = detached.nodeType == 1 && jQuery(parent).has(detached).length > 0;
+          var containssObject = this.isDefined(detached._tag) && jQuery(parent).has(detached._tag).length > 0;
 
-          if(this.isDefined(detached._unloadHandlers)) detached._unloadHandlers.length = 0;
+          var unloadHandlers = detached._unloadHandlers;
+          if ((containssNode || containssObject) && this.isDefined(unloadHandlers)) {
+            for (var t = 0; t < unloadHandlers.length; t++) {
+              var handler = unloadHandlers[t];
+              if (this.isDefined(handler)) {
+                handler();
+              }
+              unloadHandlers.splice(t, 1, detached);
+            }
+
+            if (containssNode) {
+              O$.Destroy._destroyEvents(detached);
+              O$.Destroy._destroyKnownEventHandlers(detached);
+            }
+            if (this.isDefined(detached._unloadHandlers)) detached._unloadHandlers.length = 0;
+            console.log("Detached component, cleared", detached);
+          }
         }
       }
     },
+
+    //_callDetachedHandlers: function(node){
+    //  var nodeIndex = this.detached.indexOf(node);
+    //
+    //  if(nodeIndex >= 0) {
+    //    var detached = this.detached[nodeIndex];
+    //
+    //    if (this.isDefined(detached)) {
+    //      var unloadHandlers = detached._unloadHandlers;
+    //      for (var t =0; t < unloadHandlers.length; t++) {
+    //        var handler = unloadHandlers[t];
+    //        if (this.isDefined(handler)) {
+    //          handler();
+    //        }
+    //        unloadHandlers.splice(t, 1, detached);
+    //      }
+    //
+    //      if(this.isDefined(detached._unloadHandlers)) detached._unloadHandlers.length = 0;
+    //    }
+    //  }
+    //},
 
     _clearTable:function(component) {
       if(this.isDefined(component) && component._cleanUp) { //DataTable only
@@ -6107,8 +6131,6 @@ if (!window.O$) {
           } else {
             component[name] = null;
           }
-
-          console.log("Property "  + name + (property ? " was REMOVED" : " DONT removed"));
         }
       }
     },
@@ -6128,8 +6150,6 @@ if (!window.O$) {
           } else {
             attributes[name] = null;
           }
-
-          console.log("Attribute "  + name + (attribute ? " was REMOVED" : " DONT removed"));
         }
       }
     },

@@ -506,7 +506,9 @@ window.OpenFaces.Ajax = {
                 var element = document.getElementById(change.id);
                 var parent = element && element.parentNode;
 
-                destroyMemoryLeaks(element);
+                //setTimeout(function(){
+                  destroyMemoryLeaks(element);
+                //}, 1);
                 updateNode(element, parent, change.textContent);
               }
             }
