@@ -62,11 +62,6 @@ O$._initCaptionButton = function(componentId,
       O$.submitWithParam(btn, componentId + "::clicked", "true");
     });
   }
-  O$.Destroy.init(btn, function(){
-    O$.Destroy._destroyEvents(btn);
-    btn._prevOnmousedown = null;
-    btn._updateImage = null;
-  });
 };
 
 O$._initToggleCaptionButton = function(controlId,

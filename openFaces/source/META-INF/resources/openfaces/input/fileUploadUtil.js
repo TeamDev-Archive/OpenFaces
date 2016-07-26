@@ -26,6 +26,15 @@ O$.FileUploadUtil = {
             statusLabelNotUploaded,statusStoppedText,statusLabelUnexpectedError,
             render,tabIndex,dropTargetCrossoverClass, acceptedMimeTypes,
             directoryDroppedText, wrongFileTypeText, externalDropTargetId);
+
+
+    O$.Destroy.init(fileUpload, function(){
+      O$.Destroy._destroyEvents(fileUpload);
+      O$.Destroy._destroyKnownEventHandlers(fileUpload);
+
+      jQuery(fileUpload).remove();
+      O$.Destroy._clearProperties(fileUpload);
+    })
   },
   _initGeneralFields:function (fileUpload,
                                lengthAlreadyUploadedFiles, acceptedTypesOfFile, isDisabled, ID,

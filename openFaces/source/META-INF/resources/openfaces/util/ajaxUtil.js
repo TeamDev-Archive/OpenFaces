@@ -745,7 +745,10 @@ window.OpenFaces.Ajax = {
       if (O$.Ajax._requestsInProgress > 0)
         O$.Ajax.showProgressMessage();
     }
-
+    //
+    //O$.Destroy.init(msg, function(){
+    //  msg._blockingLayer = null;
+    //});
   },
 
   showProgressMessage:function () {

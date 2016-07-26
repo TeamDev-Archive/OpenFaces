@@ -25,6 +25,7 @@ O$._initBorderLayoutPanel = function (borderLayoutPanelId) {
 
   O$._storeSizeProperties(borderLayoutPanel);
   O$._subscribeToOnresizeEvent(borderLayoutPanel, function () {
+    borderLayoutPanel._newStyle = borderLayoutPanel._newStyle || new O$._createPseudoCSSStyle();
     borderLayoutPanel._newStyle.applyTo(borderLayoutPanel.style);
     if (!borderLayoutPanel._waitForRefresh) {
       borderLayoutPanel._waitForRefresh = true;
@@ -50,6 +51,13 @@ O$._initBorderLayoutPanel = function (borderLayoutPanelId) {
   } else {
     O$._checkAsRootDoubleBufferedElement(borderLayoutPanel);
   }
+
+  O$.Destroy.init(borderLayoutPanel, function(){
+    jQuery(borderLayoutPanel).remove();
+    O$.Destroy._destroyEvents(borderLayoutPanel);
+    O$.Destroy._destroyKnownEventHandlers(borderLayoutPanel);
+    O$.Destroy._clearProperties(borderLayoutPanel);
+  });
 };
 
 O$._initBorderLayoutPanel_content = function (borderLayoutPanelId, rolloverClass, events, isRecalculatingSplitterInBorder) {

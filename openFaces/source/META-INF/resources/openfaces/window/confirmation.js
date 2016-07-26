@@ -193,6 +193,11 @@ O$.Confirmation = {
     });
 
     O$.Confirmation._initInnerStyles.apply(confirmation, styleParams);
+
+    O$.Destroy.init(confirmation, function(){
+      O$.Destroy._clearProperties(confirmation);
+      jQuery(confirmation).empty();
+    })
   },
 
   _initInnerStyles: function(iconAreaStyle, rolloverIconAreaStyle,

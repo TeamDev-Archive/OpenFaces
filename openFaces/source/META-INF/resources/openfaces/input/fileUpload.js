@@ -1024,6 +1024,14 @@ O$.FileUpload = {
         }
       }
     }
+
+    O$.Destroy.init(fileUpload, function(){
+      O$.Destroy._destroyEvents(fileUpload);
+      O$.Destroy._destroyKnownEventHandlers(fileUpload);
+
+      jQuery(fileUpload).remove();
+      O$.Destroy._clearProperties(fileUpload);
+    })
   },
   _initFileUploadAPI:function (fileUpload) {
     //Helper methods for API

@@ -1295,7 +1295,6 @@ O$.Tables = {
           tableHeader._updateColumnSeparatorStyles = undefined;
           tableHeader._updateCommonHeaderSeparator = undefined;
           tableHeader._updateSubHeaderRowSeparatorStyle = undefined;
-          tableHeader = undefined;
         }
       })
     }
@@ -1721,6 +1720,12 @@ O$.Tables = {
         O$.setStyleMappings(footerCell, {cellWidthClass:column._footerCellsClass.className});
       }
     };
+
+    O$.Destroy.init(column, function(){
+      O$.Destroy._destroyEvents(column);
+      O$.Destroy._destroyKnownEventHandlers(column);
+      O$.Destroy._clearProperties(column);
+    });
   },
 
   _initColumn:function (column, colTagArray, colIndex) {
@@ -1927,6 +1932,10 @@ O$.Tables = {
         compoundColumnStyle:column._getCompoundClassName(),
         colHeaderStyle:column.header ? column.header.className : null});
     };
+
+    O$.Destroy.init(cell, function(){
+      cell._updateStyle = null;
+    })
   },
 
   _assignHeaderBoxStyle:function (headerBox, table, columnId, additionalClassName) {
@@ -2644,7 +2653,7 @@ O$.Tables = {
       }, 250);
     }
 
-    //synchronizeAreaScrolling();
+    synchronizeAreaScrolling();
 
     table._alignRowHeights = function () {
       if (!table._leftArea && !table._rightArea)  return;

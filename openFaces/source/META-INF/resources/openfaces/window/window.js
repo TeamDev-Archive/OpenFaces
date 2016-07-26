@@ -334,11 +334,6 @@ O$.Window = {
         else
           win.maximize();
       };
-
-    O$.Destroy.init(win, function(){
-      O$.Destroy._clearProperties(win._form);
-      win._resizeFunction = null;
-    });
   },
 
   _addStateChangeListener: function(win, listener) {
@@ -531,12 +526,19 @@ O$.Window = {
       });
     };
     win._updateResizersPos();
+
+    O$.Destroy.init(win, function(){
+      O$.Window._removeResizers(win);
+    });
   },
 
   _removeResizers: function(win) {
-    win._resizers.forEach(function(r) {
-      r.parentNode.removeChild(r);
-    });
+    if (win._resizers) {
+      win._resizers.forEach(function (r) {
+        r.parentNode.removeChild(r);
+      });
+      win._resizers.splice(0, win._resizers.length);
+    }
     win._resizers = [];
   },
 

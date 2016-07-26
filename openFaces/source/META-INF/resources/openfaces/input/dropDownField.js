@@ -1051,6 +1051,8 @@ O$.DropDownField = {
 
     O$.Destroy.init(dropDown, function(){
       popupTableStructureAndStyleParams = null;
+      O$.Destroy._destroyEvents(dropDown);
+      O$.Destroy._destroyKnownEventHandlers(dropDown);
     })
   },
 

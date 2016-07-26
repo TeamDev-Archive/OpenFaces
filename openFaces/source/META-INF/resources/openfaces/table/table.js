@@ -225,6 +225,8 @@ O$.Table = {
           rows.splice(0, rows.length);
         });
 
+        table._sectionTable = undefined;
+        table._topLevelScrollingDiv = undefined;
         table.body._removeAllRows();
         if(table._columns) {
           for(var j = 0; j < table._columns.length; j++){
@@ -270,14 +272,10 @@ O$.Table = {
 
         jQuery(table).unbind("mouseover");
         O$.removeEventHandler(window, "resize", null);
-        table.onfocus = null;
-        table.onclick = null;
-        table.onblur = null;
-        table.onchange = null;
-
-        delete table.onfocus;
-        delete table.onclick;
-        delete table.onblur;
+        table.onfocus = undefined;
+        table.onclick = undefined;
+        table.onblur = undefined;
+        table.onchange = undefined;
       }
     });
 
@@ -3230,7 +3228,7 @@ O$.Table = {
           ondragend:function () {
             table._columnResizingInProgress = false;
             //            this._column._resizeDecorator.parentNode.removeChild(this._column._resizeDecorator);
-            //updateResizeHandlePositions(table);
+            updateResizeHandlePositions(table);
 
             var totalWidth = 0;
             var colWidths = [];
@@ -3361,7 +3359,7 @@ O$.Table = {
 
       function mouseOverHandler(table) {
         if (!table._columnResizingInProgress) {
-          //updateResizeHandlePositions(table);
+          updateResizeHandlePositions(table);
         }
       }
 
@@ -3382,7 +3380,9 @@ O$.Table = {
       var prevOnscroll = table.onscroll;
       table.onscroll = function (e) {
         if (prevOnscroll) prevOnscroll.call(table, e);
-        //setTimeout(updateResizeHandlePositions, 10);
+        setTimeout(function(){
+          updateResizeHandlePositions(table);
+        }, 10);
         if (table._params.scrolling && table._params.scrolling.autoSaveState) {
           O$.invokeFunctionAfterDelay(function () {
             O$.Ajax.requestComponentPortions(table.id, ["scrollingState"], null, function () {

@@ -766,8 +766,7 @@ O$.SingleFileUpload = {
     }
 
     O$.SingleFileUpload._initFileUploadAPI(fileUpload);
-
-    O$.addEventHandler(document, "sessionexpired", function () {
+    function handleSessionExpired () {
       var f = fileUpload._currentFile;
       if (f.getStatus() == O$.FileUploadUtil.Status.IN_PROGRESS) {
         fileUpload._els.info._status = O$.FileUploadUtil.Status.FAILED;
@@ -787,7 +786,11 @@ O$.SingleFileUpload = {
       } else {
         initHeaderButtons();
       }
-    });
+
+      O$.removeEventHandler(document, "sessionexpired", handleSessionExpired);
+    }
+
+    O$.addEventHandler(document, "sessionexpired", handleSessionExpired);
 
     function isFileNameNotApplied(filename) {
       /*function isFileNameAlreadyExist(filename) {
@@ -893,6 +896,20 @@ O$.SingleFileUpload = {
         fileUpload._els.progressBar.setValue(0);
       }
     }
+
+    O$.Destroy.init(fileUpload, function(){
+      O$.Destroy._destroyEvents(fileUpload);
+      O$.Destroy._destroyKnownEventHandlers(fileUpload);
+
+      O$.removeEventHandler(document, "sessionexpired", handleSessionExpired);
+      O$.removeEventHandler(fileUpload._buttons.browseInput, "focus", fileUpload._focusHandler);
+      O$.removeEventHandler(fileUpload._buttons.browseInput, "blur", fileUpload._blurHandler);
+      O$.removeEventHandler(fileUpload._buttons.browseTitleInput, "focus", fileUpload._focusHandler);
+      O$.removeEventHandler(fileUpload._buttons.browseTitleInput, "blur", fileUpload._blurHandler);
+
+      jQuery(fileUpload).remove();
+      O$.Destroy._clearProperties(fileUpload);
+    })
   },
   _initFileUploadAPI:function (fileUpload) {
     //Helper methods for API

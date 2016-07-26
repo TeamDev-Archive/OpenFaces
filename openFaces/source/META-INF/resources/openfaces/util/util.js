@@ -474,7 +474,6 @@ if (!window.O$) {
       return;
     }
 
-    disableMenu();
     if (!O$._logEnabled)
       return;
     if (!O$._logger)
@@ -2224,6 +2223,11 @@ if (!window.O$) {
           this._of_prevOnFocusHandler(e);
         if (O$.onfocuschange)
           O$.onfocuschange(e);
+
+        O$.Destroy.init(element, function(){
+          this._of_prevOnFocusHandler = null;
+          element._of_prevOnFocusHandler = null;
+        });
       };
       element._of_prevOnBlurHandler = element.onblur;
       element.onblur = function (e) {
@@ -2235,6 +2239,11 @@ if (!window.O$) {
           this._of_prevOnBlurHandler(e);
         if (O$.onfocuschange)
           O$.onfocuschange(e);
+
+        O$.Destroy.init(element, function(){
+          this._of_prevOnBlurHandler = null;
+          element._of_prevOnBlurHandler = null;
+        });
       };
     }
 
@@ -2499,6 +2508,10 @@ if (!window.O$) {
       });
     }
     element._hoverListeners.push(fn);
+
+    O$.Destroy.init(element, function(){
+      O$.Destroy._clearProperties(element);
+    })
   };
 
   O$.setupHoverStateFunction_ = function (element, fn) {
@@ -2842,7 +2855,10 @@ if (!window.O$) {
       if (containingBlock) {
         var minLeft = containingBlock.offsetLeft;
         var maxLeft = (minLeft + containingBlock.offsetWidth) - draggable.offsetWidth;
-        var minPosition = O$.isStaticContext(containingBlock.tagName) ? 0 : minLeft;
+
+        var tagName = containingBlock.tagName.toUpperCase();
+        var minPosition = tagName === "BODY" || tagName === "TABLE" || tagName === "TR" || tagName === "TD"
+                ? 0 : minLeft;
 
         return left <= minPosition ? minPosition
                 : left >= maxLeft ? maxLeft - 1 : left;
@@ -2854,7 +2870,10 @@ if (!window.O$) {
       if (containingBlock) {
         var minTop = containingBlock.offsetTop;
         var maxTop = (minTop + containingBlock.offsetHeight) - draggable.offsetHeight;
-        var minPosition = O$.isStaticContext(containingBlock.tagName) ? 0 : minTop;
+
+        var tagName = containingBlock.tagName.toUpperCase();
+        var minPosition = tagName === "BODY" || tagName === "TABLE" || tagName === "TR" || tagName === "TD"
+                ? 0 : minTop;
 
         return top <= minPosition ? minPosition
                 : top >= maxTop ? maxTop - 1 : top;
@@ -2862,18 +2881,11 @@ if (!window.O$) {
       return top;
     }
 
-    O$.isStaticContext = function (tagName) {
-      return tagName.toUpperCase() === "BODY" ||
-              tagName.toUpperCase() === "TABLE" ||
-              tagName.toUpperCase() === "TR" ||
-              tagName.toUpperCase() === "TD";
-    }
-
     function handleDragEnd(e) {
       var evt = O$.getEvent(e);
 
-      O$.removeEventHandler(document, "mousemove", handleDragMove, true);
-      O$.removeEventHandler(document, "mouseup", handleDragEnd, true);
+      jQuery(document).unbind("mousemove");
+      jQuery(document).unbind("mouseup");
 
       var draggable = O$._draggedElement;
       O$._draggedElement = null;
@@ -2887,10 +2899,18 @@ if (!window.O$) {
         O$.cancelEvent(evt);
       }
       draggable._draggingInProgress = false;
+
+      O$.Destroy.init(draggable, function(){
+        jQuery(document).bind("mousemove", handleDragMove);
+        jQuery(document).bind("mouseup", handleDragEnd);
+
+        O$.Destroy._clearProperties(draggable);
+        draggable = null;
+      })
     }
 
-    O$.addEventHandler(document, "mousemove", handleDragMove, true);
-    O$.addEventHandler(document, "mouseup", handleDragEnd, true);
+    jQuery(document).bind("mousemove", handleDragMove);
+    jQuery(document).bind("mouseup", handleDragEnd);
   };
 
 
@@ -3107,11 +3127,12 @@ if (!window.O$) {
     component.focus = function (evt) {
       if (O$.getElementStyle(component, "position") == "absolute" || this._preventPageScrolling) {
         var container = O$.getContainingBlock(this._focusControl, true);
+        var containerRect;
 
         if (container) {
-          var containerRect = O$.getElementBorderRectangle(container);
+          containerRect = O$.getElementBorderRectangle(container);
         } else {
-          var containerRect = new O$.Rectangle(0, 0, O$.getVisibleAreaSize().width, O$.getVisibleAreaSize().height);
+          containerRect = new O$.Rectangle(0, 0, O$.getVisibleAreaSize().width, O$.getVisibleAreaSize().height);
         }
         var pageScrollPos = O$.getPageScrollPos();
         var pageScrollRect = new O$.Rectangle(pageScrollPos.x, pageScrollPos.y, O$.getVisibleAreaSize().width, O$.getVisibleAreaSize().height);
@@ -3163,6 +3184,8 @@ if (!window.O$) {
       component._preventPageScrolling = true;
       component.focus(e);
       component._preventPageScrolling = false;
+
+      O$.removeEventHandler(component, "mouseout", clickEventHandler);
     });
 
     function blockOutlineUpdate() {
@@ -3194,7 +3217,8 @@ if (!window.O$) {
     component.parentNode.insertBefore(focusControl, component);
 
     O$.Destroy.init(component, function(){
-      component._focusControl = undefined;
+      O$.Destroy._clearProperties(focusControl);
+      O$.Destroy._clearProperties(component);
       O$.removeEventHandler(component, "mouseup", unblockOutlineUpdate);
       O$.removeEventHandler(component, "mousedown", blockOutlineUpdate);
       O$.removeEventHandler(component, "mouseout", unblockOutlineUpdate);
@@ -5943,21 +5967,36 @@ if (!window.O$) {
         }
       }
 
+      this._clearTable(node);
       if(O$.ColumnMenu) O$.ColumnMenu._menuFixer = null;
       if(this.isDefined(O$._activeElement)) {
         this._destroyNode(O$._activeElement);
       }
+
+      document._ajaxInProgressMessage._blockingLayer = null;
+      window.focusedElement = undefined;
       if(window._attachedEvents) {
         window._attachedEvents.length = 0;
       }
+
       if(this.detached) {
+        if(node.nodeName == 'FORM') {
+          this._clearAllDetachedNodes(parent);
+        } else {
+          for (var i = 0; i < this.detached.length; i++) {
+            var detach = this.detached[i];
+            if (detach && this.isDefined(detach._unloadHandlers)) {
+              detach._unloadHandlers.length = 0;
+            }
+            this.detached[i] = null;
+          }
+        }
         this.detached.length = 0;
       }
 
-      //this._destroyEvents(O$._elementUnderMouse);
       O$._elementUnderMouse = undefined;
-      jQuery(window).unbind("resize");
-      jQuery(window).unbind("load");
+      jQuery(document).unbind();
+      jQuery(window).unbind();
     },
 
     isDefined: function (obj) {
@@ -5972,7 +6011,7 @@ if (!window.O$) {
         }
       }
 
-      return null;
+      return parent;  //Just in case when parent doesn't have children
     },
 
     _removeFromList: function(node, index) {
@@ -6050,6 +6089,7 @@ if (!window.O$) {
               var handler = unloadHandlers[t];
               if (this.isDefined(handler)) {
                 handler();
+                jQuery(detached).remove();
               }
               unloadHandlers.splice(t, 1, detached);
             }
@@ -6059,36 +6099,15 @@ if (!window.O$) {
               O$.Destroy._destroyKnownEventHandlers(detached);
             }
             if (this.isDefined(detached._unloadHandlers)) detached._unloadHandlers.length = 0;
-            console.log("Detached component, cleared", detached);
+            //console.log("Detached component, cleared", detached);
           }
         }
       }
+      this.detached.splice(0, this.detached.length);
     },
 
-    //_callDetachedHandlers: function(node){
-    //  var nodeIndex = this.detached.indexOf(node);
-    //
-    //  if(nodeIndex >= 0) {
-    //    var detached = this.detached[nodeIndex];
-    //
-    //    if (this.isDefined(detached)) {
-    //      var unloadHandlers = detached._unloadHandlers;
-    //      for (var t =0; t < unloadHandlers.length; t++) {
-    //        var handler = unloadHandlers[t];
-    //        if (this.isDefined(handler)) {
-    //          handler();
-    //        }
-    //        unloadHandlers.splice(t, 1, detached);
-    //      }
-    //
-    //      if(this.isDefined(detached._unloadHandlers)) detached._unloadHandlers.length = 0;
-    //    }
-    //  }
-    //},
-
     _clearTable:function(component) {
-      if(this.isDefined(component) && component._cleanUp) { //DataTable only
-        component._cleanUp();
+      if(this.isDefined(component) && component._cleanAll) { //DataTable only
         component._cleanAll();
       }
     },
