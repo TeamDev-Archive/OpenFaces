@@ -195,7 +195,6 @@ O$.Table = {
               table.onafterajaxreload
       );
     }
-    ;
 
     try {
       O$.Tables._init(table, initParams);
@@ -3363,8 +3362,8 @@ O$.Table = {
         table.removeEventListener("mouseover", mouseOverHandler)
       }
 
-      window.addEventListener("resize", updateResizeHandlePositions);
-      table.addEventListener("mouseover", mouseOverHandler);
+      jQuery(window).bind("resize", updateResizeHandlePositions);
+      jQuery(table).bind("mouseover", mouseOverHandler);
 
       if (table._params.scrolling && (O$.isExplorer6() || O$.isExplorer7())) {
         // mouseover can't be handled in these circumstances for some reason
@@ -3409,8 +3408,8 @@ O$.Table = {
       }
 
       O$.Destroy.init(table, function(){
-        O$.removeEventHandler(window, "resize", updateResizeHandlePositions);
-        O$.removeEventHandler(table, "mouseover", mouseOverHandler);
+        jQuery(window).unbind("resize", updateResizeHandlePositions);
+        jQuery(table).unbind("mouseover", mouseOverHandler);
       });
     });
 
