@@ -5840,14 +5840,6 @@ if (!window.O$) {
       }
       component._attachedEvents = [];
     }
-
-    component.blur = null;
-    component.click = null;
-    component.focus = null;
-    component.focus = null;
-    component._handleKeyUp = null;
-    component._handleKeyDown = null;
-    component._handleKeyPress = null;
   };
 
   O$.invokeWhenVisible = function (element, func) {
@@ -5953,20 +5945,30 @@ if (!window.O$) {
         }
       }
 
-      this._clearTable(node);
+      //TEST_ME:16.7.28:Max.Yurin: Needs to check and fix.
+      //this._clearTable(node);
       if(O$.ColumnMenu) O$.ColumnMenu._menuFixer = null;
       if(this.isDefined(O$._activeElement)) {
         this._destroyNode(O$._activeElement);
       }
 
-      document._ajaxInProgressMessage._blockingLayer = null;
       window.focusedElement = undefined;
       if(window._attachedEvents) {
         window._attachedEvents.length = 0;
       }
 
       if(this.detached) {
-        this._clearAllDetachedNodes(parent);
+        if(node.nodeName == 'FORM') {
+          this._clearAllDetachedNodes(parent);
+        } else {
+          for (var i = 0; i < this.detached.length; i++) {
+            var detach = this.detached[i];
+            if (detach && this.isDefined(detach._unloadHandlers)) {
+              detach._unloadHandlers.length = 0;
+            }
+            this.detached[i] = null;
+          }
+        }
         this.detached.length = 0;
       }
 
@@ -6018,7 +6020,6 @@ if (!window.O$) {
 
       O$.Destroy._clearAllDetachedNodes(foundComponent);
       O$.Destroy._destroyEvents(foundComponent);
-      O$.unloadAllHandlersAndEvents(foundComponent);
       O$.Destroy._destroyKnownEventHandlers(foundComponent);
       O$.Destroy._clearCachedStyles(foundComponent);
       O$.Destroy._clearUnloadableCollections(foundComponent);
@@ -6044,7 +6045,6 @@ if (!window.O$) {
         O$.unloadAllHandlersAndEvents(node);
         O$.Destroy._destroyKnownEventHandlers(node);
         O$.Destroy._clearUnloadableCollections(node);
-        jQuery(node).remove();
 
         O$.Destroy.counter ++;
       }
@@ -6054,7 +6054,7 @@ if (!window.O$) {
       for(var i = 0; i< this.detached.length; i++) {
         var detached = this.detached[i];
 
-        if (this.isDefined(detached)) {
+        if (this.isDefined(detached) && detached != parent) {
           var containsNode = detached.nodeType == 1 && jQuery(parent).has(detached).length > 0;
           var containsObject = this.isDefined(detached._tag) && jQuery(parent).has(detached._tag).length > 0;
 
@@ -6064,14 +6064,12 @@ if (!window.O$) {
               var handler = unloadHandlers[t];
               if (this.isDefined(handler)) {
                 handler();
-                jQuery(detached).remove();
               }
               unloadHandlers.splice(t, 1, detached);
             }
 
             if (containsNode) {
               O$.Destroy._destroyEvents(detached);
-              O$.Destroy._destroyKnownEventHandlers(detached);
             }
             if (this.isDefined(detached._unloadHandlers)) detached._unloadHandlers.length = 0;
           }
@@ -6087,21 +6085,16 @@ if (!window.O$) {
     },
 
     _destroyEvents: function(node){
-      if (this.isDefined(node) && node.nodeType == 1 && node.parentNode) {
-        var docFrag = document.createDocumentFragment();
-        var newNode = node.cloneNode(true);
-        docFrag.appendChild(newNode);
-        node.parentNode.replaceChild(docFrag, node);
-      }
+      O$.unloadAllHandlersAndEvents(node);
     },
 
     _destroyKnownEventHandlers: function(component){
       var events = ["onblur", "onkeyup", "onkeydown", "onkeypress",
-        "onfocus", "onscroll", "onmouseover", "onmousemove", "onclick", "ondragstart", "ondragend"];
+        "onfocus", "onscroll", "onmouseover", "onmousemove", "onclick"];
 
       for(var i=0; i < events.length; i ++){
         var eventName = events[i];
-        if(this.isDefined(component[eventName])) {
+        if(component.hasOwnProperty(eventName) && this.isDefined(component[eventName])) {
           component[eventName] = null;
         }
       }
@@ -6115,15 +6108,12 @@ if (!window.O$) {
         for (var i = 0; i < length; i++) {
           var name = ownPropertyNames[i];
           var property = component[name];
-          if (typeof property == 'object') {
-            component[name] = undefined;
-          } else if(typeof property == 'string') {
+          if(typeof property == 'string') {
             component[name] = '';
           } else if(Array.isArray(property)) {
             component[name].splice(0, property.length);
-          } else {
-            component[name] = null;
           }
+          //else ignore
         }
       }
     },

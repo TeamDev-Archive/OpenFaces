@@ -2188,16 +2188,6 @@ O$.Table = {
           O$.logError("O$.Table._initSelection: row click handler already initialized");
         rowNode._originalClickHandler = rowNode.onclick;
         rowNode.onclick = O$.Table._row_handleSelectionOnClick;
-
-        O$.Destroy.init(rowNode, function(){
-          O$.Destroy._clearProperties(rowNode);
-          O$.Destroy._destroyEvents(rowNode);
-        });
-      });
-
-      O$.Destroy.init(row, function(){
-        O$.Destroy._clearProperties(row);
-        O$.Destroy._destroyEvents(row);
       });
     }
     var cells = row._cells;
@@ -2375,11 +2365,7 @@ O$.Table = {
 
     O$.Destroy.init(table, function(){
       O$.Destroy._destroyEvents(checkBox);
-    });
-    O$.Destroy.init(table, function(){
       O$.Destroy._destroyEvents(cell);
-    });
-    O$.Destroy.init(table, function(){
       O$.Destroy._clear(row._cellsByColumns);
     });
   },
@@ -3211,12 +3197,11 @@ O$.Table = {
             O$.Destroy.init(scrollingDiv, function(){
               if(!table || !scrollingDiv) return;
 
-              table.body._centerScrollingArea._scrollingDiv = undefined;
-              table.body._centerScrollingArea = undefined;
+              jQuery(table.body._centerScrollingArea._scrollingDiv).remove();
+              jQuery(table.body._centerScrollingArea).remove();
               O$.Destroy._destroyEvents(table.body);
               scrollingDiv.scrollLeft = undefined;
               scrollingDiv.scrollTop = undefined;
-              scrollingDiv = undefined;
             });
           },
           setTop:function (top) {
@@ -3307,10 +3292,8 @@ O$.Table = {
         O$.Destroy.init(column, function(){
           jQuery(column._resizeHandle).remove();
           O$.Destroy._clearProperties(column._resizeHandle);
-          column._resizeHandle = undefined;
 
           jQuery(resizeHandle).remove();
-          resizeHandle = undefined;
         })
       });
 
@@ -3455,11 +3438,8 @@ O$.Table = {
 
       O$.Destroy.init(table, function(){
         jQuery(headerScroller).remove();
-        jQuery(headerScroller).empty();
         jQuery(leftAutoScrollArea).remove();
-        jQuery(leftAutoScrollArea).empty();
         jQuery(rightAutoScrollArea).remove();
-        jQuery(rightAutoScrollArea).empty();
 
         O$.Destroy._clearProperties(additionalAreaContainer);
         O$.Destroy._clearProperties(leftAutoScrollArea);
@@ -3502,9 +3482,6 @@ O$.Table = {
           jQuery(bottomImage).remove();
           jQuery(topImage).remove();
           jQuery(dropTarget).remove();
-          O$.Destroy._clearProperties(topImage);
-          O$.Destroy._clearProperties(bottomImage);
-          O$.Destroy._clearProperties(dropTarget);
         });
         return dropTarget;
       }();
@@ -3883,7 +3860,6 @@ O$.Table = {
               }
               O$.Destroy.init(dropTargetMark, function(){
                 jQuery(dropTargetMark).remove();
-                dropTargetMark = undefined;
               })
             },
             acceptDraggable:function (cellHeader) {

@@ -399,18 +399,6 @@ window.OpenFaces.Ajax = {
       fireEvent("onajaxend", ajaxendEvent);
     }
 
-    function destroyMemoryLeaks() {
-      if (!(options._of_skipExecute || options._of_ajax_portions)) {
-        for (var render in parentOfReloadedComponents) {
-          var parentOfReloadedComponent = parentOfReloadedComponents[render];
-
-          if(parentOfReloadedComponent) {
-            O$.Destroy.apply(parentOfReloadedComponent, render);
-          }
-        }
-      }
-    }
-
     function eventHandler(data) {
       if (args.onevent)
         args.onevent.call(null, data);
@@ -503,13 +491,7 @@ window.OpenFaces.Ajax = {
               if (change.nodeName == "extension") {
                 processExtension(change);
               } else if(change.nodeName == "update" && change.id != "javax.faces.ViewState") {
-                var element = document.getElementById(change.id);
-                var parent = element && element.parentNode;
-
-                //setTimeout(function(){
-                  destroyMemoryLeaks(element);
-                //}, 1);
-                updateNode(element, parent, change.textContent);
+                destroyMemoryLeaks();
               }
             }
         }
@@ -529,15 +511,15 @@ window.OpenFaces.Ajax = {
       }
     }
 
-    function updateNode(element, parent, text){
-      if(parent && text) {
-        var documentFragment = document.createDocumentFragment();
+    function destroyMemoryLeaks() {
+      if (!(options._of_skipExecute || options._of_ajax_portions)) {
+        for (var render in parentOfReloadedComponents) {
+          var parentOfReloadedComponent = parentOfReloadedComponents[render];
 
-        var temp = document.createElement("div");
-        temp.innerHTML = text;
-        documentFragment.appendChild(temp.firstChild);
-
-        jQuery(element).replaceWith(jQuery(documentFragment));
+          if(parentOfReloadedComponent) {
+            O$.Destroy.apply(parentOfReloadedComponent, render);
+          }
+        }
       }
     }
 
@@ -745,10 +727,6 @@ window.OpenFaces.Ajax = {
       if (O$.Ajax._requestsInProgress > 0)
         O$.Ajax.showProgressMessage();
     }
-    //
-    //O$.Destroy.init(msg, function(){
-    //  msg._blockingLayer = null;
-    //});
   },
 
   showProgressMessage:function () {

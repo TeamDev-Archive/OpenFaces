@@ -554,9 +554,7 @@ O$.Tables = {
                 }
                 O$.Destroy.init(table, function () {
                   jQuery(scrollingDiv).remove();
-                  jQuery(scrollingDiv).empty();
                   jQuery(scrollingDivContainer).remove();
-                  jQuery(scrollingDivContainer).empty();
                 });
                 return area;
               }
@@ -1274,10 +1272,8 @@ O$.Tables = {
             }
           }
           O$.Destroy.init(parentGroup, function(){
-            if(parentGroup) {
-              O$.Destroy._clear(parentGroup.subColumn);
-              O$.Destroy._clear(columns);
-            }
+            if(parentGroup) { jQuery(parentGroup.subColumn).remove(); }
+            if(columns) columns.splice(0, columns.length);
           });
         }
 
@@ -1724,7 +1720,6 @@ O$.Tables = {
     O$.Destroy.init(column, function(){
       O$.Destroy._destroyEvents(column);
       O$.Destroy._destroyKnownEventHandlers(column);
-      O$.Destroy._clearProperties(column);
     });
   },
 
@@ -1932,10 +1927,6 @@ O$.Tables = {
         compoundColumnStyle:column._getCompoundClassName(),
         colHeaderStyle:column.header ? column.header.className : null});
     };
-
-    O$.Destroy.init(cell, function() {
-      cell._updateStyle = null;
-    })
   },
 
   _assignHeaderBoxStyle:function (headerBox, table, columnId, additionalClassName) {
@@ -2800,16 +2791,9 @@ O$.Tables = {
 
     O$.Destroy.init(table, function () {
       resizeEventListener.release();
-    });
 
-    O$.Destroy.init(table, function () {
       jQuery(table.body).remove();
-      jQuery(table.body).empty();
-    });
-
-    O$.Destroy.init(table, function () {
       O$.Destroy._destroyEvents(mainScrollingArea);
-      O$.Destroy._clearProperties(mainScrollingArea);
     });
 
     if (delayedInitFunctions.length)

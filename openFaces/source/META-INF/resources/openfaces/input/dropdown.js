@@ -194,10 +194,8 @@ O$.DropDown = {
       O$.removeEventHandler(field, "blur", handleBlur);
       O$.removeEventHandler(field, "focus", dropDown._focusHandler);
 
-      O$.Destroy._clearProperties(field);
       O$.Destroy._destroyEvents(dropDown);
       O$.Destroy._destroyKnownEventHandlers(dropDown);
-      O$.Destroy._clearProperties(dropDown);
     })
   },
 
@@ -418,7 +416,6 @@ O$.DropDown = {
       O$.Destroy._destroyKnownEventHandlers(dropDown);
       O$.Destroy._destroyKnownEventHandlers(popup);
 
-      dropDown._handleKeyPress = null;
       O$.DropDownField._keyPressHandler = null;
       window.removeEventListener("resize", resizeHandlerOnWindow);
     });

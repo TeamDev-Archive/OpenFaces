@@ -384,17 +384,17 @@ O$.PopupLayer = {
         if (popup._blockingLayer) {
           var body = document.getElementsByTagName("body")[0];
           var firstExtAnc = O$(popup.id + O$.PopupLayer.FIRST_EXTERNAL_ANCHOR_SUFFIX);
-          if (firstExtAnc) {
+          if (firstExtAnc && body.hasChildNodes()) {
             body.removeChild(firstExtAnc);
           }
           var lastExtAnc = O$(popup.id + O$.PopupLayer.LAST_EXTERNAL_ANCHOR_SUFFIX);
-          if (lastExtAnc) {
+          if (lastExtAnc && body.hasChildNodes()) {
             body.removeChild(lastExtAnc);
           }
-          if (popup._firstInternalAnchor) {
+          if (popup.parentNode && popup._firstInternalAnchor) {
             popup.removeChild(popup._firstInternalAnchor);
           }
-          if (popup._lastInternalAnchor) {
+          if (popup.parentNode && popup._lastInternalAnchor) {
             popup.removeChild(popup._lastInternalAnchor);
           }
         }
@@ -543,9 +543,7 @@ O$.PopupLayer = {
       popup._blockingLayer = blockingLayer;
 
       O$.Destroy.init(popup, function(){
-        O$.Destroy._clearProperties(popup);
-
-        jQuery(popup).empty();
+        jQuery(popup).remove();
       });
     }
 
@@ -623,14 +621,7 @@ O$.PopupLayer = {
 
 
     O$.Destroy.init(popup, function(){
-      O$.Destroy._clearProperties(popup._blockingLayer);
-      O$.Destroy._clearProperties(popup._form);
       O$.Destroy._destroyEvents(popup);
-
-      jQuery(popup._blockingLayer).remove();
-      jQuery(popup._blockingLayer).empty();
-      jQuery(popup._form).remove();
-      jQuery(popup._form).empty();
       jQuery(popup).remove();
     });
   },

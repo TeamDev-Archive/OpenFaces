@@ -108,7 +108,6 @@ O$.InputText = {
       O$.Destroy._destroyEvents(inputText);
       O$.Destroy._destroyKnownEventHandlers(inputText);
       jQuery(inputText).remove();
-      jQuery(inputText).empty();
     });
   }
 };
