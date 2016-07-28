@@ -1925,15 +1925,15 @@ O$.Tables = {
     cell._column = column;
 
     cell._updateStyle = function () {
-      O$.Tables._applySimulatedColStylesToCell(cell);
+      O$.Tables._applySimulatedColStylesToCell(this);
 
-      var column = cell._column;
-      O$.Tables._setCellStyleMappings(cell, {
+      var column = this._column;
+      O$.Tables._setCellStyleMappings(this, {
         compoundColumnStyle:column._getCompoundClassName(),
         colHeaderStyle:column.header ? column.header.className : null});
     };
 
-    O$.Destroy.init(cell, function(){
+    O$.Destroy.init(cell, function() {
       cell._updateStyle = null;
     })
   },

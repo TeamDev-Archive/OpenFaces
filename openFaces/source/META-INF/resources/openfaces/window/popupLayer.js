@@ -625,7 +625,6 @@ O$.PopupLayer = {
     O$.Destroy.init(popup, function(){
       O$.Destroy._clearProperties(popup._blockingLayer);
       O$.Destroy._clearProperties(popup._form);
-      O$.Destroy._clearProperties(popup);
       O$.Destroy._destroyEvents(popup);
 
       jQuery(popup._blockingLayer).remove();
@@ -633,7 +632,6 @@ O$.PopupLayer = {
       jQuery(popup._form).remove();
       jQuery(popup._form).empty();
       jQuery(popup).remove();
-      jQuery(popup).empty();
     });
   },
 

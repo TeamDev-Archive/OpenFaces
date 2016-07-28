@@ -991,8 +991,8 @@ O$._invokeComponentAjaxReloadEnd = function (componentId) {
       if (ajaxHandler.ajaxEnd)
         ajaxHandler.ajaxEnd.call(O$(componentId));
       ;
-    }
-  });
+    } });
+  if(O$._componentAjaxHandlers) O$._componentAjaxHandlers.splice(0, O$._componentAjaxHandlers.length);
 }
 
 O$._invokeComponentAjaxReloadStart = function (componentId) {
@@ -1003,5 +1003,6 @@ O$._invokeComponentAjaxReloadStart = function (componentId) {
         ajaxHandler.ajaxStart.call(O$(componentId));
     }
   });
-}
+  if(O$._componentAjaxHandlers) O$._componentAjaxHandlers.splice(0, O$._componentAjaxHandlers.length);
+};
 

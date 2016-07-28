@@ -2887,7 +2887,7 @@ O$.Table = {
 
       O$.setStyleMappings(colHeader, {sortableHeaderClass:sortableHeaderClass});
 
-      O$.addEventHandler(colHeader, "click", function focusedHeader () {
+      O$.addEventHandler(colHeader, "click", function () {
         if (table.isEnabledSorting()) {
           var focusField = O$(table.id + "::focused");
           if (focusField)
@@ -2913,8 +2913,6 @@ O$.Table = {
             }
           });
         }
-
-        O$.removeEventHandler(colHeader, "click", focusedHeader);
       });
 
 
@@ -2968,7 +2966,7 @@ O$.Table = {
     var thisRef = this;
     var args = arguments;
     var table = O$(tableId)
-    var visibleParent = O$.isVisibleParentRecursive(table)
+    var visibleParent = O$.isVisibleParentRecursive(table);
     O$.addLoadEvent(function () {
       if (!O$.isVisible(visibleParent) && visibleParent != null) {
         setTimeout(function () {
@@ -3228,7 +3226,7 @@ O$.Table = {
           ondragend:function () {
             table._columnResizingInProgress = false;
             //            this._column._resizeDecorator.parentNode.removeChild(this._column._resizeDecorator);
-            updateResizeHandlePositions(table);
+            updateResizeHandlePositions();
 
             var totalWidth = 0;
             var colWidths = [];
@@ -3346,7 +3344,8 @@ O$.Table = {
 
       fixWidths();
 
-      function updateResizeHandlePositions(table) {
+      //TODO:MAx.Yurin:2016.7.28 Consider to rework.
+      function updateResizeHandlePositions() {
         if (table._columns) {
           for (var i = 0, count = table._columns.length; i < count; i++) {
             var column = table._columns[i];
@@ -3357,14 +3356,16 @@ O$.Table = {
         }
       }
 
-      function mouseOverHandler(table) {
+      function mouseOverHandler() {
         if (!table._columnResizingInProgress) {
-          updateResizeHandlePositions(table);
+          updateResizeHandlePositions();
         }
+        table.removeEventListener("mouseover", mouseOverHandler)
       }
 
-      //O$.addEventHandler(window, "resize", updateResizeHandlePositions);
-      //O$.addEventHandler(table, "mouseover", mouseOverHandler);
+      window.addEventListener("resize", updateResizeHandlePositions);
+      table.addEventListener("mouseover", mouseOverHandler);
+
       if (table._params.scrolling && (O$.isExplorer6() || O$.isExplorer7())) {
         // mouseover can't be handled in these circumstances for some reason
         var updateIntervalId = setInterval(function () {
@@ -3373,7 +3374,7 @@ O$.Table = {
             return;
           }
           if (!table._columnResizingInProgress) {
-            //updateResizeHandlePositions(table);
+            updateResizeHandlePositions();
           }
         }, 1000);
       }
@@ -3381,7 +3382,7 @@ O$.Table = {
       table.onscroll = function (e) {
         if (prevOnscroll) prevOnscroll.call(table, e);
         setTimeout(function(){
-          updateResizeHandlePositions(table);
+          updateResizeHandlePositions();
         }, 10);
         if (table._params.scrolling && table._params.scrolling.autoSaveState) {
           O$.invokeFunctionAfterDelay(function () {
@@ -4913,6 +4914,7 @@ O$.ColumnMenu = {
         hideForCell:function (cell) {
           if (this._showForCell == cell)
             this.hide();
+          this._showForCell = null;
         },
         hide:function () {
           if (this.parentNode) {

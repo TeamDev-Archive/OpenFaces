@@ -101,6 +101,7 @@ O$.DropDown = {
           dropDown._promptVisible.value = false;
         }
       }
+      O$.removeEventHandler(field, "focus", dropDown._focusHandler)
     };
     O$.addEventHandler(field, "focus", dropDown._focusHandler);
 
@@ -276,9 +277,11 @@ O$.DropDown = {
       button._dropDown = dropDown;
     popup._dropDown = dropDown;
 
-    O$.addEventHandler(popup, "mousedown", function (e) {
+    function handleMouseDown (e) {
       O$.stopEvent(e);
-    });
+      O$.removeEventHandler(popup, "mousedown", handleMouseDown);
+    }
+    O$.addEventHandler(popup, "mousedown", handleMouseDown);
     dropDown._buttonClass = O$.DropDown._getClassName(buttonClass);
     if (button)
       button.className = dropDown._buttonClass;
@@ -397,16 +400,19 @@ O$.DropDown = {
     }
 
     //add function to change popup position if window is resized and layout is changed
-    O$.addEventHandler(window, "resize", function resizeHandlerOnWindow() {
+    function resizeHandlerOnWindow() {
       // drop-down can be removed from the page using Ajax, so we need to check its presence
       if (dropDown._popup && dropDown._popup.isVisible()) {
         O$.DropDown._alignPopup(dropDown, dropDown._popup);
       }
 
-      O$.removeEventHandler(window, "resize", resizeHandlerOnWindow);
-    });
+      window.removeEventListener("resize", resizeHandlerOnWindow);
+    }
 
-    O$.Destroy.init(dropDown, function(){
+    window.addEventListener("resize", resizeHandlerOnWindow);
+    //O$.addEventHandler(window, "resize", resizeHandlerOnWindow);
+
+    O$.Destroy.init(dropDown, function() {
       O$.Destroy._destroyEvents(dropDown);
       O$.Destroy._destroyEvents(popup);
       O$.Destroy._destroyKnownEventHandlers(dropDown);
@@ -414,6 +420,7 @@ O$.DropDown = {
 
       dropDown._handleKeyPress = null;
       O$.DropDownField._keyPressHandler = null;
+      window.removeEventListener("resize", resizeHandlerOnWindow);
     });
   },
 

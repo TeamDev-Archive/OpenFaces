@@ -535,7 +535,9 @@ O$.Window = {
   _removeResizers: function(win) {
     if (win._resizers) {
       win._resizers.forEach(function (r) {
-        r.parentNode.removeChild(r);
+        if (O$.Destroy.isDefined(r.parentNode)) {
+          r.parentNode.removeChild(r);
+        }
       });
       win._resizers.splice(0, win._resizers.length);
     }
