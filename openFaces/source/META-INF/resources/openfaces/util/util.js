@@ -4388,11 +4388,10 @@ if (!window.O$) {
    See also: O$.setElementBorderRectangle, O$.getElementPos, O$.setElementPos.
    */
   O$.getElementBorderRectangle = function (element, relativeToContainingBlock, cachedDataContainer) {
-    var elementRectangle = element._of_getElementRectangle;
+    var elementRectangle;
     if (cachedDataContainer) {
-      if (!elementRectangle) {
-        elementRectangle = {};
-      }
+      element._of_getElementRectangle = element._of_getElementRectangle || {};
+      elementRectangle = element._of_getElementRectangle;
       if (elementRectangle._currentCache == cachedDataContainer)
         return elementRectangle._cachedValue;
     }
