@@ -186,19 +186,19 @@ O$._initSidePanel_events = function (sidePanel, events) {
   O$.addEventHandler(sidePanel._splitter, "mousedown", O$._splitterMouseDown, false);
   O$.addEventHandler(sidePanel._splitter, "click", O$._splitterMouseClick, false);
   sidePanel.resize = function (newSize) {
-    O$.resizeSidePanel(sidePanel.id, newSize);
+    O$.resizeSidePanel(this.id, newSize);
   };
   sidePanel.collapse = function () {
-    O$.collapseSidePanel(sidePanel.id);
+    O$.collapseSidePanel(this.id);
   };
   sidePanel.restore = function () {
-    O$.restoreSidePanel(sidePanel.id);
+    O$.restoreSidePanel(this.id);
   };
   sidePanel.maximize = function () {
-    O$.maximizeSidePanel(sidePanel.id);
+    O$.maximizeSidePanel(this.id);
   };
   sidePanel.refresh = function () {
-    O$.refreshSidePanel(sidePanel.id);
+    O$.refreshSidePanel(this.id);
   };
   O$._applyEventsObjectToElement(events, sidePanel);
   O$._subscribeToOnresizeEvent(sidePanel, sidePanel.refresh);

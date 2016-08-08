@@ -99,15 +99,15 @@ O$._initBorderLayoutPanel_content = function (borderLayoutPanelId, rolloverClass
         O$._repaintBorderLayoutPanel(borderLayoutPanel);
       };
       sidePanel._forBorderLayoutPanel.oncollapse = sidePanel.oncollapse;
-      sidePanel.oncollapse = function (sidePanel) {
-        if (sidePanel._forBorderLayoutPanel.oncollapse)
-          sidePanel._forBorderLayoutPanel.oncollapse(sidePanel);
+      sidePanel.oncollapse = function () {
+        if (this._forBorderLayoutPanel.oncollapse)
+          this._forBorderLayoutPanel.oncollapse(this);
         borderLayoutPanel.refresh();
       };
       sidePanel._forBorderLayoutPanel.onrestore = sidePanel.onrestore;
-      sidePanel.onrestore = function (sidePanel) {
-        if (sidePanel._forBorderLayoutPanel.onrestore)
-          sidePanel._forBorderLayoutPanel.onrestore(sidePanel);
+      sidePanel.onrestore = function () {
+        if (this._forBorderLayoutPanel.onrestore)
+          this._forBorderLayoutPanel.onrestore(this);
         borderLayoutPanel.refresh();
       };
     }
@@ -120,6 +120,10 @@ O$._initBorderLayoutPanel_content = function (borderLayoutPanelId, rolloverClass
     }, 1);
   O$._applyEventsObjectToElement(events, borderLayoutPanel);
   setTimeout(O$._refreshLaterIfInvisible, 1000, borderLayoutPanel, true);
+
+  O$.Destroy.init(borderLayoutPanel, function(){
+    O$.Destroy._destroyEvents(borderLayoutPanel);
+  });
 };
 
 //--------------------------------------  private functions
