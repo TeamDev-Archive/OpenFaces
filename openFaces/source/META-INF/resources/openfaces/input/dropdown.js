@@ -407,7 +407,8 @@ O$.DropDown = {
       window.removeEventListener("resize", resizeHandlerOnWindow);
     }
 
-    window.addEventListener("resize", resizeHandlerOnWindow);
+    jQuery(window).unbind("resize.screen").bind("resize.screen", resizeHandlerOnWindow)
+    //window.addEventListener("resize", resizeHandlerOnWindow);
     //O$.addEventHandler(window, "resize", resizeHandlerOnWindow);
 
     O$.Destroy.init(dropDown, function() {
@@ -416,8 +417,7 @@ O$.DropDown = {
       O$.Destroy._destroyKnownEventHandlers(dropDown);
       O$.Destroy._destroyKnownEventHandlers(popup);
 
-      O$.DropDownField._keyPressHandler = null;
-      window.removeEventListener("resize", resizeHandlerOnWindow);
+      jQuery(window).unbind("resize.screen");
     });
   },
 
