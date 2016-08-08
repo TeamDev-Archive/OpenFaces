@@ -1644,11 +1644,13 @@ if (!window.O$) {
 
         handlerFunction = wrapHandlerFunction(handlerFunction);
       }
+
+      var cloneHandlerFunction = jQuery.extend({}, handlerFunction);
       var eventName = propertyName.substring(eventPrefix.length);
       if (useEventFields)
-        element[propertyName] = handlerFunction;
+        element[propertyName] = cloneHandlerFunction;
       else
-        O$.addEventHandler(element, eventName, handlerFunction);
+        O$.addEventHandler(element, eventName, cloneHandlerFunction);
     }
   };
 
@@ -2205,6 +2207,7 @@ if (!window.O$) {
   };
 
   O$.setupFocusOnTags = function (parent, tagName) {
+    var $this = this;
     var elements = parent.getElementsByTagName(tagName);
     for (var i = 0; i < elements.length; i++) {
       var element = elements[i];
@@ -2213,34 +2216,31 @@ if (!window.O$) {
         continue;
       element._ofUtil_focusTrackerInstalled = true;
       element._of_prevOnFocusHandler = element.onfocus;
-      element.onfocus = function (e) {
-        O$._activeElement = this;
-        O$._focusField.value = this.id;
-        if (this._of_prevOnFocusHandler) {
-          this._of_prevOnFocusHandler(e);
-          this._of_prevOnFocusHandler = null;  // set to null intentionally, because of memory leak with this field
+      jQuery(element).unbind("focus.common").bind("focus.common", function (e) {
+        O$._activeElement = $this;
+        O$._focusField.value = $this.id;
+        if ($this._of_prevOnFocusHandler) {
+          $this._of_prevOnFocusHandler(e);
+          $this._of_prevOnFocusHandler = null;  // set to null intentionally, because of memory leak with this field
         }
         if (O$.onfocuschange)
           O$.onfocuschange(e);
-      };
+      });
+
       element._of_prevOnBlurHandler = element.onblur;
-      element.onblur = function (e) {
-        if (O$._activeElement == this) {
+
+      jQuery(element).unbind("blur.common").bind("blur.common", function (e) {
+        if (O$._activeElement == $this) {
           O$._activeElement = null;
           O$._focusField.value = "";
         }
-        if (this._of_prevOnBlurHandler) {
-          this._of_prevOnBlurHandler(e);
-          this._of_prevOnBlurHandler = null; // set to null intentionally, because of memory leak with this field
+        if ($this._of_prevOnBlurHandler) {
+          $this._of_prevOnBlurHandler(e);
+          $this._of_prevOnBlurHandler = null; // set to null intentionally, because of memory leak with this field
         }
         if (O$.onfocuschange)
           O$.onfocuschange(e);
-
-        O$.Destroy.init(element, function(){
-          this._of_prevOnBlurHandler = null;
-          element._of_prevOnBlurHandler = null;
-        });
-      };
+      });
     }
 
   };
@@ -2495,12 +2495,12 @@ if (!window.O$) {
         });
       };
       element.setForceHover = function (forceHover) {
-        element._of_hoverState.forceHover = forceHover;
-        element._updateHover();
+        this._of_hoverState.forceHover = forceHover;
+        this._updateHover();
       };
       O$.setupHoverStateFunction_(element, function (mouseInside) {
-        element._of_hoverState.mouseInside = mouseInside;
-        element._updateHover();
+        this._of_hoverState.mouseInside = mouseInside;
+        this._updateHover();
       });
     }
     element._hoverListeners.push(fn);
@@ -2516,20 +2516,20 @@ if (!window.O$) {
   };
 
   O$.setupFocusedStateFunction = function (element, fn) {
-    O$.addEventHandler(element, "focus", function () {
+    jQuery(element).unbind("focus.setupState").bind("focus.setupState", function () {
       fn.call(element, true, element);
     });
-    O$.addEventHandler(element, "blur", function () {
+    jQuery(element).unbind("blur.setupState").bind("blur.setupState", function () {
       fn.call(element, false, element);
     });
   };
 
 
   O$.setupMousePressedStateFunction = function (element, fn) {
-    O$.addEventHandler(element, "mousedown", function () {
+    jQuery(element).unbind("mousedown.setupState").bind("mousedown.setupState", function () {
       fn.call(element, true, element);
     });
-    O$.addEventHandler(element, "mouseup", function () {
+    jQuery(element).unbind("mouseup.setupState").bind("mouseup.setupState", function () {
       fn.call(element, false, element);
     });
   };
@@ -2839,7 +2839,9 @@ if (!window.O$) {
         draggable._dragEl._onresizing();
       }
 
-      O$.Popup.__hideAllOpenedPanels();
+      if (O$.Popup) {
+        O$.Popup.__hideAllOpenedPanels();
+      }
       O$.cancelEvent(evt);
     }
 
@@ -3051,32 +3053,37 @@ if (!window.O$) {
           }
         }
         this._updateOutline();
-      },
-      onfocus:function (evt) {
-        if (this._submitting)
-          return;
-        this._focused = true;
-        if (prevOnfocusHandler && !this._outlineUpdateBlocked)
-          prevOnfocusHandler.call(this, evt);
-
-        component._updateOutline();
-      },
-      onblur:function (evt) {
-        if (this._submitting)
-          return;
-        this._focused = false;
-        if (prevOnblurHandler && !this._outlineUpdateBlocked)
-          prevOnblurHandler.call(this, evt);
-        if (!O$.isMozillaFF()) {
-          setTimeout(function () {
-            component._updateOutline();
-          }, 1);
-        } else {
-          component._updateOutline();
-        }
       }
-
     });
+
+    function focusEventHandler (evt) {
+      var $this = evt.target;
+
+      if ($this._submitting)
+        return;
+      $this._focused = true;
+      if (prevOnfocusHandler && !$this._outlineUpdateBlocked)
+        prevOnfocusHandler.call($this, evt);
+
+      $this._updateOutline();
+    }
+
+    function blurEventHandler (evt) {
+      var $this = evt.target;
+
+      if ($this._submitting)
+        return;
+      $this._focused = false;
+      if (prevOnblurHandler && !$this._outlineUpdateBlocked)
+        prevOnblurHandler.call($this, evt);
+      if (!O$.isMozillaFF()) {
+        setTimeout(function () {
+          $this._updateOutline();
+        }, 1);
+      } else {
+        $this._updateOutline();
+      }
+    }
 
     var focusControl = O$.createHiddenFocusElement(component.id, tabIndex);
 
@@ -3089,25 +3096,27 @@ if (!window.O$) {
         return object[eventName](param);
     }
 
+    var $this = this;
     focusControl._destComponent = component;
-    focusControl.onfocus = function (evt) {
-      this._prevStatusText = window.status;
+
+    jQuery(focusControl).unbind("focus.artificialFocus").bind("focus.artificialFocus", function (evt) {
+      $this._prevStatusText = window.status;
       window.status = "";
       return fireEvent(this._destComponent, "onfocus", evt);
-    };
-    focusControl.onblur = function (evt) {
-      window.status = this._prevStatusText;
+    });
+    jQuery(focusControl).unbind("blur.artificialFocus").bind("blur.artificialFocus", function (evt) {
+      window.status = $this._prevStatusText;
       return fireEvent(this._destComponent, "onblur", evt);
-    };
-    focusControl.onkeydown = function (evt) {
+    });
+    jQuery(focusControl).unbind("keydown.artificialFocus").bind("keydown.artificialFocus",  function (evt) {
       return fireEvent(this._destComponent, "onkeydown", evt);
-    };
-    focusControl.onkeyup = function (evt) {
+    });
+    jQuery(focusControl).unbind("keyup.artificialFocus").bind("keyup.artificialFocus", function (evt) {
       return fireEvent(this._destComponent, "onkeyup", evt);
-    };
-    focusControl.onkeypress = function (evt) {
+    });
+    jQuery(focusControl).unbind("keypress.artificialFocus").bind("keypress.artificialFocus", function (evt) {
       return fireEvent(this._destComponent, "onkeypress", evt);
-    };
+    });
 
     component._focusControl = focusControl;
 
@@ -3150,7 +3159,7 @@ if (!window.O$) {
       this._focusControl.blur();
     };
 
-    O$.addEventHandler(component, "click", function clickEventHandler (evt) {
+    function clickEventHandler(evt) {
       var selectedText = window.getSelection
               ? window.getSelection() :
               (document.selection && document.selection.createRange) ? document.selection.createRange().text : "";
@@ -3172,9 +3181,7 @@ if (!window.O$) {
       component._preventPageScrolling = true;
       component.focus(e);
       component._preventPageScrolling = false;
-
-      O$.removeEventHandler(component, "mouseout", clickEventHandler);
-    });
+    }
 
     function blockOutlineUpdate() {
       component._outlineUpdateBlocked = true;
@@ -3198,16 +3205,26 @@ if (!window.O$) {
       }
     }
 
-    O$.addEventHandler(component, "mousedown", blockOutlineUpdate);
-    O$.addEventHandler(component, "mouseup", unblockOutlineUpdate);
-    O$.addEventHandler(component, "mouseout", unblockOutlineUpdate);
+    jQuery(component)
+            .unbind('blur.artificialFocus')
+            .unbind("click.artificialFocus")
+            .unbind('focus.artificialFocus')
+            .unbind("mousedown.artificialFocus")
+            .unbind("mouseup.artificialFocus")
+            .unbind("mouseout.artificialFocus")
+
+            .bind('blur.artificialFocus', blurEventHandler)
+            .bind("click.artificialFocus", clickEventHandler)
+            .bind('focus.artificialFocus', focusEventHandler)
+            .bind("mousedown.artificialFocus", blockOutlineUpdate)
+            .bind("mouseup.artificialFocus", unblockOutlineUpdate)
+            .bind("mouseout.artificialFocus", unblockOutlineUpdate);
 
     component.parentNode.insertBefore(focusControl, component);
 
     O$.Destroy.init(component, function(){
-      O$.removeEventHandler(component, "mouseup", unblockOutlineUpdate);
-      O$.removeEventHandler(component, "mousedown", blockOutlineUpdate);
-      O$.removeEventHandler(component, "mouseout", unblockOutlineUpdate);
+      jQuery(component).unbind();
+      jQuery(focusControl).unbind();
     })
   };
 
@@ -5907,7 +5924,7 @@ if (!window.O$) {
     detached: [],
     counter: 0,
 
-    init: function(component, func){
+    init: function(component, func) {
       if(!component) {
         return;
       }
@@ -5928,24 +5945,20 @@ if (!window.O$) {
 
     apply: function (parent, renderId) {
       var node = this._findNode(parent, renderId);
-      var componentIndex = this.detached.indexOf(node);
 
       if(node) {
         this._destroyNode(node);
-        this._removeFromList(node, componentIndex);
       } else {
         for (var i = 0; i < parent.childNodes.length; i++) {
-          componentIndex = this.detached.indexOf(node);
+          var componentIndex = this.detached.indexOf(node);
           if (componentIndex != -1) {
             this._destroyNode(node);
-            this._removeFromList(node, componentIndex);
             return;
           }
         }
       }
 
-      //TEST_ME:16.7.28:Max.Yurin: Needs to check and fix.
-      //this._clearTable(node);
+      this._clearTable(node);
       if(O$.ColumnMenu) O$.ColumnMenu._menuFixer = null;
       if(this.isDefined(O$._activeElement)) {
         this._destroyNode(O$._activeElement);
@@ -5957,21 +5970,15 @@ if (!window.O$) {
       }
 
       if(this.detached) {
-        if(node.nodeName == 'FORM') {
-          this._clearAllDetachedNodes(parent);
-        } else {
-          for (var i = 0; i < this.detached.length; i++) {
-            var detach = this.detached[i];
-            if (detach && this.isDefined(detach._unloadHandlers)) {
-              detach._unloadHandlers.length = 0;
-            }
-            this.detached[i] = null;
-          }
-        }
+        this._clearAllDetachedNodes(parent);
         this.detached.length = 0;
       }
 
       O$._elementUnderMouse = undefined;
+
+      jQuery.cleanData(node);
+      jQuery(node).unbind();
+      jQuery(parent).unbind();
       jQuery(document).unbind();
       jQuery(window).unbind();
     },
@@ -5991,42 +5998,20 @@ if (!window.O$) {
       return parent;  //Just in case when parent doesn't have children
     },
 
-    _removeFromList: function(node, index) {
-      if(!index){
-        index = this.detached.indexOf(node);
-        index = index == -1 && node.parentNode ? this.detached.indexOf(node.parentNode) : index;
-      }
-
-      if(index != -1) {
-        this.detached.splice(index, 1, node);
-      }
-    },
-
-    _destroyObject: function(obj){
-      if(!this.isDefined(obj)) return;
-
-      O$.Destroy._clearAttributes(obj);
-      O$.Destroy._clearProperties(obj);
-      O$.Destroy._clearUnloadableCollections(obj);
-
-      O$.Destroy.counter ++;
-    },
-
     _destroyNode: function(foundComponent){
       if(!this.isDefined(foundComponent) || !foundComponent.nodeType) return;
-
-      this._destroyChildren(foundComponent);
-
+      O$.Destroy._destroyJQueryCache(foundComponent);
       O$.Destroy._clearAllDetachedNodes(foundComponent);
       O$.Destroy._destroyEvents(foundComponent);
       O$.Destroy._destroyKnownEventHandlers(foundComponent);
       O$.Destroy._clearCachedStyles(foundComponent);
       O$.Destroy._clearUnloadableCollections(foundComponent);
 
+      this._destroyChildren(foundComponent);
       O$.Destroy.counter ++;
     },
 
-    _destroyChildren: function (component) {
+    _destroyChildren: function (component, removeAllChildren) {
       if(!this.isDefined(component)) return;
 
       allDescendants(component);
@@ -6035,46 +6020,85 @@ if (!window.O$) {
         for (var i = 0; i < node.childNodes.length; i++) {
           var child = node.childNodes[i];
           allDescendants(child);
-          clear(child);
+          clear(child, removeAllChildren);
         }
       }
-      function clear(node) {
+      function clear(node, removeAllChildren) {
+        if (node._cells) {
+          while (node._cells.length > 0) {
+            clear(node._cells[0], true);
+          }
+        }
 
+        if (node._row) {
+          if(O$.Destroy.isDefined(node._row._rowNode)) {
+            node._row._rowNode._row = undefined;
+          }
+
+          node._row = undefined;
+        }
+        node._column = undefined;
+        node._table = undefined;
+        node._section = undefined;
+        node._updateStyle = undefined;
+        node._updateHover = undefined;
+        node._setAsCursor = undefined;
+        node._cellsByColumns = undefined;
+
+        jQuery(node).unbind();
+        jQuery.cleanData(node);
+        O$.Destroy._destroyEvents(node);
         O$.Destroy._clearCachedStyles(node);
-        O$.unloadAllHandlersAndEvents(node);
         O$.Destroy._destroyKnownEventHandlers(node);
         O$.Destroy._clearUnloadableCollections(node);
+
+        if(removeAllChildren || node.nodeName == "#text") {
+          jQuery(node).remove();
+        }
 
         O$.Destroy.counter ++;
       }
   },
 
+    _isChild: function(node, parent){
+      return this._isContainsNode(node, parent)
+              || this.isDefined(node._tag) && jQuery(parent).has(node._tag).length > 0
+              || this.isDefined(node._table) && node._table == parent;
+    },
+
+    _isContainsNode: function(node, parent) {
+      return node.nodeType == 1 && jQuery(parent).has(node).length > 0;
+    },
+
     _clearAllDetachedNodes: function(parent){
       for(var i = 0; i< this.detached.length; i++) {
         var detached = this.detached[i];
 
-        if (this.isDefined(detached) && detached != parent) {
-          var containsNode = detached.nodeType == 1 && jQuery(parent).has(detached).length > 0;
-          var containsObject = this.isDefined(detached._tag) && jQuery(parent).has(detached._tag).length > 0;
-
-          var unloadHandlers = detached._unloadHandlers;
-          if ((containsNode || containsObject) && this.isDefined(unloadHandlers)) {
-            for (var t = 0; t < unloadHandlers.length; t++) {
-              var handler = unloadHandlers[t];
-              if (this.isDefined(handler)) {
-                handler();
-              }
-              unloadHandlers.splice(t, 1, detached);
-            }
-
-            if (containsNode) {
-              O$.Destroy._destroyEvents(detached);
-            }
-            if (this.isDefined(detached._unloadHandlers)) detached._unloadHandlers.length = 0;
+        if (this.isDefined(detached)) {
+          if((detached == parent || this._isChild(detached, parent))
+                  && this.isDefined(unloadHandlers)) {
+            unloadHandlers(detached);
+            O$.Destroy._destroyEvents(detached);
+          }
+          if(detached._unloadHandlers) {
+            detached._unloadHandlers.splice(0, detached._unloadHandlers.length);
           }
         }
       }
       this.detached.splice(0, this.detached.length);
+
+      function unloadHandlers(detached) {
+        var unloadHandlers = detached._unloadHandlers;
+          for (var t = 0; t < unloadHandlers.length; t++) {
+            var handler = unloadHandlers[t];
+            if (O$.Destroy.isDefined(handler)) {
+              handler();
+            }
+            unloadHandlers.splice(t, 1, detached);
+          }
+
+          if (O$.Destroy.isDefined(detached._unloadHandlers)) detached._unloadHandlers.length = 0;
+      }
     },
 
     _clearTable:function(component) {
@@ -6084,7 +6108,10 @@ if (!window.O$) {
     },
 
     _destroyEvents: function(node){
-      O$.unloadAllHandlersAndEvents(node);
+      if (this.isDefined(node)) {
+        jQuery(node).unbind();
+        O$.unloadAllHandlersAndEvents(node);
+      }
     },
 
     _destroyKnownEventHandlers: function(component){
@@ -6095,6 +6122,35 @@ if (!window.O$) {
         var eventName = events[i];
         if(component.hasOwnProperty(eventName) && this.isDefined(component[eventName])) {
           component[eventName] = null;
+        }
+      }
+    },
+
+    _destroyJQueryCache: function (parentNode) {
+      var isForm = parentNode && parentNode.nodeName == "FORM";
+
+      for (var key in jQuery.cache) {
+        var cacheObj = jQuery.cache[key];
+
+        var element = this.isDefined(cacheObj) && this.isDefined(cacheObj.handle) && cacheObj.handle.elem;
+        var isNodeExists = element && (element == parentNode || this._isChild(element, parentNode));
+
+        if ((isForm || isNodeExists) && "events" in cacheObj) {
+          var events = cacheObj.events;
+
+          for (var event in events) {
+            var eventObjects = events[event];
+
+            for (var i = 0; i < eventObjects.length; ++i) {
+              var eventObject = eventObjects[i];
+              var namespace = eventObject.namespace;
+              var handler = eventObject.handler;
+
+              if (namespace && handler) {
+                jQuery.event.remove(element, "." + namespace, handler);
+              }
+            }
+          }
         }
       }
     },
