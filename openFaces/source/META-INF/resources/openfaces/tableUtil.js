@@ -553,8 +553,12 @@ O$.Tables = {
                   }
                 }
                 O$.Destroy.init(table, function () {
-                  jQuery(scrollingDiv).remove();
-                  jQuery(scrollingDivContainer).remove();
+                  if (scrollingDiv) {
+                    jQuery.cleanData(scrollingDiv);
+                  }
+                  if(scrollingDivContainer) {
+                    jQuery.cleanData(scrollingDivContainer);
+                  }
                 });
                 return area;
               }
@@ -691,6 +695,9 @@ O$.Tables = {
             removeRow(row._leftRowNode);
             removeRow(row._rowNode);
             removeRow(row._rightRowNode);
+
+            rows[r]._rowNode = undefined;
+            rows[r] = {};
 
             function removeRow(row) {
               if (row) row.parentNode.removeChild(row);
@@ -1035,7 +1042,7 @@ O$.Tables = {
       var cell = this._cellsByColumns[index];
       return cell ? cell : null;
     };
-    row._removeColumn = function (column) {
+    /*row._removeColumn = function (column) {
       var colIndex = column._index;
       var cellsByColumns = row._cellsByColumns;
       var cell = cellsByColumns[colIndex];
@@ -1053,12 +1060,11 @@ O$.Tables = {
         cell.colSpan = cell._colSpan;
       }
       for (var i = colIndex + 1, count = cellsByColumns.length; i < count; i++) {
-        var shiftedCell = cellsByColumns[i];
-        cellsByColumns[i - 1] = shiftedCell;
+        cellsByColumns[i - 1] = cellsByColumns[i];
       }
       cellsByColumns[cellsByColumns.length - 1] = undefined;
       cell._row = null;
-    };
+    };*/
   },
 
   _updateCellWrappersStyleForRow:function (row) {
@@ -1368,8 +1374,7 @@ O$.Tables = {
     };
     function updateBodyCellBorders(cell, rowIndex, column, rowCount, colCount) {
       var correctedRowIndex = rowIndex + cell.rowSpan - 1;
-      var displayGridLineUnderBottomRow = !!table._params.scrolling;
-      var borderBottom = (correctedRowIndex < (displayGridLineUnderBottomRow ? rowCount : rowCount - 1))
+      var borderBottom = (correctedRowIndex < (!!table._params.scrolling ? rowCount : rowCount - 1))
               ? tableBody._getBorderBottomForCell(rowIndex, column._index, cell)
               : "0px none white";
       O$.Tables._setCellStyleCapitalizedProperty(cell, "borderBottom", borderBottom);
@@ -1718,8 +1723,28 @@ O$.Tables = {
     };
 
     O$.Destroy.init(column, function(){
+      if (column.header) {
+        jQuery.cleanData(column.header._cell);
+
+        column.header._cell._column = {};
+        if(column.header._cell._cells) column.header._cell._cells.length = 0;
+        if(column.header._cell._row) column.header._cell._row._cellsByColumns.length = 0;
+        column.header._cell._row = {};
+      }
+
       O$.Destroy._destroyEvents(column);
       O$.Destroy._destroyKnownEventHandlers(column);
+
+      if (column._resizeHandle) {
+        jQuery.cleanData(column._resizeHandle);
+        jQuery(column._resizeHandle).remove();
+        column._resizeHandle._dragEl = {};
+
+        if (column._resizeHandle._column) {
+          column._resizeHandle._column._resizeHandle = undefined;
+          column._resizeHandle = undefined;
+        }
+      }
     });
   },
 
@@ -1907,7 +1932,7 @@ O$.Tables = {
         var cell = this.body._cells[idx];
         if (!cell || cell.colSpan > 1)
           continue;
-        return cell.offsetWidth;
+        return this.body._cells[idx].offsetWidth;
       }
       if (this.footer && this.footer._cell)
         return this.footer._cell.offsetWidth;
@@ -1983,13 +2008,14 @@ O$.Tables = {
     cell._column = column;
 
     cell._setAsCursor = function (forceUpdate) {
-      var row = cell._row;
+      var $this = this;
+      var row = $this._row;
       var table = O$(row._tableId);
       if (table._cursor != null || forceUpdate) {
-        function addCursorForCell(cell) {
+        (function addCursorForCell() {
           //if not already a cursor
-          if (table._cursorCell != cell || forceUpdate) {
-            var rect = O$.getElementPaddingRectangle(cell, true);
+          if (table._cursorCell != $this || forceUpdate) {
+            var rect = O$.getElementPaddingRectangle($this, true);
 
             function setPartRectangle(partOfCursor, isVertical) {
               O$.setElementBorderRectangle(partOfCursor, rect);
@@ -2020,16 +2046,14 @@ O$.Tables = {
               table._cursorCell.removeChild(table._cursor.right);
               table._cursorCell.removeChild(table._cursor.bottom);
             }
-            O$.setStyleMappings(cell, {stdCssClass:table._cursorStyle});
-            cell.appendChild(table._cursor.top);
-            cell.appendChild(table._cursor.left);
-            cell.appendChild(table._cursor.right);
-            cell.appendChild(table._cursor.bottom);
-            table._cursorCell = cell;
+            O$.setStyleMappings($this, {stdCssClass:table._cursorStyle});
+            $this.appendChild(table._cursor.top);
+            $this.appendChild(table._cursor.left);
+            $this.appendChild(table._cursor.right);
+            $this.appendChild(table._cursor.bottom);
+            table._cursorCell = $this;
           }
-        }
-
-        addCursorForCell(cell);
+        })();
       }
     };
 
@@ -2364,15 +2388,15 @@ O$.Tables = {
     }
 
   },
-
-  _removeTableColumn:function (column) {
-    var table = column._table;
-    var bodyRows = table.body._getRows();
-    for (var i = 0, count = bodyRows.length; i < count; i++) {
-      var row = bodyRows[i];
-      row._removeColumn(column);
-    }
-  },
+  //
+  //_removeTableColumn:function (column) {
+  //  var table = column._table;
+  //  var bodyRows = table.body._getRows();
+  //  for (var i = 0, count = bodyRows.length; i < count; i++) {
+  //    var row = bodyRows[i];
+  //    row._removeColumn(column);
+  //  }
+  //},
 
   // -------------------------- TABLE SCROLLING
 
@@ -2504,8 +2528,9 @@ O$.Tables = {
       scrollToPosition();
     }
 
-    if (!autoVerticalScrollbar)
+    if (!autoVerticalScrollbar) {
       alignColumnWidths();
+    }
     else
       delayedInitFunctions.push(function () {
         alignColumnWidths();
@@ -2618,14 +2643,14 @@ O$.Tables = {
           area._scrollingDiv.scrollTop = mainScrollingArea._scrollingDiv.scrollTop;
         });
       };
-      mainScrollingArea._scrollingDiv.onscroll = function (e) {
+      jQuery(mainScrollingArea._scrollingDiv).unbind("scroll.mainScrollArea").bind("scroll.mainScrollArea", function (e) {
         O$.setHiddenField(table, table.id + "::scrollPos",
                 "[" + mainScrollingArea._scrollingDiv.scrollLeft + "," + mainScrollingArea._scrollingDiv.scrollTop + "]");
         table._synchronizeHorizontalAreaScrolling();
         table._synchronizeVerticalAreaScrolling();
         if (table.onscroll)
           table.onscroll(e);
-      };
+      });
       var sections = [table.header, table.footer];
       var synchronizationCorrectionInterval = setInterval(function () {
         if (!O$.isElementPresentInDocument(table)) {
@@ -2793,16 +2818,24 @@ O$.Tables = {
       resizeEventListener.release();
 
       jQuery(table.body).remove();
+
+      if(table._centerArea){
+        jQuery.cleanData(table._centerArea);
+
+        if(O$.Destroy.isDefined(table._centerArea._areas)) {table._centerArea._areas.length = 0; }
+        if(O$.Destroy.isDefined(table._centerArea._columns)) {table._centerArea._columns.length = 0;}
+      }
+
       O$.Destroy._destroyEvents(mainScrollingArea);
     });
 
-    if (delayedInitFunctions.length)
+    if (delayedInitFunctions.length) {
       O$.addLoadEvent(function () {
         delayedInitFunctions.forEach(function (func) {
           func();
         });
       });
-
+    }
   },
 
   _alignTableColumns:function (colTags, table, firstInitialization, objectForSavingParams, scrolling, scrollerWidth) {
