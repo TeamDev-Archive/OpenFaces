@@ -196,7 +196,7 @@ O$.addEventHandler(document, "mousewheel", function (e) {
   O$.Popup.__hideAllOpenedPanels();
   O$._popupsOnPage.forEach(function (popupId) {
     var popup = O$(popupId) || O$(popupId + O$.Popup.PULLED_OUT_ID_SUFFIX);
-    if (!popup || !popup.isVisible() || insidePopup(popup, evt.x, evt.y)) {
+    if (!popup || (popup.isVisible && !popup.isVisible()) || insidePopup(popup, evt.x, evt.y)) {
       return;
     }
     popup.hide();

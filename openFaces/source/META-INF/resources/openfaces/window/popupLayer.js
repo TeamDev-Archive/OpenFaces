@@ -542,9 +542,6 @@ O$.PopupLayer = {
 
       popup._blockingLayer = blockingLayer;
 
-      O$.Destroy.init(popup, function(){
-        jQuery(popup).remove();
-      });
     }
 
     popup.style.display = O$._getComputedStyleValue(O$._getComputedStyles(popup), "display");
@@ -622,7 +619,6 @@ O$.PopupLayer = {
 
     O$.Destroy.init(popup, function(){
       O$.Destroy._destroyEvents(popup);
-      jQuery(popup).remove();
     });
   },
 
