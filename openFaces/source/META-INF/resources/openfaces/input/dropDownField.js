@@ -66,6 +66,8 @@ O$.DropDownField = {
           if (itemPresentation.childNodes.length == 1) {
             itemPresentation.childNodes[0].style.borderRight = "";
           }
+        } else {
+          itemPresentation.className = removeClassFromClassName(popupTableStructureAndStyleParams.body.rowClassName, [selectedRow._addedClassName]);
         }
       },
 
@@ -489,18 +491,22 @@ O$.DropDownField = {
         var newItemPresentationContentNode = selectedItem.cloneNode(true);
         O$.removeIdsFromNode(newItemPresentationContentNode);
 
-        // Remove old values from itemPresentation field
-        while (itemPresentation.hasChildNodes()) {
-          itemPresentation.removeChild(itemPresentation.childNodes[0]);
-        }
-
         // Copy values from selected item to itemPresentation field
         // Copy all columns for _itemPresentationColumn == -1 and copy only _itemPresentationColumn-th column for other values
         if (dropDown._itemPresentationColumn == -1) {
-          while (newItemPresentationContentNode.hasChildNodes()) {
-            itemPresentation.appendChild(newItemPresentationContentNode.childNodes[0]);
+          for(var i = 0; i< itemPresentation.childNodes.length; i ++) {
+            var oldNode = itemPresentation.childNodes[i];
+            var newNode = newItemPresentationContentNode.childNodes[i];
+            newNode.className = oldNode.className;
+
+            jQuery(oldNode).replaceWith(newNode);
           }
         } else {
+          // Remove old values from itemPresentation field
+          while (itemPresentation.hasChildNodes()) {
+            itemPresentation.removeChild(itemPresentation.childNodes[0]);
+          }
+
           if (dropDown._itemPresentationColumn < newItemPresentationContentNode.childNodes.length)
             itemPresentation.appendChild(newItemPresentationContentNode.childNodes[dropDown._itemPresentationColumn]);
         }
@@ -1050,7 +1056,6 @@ O$.DropDownField = {
     };
 
     O$.Destroy.init(dropDown, function(){
-      popupTableStructureAndStyleParams = null;
       O$.Destroy._destroyEvents(dropDown);
       O$.Destroy._destroyKnownEventHandlers(dropDown);
     })
