@@ -218,95 +218,45 @@ O$.Table = {
           if (section) section._rows = [];
         });
       },
-      _cleanAll: function(){
-        [table.header, table.body, table.footer].forEach(function (section) {
-          var rows = section && section._getRows() ? section._getRows() : [];
-          rows.splice(0, rows.length);
-        });
-
+      _destroy: function(){
         if (table._params) {
           jQuery(table._params.header).remove();
-          jQuery(table._params.body).remove();
+          if (table._params.body && table._params.body.rowKeys) {
+            table._params.body.rowKeys.length = 0;
+          }
 
-          table._params.header = null;
-          table._params.footer = null;
-          table._params.body = null;
-          table._params.logicalColumns = null;
-          table._params.gridLines = null;
-          table._params.scrolling = undefined;
+          table._params.logicalColumns = [];
+          table._params.gridLines = [];
         }
 
         if(table.grouping) {
           var columnHeaderBoxes = table.grouping._columnHeaderBoxes;
           for(var group in columnHeaderBoxes) {
-            O$.Destroy._destroyChildren(columnHeaderBoxes[group]);
-            jQuery(columnHeaderBoxes[group]).remove();
             columnHeaderBoxes[group] = null;
           }
         }
         table._sectionTable = undefined;
         table._topLevelScrollingDiv = undefined;
-        table.body._removeAllRows();
+        table._columnMenuButtonTable = undefined;
+
         if(table._columns) {
-          for(var j = 0; j < table._columns.length; j++){
-            var column = table._columns[j];
-
-            O$.Destroy._clearAttributes(column);
-            column._colTags = undefined;
-            column._scrollingArea = null;
-            column._table = null;
-
-            column.body._cells = [];
-            column.onfocus = undefined;
-            column.onclick = undefined;
-            column.onblur = undefined;
-          }
-          if(table.header) {
-            table.header._removeAllRows();
-          }
-          if (table._columnMenuButtonTable ) {
-            O$.Destroy._destroyEvents(table._columnMenuButtonTable);
-          }
-          if(table._leftArea) {
-            jQuery.cleanData(table._leftArea);
-            table._leftArea = null;
-          }
-
-          if(table._rightArea) {
-            jQuery.cleanData(table._rightArea);
-            table._rightArea = null;
-          }
-
-          if (table.body._scrollingAreas) {
-            for (var c = 0; c < table.body._scrollingAreas.length; c++) {
-              table.body._scrollingAreas[c]._td = null;
-              table.body._scrollingAreas[c]._table = null;
-              table.body._scrollingAreas[c]._rowContainer = null;
-              jQuery(table.body._scrollingAreas[c]._scrollingDiv).remove();
-              jQuery(table.body._scrollingAreas[c]._scrollingDivContainer).remove();
-              table.body._scrollingAreas[c]._rows.length = 0;
-              table.body._scrollingAreas[c]._colTags.length = 0;
-
-              jQuery.cleanData(table.body._scrollingAreas[c]);
+          for(var c = 0; c < table._columns.length; c++){
+            var column = table._columns[c];
+            if(column._colTags) column._colTags.length = 0;
+            if(column.header) column.header._cell = undefined;
+            if(column.body._cells) {
+              for(var cc = 0; cc < column.body._cells.length; cc ++){
+                var cell = column.body._cells[cc];
+                if (cell) {
+                  cell._column = {};
+                  cell._row = {};
+                  jQuery.cleanData(cell);
+                  cell = undefined;
+                }
+              }
+              column.body._cells.length = 0;
             }
           }
-
-          var tags = O$(table.id + "::auxiliaryTags");
-
-          if (tags && tags.childNodes) {
-            for (var i = 0; i < tags.childNodes.length; i++) {
-              var tag = tags.childNodes[i];
-
-              O$.Destroy._destroyEvents(tag);
-              jQuery.cleanData(tag);
-              jQuery(tag).remove();
-            }
-          }
-
-          O$.Destroy._destroyEvents(table.body);
-
-          if(table._columns) table._columns = [];
-          table._sortableColumnsIds = null;
         }
 
         if(table._centerArea){
@@ -316,24 +266,78 @@ O$.Table = {
           if(O$.Destroy.isDefined(table._centerArea._columns)) { table._centerArea._columns.length = 0; }
         }
 
-        if(O$.Destroy.isDefined(table.body._centerScrollingArea)){
-          jQuery(table.body._centerScrollingArea._rowContainer).remove();
-          table.body._centerScrollingArea._colTags.length = 0;
-          table.body._centerScrollingArea._rows.length = 0;
+        clearArea(table.body._leftScrollingArea);
+        clearArea(table.body._centerScrollingArea);
+        clearArea(table.body._rightScrollingArea);
 
-          jQuery(table.body._centerScrollingArea).detach();
-          jQuery(table.body._centerScrollingArea._td).detach();
-          jQuery(table.body._centerScrollingArea._table).detach();
+        if(table.header) {
+          for(var r = 0; r < table.header._rows.length; r++) {
+            var row = table.header._rows[r];
+            if(row._cells)          row._cells.length = 0;
+            if(row._cellsByColumns) row._cellsByColumns.length = 0;
+            if(row._childRows)      row._childRows.length = 0;
+            if(row._rowNode) {
+              jQuery.cleanData(row._rowNode);
+              row._rowNode = undefined;
+            }
+            if(row._leftRowNode) {
+              jQuery.cleanData(row._leftRowNode);
+              row._leftRowNode = undefined;
+            }
+            if(row._rightRowNode) {
+              jQuery.cleanData(row._rightRowNode);
+              row._rightRowNode = undefined;
+            }
+          }
+          table.header._rows.length = 0;
 
-          jQuery.cleanData(table.body._centerScrollingArea._scrollingDiv);
-          O$.Destroy._destroyChildren(table.body._centerScrollingArea._scrollingDiv, true);
-          jQuery(table.body._centerScrollingArea._scrollingDiv).remove();
+          clearArea(table.header._leftScrollingArea);
+          clearArea(table.header._centerScrollingArea);
+          clearArea(table.header._rightScrollingArea);
+        }
 
-          jQuery.cleanData(table.body._centerScrollingArea._scrollingDivContainer);
-          O$.Destroy._destroyChildren(table.body._centerScrollingArea._scrollingDivContainer, true);
-          jQuery(table.body._centerScrollingArea._scrollingDivContainer).remove();
+        if(table.body._rows) {
+          for(var r = 0; r< table.body._rows.length; r++) {
+            var row = table.body._rows[r];
+            if(row._cells)          row._cells.length = 0;
+            if(row._cellsByColumns) row._cellsByColumns.length = 0;
+            if(row._childRows)      row._childRows.length = 0;
+            if(row._rowNode) {
+              jQuery.cleanData(row._rowNode);
+              row._rowNode = undefined;
+            }
+            if(row._leftRowNode) {
+              jQuery.cleanData(row._leftRowNode);
+              row._leftRowNode = undefined;
+            }
+            if(row._rightRowNode) {
+              jQuery.cleanData(row._rightRowNode);
+              row._rightRowNode = undefined;
+            }
+          }
+          table.body._rows.length = 0;
+        }
 
-          jQuery(table.body._centerScrollingArea._rowContainer).remove();
+        if(table._rootRows) {
+          for(var r = 0; r< table._rootRows.length; r++) {
+            var row = table._rootRows[r];
+            if(row._cells)      row._cells.length = 0;
+            if(row._cellsByColumns)      row._cellsByColumns.length = 0;
+            if(row._childRows)  row._childRows.length = 0;
+            if(row._rowNode) {
+              jQuery.cleanData(row._rowNode);
+              row._rowNode = undefined;
+            }
+            if(row._leftRowNode) {
+              jQuery.cleanData(row._leftRowNode);
+              row._leftRowNode = undefined;
+            }
+            if(row._rightRowNode) {
+              jQuery.cleanData(row._rightRowNode);
+              row._rightRowNode = undefined;
+            }
+          }
+          table._rootRows.length = 0;
         }
 
         if(table._dropTargetMark) {
@@ -342,12 +346,38 @@ O$.Table = {
         }
 
         jQuery.cleanData(table);
-        jQuery(table).unbind("mouseover");
-        O$.removeEventHandler(window, "resize", null);
         table.onfocus = undefined;
         table.onclick = undefined;
         table.onblur = undefined;
         table.onchange = undefined;
+
+        function clearArea(area) {
+          if(area && area._rows) {
+            for(var r = 0; r < area._rows.length; r ++){
+              var row = area._rows[r];
+              row._row                = undefined;
+              row._leftRowNode        = undefined;
+              row._rowMoveCallbacks   = undefined;
+              if(row._cells)          row._cells.length = 0;
+              if(row._cellsByColumns) row._cellsByColumns.length = 0;
+              area._rows[r]._rowNode  = undefined;
+              area._rows[r]           = undefined;
+            }
+
+            if(area._colTags)       area._colTags.length = 0;
+            if(area._rows)          area._rows.length = 0;
+            if(area._table)         jQuery.cleanData(area._table);
+            if(area._spacer)        jQuery.cleanData(area._spacer);
+            if(area._scrollingDiv)  jQuery.cleanData(area._scrollingDiv);
+            jQuery.cleanData(area);
+
+            //never clean scrollingDiv and scrollingDivContainer
+            area._rowContainer = undefined;
+            area._table = undefined;
+            area._spacer = undefined;
+            area._td = undefined;
+          }
+        }
       }
     });
 
@@ -1290,45 +1320,26 @@ O$.Table = {
         return true;
       }
     };
-    var $this = this;
+    var $this = table;
+    table._prevOnfocus_kn = table.onfocus;
 
     jQuery(table).bind("focus", function (e) {
-      if ($this._submitting)
+      if (table._submitting)
         return;
-      if ($this._prevOnfocus_kn)
-        $this._prevOnfocus_kn(e);
+      if (table._prevOnfocus_kn)
+        table._prevOnfocus_kn(e);
       var focusFld = O$(this.id + "::focused");
       focusFld.value = "true";
     });
 
     jQuery(table).bind("blur", function (e) {
-      if ($this._submitting)
+      if (table._submitting)
         return;
-      if ($this._prevOnblur_kn)
-        $this._prevOnblur_kn(e);
+      if (table._prevOnblur_kn)
+        table._prevOnblur_kn(e);
       var focusFld = O$(this.id + "::focused");
       focusFld.value = "false";
     });
-
-    table._prevOnfocus_kn = table.onfocus;
-    table.onfocus = function (e) {
-      if (this._submitting)
-        return;
-      if (this._prevOnfocus_kn)
-        this._prevOnfocus_kn(e);
-      var focusFld = O$(this.id + "::focused");
-      focusFld.value = "true";
-    };
-
-    table._prevOnblur_kn = table.onblur;
-    table.onblur = function (e) {
-      if (this._submitting)
-        return;
-      if (this._prevOnblur_kn)
-        this._prevOnblur_kn(e);
-      var focusFld = O$(this.id + "::focused");
-      focusFld.value = "false";
-    };
 
     var focusFld = O$(table.id + "::focused");
     if (focusFld.value == "true") {
@@ -2135,7 +2146,8 @@ O$.Table = {
             }
           });
         }
-        document.addEventListener('mouseup', function(e){
+
+        jQuery(document).bind('mouseup.tableSelection', function(e){
           table._isDragSelectionEnabled = false;
         });
       }
@@ -3070,9 +3082,13 @@ O$.Table = {
       }
 
       function getColWidths() {
-        return table._columns.map(function (col) {
-          return col.getWidth();
-        });
+        var totalWidth = [];
+
+        for (var i = 0, count = table._columns.length; i < count; i++) {
+          totalWidth += table._columns[i].getWidth();
+        }
+
+        return totalWidth;
       }
 
       table._columns.forEach(function (col) {
@@ -3282,8 +3298,7 @@ O$.Table = {
             var totalWidth = 0;
             var colWidths = [];
             for (var i = 0, count = table._columns.length; i < count; i++) {
-              var col = table._columns[i];
-              var colWidth = col.getWidth();
+              var colWidth = table._columns[i].getWidth();
               colWidths[i] = colWidth + "px";
               totalWidth += colWidth;
             }
@@ -3368,10 +3383,6 @@ O$.Table = {
         if (table._params.scrolling) return;
         var colWidths = getColWidths();
         table.style.tableLayout = "fixed";
-
-        //        if (!table._params.scrolling)
-        //          O$.Tables._alignTableColumns(table._columns.map(function(c) {return c._colTags[0];}), table, true, null,
-        //                  table._params.scrolling, 0);
 
         if (!table._params.scrolling)
           table.style.width = "auto";

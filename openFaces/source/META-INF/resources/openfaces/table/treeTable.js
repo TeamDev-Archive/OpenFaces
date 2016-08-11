@@ -205,7 +205,7 @@ O$.TreeTable = {
         var rows = this.body._getRows();
         for (var rowIndex = 0, rowCount = rows.length; rowIndex < rowCount; rowIndex++) {
           var row = rows[rowIndex];
-          var expanded = row._expandedForStateField !== undefined ? row._expandedForStateField : row._isExpanded();
+          var expanded = row._expandedForStateField || row._isExpanded();
           if (!expanded) continue;
           if (expandedRowIndexes.length > 0)
             expandedRowIndexes += ",";
@@ -477,6 +477,10 @@ O$.TreeTable = {
         } else {
           table._updateRowTreeStructure();
         }
+      },
+
+      _isVisible: function(){
+        return this._visible;
       },
 
       _isExpanded: function() {

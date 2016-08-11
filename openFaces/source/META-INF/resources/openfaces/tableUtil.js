@@ -1674,9 +1674,7 @@ O$.Tables = {
     }
 
     column._getCompoundClassName = function () {
-      if (column._parentColumn)
-        return O$.combineClassNames([column.className, column._parentColumn._getCompoundClassName()]);
-      return column.className;
+      return this._parentColumn ? this.className + " " + this._parentColumn._getCompoundClassName() : this.className;
     };
 
     if (!column.body)
