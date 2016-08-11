@@ -121,7 +121,7 @@ if (!window.O$) {
           handlerFunction = handlerScript;
         else
           throw "Type of a handler script should either be a string or a function, but it was a " +
-                  (typeof handlerScript) + "; " + handlerScript;
+          (typeof handlerScript) + "; " + handlerScript;
         if (!component[eventName])
           component[eventName] = handlerFunction;
         else {
@@ -1644,13 +1644,11 @@ if (!window.O$) {
 
         handlerFunction = wrapHandlerFunction(handlerFunction);
       }
-
-      var cloneHandlerFunction = jQuery.extend({}, handlerFunction);
       var eventName = propertyName.substring(eventPrefix.length);
       if (useEventFields)
-        element[propertyName] = cloneHandlerFunction;
+        element[propertyName] = handlerFunction;
       else
-        O$.addEventHandler(element, eventName, cloneHandlerFunction);
+        O$.addEventHandler(element, eventName, handlerFunction);
     }
   };
 
@@ -2207,7 +2205,6 @@ if (!window.O$) {
   };
 
   O$.setupFocusOnTags = function (parent, tagName) {
-    var $this = this;
     var elements = parent.getElementsByTagName(tagName);
     for (var i = 0; i < elements.length; i++) {
       var element = elements[i];
@@ -2216,31 +2213,33 @@ if (!window.O$) {
         continue;
       element._ofUtil_focusTrackerInstalled = true;
       element._of_prevOnFocusHandler = element.onfocus;
-      jQuery(element).unbind("focus.common").bind("focus.common", function (e) {
-        O$._activeElement = $this;
-        O$._focusField.value = $this.id;
-        if ($this._of_prevOnFocusHandler) {
-          $this._of_prevOnFocusHandler(e);
-          $this._of_prevOnFocusHandler = null;  // set to null intentionally, because of memory leak with this field
+      element.onfocus = function (e) {
+        O$._activeElement = this;
+        O$._focusField.value = this.id;
+        if (this._of_prevOnFocusHandler) {
+          this._of_prevOnFocusHandler(e);
+          this._of_prevOnFocusHandler = null;  // set to null intentionally, because of memory leak with this field
         }
         if (O$.onfocuschange)
           O$.onfocuschange(e);
-      });
-
+      };
       element._of_prevOnBlurHandler = element.onblur;
-
-      jQuery(element).unbind("blur.common").bind("blur.common", function (e) {
-        if (O$._activeElement == $this) {
+      element.onblur = function (e) {
+        if (O$._activeElement == this) {
           O$._activeElement = null;
           O$._focusField.value = "";
         }
-        if ($this._of_prevOnBlurHandler) {
-          $this._of_prevOnBlurHandler(e);
-          $this._of_prevOnBlurHandler = null; // set to null intentionally, because of memory leak with this field
+        if (this._of_prevOnBlurHandler) {
+          this._of_prevOnBlurHandler(e);
+          this._of_prevOnBlurHandler = null; // set to null intentionally, because of memory leak with this field
         }
         if (O$.onfocuschange)
           O$.onfocuschange(e);
-      });
+
+        O$.Destroy.init(element, function(){
+          element._of_prevOnBlurHandler = null;
+        });
+      };
     }
 
   };
@@ -2504,6 +2503,16 @@ if (!window.O$) {
       });
     }
     element._hoverListeners.push(fn);
+
+    O$.Destroy.init(element, function(){
+      for(var f in element._hoverListeners) {
+        if (element._hoverListeners.hasOwnProperty(f)) {
+          element._hoverListeners[f] = undefined;
+        }
+      }
+
+      element._hoverListeners = [];
+    });
   };
 
   O$.setupHoverStateFunction_ = function (element, fn) {
@@ -2516,20 +2525,20 @@ if (!window.O$) {
   };
 
   O$.setupFocusedStateFunction = function (element, fn) {
-    jQuery(element).unbind("focus.setupState").bind("focus.setupState", function () {
+    O$.addEventHandler(element, "focus", function () {
       fn.call(element, true, element);
     });
-    jQuery(element).unbind("blur.setupState").bind("blur.setupState", function () {
+    O$.addEventHandler(element, "blur", function () {
       fn.call(element, false, element);
     });
   };
 
 
   O$.setupMousePressedStateFunction = function (element, fn) {
-    jQuery(element).unbind("mousedown.setupState").bind("mousedown.setupState", function () {
+    O$.addEventHandler(element, "mousedown", function () {
       fn.call(element, true, element);
     });
-    jQuery(element).unbind("mouseup.setupState").bind("mouseup.setupState", function () {
+    O$.addEventHandler(element, "mouseup", function () {
       fn.call(element, false, element);
     });
   };
@@ -2543,6 +2552,15 @@ if (!window.O$) {
     if (!element._of_mouseOverListeners)
       element._of_mouseOverListeners = [];
     element._of_mouseOverListeners.push(listener);
+
+    O$.Destroy.init(element, function(){
+      for(var f in element._of_mouseOverListeners) {
+        if (element._of_mouseOverListeners.hasOwnProperty(f)) {
+          element._of_mouseOverListeners[f] = undefined;
+        }
+      }
+      element._of_mouseOverListeners = [];
+    });
   };
 
   O$.addMouseOutListener = function (element, listener) {
@@ -2554,6 +2572,15 @@ if (!window.O$) {
     if (!element._of_mouseOutListeners)
       element._of_mouseOutListeners = [];
     element._of_mouseOutListeners.push(listener);
+
+    O$.Destroy.init(element, function(){
+      for(var f in element._of_mouseOutListeners) {
+        if (element._of_mouseOutListeners.hasOwnProperty(f)) {
+          element._of_mouseOutListeners[f] = undefined;
+        }
+      }
+      element._of_mouseOutListeners = [];
+    });
   };
 
   O$.isEventFromInsideOfElement = function (e, element) {
@@ -2605,12 +2632,12 @@ if (!window.O$) {
       tagName = tagName.toLowerCase();
     var elementHasItsOwnMouseBehavior =
             tagName == "input" ||
-                    tagName == "textarea" ||
-                    tagName == "select" ||
-                    tagName == "option" ||
-                    tagName == "button" ||
-                    tagName == "a" ||
-                    O$._isScrollableElement(element);
+            tagName == "textarea" ||
+            tagName == "select" ||
+            tagName == "option" ||
+            tagName == "button" ||
+            tagName == "a" ||
+            O$._isScrollableElement(element);
     if (!elementHasItsOwnMouseBehavior) {
       elementHasItsOwnMouseBehavior = function (elem) {
         while (elem) {
@@ -2795,8 +2822,8 @@ if (!window.O$) {
       var containmentCorrectedTop = getTopPosition(containingBlock, newTop);
 
       var containmentRect = draggable._containment && (!draggable._containment ||
-              draggable._containmentRole == "restrictMovement" ||
-              draggable._containmentRole == "restrictMovementAndSize")
+      draggable._containmentRole == "restrictMovement" ||
+      draggable._containmentRole == "restrictMovementAndSize")
               ? O$.getContainmentRectangle(draggable._containment, containingBlock)
               : null;
 
@@ -3006,12 +3033,12 @@ if (!window.O$) {
     tagName = tagName.toLowerCase();
     var focusable =
             (tagName == "input" && control.type != "hidden") ||
-                    tagName == "select" ||
-                    tagName == "textarea" ||
-                    tagName == "button" ||
-                    tagName == "a" ||
-                    (tagName == "span" && O$.checkClassNameUsed(control, "rich-inplace-select")) ||
-                    (tagName == "div" && O$.checkClassNameUsed(control, "rich-inplace"));
+            tagName == "select" ||
+            tagName == "textarea" ||
+            tagName == "button" ||
+            tagName == "a" ||
+            (tagName == "span" && O$.checkClassNameUsed(control, "rich-inplace-select")) ||
+            (tagName == "div" && O$.checkClassNameUsed(control, "rich-inplace"));
     if (focusable && !control.disabled)
       return true;
     while (control) {
@@ -3098,25 +3125,24 @@ if (!window.O$) {
 
     var $this = this;
     focusControl._destComponent = component;
-
-    jQuery(focusControl).unbind("focus.artificialFocus").bind("focus.artificialFocus", function (evt) {
-      $this._prevStatusText = window.status;
+    focusControl.onfocus = function (evt) {
+      this._prevStatusText = window.status;
       window.status = "";
-      return fireEvent(this._destComponent, "onfocus", evt);
-    });
-    jQuery(focusControl).unbind("blur.artificialFocus").bind("blur.artificialFocus", function (evt) {
-      window.status = $this._prevStatusText;
-      return fireEvent(this._destComponent, "onblur", evt);
-    });
-    jQuery(focusControl).unbind("keydown.artificialFocus").bind("keydown.artificialFocus",  function (evt) {
-      return fireEvent(this._destComponent, "onkeydown", evt);
-    });
-    jQuery(focusControl).unbind("keyup.artificialFocus").bind("keyup.artificialFocus", function (evt) {
-      return fireEvent(this._destComponent, "onkeyup", evt);
-    });
-    jQuery(focusControl).unbind("keypress.artificialFocus").bind("keypress.artificialFocus", function (evt) {
-      return fireEvent(this._destComponent, "onkeypress", evt);
-    });
+      return this._destComponent["onfocus"] ? this._destComponent["onfocus"](evt) : undefined;
+    };
+    focusControl.onblur = function (evt) {
+      window.status = this._prevStatusText;
+      return this._destComponent["onblur"] ? this._destComponent["onblur"](evt) : undefined;
+    };
+    focusControl.onkeydown = function (evt) {
+      return this._destComponent["onkeydown"] ? this._destComponent["onkeydown"](evt) : undefined;
+    };
+    focusControl.onkeyup = function (evt) {
+      return this._destComponent["onkeyup"] ? this._destComponent["onkeyup"](evt) : undefined;
+    };
+    focusControl.onkeypress = function (evt) {
+      return this._destComponent["onkeypress"] ? this._destComponent["onkeypress"](evt) : undefined;
+    };
 
     component._focusControl = focusControl;
 
@@ -3158,7 +3184,6 @@ if (!window.O$) {
     component.blur = function () {
       this._focusControl.blur();
     };
-
     function clickEventHandler(evt) {
       var selectedText = window.getSelection
               ? window.getSelection() :
@@ -3223,8 +3248,8 @@ if (!window.O$) {
     component.parentNode.insertBefore(focusControl, component);
 
     O$.Destroy.init(component, function(){
-      jQuery(component).unbind();
-      jQuery(focusControl).unbind();
+      O$.Destroy._destroyEvents(component);
+      O$.Destroy._destroyEvents(focusControl);
     })
   };
 
@@ -4559,7 +4584,7 @@ if (!window.O$) {
       } catch (e) {
         alert("O$._setElementWidthOrHeight error. property = " + property + "; valueParam = " + valueParam + "; value = " + value);
         throw e;
-    }
+      }
   };
 
   O$.setElementWidth = function (element, value, hundredPercentValue) {
@@ -5944,6 +5969,8 @@ if (!window.O$) {
     },
 
     apply: function (parent, renderId) {
+      //console.time("DestroyMemoryLeaks:");
+
       var node = this._findNode(parent, renderId);
 
       if(node) {
@@ -5958,7 +5985,7 @@ if (!window.O$) {
         }
       }
 
-      this._clearTable(node);
+      this._destroyComponent(node);
       if(O$.ColumnMenu) O$.ColumnMenu._menuFixer = null;
       if(this.isDefined(O$._activeElement)) {
         this._destroyNode(O$._activeElement);
@@ -5975,12 +6002,15 @@ if (!window.O$) {
       }
 
       O$._elementUnderMouse = undefined;
+      O$._loadHandlers = [];
 
       jQuery.cleanData(node);
       jQuery(node).unbind();
       jQuery(parent).unbind();
       jQuery(document).unbind();
       jQuery(window).unbind();
+
+      //console.timeEnd("DestroyMemoryLeaks:")
     },
 
     isDefined: function (obj) {
@@ -6017,44 +6047,29 @@ if (!window.O$) {
       allDescendants(component);
 
       function allDescendants (node) {
-        for (var i = 0; i < node.childNodes.length; i++) {
-          var child = node.childNodes[i];
-          allDescendants(child);
-          clear(child, removeAllChildren);
+        var element = node;
+
+        while(node.hasChildNodes()) {
+          if(element.hasChildNodes()) {
+            element = element.lastChild;
+          } else {
+            clear(element);
+
+            if (!element.parentNode) {
+              return;
+            }
+            element = element.parentNode;
+            element.removeChild(element.lastChild);
+            element.lastChild = null;
+          }
         }
       }
-      function clear(node, removeAllChildren) {
-        if (node._cells) {
-          while (node._cells.length > 0) {
-            clear(node._cells[0], true);
-          }
-        }
-
-        if (node._row) {
-          if(O$.Destroy.isDefined(node._row._rowNode)) {
-            node._row._rowNode._row = undefined;
-          }
-
-          node._row = undefined;
-        }
-        node._column = undefined;
-        node._table = undefined;
-        node._section = undefined;
-        node._updateStyle = undefined;
-        node._updateHover = undefined;
-        node._setAsCursor = undefined;
-        node._cellsByColumns = undefined;
-
-        jQuery(node).unbind();
-        jQuery.cleanData(node);
+      function clear(node) {
+        jQuery.cleanData(node); // just to be sure that all jQuery data was removed
         O$.Destroy._destroyEvents(node);
         O$.Destroy._clearCachedStyles(node);
         O$.Destroy._destroyKnownEventHandlers(node);
         O$.Destroy._clearUnloadableCollections(node);
-
-        if(removeAllChildren || node.nodeName == "#text") {
-          jQuery(node).remove();
-        }
 
         O$.Destroy.counter ++;
       }
@@ -6101,9 +6116,9 @@ if (!window.O$) {
       }
     },
 
-    _clearTable:function(component) {
-      if(this.isDefined(component) && component._cleanAll) { //DataTable only
-        component._cleanAll();
+    _destroyComponent:function(component) {
+      if(this.isDefined(component) && component._destroy) {
+        component._destroy();
       }
     },
 
@@ -6200,6 +6215,8 @@ if (!window.O$) {
       if(component._of_mouseOutListeners)   component._of_mouseOutListeners.length = 0;
       if(component._of_mouseOverListeners)  component._of_mouseOverListeners.length = 0;
       if(component._styleMappings)          component._styleMappings.length = 0;
+      if(component._of_prevOnBlurHandler)   component._of_prevOnBlurHandler = undefined;
+      if(component._of_prevOnFocusHandler)  component._of_prevOnFocusHandler  = undefined;
       if(component._image)                  component._image = undefined;
     },
 
