@@ -180,7 +180,9 @@ public class DynamicColumn extends Column implements DynamicCol {
             prevIndexVarValue = requestMap.put(indexVar, colIndex);
 
         final int prevColIndex = columns.getColumnIndex();
-        columns.setColumnIndex(colIndex);
+        if (prevColIndex > -1) {
+            columns.setColumnIndex(colIndex);
+        }
         final Object finalPrevIndexVarValue = prevIndexVarValue;
         return new Runnable() {
             public void run() {
@@ -224,7 +226,9 @@ public class DynamicColumn extends Column implements DynamicCol {
 
     @Override
     public void encodeEnd(FacesContext context) throws IOException {
-        if (exitContextRunnable != null) exitContextRunnable.run();
+        if (exitContextRunnable != null) {
+            exitContextRunnable.run();
+        }
     }
 
     public List<UIComponent> getChildrenForProcessing() {
