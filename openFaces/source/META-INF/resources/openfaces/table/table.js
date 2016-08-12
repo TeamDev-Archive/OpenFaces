@@ -640,7 +640,7 @@ O$.Table = {
 
         O$._submitInternal(table, null, [
           [table.id + "::columnsOrder", columnIdsStr]
-        ]);
+        ], ['@this']);
       },
 
       isColumnVisible:function (columnId) {
@@ -2909,7 +2909,7 @@ O$.Table = {
           var setSortingRulesStr = JSON.stringify(rules, ["columnId", "ascending"]);
           O$._submitInternal(table, null, [
             [table.id + "::setSortingRules", setSortingRulesStr]
-          ]);
+          ], ['@this']);
         },
 
         _getPrimarySortingRule:function () {
@@ -4059,7 +4059,7 @@ O$.Table = {
           var setGroupingRulesStr = JSON.stringify(rules, ["columnId", "ascending"]);
           O$._submitInternal(table, null, [
             [table.id + "::setGroupingRules", setGroupingRulesStr]
-          ]);
+          ], "@this");
 
         },
 

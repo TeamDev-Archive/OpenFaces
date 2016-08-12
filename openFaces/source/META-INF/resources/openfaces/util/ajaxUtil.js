@@ -339,7 +339,15 @@ window.OpenFaces.Ajax = {
     if (args.customJsonParam) {
       params[O$.CUSTOM_JSON_PARAM] = args.customJsonParam;
     }
-    var execute = args.execute ? args.execute.join(" ") : undefined;
+    var execute;
+    if(args.execute){
+      if(typeof args.execute == "string") {
+        execute = args.execute;
+      } else if(Array.isArray(args.execute) && args.execute.length > 0) {
+        execute = args.execute.join(" ");
+      }
+    }
+
     if (args.immediate) {
       if (!params) params = {};
       params[O$.IMMEDIATE] = args.immediate;
