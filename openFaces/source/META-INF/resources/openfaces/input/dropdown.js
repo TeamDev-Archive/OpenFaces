@@ -254,8 +254,11 @@ O$.DropDown = {
 
       getDisabled:function () {
         return this._disabled;
-      }
+      },
 
+      isDisabled: function(){
+        return this._disabled || this.disabled;
+      }
     });
 
     if (pullPopupFromContainer) {
@@ -301,7 +304,7 @@ O$.DropDown = {
       if (!readOnly) {
         O$.extend(button, {
           onmousedown:function (e) {
-            if (dropDown._disabled) return;
+            if (dropDown.isDisabled()) return;
             if (O$.isEventFromInsideOfElement(e, popup))
               return;
             button.className = dropDown._pressedButtonClass;
@@ -310,7 +313,7 @@ O$.DropDown = {
             O$.cancelEvent(e);
           },
           ondblclick:function (e) {
-            if (dropDown._disabled) return;
+            if (dropDown.isDisabled()) return;
             if (O$.isEventFromInsideOfElement(e, popup))
               return;
             if (!O$.isExplorer())
