@@ -1196,7 +1196,7 @@
 }
 
 .o_dateChooser_popup {
-    position: fixed; display: none;
+    position: absolute; display: none;
 }
 
 .o_dropdown_field {
@@ -1216,7 +1216,7 @@
 }
 
 .o_dropdownfield_list {
-  position: fixed;
+  position: absolute;
   visibility: hidden;
   display: none;
   overflow: auto;
