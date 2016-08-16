@@ -2674,64 +2674,75 @@ O$.Tables = {
     synchronizeAreaScrolling();
 
     table._alignRowHeights = function () {
-      if (!table._leftArea && !table._rightArea)  return;
-      O$.Tables._fixChromeCrashWithEmptyTR(table);
-
-      var assignCellHeights = O$.isChrome() || O$.isSafari() || (O$.isExplorer() && O$.isStrictMode() && !O$.isExplorer8());
-      var quirksMode = (O$.isChrome() || O$.isSafari()) && O$.isQuirksMode();
-
-      var areaHeight = 0;
-      var section = table.body;
       var __minHeight = table._rowMinHeight ? parseInt(table._rowMinHeight) : 0;
+      if (!table._leftArea && !table._rightArea)
+        return;
+      O$.Tables._fixChromeCrashWithEmptyTR(table);
+      [table.header, table.body, table.footer].forEach(function (section) {
+        if (!section) return;
+        var assignCellHeights = O$.isChrome() || O$.isSafari() || (O$.isExplorer() && O$.isStrictMode() && !O$.isExplorer8());
 
-      var rows = section._getRows();
-      var height = getRowHeight(rows[0], rows[0]._rowNode);
+        var areaHeight = 0;
+        var rows = section._getRows();
+        rows.forEach(function (row) {
+          var artificialRow = !row.nodeName || row.nodeName.toUpperCase() != "TR";
+          if (!artificialRow) return;
+          var rowNodes = [row._leftRowNode, row._rowNode, row._rightRowNode];
 
-      for (var c = 0; c < rows.length; c++) {
-        var row = rows[c];
-        if (row.nodeName && row.nodeName.toUpperCase() === "TR") { break; }
-
-        var rowNodes = [row._leftRowNode, row._rowNode, row._rightRowNode];
-        for (var j = 0; j < rowNodes.length; j++) {
-          var rowNode = rowNodes[j];
-          if (rowNode){
-            setRowHeight(row, rowNode, height);
+          function setRowHeight(rowNode, height, trim) {
+            row.__height = height;
+            height = height + "px";
+            rowNode.style.height = height;
+            if (assignCellHeights && trim) {
+              for (var i = 0, count = rowNode.cells.length; i < count; i++) {
+                rowNode.cells[i].style.height = height;
+              }
+            }
           }
-        }
-        areaHeight += height;
 
-        if (quirksMode) {
+          var height = 0;
+          rowNodes.forEach(function (rowNode) {
+            if (!rowNode) return;
+            if (!(O$.isExplorer() && O$.isQuirksMode()))
+              if (section == table.body){
+                setRowHeight(rowNode, __minHeight, true);
+              } else {
+                setRowHeight(rowNode, 0, true);
+              }
+            var rowHeight = rowNode.offsetHeight;
+            if (rowHeight > height)
+              height = rowHeight;
+          });
+          rowNodes.forEach(function (rowNode) {
+            if (!rowNode) return;
+            setRowHeight(rowNode, height, true);
+          });
+          areaHeight += height;
+        });
+        if ((O$.isChrome() || O$.isSafari()) && O$.isQuirksMode())
           section._scrollingAreas.forEach(function (area) {
             O$.setElementHeight(area._table, areaHeight);
           });
-        }
-      }
 
-      function getRowHeight(row, node) {
-        var maxNodesHeight = 0;
-
-        if (node) {
-          setRowHeight(row, node, __minHeight);
-          maxNodesHeight = maxNodesHeight < node.offsetHeight ? node.offsetHeight : maxNodesHeight;
-        }
-
-        return maxNodesHeight;
-      }
-
-      function setRowHeight(row, rowNode, height) {
-        rowNode.style.height = height;
-        row.__height = height;
 
         if (assignCellHeights) {
-          var cells = rowNode._cells;
-          for(var i = 0; i < cells.length; i++){
-            var cell = rowNode._cells[i];
-            cell.style.paddingTop = "0px";
-            cell.style.paddingBottom = "0px";
-            cell.style.height = height + "px";
+          // setting row height is not enough for Chrome and Safari, setting cell heights solves this issue
+          for (var rowIndex = 0, rowCount = rows.length; rowIndex < rowCount; rowIndex++) {
+            var row = rows[rowIndex];
+            var artificialRow = !row.nodeName || row.nodeName.toUpperCase() != "TR";
+            if (!artificialRow) continue;
+            row._cells.forEach(function (cell) {
+              var rowSpan = cell.rowSpan ? cell.rowSpan : 1;
+              var cellHeight = 0;
+              for (var i = rowIndex; i < rowIndex + rowSpan; i++) {
+                cellHeight += rows[i].__height;
+              }
+              O$.setElementHeight(cell, cellHeight);
+            });
+
           }
         }
-      }
+      });
     };
     var delayUnderIE = O$.isExplorer() && !(O$.isExplorer8() && O$.isStrictMode());
     if (!delayUnderIE)
