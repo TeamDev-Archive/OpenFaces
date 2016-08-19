@@ -3085,7 +3085,7 @@ O$.Table = {
         var totalWidth = [];
 
         for (var i = 0, count = table._columns.length; i < count; i++) {
-          totalWidth += table._columns[i].getWidth();
+          totalWidth.push(table._columns[i].getWidth());
         }
 
         return totalWidth;
