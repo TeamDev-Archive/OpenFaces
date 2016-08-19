@@ -5930,6 +5930,15 @@ if (!window.O$) {
     }
   };
 
+  O$.isDisabled = function(component){
+    if(component._disabled || component.disabled) {
+      return true;
+    }
+
+    var attrValue = component.getAttribute('disabled');
+    return !!(attrValue == 'true' || attrValue == 'disabled');
+  },
+
   O$.isComponentInDOM = function (component) {
     var parent = component.parentNode;
     while (parent != document && parent != null) {

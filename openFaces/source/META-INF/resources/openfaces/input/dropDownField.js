@@ -762,7 +762,7 @@ O$.DropDownField = {
       });
 
       itemPresentation.onmousedown = function (e) {
-        if (dropDown._disabled)
+        if (dropDown.isDisabled())
           return;
         dropDown.dropDown();
         if (O$.isExplorer8AndOlder()) {
@@ -780,7 +780,7 @@ O$.DropDownField = {
       };
 
       itemPresentation.ondblclick = function () {
-        if (dropDown._disabled)
+        if (dropDown.isDisabled())
           return;
         if (dropDown._getSelectedItem()) {
           field.value = dropDown._getSelectedItem()._itemLabel;
@@ -1171,7 +1171,7 @@ O$.DropDownField = {
     var newHighlightedItemIndex = null;
     if (keyCode == 40) { // Down
       if (!dropDown.isOpened()) {
-        if (!dropDown._manualListOpeningAllowed || dropDown._disabled)
+        if (!dropDown._manualListOpeningAllowed || dropDown.isDisabled())
           return true;
         dropDown.dropDown();
         dropDown._checkAdditionalPageNeeded(!dropDown._cachingAllowed, true);

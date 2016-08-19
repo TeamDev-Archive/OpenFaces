@@ -29,7 +29,7 @@ O$.DateChooser = {
 
       _onremove: function(e){
         if (formatName != 'medium') {
-          return true;
+          return this._prevKeyHandler_DC(e);
         }
 
         var str = dc._field.value;
@@ -52,13 +52,13 @@ O$.DateChooser = {
         }
 
         if (!O$.DateChooser._isValidDigitDate(str, dc._delimiter, dc._dateFormat)){
-          return false;
+          return this._prevKeyHandler_DC(e);
         }
 
         dc._field.value = str;
         dc._field.setSelectionRange(focusPosition, focusPosition);
 
-        return false;
+        return this._prevKeyHandler_DC(e);
       },
 
       //todo: This is temporary decision. Rewrite logic for the short format using MaskEdit for all formats.

@@ -107,9 +107,9 @@ O$.Spinner = {
 
         this._setFieldDisabled(disabled);
 
-        if (disabled){
+        if (O$.isDisabled(this)) {
           this._unSetupButtonAndFieldEvents();
-        }else{
+        }else {
           this._setupButtonAndFieldEvents();
         }
       },
