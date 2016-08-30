@@ -36,8 +36,33 @@ public class CSVTableDataFormatter extends TableDataFormatter {
     @Override
     protected void writeFileContent(TableData tableData, PrintWriter writer, OutputStream outputStream) {
         try {
-            writeCSVLine(writer, tableData.getTableColumnDatas());
+            int startSeparate = 0;
+            List<BaseColumn> baseColumns = tableData.getTableColumnDatas();
+            for (ColumnGroup columnGroup : tableData.getColumnGroups()) {
+                int endSeparate = 0;
+                for (int i = 0; i < baseColumns.size(); i++) {
+                    if (columnGroup.getChildren().contains(baseColumns.get(i))) {
+                        endSeparate = i;
+                        break;
+                    }
+                }
+                for (int i = 0; i < endSeparate - startSeparate; i++) {
+                    addSeparator(writer);
+                }
+                startSeparate = endSeparate + columnGroup.getChildren().size();
+                for (int i = 0; i < columnGroup.getChildren().size(); i++) {
+                    addColumnGroup(writer, columnGroup.getHeaderValue());
+                    addSeparator(writer);
+                }
+            }
+            addNewLine(writer);
+            List<String> headers = new ArrayList<String>();
+            for (BaseColumn column : tableData.getTableColumnDatas()) {
+                headers.add(column.getColumnHeader());
+            }
+            writeCSVLine(writer, headers);
             List<TableRowData> rowDatas = tableData.getTableRowDatas();
+
             for (TableRowData rowData : rowDatas) {
                 writeCSVLine(writer, mapList(rowData.getCellDatas(), new Mapper<Object, String>() {
                     public String map(Object obj) {
@@ -88,6 +113,19 @@ public class CSVTableDataFormatter extends TableDataFormatter {
         writer.print("\n");
     }
 
+    private void addSeparator(PrintWriter writer) throws IOException {
+        writer.write(',');
+    }
+
+    private void addColumnGroup(PrintWriter writer, String header) {
+        writer.print('"');
+        writer.print(header.replaceAll("\"", "\"\""));
+        writer.print('"');
+    }
+
+    private void addNewLine(PrintWriter writer) {
+        writer.print("\n");
+    }
 
     private <I, O> List<O> mapList(List<I> srcList, Mapper<I, O> mapper) {
         List<O> result = new ArrayList<O>();
