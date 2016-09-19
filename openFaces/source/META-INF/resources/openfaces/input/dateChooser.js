@@ -29,7 +29,7 @@ O$.DateChooser = {
 
       _onremove: function(e){
         if (formatName != 'medium') {
-          return this._prevKeyHandler_DC(e);
+          return true;
         }
 
         var str = dc._field.value;
@@ -52,13 +52,13 @@ O$.DateChooser = {
         }
 
         if (!O$.DateChooser._isValidDigitDate(str, dc._delimiter, dc._dateFormat)){
-          return this._prevKeyHandler_DC(e);
+          return true;
         }
 
         dc._field.value = str;
         dc._field.setSelectionRange(focusPosition, focusPosition);
 
-        return this._prevKeyHandler_DC(e);
+        return true;
       },
 
       //todo: This is temporary decision. Rewrite logic for the short format using MaskEdit for all formats.
@@ -204,12 +204,13 @@ O$.DateChooser = {
           }
           break;
         case 8: //backspace
-          return dc._onremove(e);
         case 46: //delete
-          return dc._onremove(e);
+          dc._onremove(e);
+          dc._dateChangeListener(O$.Calendar._getSelectedDate(cal.id));
+          break;
       }
       if (dc._prevKeyHandler_DC)
-        return dc._prevKeyHandler_DC(evt);
+        dc._prevKeyHandler_DC(evt);
     };
 
     var cal = dc._calendar;
