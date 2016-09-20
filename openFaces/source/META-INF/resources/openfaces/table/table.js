@@ -4990,13 +4990,15 @@ O$.ColumnMenu = {
       var columnId = O$.ColumnMenu._currentColumnId;
       var currentColumn = findColumnById(columnId);
       if (currentColumn) {
-        O$.correctElementZIndex(columnMenu, currentColumn._resizeHandle);
+        var referencedElement = currentColumn._resizeHandle || currentColumn.header._cell;
+        O$.correctElementZIndex(columnMenu, referencedElement, 100);
+
         columnMenu._column = currentColumn;
       }
       table._showingMenuForColumn = columnId;
       if (columnMenu.parentNode != newMenuParent) {
         newMenuParent.appendChild(columnMenu);
-        O$.correctElementZIndex(columnMenu, columnMenuButton);
+        O$.correctElementZIndex(columnMenu, columnMenuButton, 100);
       }
 
       columnMenu._showByElement(columnMenuButtonTable, O$.LEFT, O$.BELOW, 0, 0);
