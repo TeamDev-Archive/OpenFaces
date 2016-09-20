@@ -45,6 +45,9 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -632,17 +635,45 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         if (!showColumn && renderedColumns.size() == 1)
             showColumn = true; // don't allow to hide the last column
         List<String> newColumnsOrder = new ArrayList<String>();
-        for (BaseColumn c : allColumns) {
-            String cid = c.getId();
-            if (c != column) {
-                if (renderedColumns.contains(c))
-                    newColumnsOrder.add(cid);
-            } else {
-                if (showColumn)
-                    newColumnsOrder.add(cid);
+        if (table.isSaveColumnsOrder()) {
+            applyColumnsFromCache(table, column, showColumn, allColumns, renderedColumns, newColumnsOrder);
+        } else {
+            for (BaseColumn c : allColumns) {
+                String cid = c.getId();
+                if (c != column) {
+                    if (renderedColumns.contains(c))
+                        newColumnsOrder.add(cid);
+                } else {
+                    if (showColumn)
+                        newColumnsOrder.add(cid);
+                }
             }
         }
         table.getAttributes().put("submittedColumnsOrder", newColumnsOrder);
+    }
+
+    private void applyColumnsFromCache(AbstractTable table, BaseColumn column, boolean showColumn, List<BaseColumn> allColumns, List<BaseColumn> renderedColumns, List<String> newColumnsOrder) {
+        final Map<String, ColumnVO> cachedColumns = table.getCachedReorderedColumnsOrder();
+        final List<ColumnVO> columns = (List<ColumnVO>) cachedColumns.values();
+
+        Collections.sort(columns, new Comparator<ColumnVO>() {
+            public int compare(ColumnVO o1, ColumnVO o2) {
+                return o2.getPosition() > o1.getPosition() ? 1 : -1;
+            }
+        });
+
+        for (ColumnVO columnVO : columns) {
+            final String id = columnVO.getId();
+            final BaseColumn baseColumn = table.findColumnById(allColumns, id);
+            if (baseColumn != column) {
+                if (renderedColumns.contains(baseColumn))
+                    newColumnsOrder.add(id);
+            } else {
+                if (showColumn) {
+                    newColumnsOrder.add(id);
+                }
+            }
+        }
     }
 
 
