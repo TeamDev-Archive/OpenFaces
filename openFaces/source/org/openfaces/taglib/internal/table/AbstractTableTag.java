@@ -118,6 +118,8 @@ public abstract class AbstractTableTag extends AbstractComponentTag {
         setStringProperty(component, "onkeypress");
         setLiteralCollectionProperty(component, "columnsOrder");
 
+        setBooleanProperty(component, "saveColumnsOrder");
+
         setIntProperty(component, "autoFilterDelay");
         setBooleanProperty(component, "deferBodyLoading");
         setBooleanProperty(component, "unsortedStateAllowed");

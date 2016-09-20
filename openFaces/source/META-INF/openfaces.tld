@@ -417,6 +417,17 @@
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>
+      </description>
+      <name>saveColumnsOrder</name>
+      <deferred-value>
+        <type>java.lang.Boolean</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Boolean -->
+      <!-- @default false -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
       <description>The order of columns in the DataTable component. This attribute should be bound to a list
         containing column IDs for each column in the order you want them to be displayed. If the "columnsOrder"
         attribute is not specified, all the columns are rendered in the order they are defined.

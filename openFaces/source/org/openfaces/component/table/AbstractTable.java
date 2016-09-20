@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.table;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.openfaces.component.ComponentWithExternalParts;
 import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.OUIData;
@@ -153,7 +154,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private String columnIndexVar;
     private Iterable<String> columnsOrder;
     private Iterable<String> hiddenColumns;
-
+    private Boolean saveColumnsOrder = false;
+    private Map<String, ColumnVO> cachedReorderedColumnsOrder = new HashMap<String, ColumnVO>();
     private String sortedAscendingImageUrl;
     private String sortedDescendingImageUrl;
 
@@ -232,7 +234,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 noDataMessageAllowed, columnIndexVar, columnIdVar, saveAttachedState(context, columnsOrder),
                 sortedAscendingImageUrl, sortedDescendingImageUrl, cachedClientId,
                 autoFilterDelay, deferBodyLoading, totalRowCount, implicitFacetsCreated, unsortedStateAllowed,
-                keepSelectionVisible, onbeforeajaxreload, onafterajaxreload, unDisplayedSelectionAllowed, saveAttachedState(context, hiddenColumns), rowMinHeight};
+                keepSelectionVisible, onbeforeajaxreload, onafterajaxreload, unDisplayedSelectionAllowed, saveAttachedState(context, hiddenColumns), rowMinHeight, cachedReorderedColumnsOrder};
     }
 
     @Override
@@ -335,6 +337,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
         beforeUpdateValuesPhase = true;
         incomingSortingRules = null;
+        cachedReorderedColumnsOrder = (Map<String, ColumnVO>) state[i++];
     }
 
     @Override
@@ -600,27 +603,15 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             return renderedColumns;
         }
 
-        List<BaseColumn> allColumns = getAllColumns();
+        final List<BaseColumn> allColumns = getAllColumns();
         List<BaseColumn> result = new ArrayList<BaseColumn>();
         List<String> resultIds = new ArrayList<String>();
-        for (String columnId : columnsOrder) {
-            if (columnId == null)
-                throw new IllegalStateException(
-                        "columnsOrder collection shouldn't contain null entries; table's clientId = " + getClientId(getFacesContext()));
-            /*if (!(s instanceof String))
-                throw new IllegalStateException(
-                        "columnsOrder collection should only contain String instances which specify id's of columns in order " +
-                                "of their appearance, but an instance of " + s.getClass() + " was found; table's clientId = " + getClientId(getFacesContext()));*/
-            BaseColumn colById = findColumnById(allColumns, columnId);
-            if (colById == null)
-                continue;
-            //     throw new IllegalStateException("columnsOrder collection contains an id that doesn't point to an existing column: " + columnId + "; table's clientId = " + getClientId(getFacesContext()));
 
-            if (colById.isRendered()){
-                result.add(colById);
-                resultIds.add(columnId);
-            }
-
+        final Collection<ColumnVO> cachedColumns = this.getCachedReorderedColumnsOrder().values();
+        if (this.isSaveColumnsOrder() && CollectionUtils.isNotEmpty(cachedColumns)) {
+            result.addAll(applyColumnsFromCache(allColumns, resultIds));
+        } else {
+            result.addAll(applyColumns(columnsOrder, allColumns, resultIds));
         }
 
         Iterable<String> hideColumns = getHiddenColumns();
@@ -635,6 +626,47 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
         ValueBindings.set(this, "columnsOrder", resultIds);
         ValueBindings.set(this, "hiddenColumns", hideColumns);
+
+        return result;
+    }
+
+    private List<BaseColumn> applyColumns(Iterable<String> columnsOrder, List<BaseColumn> allColumns, List<String> resultIds) {
+        List<BaseColumn> result = new ArrayList<BaseColumn>();
+        for (String columnId : columnsOrder) {
+            if (columnId == null)
+                throw new IllegalStateException(
+                        "columnsOrder collection shouldn't contain null entries; table's clientId = " + getClientId(getFacesContext()));
+            BaseColumn colById = findColumnById(allColumns, columnId);
+            if (colById == null)
+                continue;
+            if (colById.isRendered()){
+                result.add(colById);
+                resultIds.add(columnId);
+            }
+        }
+        return result;
+    }
+
+    private List<BaseColumn> applyColumnsFromCache(List<BaseColumn> allColumns, List<String> resultIds) {
+        final Map<String, ColumnVO> cachedColumnsOrder = this.getCachedReorderedColumnsOrder();
+        final List<ColumnVO> cachedColumns = new ArrayList<ColumnVO>(cachedColumnsOrder.values());
+        List<BaseColumn> result = new ArrayList<BaseColumn>();
+
+        Collections.sort(cachedColumns, new Comparator<ColumnVO>() {
+            public int compare(ColumnVO o1, ColumnVO o2) {
+                return o1.getPosition() > o2.getPosition() ? 1 : -1;
+            }
+        });
+
+        for (ColumnVO columnVO : cachedColumns) {
+            final String id = columnVO.getId();
+            final BaseColumn column = this.findColumnById(allColumns, id);
+            if(column == null) continue;
+            if((column.isRendered() || isNeededToBeRendered(column)) && columnVO.isVisible()) {
+                result.add(column);
+                resultIds.add(id);
+            }
+        }
 
         return result;
     }
@@ -770,6 +802,40 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         this.columnsOrder = columnsOrder;
     }
 
+    public Map<String, ColumnVO> getCachedReorderedColumnsOrder() {
+        return cachedReorderedColumnsOrder;
+    }
+
+    public void putColumnsOrderToCache(List<String> newList) {
+        final Map<String, ColumnVO> result = new HashMap<String, ColumnVO>();
+
+        for (int i = 0; i < this.cachedAllColumns.size(); i++) {
+            BaseColumn column = this.cachedAllColumns.get(i);
+
+            final String columnId = column.getId();
+            final ColumnVO existenceColumn = this.cachedReorderedColumnsOrder.get(columnId);
+
+            final boolean currentVisibilityState = newList.contains(columnId);
+            final int newIndex = newList.indexOf(columnId);
+
+            final boolean previousVisibilityState = existenceColumn != null ? existenceColumn.isVisible() : currentVisibilityState;
+            final int existsColumnPosition = existenceColumn != null ? existenceColumn.getPosition() : i;
+            final int columnIndex = previousVisibilityState == currentVisibilityState && newIndex > -1 ? newIndex : existsColumnPosition;
+
+            final ColumnVO columnVO = new ColumnVO(columnId, currentVisibilityState, columnIndex);
+            result.put(columnId, columnVO);
+        }
+
+        this.cachedReorderedColumnsOrder = result;
+    }
+
+    public Boolean isSaveColumnsOrder() {
+        return ValueBindings.get(this, "saveColumnsOrder", saveColumnsOrder, Boolean.class);
+    }
+
+    public void setSaveColumnsOrder(Boolean saveColumnsOrder) {
+        this.saveColumnsOrder = saveColumnsOrder;
+    }
 
     public String getSortedAscendingImageUrl() {
         return ValueBindings.get(this, "sortedAscendingImageUrl", sortedAscendingImageUrl);
@@ -1418,7 +1484,12 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             setHiddenColumns(hiddenColumns);
 
             getAttributes().remove("submittedColumnsOrder");
+
+            if (this.isSaveColumnsOrder()) {
+                putColumnsOrderToCache((List<String>) submittedColumnsOrder);
+            }
             setColumnsOrder(submittedColumnsOrder);
+
             ValueBindings.set(this, "columnsOrder", columnsOrder);
             ValueBindings.set(this, "hiddenColumns", this.hiddenColumns);
 
