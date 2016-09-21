@@ -32,7 +32,7 @@ public class OpenFacesApplication extends ApplicationWrapper {
         super(application);
     }
 
-    private static   ThreadLocal<Boolean> constructingView = new ThreadLocal<Boolean>();
+    private static ThreadLocal<Boolean> constructingView = new ThreadLocal<Boolean>();
 
     @Override
     public void publishEvent(FacesContext context, Class<? extends SystemEvent> systemEventClass, Object source) {
@@ -44,7 +44,12 @@ public class OpenFacesApplication extends ApplicationWrapper {
             prevConstructingViewBool = constructingView.get();
             constructingView.set(Boolean.TRUE);
         }
-        super.publishEvent(context, systemEventClass, source);
+        try {
+            super.publishEvent(context, systemEventClass, source);
+        } catch (Exception ignored) {
+            ignored.printStackTrace();
+            constructingView.remove();
+        }
 
         if (postAddToViewEvent && source instanceof UIViewRoot)
             viewRootAddedToView(context);
@@ -73,7 +78,12 @@ public class OpenFacesApplication extends ApplicationWrapper {
             prevConstructingViewBool = constructingView.get();
             constructingView.set(Boolean.TRUE);
         }
-        super.publishEvent(context, systemEventClass, sourceBaseType, source);
+        try {
+            super.publishEvent(context, systemEventClass, sourceBaseType, source);
+        } catch (Exception ignored) {
+            ignored.printStackTrace();
+            constructingView.remove();
+        }
         if (postAddToViewEvent && source instanceof UIViewRoot)
             viewRootAddedToView(context);
 
