@@ -2043,7 +2043,10 @@ O$.Table = {
         }
         if (table._cursorStyle) {
           table._cursor = {};
-          table._cursor._borderWidth = O$.getStyleClassProperty(table._cursorStyle, "border-top-width").replace("px", "") * 1;
+          var borderWidth = O$.getStyleClassProperty(table._cursorStyle, "border-top-width");
+          if (borderWidth) {
+            table._cursor._borderWidth = borderWidth.replace("px", "") * 1;
+          }
           function createPartOfCursor() {
             var el = document.createElement("div");
             el.style.position = "absolute";
