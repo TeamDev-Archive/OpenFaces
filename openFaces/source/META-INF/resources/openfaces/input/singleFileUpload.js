@@ -48,6 +48,9 @@ O$.SingleFileUpload = {
                   popupHorizontalDistance, popupVerticalDistance);
         }
       },
+      _initNewFile: function(fileUpload, idInputAndDiv, name, status, size) {
+        return new O$.FileUploadUtil.File(O$.SingleFileUpload._SpecFileAPIInit, fileUpload, idInputAndDiv, name, status, null)
+      },
       _processFileAddingHTML5:function (file) {
         if (isFileNameNotApplied(file.name) || fileUpload._buttons.browseInput.disabled ||
                 (!file._fromDnD && file.size == 0) || (file._fromDnD && fileUpload._isDirectory(file))) {
@@ -58,7 +61,7 @@ O$.SingleFileUpload = {
         file._fakeInput = componentId + "::inputs::input" + idOfInfoAndInputDiv + "::form::fileInput";
         file._infoId = idOfInfoAndInputDiv;
         fileUpload._fileHTML5 = file;
-        fileUpload._currentFile = new O$.FileUploadUtil.File(O$.SingleFileUpload._SpecFileAPIInit, fileUpload, file._infoId, file.name, O$.FileUploadUtil.Status.NEW, file.size);
+        fileUpload._currentFile = this._initNewFile(fileUpload, file._infoId, file.name, O$.FileUploadUtil.Status.NEW, file.size);
 
         fileUpload._numberOfFilesToUpload++;
         idOfInfoAndInputDiv++;
@@ -81,7 +84,7 @@ O$.SingleFileUpload = {
         fileUpload._buttons.browse._inFocus = false;
         inputForFile._idInputAndDiv = idOfInfoAndInputDiv;
         fileUpload._createAndAppendComplexInputWithId(inputForFile);
-        fileUpload._currentFile = new O$.FileUploadUtil.File(O$.SingleFileUpload._SpecFileAPIInit, fileUpload, inputForFile._idInputAndDiv, inputForFile.value, O$.FileUploadUtil.Status.NEW, null);
+        fileUpload._currentFile = this._initNewFile(fileUpload, inputForFile._idInputAndDiv, inputForFile.value, O$.FileUploadUtil.Status.NEW, null);
         fileUpload._numberOfFilesToUpload++;
         idOfInfoAndInputDiv++;
         fileUpload._buttons.browseInput = fileUpload._createInputInAddBtn();
@@ -271,6 +274,12 @@ O$.SingleFileUpload = {
                 JSON.stringify({progressRequest:"true", fileId:file._uniqueId}),
                 function (fileUpload, portionName, portionHTML, portionScripts, portionData) {
                   var fileForAPI = fileUpload._getFile(file._infoId);
+
+                  //TODO:Max.Yurin:2016.9.15: Consider to rework the initialization of the currentFile, for cases when a few request stands in queue, and second file hasn't load yet.
+                  if(!fileForAPI) {
+                    fileForAPI = this._initNewFile(fileUpload, file._infoId, file.name, O$.FileUploadUtil.Status.NEW, file.size);
+                  }
+
                   if (portionData['isFileSizeExceed'] == "true") {
                     fileUpload._els.info._status = O$.FileUploadUtil.Status.SIZE_LIMIT_EXCEEDED;
                     fileForAPI.status = O$.FileUploadUtil.Status.SIZE_LIMIT_EXCEEDED;
