@@ -369,6 +369,7 @@ O$._sidePanelResizingEnd = function (sidePanel) {
 };
 
 O$._splitterMouseDown = function (event) {
+  document._fireDocumentClicked(event);
   if (O$._mouseButton(event) == "left") {
     if (O$.isExplorer()) {
       var sidePanel = event.srcElement.parentNode;
