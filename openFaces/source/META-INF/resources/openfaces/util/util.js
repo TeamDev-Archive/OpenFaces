@@ -3167,15 +3167,19 @@ if (!window.O$) {
         } else {
           // if rectangles intersects - we put focus to the mid of intersection
           pageScrollRect.intersectWith(containerRect);
-          this._focusControl.style.left = -containerRect.getMinX() + (pageScrollRect.getMaxX() + pageScrollRect.getMinX()) / 2 + "px";
-          this._focusControl.style.top = -containerRect.getMinY() + (pageScrollRect.getMaxY() + pageScrollRect.getMinY()) / 2 + "px";
+          var left = -containerRect.getMinX() + (pageScrollRect.getMaxX() + pageScrollRect.getMinX()) / 2;
+          var top = -containerRect.getMinY() + (pageScrollRect.getMaxY() + pageScrollRect.getMinY()) / 2;
+          this._focusControl.style.left = left + "px";
+          this._focusControl.style.top = top + "px";
         }
       } else {
         this._focusControl.style.left = "";
         this._focusControl.style.top = "";
       }
       try {
-        this._focusControl.focus();
+        if (!O$.isChrome()){
+          this._focusControl.focus();
+        }
       } catch (e) {
         // in IE hidden element can't receive focus
       }
