@@ -277,9 +277,10 @@ O$.SingleFileUpload = {
 
                   //TODO:Max.Yurin:2016.9.15: Consider to rework the initialization of the currentFile, for cases when a few request stands in queue, and second file hasn't load yet.
                   if(!fileForAPI) {
-                    fileForAPI = this._initNewFile(fileUpload, file._infoId, file.name, O$.FileUploadUtil.Status.NEW, file.size);
+                    fileForAPI = fileUpload._initNewFile(fileUpload, file._infoId, file.name, O$.FileUploadUtil.Status.NEW, file.size);
                   }
 
+                  fileUpload._listOfids = fileUpload._listOfids || [];
                   if (portionData['isFileSizeExceed'] == "true") {
                     fileUpload._els.info._status = O$.FileUploadUtil.Status.SIZE_LIMIT_EXCEEDED;
                     fileForAPI.status = O$.FileUploadUtil.Status.SIZE_LIMIT_EXCEEDED;
