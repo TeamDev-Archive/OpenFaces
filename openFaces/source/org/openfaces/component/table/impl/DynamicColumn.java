@@ -180,9 +180,9 @@ public class DynamicColumn extends Column implements DynamicCol {
             prevIndexVarValue = requestMap.put(indexVar, colIndex);
 
         final int prevColIndex = columns.getColumnIndex();
-        if (prevColIndex > -1) {
+     //   if (prevColIndex > -1) {
             columns.setColumnIndex(colIndex);
-        }
+      //  }
         final Object finalPrevIndexVarValue = prevIndexVarValue;
         return new Runnable() {
             public void run() {
