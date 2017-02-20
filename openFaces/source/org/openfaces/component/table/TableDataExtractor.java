@@ -72,11 +72,6 @@ public class TableDataExtractor {
             columns = table.getRenderedColumns();
         }
 
-        List<String> columnDatas = new ArrayList<String>();
-        for (BaseColumn column : columns) {
-            columnDatas.add(column.getColumnHeader());
-        }
-
         Iterable<Object> rowDatas = table.getRowDatas(scope);
         Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
         List<TableRowData> tableRowDatas = new ArrayList<TableRowData>();
@@ -90,7 +85,12 @@ public class TableDataExtractor {
             tableRowDatas.add(new TableRowData(rowData, cellDatas));
             requestMap.put(table.getVar(), prevVarValue);
         }
-        return new TableData(columnDatas, tableRowDatas);
+        List<ColumnGroup> columnGroups = new ArrayList<ColumnGroup>();
+        for (UIComponent component : table.getChildren()) {
+            if (component instanceof ColumnGroup)
+                columnGroups.add((ColumnGroup) component);
+        }
+        return new TableData(columns, tableRowDatas, columnGroups);
     }
 
     private List<Object> calculateCellDatas(Object rowData, List<BaseColumn> columns){

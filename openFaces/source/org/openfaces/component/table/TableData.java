@@ -23,19 +23,25 @@ import java.util.List;
  * @author Dmitry Pikhulya
  */
 public class TableData {
-    private List<String> columnDatas;
+    private List<BaseColumn> columnDatas;
     private List<TableRowData> rowDatas;
+    private List<ColumnGroup> columnGroups;
 
-    public TableData(List<String> columnDatas, List<TableRowData> rowDatas) {
+    public TableData(List<BaseColumn> columnDatas, List<TableRowData> rowDatas, List<ColumnGroup> columnGroups) {
         this.columnDatas = Collections.unmodifiableList(columnDatas);
         this.rowDatas = Collections.unmodifiableList(rowDatas);
+        this.columnGroups = Collections.unmodifiableList(columnGroups);
     }
 
-    public List<String> getTableColumnDatas() {
+    public List<BaseColumn> getTableColumnDatas() {
         return columnDatas;
     }
 
     public List<TableRowData> getTableRowDatas() {
         return rowDatas;
+    }
+
+    public List<ColumnGroup> getColumnGroups() {
+        return columnGroups;
     }
 }
