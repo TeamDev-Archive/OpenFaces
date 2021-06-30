@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<deployments>
-	<deployment>
-		<instance>
-			<instance-id>OpenFacesPortletInstance</instance-id>
-			<portlet-ref>OpenFacesPortlet</portlet-ref>
-		</instance>
-	</deployment>
-</deployments>
