@@ -1,3 +1,14 @@
+<i><h3>Disclaimer</h3></i>
+<p>
+The project has now reached its end of life.
+
+<p>The code in this <code>last-published-version-before-eol</code> branch is the last published version of OpenFaces.
+It may become handy for those wishing to have a quick look at the sources.
+
+<p>Branch <code>master</code> now contains only a zipped version of the sources. This measure is taken to prevent GitHub from scanning
+the code and raising false-alarming issues detected in the now-outdated libraries used by OpenFaces.
+
+
 <h5>What is OpenFaces?</h5>
 OpenFaces is an open-source library of AJAX-powered JSF components, an Ajax framework and a client-side validation framework. OpenFaces is based on the set of JSF components formerly known as QuipuKit. It contains fully revised codebase of QuipuKit and introduces many new components and features.
 OpenFaces is distributed under a dual license model. It means that you can choose between using the library under GNU Lesser General Public License (LGPL) or purchasing a commercial license.<br/><br/>
